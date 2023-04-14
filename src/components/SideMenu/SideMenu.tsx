@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { LightTheme } from "../../../public/themes/Light";
 import { ButtonLinks } from "./Utils/ButtonLinks";
 
@@ -8,23 +7,15 @@ import styled from "styled-components";
 //material UI
 import {
   Box,
-  Drawer,
-  useTheme,
-  ListItemButton,
-  ListItemIcon,
-  Icon,
-  ListItemText,
-  List,
+  Button,
   Divider,
+  Drawer,
+  Icon,
+  List,
   Typography,
   useMediaQuery,
-  Menu,
-  Button,
+  useTheme,
 } from "@mui/material";
-import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
-import BuildIcon from "@mui/icons-material/Build";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 //inteface
 interface SideMenuProps {
@@ -37,8 +28,8 @@ interface propsStyled {
 }
 
 //Image
-import imageProfile from "../../../public/img/profile.svg";
 import Image from "next/image";
+import imageProfile from "../../../public/img/profile.svg";
 
 //Custom Styled
 
@@ -158,7 +149,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
 
               <ButtonLinks
                 width={200}
-                href="/teste"
+                href="/clients"
                 icon="clients"
                 label={"Clientes"}
                 onclick={handleMenuOpen}
