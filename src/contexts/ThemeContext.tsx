@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { LightTheme } from "../themes/Light";
+import { LightTheme } from "../../public/themes/Light";
 import { ThemeProvider, Box } from "@mui/material";
 
 interface IThemeContext {

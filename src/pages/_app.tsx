@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography";
 
 //CSS
 import GlobaStyles from "../styles/global";
-import { AppThemeProvider } from "../../public/contexts";
+import { AppThemeProvider } from "../contexts";
 import styled from "styled-components";
+import LayoutDefault from "@/layout/LayoutDefault";
 
 //LAYOUT
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -21,10 +22,11 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <GlobaStyles />
+      <GlobaStyles></GlobaStyles>
       <AppThemeProvider>
-        <GlobaStyles />
-        <Component {...pageProps} />
+        <LayoutDefault>
+          <Component {...pageProps} />
+        </LayoutDefault>
       </AppThemeProvider>
     </>
   );

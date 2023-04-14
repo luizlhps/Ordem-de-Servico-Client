@@ -9,9 +9,10 @@ export const LightTheme = createTheme({
       fontSize: "24px", // Tamanho de fonte para h2
     },
     h3: {
-      fontSize: "18px", // Tamanho de fonte para h3
+      fontSize: "16px", // Tamanho de fonte para h3
     },
     fontFamily: [
+      "Inter",
       "Poopins",
       "Arial",
       "sans-serif",

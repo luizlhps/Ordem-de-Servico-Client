@@ -1,4 +1,11 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { LightTheme } from "../../../public/themes/Light";
+import { ButtonLinks } from "./Utils/ButtonLinks";
+
+//Styled Components
+import styled from "styled-components";
+//material UI
 import {
   Box,
   Drawer,
@@ -10,6 +17,9 @@ import {
   List,
   Divider,
   Typography,
+  useMediaQuery,
+  Menu,
+  Button,
 } from "@mui/material";
 import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
 import BuildIcon from "@mui/icons-material/Build";
@@ -21,209 +31,184 @@ interface SideMenuProps {
   children: React.ReactNode;
 }
 
+interface propsStyled {
+  smDown?: any;
+  matches?: any;
+}
+
 //Image
 import imageProfile from "../../../public/img/profile.svg";
 import Image from "next/image";
-import { LightTheme } from "../../../public/themes/Light";
+
+//Custom Styled
+
+const BoxHeaderContent = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+`;
+const FooterBox = styled.div<propsStyled>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+  margin-top: ${({ matches }) => (matches ? "50px" : "200px")};
+`;
+const DrawerHeader = styled.div<propsStyled>`
+  position: relative;
+  display: ${({ smDown }) => (smDown ? "flex" : "none")};
+  div {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    left: 10px;
+    right: 0;
+    z-index: 2000;
+  }
+`;
 
 export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   const theme = useTheme();
 
+  const smDown = useMediaQuery(theme.breakpoints.down("md"));
+  const matches = useMediaQuery("(max-height:860px)");
+
+  console.log(matches);
+  //menu
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleMenuOpen = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (smDown === false) {
+      setIsOpen(false);
+    }
+  }, [smDown]);
+
   return (
     <>
-      <Drawer variant="permanent">
-        <Box width={theme.spacing(34)} sx={{ color: theme.palette.primary.main }}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="column"
-            width="100%"
-            height={theme.spacing(25)}
-            marginTop={4}
-          >
-            <Image unoptimized={true} src={imageProfile} alt="imagem de perfil" />
+      <DrawerHeader smDown={smDown}>
+        <div>
+          <Button onClick={handleMenuOpen}>
+            <Icon>menu</Icon>
+          </Button>
+        </div>
+      </DrawerHeader>
+      <Drawer
+        onClose={handleMenuOpen}
+        open={isOpen}
+        variant={smDown ? "temporary" : "permanent"}
+      >
+        <Box
+          width={theme.spacing(34)}
+          display="flex"
+          flexDirection="column"
+          alignItems={"center"}
+          sx={{ color: theme.palette.primary.main }}
+        >
+          <BoxHeaderContent height={theme.spacing(25)} marginTop={4}>
+            <Image
+              priority={true} // definir como true para indicar prioridade
+              unoptimized={true}
+              src={imageProfile}
+              alt="imagem de perfil"
+            />
             <Box display="flex" flexDirection="column" alignItems={"center"}>
-              <Typography variant="h1" fontWeight={600} marginTop={4}>
+              <Typography variant="h1" fontWeight={600} marginTop={2}>
                 Roberto
               </Typography>
-              <Typography variant="h3">User Teste</Typography>
+              <Typography variant="h3" fontWeight={400}>
+                User Teste
+              </Typography>
             </Box>
-          </Box>
+          </BoxHeaderContent>
           <Box sx={{ marginTop: 3 }}>
-            <List component="nav">
-              <ListItemButton
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.secondary.main }}>
-                    <Icon>dashboard</Icon>
-                  </ListItemIcon>
-                  <ListItemText
-                    sx={{
-                      width: "130px",
-                      fontWeight: 800,
-                      color: theme.palette.secondary.main,
-                    }}
-                    primary="Dashboard"
-                  />
-                </Box>
-              </ListItemButton>
+            <List
+              component="nav"
+              sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+            >
+              <ButtonLinks
+                width={200}
+                href="/"
+                icon="dashboard"
+                label={"Dashboard"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
+              <ButtonLinks
+                width={200}
+                href="/teste"
+                icon="ordens"
+                label={"Ordens de Serviço"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
 
-              <ListItemButton
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                    <AutoAwesomeMosaicIcon />
-                  </ListItemIcon>
-                  <ListItemText sx={{ width: "130px" }} primary="Ordens de serviço" />
-                </Box>
-              </ListItemButton>
+              <ButtonLinks
+                width={200}
+                href="/teste"
+                icon="services"
+                label={"Serviços"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
 
-              <ListItemButton
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                    <BuildIcon />
-                  </ListItemIcon>
-                  <ListItemText sx={{ width: "130px" }} primary="Serviços" />
-                </Box>
-              </ListItemButton>
+              <ButtonLinks
+                width={200}
+                href="/teste"
+                icon="clients"
+                label={"Clientes"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
 
-              <ListItemButton
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                    <PeopleAltIcon />
-                  </ListItemIcon>
-                  <ListItemText sx={{ width: "130px" }} primary="Clientes" />
-                </Box>
-              </ListItemButton>
-
-              <ListItemButton
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                    <QueryStatsIcon />
-                  </ListItemIcon>
-                  <ListItemText sx={{ width: "130px" }} primary="Finanças" />
-                </Box>
-              </ListItemButton>
+              <ButtonLinks
+                width={200}
+                href="/teste"
+                icon="finance"
+                label={"Finanças"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
             </List>
           </Box>
 
-          <Divider
-            variant="middle"
-            color={LightTheme.palette.secondary.main}
-            sx={{ marginTop: "60%" }}
-          />
-          <List component="nav" sx={{ marginTop: "3%" }}>
-            <ListItemButton
+          <FooterBox matches={matches}>
+            <Divider
+              variant="middle"
+              color={LightTheme.palette.secondary.main}
+              sx={{ height: 2, width: 200 }}
+            />
+            <List
+              component="nav"
               sx={{
                 display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
                 alignItems: "center",
+                flexDirection: "column",
+                marginTop: 5,
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                  <QueryStatsIcon />
-                </ListItemIcon>
-                <ListItemText sx={{ width: "130px" }} primary="Finanças" />
-              </Box>
-            </ListItemButton>
-            <ListItemButton
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <ListItemIcon sx={{ color: theme.palette.primary.main }}>
-                  <QueryStatsIcon />
-                </ListItemIcon>
-                <ListItemText sx={{ width: "130px" }} primary="Finanças" />
-              </Box>
-            </ListItemButton>
-          </List>
+              <ButtonLinks
+                width={100}
+                href="/teste"
+                icon="profile"
+                label={"Perfil"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
+              <ButtonLinks
+                width={100}
+                href="/teste"
+                icon="logout"
+                label={"Sair"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
+            </List>
+          </FooterBox>
         </Box>
       </Drawer>
 
-      <Box height="100vh" marginLeft={theme.spacing(34)}>
+      <Box marginLeft={smDown ? 0 : theme.spacing(34)} padding={theme.spacing(8, 2)}>
         {children}
       </Box>
     </>
