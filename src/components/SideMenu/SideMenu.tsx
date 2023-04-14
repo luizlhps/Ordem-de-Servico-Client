@@ -69,7 +69,6 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
   const matches = useMediaQuery("(max-height:860px)");
 
-  console.log(matches);
   //menu
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleMenuOpen = useCallback(() => {
