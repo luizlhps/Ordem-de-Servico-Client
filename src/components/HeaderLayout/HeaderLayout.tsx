@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { format } from "date-fns";
@@ -12,23 +14,21 @@ interface IpropsLayoutTheme {
 
 export const HeaderLayout: React.FC<IpropsLayoutTheme> = ({ title, subTitle }) => {
   const currentDate = new Date(); // Define o estado para a data atual
+  const [date, setDate] = useState(new Date());
 
   // Formata a data para o formato desejado (exemplo: DD MMM yyyy HH:mm:ss)
   const formattedDate = format(currentDate, "dd MMM yyyy", { locale: ptBR });
-  const formattedclock = format(currentDate, "HH:mm", {});
 
-  const oneMinute = 60000;
+  function refreshClock() {
+    setDate(new Date());
+  }
 
   useEffect(() => {
-    const intevalClock = setInterval(() => {
-      if (typeof window !== "undefined") {
-        setCurrentClock(formattedclock);
-      }
-    }, oneMinute);
-
-    return () => clearInterval(intevalClock);
+    const timerId = setInterval(refreshClock, 1000);
+    return function cleanup() {
+      clearInterval(timerId);
+    };
   }, []);
-  const [currentClock, setCurrentClock] = useState(formattedclock); // Define o estado para a data atual
 
   //Theme
   const theme = useTheme();
@@ -46,7 +46,7 @@ export const HeaderLayout: React.FC<IpropsLayoutTheme> = ({ title, subTitle }) =
         <Box>
           <Typography color={theme.palette.grey[700]}>{formattedDate}</Typography>
           <Typography variant="h1" fontWeight={600}>
-            {currentClock}
+            {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </Typography>
         </Box>
       </Stack>

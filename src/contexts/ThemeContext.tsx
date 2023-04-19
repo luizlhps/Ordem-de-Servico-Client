@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { LightTheme } from "../../public/themes/Light";
-import { ThemeProvider, Box } from "@mui/material";
+import { ThemeProvider, Box, createTheme, CssBaseline } from "@mui/material";
 
 interface IThemeContext {
   themeName: "light";
@@ -17,14 +17,8 @@ export const AppThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => 
   return (
     <ThemeContext.Provider value={{ themeName }}>
       <ThemeProvider theme={LightTheme}>
-        <Box
-          width="100vw"
-          height="100vh"
-          bgcolor={LightTheme.palette.background.default}
-          color={LightTheme.palette.primary.main}
-        >
-          {children}
-        </Box>
+        <CssBaseline />
+        {children}
       </ThemeProvider>
     </ThemeContext.Provider>
   );

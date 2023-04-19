@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 //CSS
 import GlobaStyles from "../styles/global";
-import { AppThemeProvider } from "../contexts";
+import { AppThemeProvider, FormProvider } from "../contexts";
 import styled from "styled-components";
 import LayoutDefault from "@/layout/LayoutDefault";
 
@@ -25,7 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobaStyles></GlobaStyles>
       <AppThemeProvider>
         <LayoutDefault>
-          <Component {...pageProps} />
+          <FormProvider>
+            <Component {...pageProps} />
+          </FormProvider>
         </LayoutDefault>
       </AppThemeProvider>
     </>

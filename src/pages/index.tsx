@@ -1,13 +1,16 @@
-import { DataGridLayout, HeaderLayout } from "@/components";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
-import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
-import { Button, Stack, TextField, useTheme } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
+import { HeaderLayout } from "@/components";
+import { Stack, useTheme } from "@mui/material";
+import styled from "styled-components";
+
+//style custom
+
+const TesteSvg = styled.div`
+  #Base {
+    fill: blue;
+  }
+`;
 
 export default function Home() {
-  //style custom
-
   //Theme
   const theme = useTheme();
 
@@ -20,6 +23,8 @@ export default function Home() {
         alignItems="center"
         spacing={2}
       ></Stack>
+
+      <TesteSvg></TesteSvg>
     </>
   );
 }
