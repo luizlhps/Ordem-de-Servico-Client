@@ -46,3 +46,9 @@ export const TransformForbackEndCpf = (value: string | undefined) => {
   const str = value.replace(/[^\d]/g, "");
   return str;
 };
+
+export const numbersOnly = (value: string | undefined) => {
+  if (!value) return "";
+
+  return value.replace(/[^\d]/g, "").replace(/(\d{8})(\d+?)/, "$1");
+};

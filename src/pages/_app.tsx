@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
 import Typography from "@mui/material/Typography";
-
+import NextNProgress from "nextjs-progressbar";
 //CSS
 import GlobaStyles from "../styles/global";
 import { AppThemeProvider, FormProvider } from "../contexts";
@@ -25,9 +25,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobaStyles></GlobaStyles>
       <AppThemeProvider>
         <LayoutDefault>
-          <FormProvider>
-            <Component {...pageProps} />
-          </FormProvider>
+          <NextNProgress showOnShallow={true} />
+          <Component {...pageProps} />
         </LayoutDefault>
       </AppThemeProvider>
     </>

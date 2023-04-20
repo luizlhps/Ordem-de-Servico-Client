@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+
+//CSS Import MUI AND STYLED COMPONENTS
 import { Container, Divider, Stack, Typography, useTheme, Grid, Button } from "@mui/material";
 import styled from "styled-components";
 import { FormContext } from "@/contexts";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+//ReactHookForm
 import { useForm, Controller } from "react-hook-form";
 import {
   TransformForbackEndCpf,
@@ -23,6 +28,11 @@ const InputCustom = styled.input`
   border-style: none;
   border: 1px #878787 solid;
   margin-top: 4px;
+  font-family: arial;
+
+  @media (max-width: 1110px) {
+    width: 100%;
+  }
 `;
 const InputImaskCustom = styled.div`
   input {
@@ -35,6 +45,10 @@ const InputImaskCustom = styled.div`
     border-style: none;
     border: 1px #878787 solid;
     margin-top: 4px;
+
+    @media (max-width: 1110px) {
+      width: 100%;
+    }
   }
 `;
 const ContainerCustom = styled.div`
@@ -61,8 +75,10 @@ type Inputs = {
   phoneInput: string;
 };
 
+//code
 const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
   const theme = useTheme();
+  const columnMedia = useMediaQuery("(max-width:1110px)");
 
   const { setFormValues } = useContext(FormContext);
   const {
@@ -74,8 +90,9 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (data: Inputs) => {
+    setFormValues(data);
+    nextFormStep();
   };
 
   const phoneValue = watch("phone");
@@ -100,7 +117,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
             />
             <form>
               <Stack
-                direction={{ xs: "column", sm: "row" }}
+                direction={columnMedia ? "column" : "row"}
                 justifyContent={"space-between"}
                 marginTop={4}
               >
@@ -109,10 +126,12 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                     Nome*
                   </Typography>
                   <InputCustom
-                    placeholder="Digite o Nome"
+                    placeholder="Digite o nome"
                     {...register("name", { required: true })}
                   />
-                  {errors.name?.type === "required" && <p>ruim</p>}
+                  {errors.name?.type === "required" && (
+                    <Typography color={"error"}>ruim</Typography>
+                  )}
 
                   <Typography fontWeight={500} marginTop={2}>
                     Celular*
@@ -133,12 +152,23 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                       name="phone"
                       rules={{ required: true, minLength: 11 }}
                     />
-                    {errors.phone?.type === "required" && <p>Digite um numero celular</p>}
-                    {errors.phone?.type === "minLength" && <p>Digite um numero válido</p>}
+                    {errors.phone?.type === "required" && (
+                      <Typography color={"error"}>Digite um numero celular</Typography>
+                    )}
+                    {errors.phone?.type === "minLength" && (
+                      <Typography color={"error"}>Digite um numero válido</Typography>
+                    )}
                   </InputImaskCustom>
 
                   <Typography marginTop={2}>Contato</Typography>
-                  <InputCustom id="outlined-multiline-flexible" placeholder="Digite o Nome" />
+                  <InputCustom
+                    id="outlined-multiline-flexible"
+                    placeholder="Digite o contato"
+                    {...register("contact", { minLength: 6 })}
+                  />
+                  {errors.contact?.type === "minLength" && (
+                    <Typography color={"error"}>Digite um numero válido</Typography>
+                  )}
                 </div>
 
                 <div>
@@ -160,8 +190,12 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                       name="cpf"
                       rules={{ required: true, minLength: 11 }}
                     />
-                    {errors.cpf?.type === "required" && <p>Digite um numero celular</p>}
-                    {errors.cpf?.type === "minLength" && <p>Digite um numero válido</p>}
+                    {errors.cpf?.type === "required" && (
+                      <Typography color={"error"}>Digite um numero celular</Typography>
+                    )}
+                    {errors.cpf?.type === "minLength" && (
+                      <Typography color={"error"}>Digite um numero válido</Typography>
+                    )}
                   </InputImaskCustom>
 
                   <Typography marginTop={2}>Telefone</Typography>
@@ -175,19 +209,29 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
-                          placeholder="Ex: (11) 98765-4321"
+                          placeholder="Ex: (11) 3265-4321"
                         />
                       )}
                       control={control}
                       name="tel"
                       rules={{ required: false, minLength: 10 }}
                     />
-                    {errors.tel?.type === "minLength" && <p>Digite um numero válido</p>}
+                    {errors.tel?.type === "minLength" && (
+                      <Typography color={"error"}>Digite um numero válido</Typography>
+                    )}
                   </InputImaskCustom>
                   <Typography marginTop={2}>Email</Typography>
                   <InputCustom
-                    placeholder="Digite o Nome"
-                    {...register("email", { validate: (value) => validator.isEmail(value) })}
+                    placeholder="Digite o email"
+                    {...register("email", {
+                      validate: (value) => {
+                        if (value === "") {
+                          return true;
+                        } else {
+                          return validator.isEmail(value);
+                        }
+                      },
+                    })}
                   />
                   {errors.email?.type === "validate" && (
                     <Typography color={"error"}>Digite um email válido</Typography>

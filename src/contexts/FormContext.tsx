@@ -16,13 +16,13 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
   const [data, setData] = useState({});
 
   const setFormValues = (values: any) => {
-    console.log(values);
     setData((prevValues) => ({
       ...prevValues,
       ...values,
     }));
   };
 
+  console.log(data);
   return (
     <FormContext.Provider value={{ data, setFormValues }}>{children}</FormContext.Provider>
   );
