@@ -74,10 +74,14 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
   const cepForm = watch("cep");
 
   useEffect(() => {
-    if (data.number !== "") {
-      setValue("number", data.number);
-      setValue("cep", data.cep);
+    if (data.cep !== undefined) {
+      const CepLength = data.cep.split("").length;
+      if (CepLength > 2) {
+        setValue("number", data.number);
+        setValue("cep", data.cep);
+      }
     }
+
     if (numberForm !== "") {
       setValue("number", numbersOnly(numberForm));
       setValue("cep", numbersOnly(cepForm));
@@ -219,8 +223,8 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
             </Button>
             <Button
               onClick={() => {
-                setValue("state", data.state);
                 handleSubmit(onSubmit)();
+                searchCep;
               }}
               size="large"
             >

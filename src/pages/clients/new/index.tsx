@@ -64,33 +64,38 @@ export default function Home() {
   return (
     <>
       <FormProvider>
-        <HeaderLayout subTitle="Digite os dados do novo cliente" title="Novo Cliente" />
-        <Container
-          sx={{
-            paddingTop: 6,
-            paddingBottom: 6,
-            background: theme.palette.background.paper,
-            marginTop: 10,
-            borderRadius: "1rem",
-          }}
-        >
-          {formStep >= 0 && <NameForm formStep={formStep} nextFormStep={nextFormStep} />}
-          {formStep >= 1 && (
-            <AdressForm
-              formStep={formStep}
-              nextFormStep={nextFormStep}
-              prevFormStep={prevFormStep}
-            />
-          )}
-          {formStep >= 2 && (
-            <CreateOs
-              formStep={formStep}
-              nextFormStep={nextFormStep}
-              prevFormStep={prevFormStep}
-            />
-          )}
-          {formStep > 2 && <CompletedForm />}
-        </Container>
+        {formStep >= 0 && formStep <= 2 && (
+          <>
+            <HeaderLayout subTitle="Digite os dados do novo cliente" title="Novo Cliente" />
+            <Container
+              sx={{
+                paddingTop: 6,
+                paddingBottom: 6,
+                background: theme.palette.background.paper,
+                marginTop: 10,
+                borderRadius: "1rem",
+              }}
+            >
+              {formStep >= 0 && <NameForm formStep={formStep} nextFormStep={nextFormStep} />}
+              {formStep >= 1 && (
+                <AdressForm
+                  formStep={formStep}
+                  nextFormStep={nextFormStep}
+                  prevFormStep={prevFormStep}
+                />
+              )}
+              {formStep >= 2 && (
+                <CreateOs
+                  formStep={formStep}
+                  nextFormStep={nextFormStep}
+                  prevFormStep={prevFormStep}
+                />
+              )}
+            </Container>
+          </>
+        )}
+
+        {formStep > 2 && <CompletedForm />}
       </FormProvider>
     </>
   );

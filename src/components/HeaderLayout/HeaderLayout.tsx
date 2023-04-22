@@ -34,7 +34,13 @@ export const HeaderLayout: React.FC<IpropsLayoutTheme> = ({ title, subTitle }) =
   const theme = useTheme();
   return (
     <>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+        color={theme.palette.primary.main}
+      >
         <Box>
           <Typography variant="h1" fontWeight={600}>
             {title}

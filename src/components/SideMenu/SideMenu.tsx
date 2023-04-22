@@ -96,6 +96,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         variant={smDown ? "temporary" : "permanent"}
       >
         <Box
+          flex={1}
           width={theme.spacing(34)}
           display="flex"
           flexDirection="column"
@@ -163,39 +164,38 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
             </List>
           </Box>
-
-          <FooterBox matches={matches}>
-            <Divider
-              variant="middle"
-              color={LightTheme.palette.secondary.main}
-              sx={{ height: 2, width: 200 }}
-            />
-            <List
-              component="nav"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                marginTop: 5,
-              }}
-            >
-              <ButtonLinks
-                width={100}
-                href="/teste"
-                icon="profile"
-                label={"Perfil"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
-              <ButtonLinks
-                width={100}
-                href="/teste"
-                icon="logout"
-                label={"Sair"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
-            </List>
-          </FooterBox>
         </Box>
+        <FooterBox matches={matches} color={theme.palette.primary.main}>
+          <Divider
+            variant="middle"
+            color={LightTheme.palette.secondary.main}
+            sx={{ height: 2, width: 200 }}
+          />
+          <List
+            component="nav"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+              marginTop: 5,
+            }}
+          >
+            <ButtonLinks
+              width={100}
+              href="/teste"
+              icon="profile"
+              label={"Perfil"}
+              onclick={handleMenuOpen}
+            ></ButtonLinks>
+            <ButtonLinks
+              width={100}
+              href="/teste"
+              icon="logout"
+              label={"Sair"}
+              onclick={handleMenuOpen}
+            ></ButtonLinks>
+          </List>
+        </FooterBox>
       </Drawer>
 
       <Box marginLeft={smDown ? 0 : theme.spacing(34)} padding={theme.spacing(8, 2)}>

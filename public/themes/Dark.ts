@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
-export const LightTheme = createTheme({
+export const DarkTheme = createTheme({
   typography: {
     h1: {
       fontSize: "36px", // Tamanho de fonte para h1
@@ -20,19 +20,24 @@ export const LightTheme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(","),
+
+    allVariants: {
+      color: "white",
+    },
   },
 
   palette: {
+    mode: "dark",
     primary: {
-      main: "#1E2737",
+      main: "#FFF",
       light: "#C8C8C8",
     },
     secondary: {
       main: "#06B0AB",
     },
     background: {
-      default: "#F3F5F7",
-      paper: "#fff",
+      default: "#1A2027",
+      paper: "#1E2737",
     },
   },
 });

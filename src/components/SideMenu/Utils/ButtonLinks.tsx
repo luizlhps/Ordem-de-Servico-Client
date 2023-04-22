@@ -10,7 +10,8 @@ import {
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
-import dashboardsvg from "../../../../public/icon/dashboard.svg";
+//svg
+import { DasboardSVG, OrdensSVG } from "../../../../public/icon/SVGS/IconsSVGSideMenu";
 import ordens from "../../../../public/icon/ordens.svg";
 import services from "../../../../public/icon/services.svg";
 import clients from "../../../../public/icon/clients.svg";
@@ -51,6 +52,7 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
           }}
         >
           <Box
+            color={theme.palette.primary.main}
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -58,8 +60,16 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
             }}
           >
             <ListItemIcon sx={{ minWidth: 29 }}>
-              {icon === "dashboard" && <Image src={dashboardsvg} alt="dashboard"></Image>}
-              {icon === "ordens" && <Image src={ordens} alt="dashboard"></Image>}
+              {icon === "dashboard" && (
+                <Box>
+                  <DasboardSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
+              {icon === "ordens" && (
+                <Box>
+                  <OrdensSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
               {icon === "services" && <Image src={services} alt="dashboard"></Image>}
               {icon === "clients" && <Image src={clients} alt="dashboard"></Image>}
               {icon === "finance" && <Image src={finance} alt="dashboard"></Image>}

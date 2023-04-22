@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
-import { Container, Divider, Stack, Typography, useTheme, Grid, Button } from "@mui/material";
+import { Container, Divider, Stack, Typography, useTheme, Box, Button } from "@mui/material";
 import styled from "styled-components";
 import { FormContext } from "@/contexts";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -38,7 +38,6 @@ const InputImaskCustom = styled.div`
   input {
     height: 35px;
     font-size: 16px;
-    color: #1e2737;
     width: 300px;
     border-radius: 0.3rem;
     padding: 4px;
@@ -104,7 +103,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
       {formStep <= 0 && (
         <>
           <ContainerCustom>
-            <Typography variant="h1" fontWeight={500}>
+            <Typography variant="h1" fontWeight={500} color={theme.palette.primary.main}>
               Cadastro
             </Typography>
             <Divider
@@ -121,7 +120,15 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                 justifyContent={"space-between"}
                 marginTop={4}
               >
-                <div>
+                <Box
+                  color={theme.palette.primary.main}
+                  sx={{
+                    input: {
+                      background: theme.palette.background.paper,
+                      color: theme.palette.primary.main,
+                    },
+                  }}
+                >
                   <Typography fontWeight={500} marginTop={2}>
                     Nome*
                   </Typography>
@@ -169,9 +176,17 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   {errors.contact?.type === "minLength" && (
                     <Typography color={"error"}>Digite um numero válido</Typography>
                   )}
-                </div>
+                </Box>
 
-                <div>
+                <Box
+                  color={theme.palette.primary.main}
+                  sx={{
+                    input: {
+                      background: theme.palette.background.paper,
+                      color: theme.palette.primary.main,
+                    },
+                  }}
+                >
                   <Typography marginTop={2}>CPF/CNPJ*</Typography>
                   <InputImaskCustom>
                     <Controller
@@ -236,7 +251,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   {errors.email?.type === "validate" && (
                     <Typography color={"error"}>Digite um email válido</Typography>
                   )}
-                </div>
+                </Box>
               </Stack>
               <Button
                 onClick={() => {

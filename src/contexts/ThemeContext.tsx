@@ -1,9 +1,10 @@
 import React, { createContext, useState } from "react";
 import { LightTheme } from "../../public/themes/Light";
+import { DarkTheme } from "../../public/themes/dark";
 import { ThemeProvider, Box, createTheme, CssBaseline } from "@mui/material";
 
 interface IThemeContext {
-  themeName: "light";
+  themeName: "light" | "dark";
 }
 
 interface ThemeProviderProps {
@@ -13,7 +14,7 @@ interface ThemeProviderProps {
 const ThemeContext = createContext({} as IThemeContext);
 
 export const AppThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [themeName, setThemeName] = useState<"light">("light");
+  const [themeName, setThemeName] = useState<"light" | "dark">("light");
   return (
     <ThemeContext.Provider value={{ themeName }}>
       <ThemeProvider theme={LightTheme}>
