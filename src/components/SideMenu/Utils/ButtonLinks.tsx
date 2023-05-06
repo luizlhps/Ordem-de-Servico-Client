@@ -11,7 +11,14 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
 //svg
-import { DasboardSVG, OrdensSVG } from "../../../../public/icon/SVGS/IconsSVGSideMenu";
+import {
+  ClientsSVG,
+  DasboardSVG,
+  FinanceSVG,
+  OrdensSVG,
+  ProfileSVG,
+  ServicesSVG,
+} from "../../../../public/icon/SVGS/IconsSVG";
 import ordens from "../../../../public/icon/ordens.svg";
 import services from "../../../../public/icon/services.svg";
 import clients from "../../../../public/icon/clients.svg";
@@ -70,10 +77,26 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
                   <OrdensSVG color={theme.palette.primary.main} />
                 </Box>
               )}
-              {icon === "services" && <Image src={services} alt="dashboard"></Image>}
-              {icon === "clients" && <Image src={clients} alt="dashboard"></Image>}
-              {icon === "finance" && <Image src={finance} alt="dashboard"></Image>}
-              {icon === "profile" && <Image src={profile} alt="profile"></Image>}
+              {icon === "services" && (
+                <Box>
+                  <ServicesSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
+              {icon === "clients" && (
+                <Box>
+                  <ClientsSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
+              {icon === "finance" && (
+                <Box>
+                  <FinanceSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
+              {icon === "profile" && (
+                <Box>
+                  <ProfileSVG color={theme.palette.primary.main} />
+                </Box>
+              )}
               {icon === "logout" && <Image src={logout} alt="logout"></Image>}
             </ListItemIcon>
             <ListItemText sx={{}} primary={label} />

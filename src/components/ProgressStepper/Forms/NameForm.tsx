@@ -16,6 +16,11 @@ import {
   normalizeTelPhoneNumber,
 } from "@/utils/Masks";
 import validator from "validator";
+import {
+  MarketSVG,
+  OsProcessSVG,
+  UserProcessSVG,
+} from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
 const InputCustom = styled.input`
@@ -58,7 +63,6 @@ const ContainerCustom = styled.div`
   }
 `;
 
-//Interface
 interface NameFormProps {
   formStep: number;
   nextFormStep: () => void;
@@ -103,7 +107,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
       {formStep <= 0 && (
         <>
           <ContainerCustom>
-            <Typography variant="h1" fontWeight={500} color={theme.palette.primary.main}>
+            <Typography variant="h1" fontWeight={500}>
               Cadastro
             </Typography>
             <Divider
@@ -253,18 +257,47 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   )}
                 </Box>
               </Stack>
-              <Button
-                onClick={() => {
-                  setValue("phone", TransformForbackEndPhoneNumber(phoneValue));
-                  setValue("tel", TransformForbackEndPhoneNumber(telValue));
-                  setValue("cpf", TransformForbackEndCpf(cpf));
-                  handleSubmit(onSubmit)();
-                  console.log("cliquei");
-                }}
-                size="large"
-              >
-                Next
-              </Button>
+              <Stack flexDirection={"row"} justifyContent={"center"} marginTop={8}>
+                <UserProcessSVG color={theme.palette.secondary.main} />
+                <Box
+                  sx={{
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.secondary.main,
+                  }}
+                />
+                <MarketSVG color={theme.palette.primary.light} />
+                <Box
+                  sx={{
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.primary.light,
+                  }}
+                />
+                <OsProcessSVG color={theme.palette.primary.light} />
+              </Stack>
+              <Box justifyContent={"center"} display={"flex"}>
+                <Button
+                  onClick={() => {
+                    setValue("phone", TransformForbackEndPhoneNumber(phoneValue));
+                    setValue("tel", TransformForbackEndPhoneNumber(telValue));
+                    setValue("cpf", TransformForbackEndCpf(cpf));
+                    handleSubmit(onSubmit)();
+                    console.log("cliquei");
+                  }}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                  }}
+                >
+                  Next
+                </Button>
+              </Box>
             </form>
           </ContainerCustom>
         </>

@@ -13,6 +13,11 @@ import {
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { FormContext } from "@/contexts";
+import {
+  MarketSVG,
+  OsProcessSVG,
+  UserProcessSVG,
+} from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
 const InputCustom = styled.input`
@@ -26,6 +31,11 @@ const InputCustom = styled.input`
   border: 1px #878787 solid;
   margin-top: 4px;
   font-family: arial;
+  ::-webkit-calendar-picker-indicator {
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: 5px;
+  }
 
   @media (max-width: 1212px) {
     width: 100%;
@@ -117,6 +127,13 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               }}
             />
             <Grid
+              color={theme.palette.primary.main}
+              sx={{
+                input: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+              }}
               container
               spacing={3}
               marginTop={1}
@@ -175,6 +192,16 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
             </Grid>
 
             <Grid
+              sx={{
+                input: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+                textarea: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+              }}
               container
               spacing={3}
               marginTop={2}
@@ -193,14 +220,53 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               </Grid>
             </Grid>
           </ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"center"}>
-            <Button onClick={prevFormStep} size="large">
-              Prev
-            </Button>
-            <Button size="large" onClick={() => handleSubmit(onSubmit)()}>
-              Criar
-            </Button>
+          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+            <UserProcessSVG color={theme.palette.secondary.main} />
+            <Box
+              sx={{
+                width: 22,
+                margin: "auto 10px",
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.secondary.main,
+              }}
+            />
+            <MarketSVG color={theme.palette.secondary.main} />
+            <Box
+              sx={{
+                width: 22,
+                margin: "auto 10px",
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.secondary.main,
+              }}
+            />
+            <OsProcessSVG color={theme.palette.secondary.main} />
           </Stack>
+          <Box justifyContent={"center"} display={"flex"}>
+            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+              <Button
+                onClick={prevFormStep}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                }}
+              >
+                Prev
+              </Button>
+              <Button
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                }}
+                onClick={() => handleSubmit(onSubmit)()}
+              >
+                Criar
+              </Button>
+            </Stack>
+          </Box>
         </form>
       )}
     </>

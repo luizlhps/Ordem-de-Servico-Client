@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-export const useDebouse = () => {
+export const useDebouse = (delay = 500) => {
   const isFirstTime = useRef(true);
   const DebouseDelay = useRef<NodeJS.Timeout>();
 
@@ -12,7 +12,7 @@ export const useDebouse = () => {
       if (DebouseDelay.current) {
         clearTimeout(DebouseDelay.current);
       }
-      DebouseDelay.current = setTimeout(() => func(), 500);
+      DebouseDelay.current = setTimeout(() => func(), delay);
     }
   }, []);
   return { debouse };

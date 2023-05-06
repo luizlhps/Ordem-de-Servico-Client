@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
 import { FormContext } from "@/contexts";
-import { Button, Divider, Stack, Typography, useTheme } from "@mui/material";
+import { Button, Divider, Stack, Typography, useTheme, Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
 
@@ -11,6 +11,11 @@ import { useDebouse } from "@/hook";
 import { CepSearch } from "@/services/api/SearchCep";
 import { numbersOnly } from "@/utils/Masks";
 import { useForm } from "react-hook-form";
+import {
+  MarketSVG,
+  OsProcessSVG,
+  UserProcessSVG,
+} from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
 const InputCustom = styled.input`
@@ -139,7 +144,15 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
               justifyContent={"space-between"}
               marginTop={4}
             >
-              <div>
+              <Box
+                color={theme.palette.primary.main}
+                sx={{
+                  input: {
+                    background: theme.palette.background.paper,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
                 <Typography fontWeight={500} marginTop={2}>
                   CEP*
                 </Typography>
@@ -184,8 +197,16 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                   {...register("complement")}
                   defaultValue={data.complement}
                 />
-              </div>
-              <div>
+              </Box>
+              <Box
+                color={theme.palette.primary.main}
+                sx={{
+                  input: {
+                    background: theme.palette.background.paper,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
                 <Typography marginTop={2}>Estado*</Typography>
                 <InputCustom
                   placeholder="Digite o Nome"
@@ -214,23 +235,59 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 {errors.number?.type === "required" && (
                   <Typography color={"error"}>Digite o numero</Typography>
                 )}
-              </div>
+              </Box>
             </Stack>
           </ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"center"}>
-            <Button onClick={prevFormStep} size="large">
-              Prev
-            </Button>
-            <Button
-              onClick={() => {
-                handleSubmit(onSubmit)();
-                searchCep;
+          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+            <UserProcessSVG color={theme.palette.secondary.main} />
+            <Box
+              sx={{
+                width: 22,
+                margin: "auto 10px",
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.secondary.main,
               }}
-              size="large"
-            >
-              Next
-            </Button>
+            />
+            <MarketSVG color={theme.palette.secondary.main} />
+            <Box
+              sx={{
+                width: 22,
+                margin: "auto 10px",
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.primary.light,
+              }}
+            />
+            <OsProcessSVG color={theme.palette.primary.light} />
           </Stack>
+          <Box justifyContent={"center"} display={"flex"}>
+            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+              <Button
+                onClick={prevFormStep}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                }}
+              >
+                Prev
+              </Button>
+              <Button
+                onClick={() => {
+                  handleSubmit(onSubmit)();
+                  searchCep;
+                }}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                }}
+              >
+                Next
+              </Button>
+            </Stack>
+          </Box>
         </form>
       )}
     </>

@@ -17,6 +17,7 @@ import styled from "styled-components";
 import party from "../../../../public/icon/party.svg";
 import { HeaderLayout } from "@/components/HeaderLayout/HeaderLayout";
 import { FormContext } from "@/contexts";
+import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 //style custom
 const InputCustom = styled.input`
   height: 35px;
@@ -78,7 +79,7 @@ const CompletedForm: React.FC = () => {
         }}
       >
         <ContainerCustom>
-          <Image priority src={party} alt="atirador de cofeite"></Image>
+          <PartySVG color={theme.palette.secondary.main} />
           <Divider
             sx={{
               width: 39,
@@ -162,7 +163,6 @@ const CompletedForm: React.FC = () => {
               marginTop: 7,
               width: "100%",
               background: theme.palette.secondary.main,
-              color: theme.palette.background.paper,
               ":hover": { backgroundColor: theme.palette.secondary.main },
               borderRadius: "1rem",
             }}
