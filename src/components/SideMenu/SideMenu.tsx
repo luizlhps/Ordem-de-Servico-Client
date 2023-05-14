@@ -1,21 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { LightTheme } from "../../../public/themes/Light";
 import { ButtonLinks } from "./Utils/ButtonLinks";
 
 //Styled Components
 import styled from "styled-components";
 //material UI
-import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  Icon,
-  List,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Divider, Drawer, Icon, List, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 //inteface
 interface SideMenuProps {
@@ -90,11 +79,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           </Button>
         </div>
       </DrawerHeader>
-      <Drawer
-        onClose={handleMenuOpen}
-        open={isOpen}
-        variant={smDown ? "temporary" : "permanent"}
-      >
+      <Drawer onClose={handleMenuOpen} open={isOpen} variant={smDown ? "temporary" : "permanent"}>
         <Box
           flex={1}
           width={theme.spacing(34)}
@@ -120,10 +105,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
             </Box>
           </BoxHeaderContent>
           <Box sx={{ marginTop: 3 }}>
-            <List
-              component="nav"
-              sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-            >
+            <List component="nav" sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
               <ButtonLinks
                 width={200}
                 href="/"
@@ -166,11 +148,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           </Box>
         </Box>
         <FooterBox matches={matches} color={theme.palette.primary.main}>
-          <Divider
-            variant="middle"
-            color={LightTheme.palette.secondary.main}
-            sx={{ height: 2, width: 200 }}
-          />
+          <Divider variant="middle" color={theme.palette.secondary.main} sx={{ height: 2, width: 200 }} />
           <List
             component="nav"
             sx={{
@@ -187,13 +165,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               label={"Perfil"}
               onclick={handleMenuOpen}
             ></ButtonLinks>
-            <ButtonLinks
-              width={100}
-              href="/teste"
-              icon="logout"
-              label={"Sair"}
-              onclick={handleMenuOpen}
-            ></ButtonLinks>
+            <ButtonLinks width={100} href="/teste" icon="logout" label={"Sair"} onclick={handleMenuOpen}></ButtonLinks>
           </List>
         </FooterBox>
       </Drawer>

@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
     
  }
 
+ input:focus{
+   outline: 0;
+ }
+
  `;
 
 export default GlobalStyle;

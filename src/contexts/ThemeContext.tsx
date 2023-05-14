@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { LightTheme } from "../../public/themes/Light";
-import { DarkTheme } from "../../public/themes/dark";
+import { DarkTheme } from "../../public/themes/Dark";
 import { ThemeProvider, Box, createTheme, CssBaseline } from "@mui/material";
 
 interface IThemeContext {
