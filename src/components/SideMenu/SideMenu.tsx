@@ -79,10 +79,15 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           </Button>
         </div>
       </DrawerHeader>
-      <Drawer onClose={handleMenuOpen} open={isOpen} variant={smDown ? "temporary" : "permanent"}>
+      <Drawer
+        onClose={handleMenuOpen}
+        open={isOpen}
+        variant={smDown ? "temporary" : "permanent"}
+        sx={{ "& .MuiDrawer-paper": { backgroundImage: "none" } }}
+      >
         <Box
           flex={1}
-          width={theme.spacing(34)}
+          width={!matches ? theme.spacing(36) : theme.spacing(34)}
           display="flex"
           flexDirection="column"
           alignItems={"center"}
@@ -170,7 +175,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         </FooterBox>
       </Drawer>
 
-      <Box marginLeft={smDown ? 0 : theme.spacing(34)} padding={theme.spacing(8, 2)}>
+      <Box marginLeft={smDown ? 0 : theme.spacing(36)} padding={theme.spacing(8, 4)}>
         {children}
       </Box>
     </>

@@ -8,6 +8,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import validator from "validator";
+import { signIn } from "next-auth/react";
+
+import { useSession } from "next-auth/react";
 
 //style custom
 const InputCustom = styled.input`
@@ -33,9 +36,21 @@ const Login = () => {
   const passwordWatch = watch("password");
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
+  const { data: session } = useSession();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const response = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: true,
+      callbackUrl: "/",
+    }).then((res) => {
+      if (res?.status !== 201) {
+        return res;
+      } else {
+        console.log(res?.error);
+      }
+    });
   };
 
   const handleSelect = (value: any) => {
@@ -100,7 +115,7 @@ const Login = () => {
                   <Typography marginTop={2} fontWeight={600}>
                     Repita a Senha
                   </Typography>
-                  <InputCustom
+                  {/* <InputCustom
                     {...register("passwordConfirmation", {
                       minLength: 6,
                       required: true,
@@ -114,7 +129,7 @@ const Login = () => {
                   )}
                   {errors?.passwordConfirmation?.type === "validate" && (
                     <Typography color="error">Senha não é igual.</Typography>
-                  )}
+                  )} */}
                 </Stack>
                 <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}></Stack>
                 <Button

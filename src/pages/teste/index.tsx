@@ -1,79 +1,98 @@
-import { ButtonLinks } from "@/components/SideMenu/Utils/ButtonLinks";
+import { DataGridLayout, HeaderLayout } from "@/components";
 import { useDebouse } from "@/hook";
-import React, { useCallback, useEffect, useState } from "react";
+import { adminPanel } from "@/services/api/admin";
+import { constumersApi } from "@/services/api/costumersApi";
+import { servicesApi } from "@/services/api/servicesApi";
+import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage";
+import TransitionsModal from "@/components/Modal";
 
-export interface IRegiao {
+export interface IServices {
+  _id: string;
   id: number;
-  sigla: string;
-  nome: string;
-}
-export interface IEstado {
-  id: number;
-  sigla: string;
-  nome: string;
-  regiao?: IRegiao;
+  title: string;
+  description: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const Estados = () => {
   const { debouse } = useDebouse(5000);
-  const [estados, setEstados] = useState<IEstado[]>([]);
-  const [estadoSelecionado, setEstadoSelecionado] = useState<number | undefined>();
+  const [servicesData, setServicesData] = useState<IServices[]>([]);
 
-  const selectAPi = () => {
-    const api = fetch("https://brasilapi.com.br/api/ibge/uf/v1").then((response) =>
-      response.json().then((data) => {
-        return data;
-      })
-    );
-    return api;
-  };
+  //modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalHandleOpen = () => setModalOpen(true);
+  const modalHandleClose = () => setModalOpen(false);
 
-  const handleClick = useCallback(() => {
-    debouse(() => {
-      try {
-        selectAPi().then((data: IEstado[]) => {
-          setEstados(data);
-        });
-      } catch (error) {
-        console.error("Houve um Error:", error);
-      }
+  const theme = useTheme();
+
+  const columns = columnsDataGrid(theme);
+
+  useEffect(() => {
+    servicesApi.getAllServices().then((data) => {
+      setServicesData(data.data);
     });
+    constumersApi.getAllCostumers().then((data) => {
+      console.log(data.data);
+    });
+
+    adminPanel.getAdmin();
   }, []);
 
-  const HandleSelectOnchange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEstadoSelecionado(Number(e.target.value));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (estadoSelecionado !== undefined) {
-      const estado = estados.find((e) => e.id === estadoSelecionado);
-      alert(`Estado selecionado: ${estado?.nome}`);
-    }
-  };
-
-  console.log(estados);
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <select
-          value={estadoSelecionado}
-          onClick={handleClick}
-          onChange={HandleSelectOnchange}
-        >
-          <option value={undefined}>Selecione um estado</option>
+    <>
+      <TransitionsModal
+        setOpen={setModalOpen}
+        open={modalOpen}
+        handleClose={modalHandleClose}
+        handleOpen={modalHandleOpen}
+      />
+      <HeaderLayout title="Serviços" subTitle="Bem-vindo a área de serviços" />
 
-          {estados.map((estado) => (
-            <option key={estado.id} value={estado.id}>
-              {estado.nome}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <TextField
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
+        />
+        <Button size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout rows={servicesData} columns={columns} PageSize={10} />
+
+      <Box>
+        <Typography variant="h1" fontWeight={600} marginTop={6}>
+          Status
+        </Typography>
+      </Box>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <TextField
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
+        />
+        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout rows={servicesData} columns={columns} PageSize={4} />
+    </>
   );
 };
 

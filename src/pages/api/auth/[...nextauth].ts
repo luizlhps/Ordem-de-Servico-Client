@@ -1,13 +1,63 @@
 import NextAuth from "next-auth";
-import GithubProvider from "next-auth/providers/github";
-export const authOptions = {
-  // Configure one or more authentication providers
+import CredentialsProvider from "next-auth/providers/credentials";
+import Cookies from "js-cookie";
+
+export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+    CredentialsProvider({
+      name: "nextAuth",
+      credentials: {
+        email: {},
+        password: {},
+      },
+      async authorize(credentials) {
+        try {
+          const response = await fetch("http://localhost:8000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+          });
+          if (response.status !== 200) throw new Error("Usuario não encontrado.");
+
+          const userData = await response.json();
+
+          const authorization = { id: userData.accessToken };
+
+          console.log(authorization.id);
+
+          if (authorization.id) {
+            console.log("data", userData);
+            return userData;
+          }
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
+      },
     }),
-    // ...add more providers here
   ],
-};
-export default NextAuth(authOptions);
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        console.log(user);
+
+        token.sub = user.accessToken;
+        console.log(token);
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      if (!token.sub) {
+        throw new Error("Sessão inválida.");
+      }
+      return { ...session, accessToken: token.sub };
+    },
+  },
+});

@@ -1,4 +1,5 @@
 import { HeaderLayout } from "@/components";
+import { AdminPanel } from "@/services/api/admin";
 import { Stack, useTheme } from "@mui/material";
 import styled from "styled-components";
 
@@ -17,12 +18,7 @@ export default function Home() {
   return (
     <>
       <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-      ></Stack>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}></Stack>
 
       <TesteSvg></TesteSvg>
     </>

@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 
 //Material Ui
 import { Box } from "@mui/material";
-import {
-  DataGrid,
-  gridPageCountSelector,
-  GridPagination,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
+import { DataGrid, gridPageCountSelector, GridPagination, useGridApiContext, useGridSelector } from "@mui/x-data-grid";
 import MuiPagination from "@mui/material/Pagination";
 import { TablePaginationProps } from "@mui/material/TablePagination";
 
@@ -17,6 +11,7 @@ import { TablePaginationProps } from "@mui/material/TablePagination";
 interface PropsDataGrid {
   rows: any;
   columns: any;
+  PageSize: number;
 }
 
 //Config Pagination
@@ -46,10 +41,11 @@ function Pagination({
 }
 
 //Code
-export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns }) => {
+export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns, PageSize }) => {
   return (
-    <Box sx={{ height: "67vh", width: "100%", marginTop: 3 }}>
+    <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
+        autoHeight={true}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
@@ -61,7 +57,7 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns }) => {
         }}
         columns={columns}
         initialState={{
-          pagination: { paginationModel: { pageSize: 9 } },
+          pagination: { paginationModel: { pageSize: PageSize } },
         }}
         pageSizeOptions={[9]}
       />

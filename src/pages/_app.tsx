@@ -26,8 +26,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <>
         <GlobaStyles />
         <AppThemeProvider>
-          <NextNProgress showOnShallow={true} />
           <SessionProvider session={session}>
+            <NextNProgress showOnShallow={true} />
             <Component {...pageProps} />
           </SessionProvider>
         </AppThemeProvider>
@@ -39,12 +39,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <>
       <GlobaStyles></GlobaStyles>
       <AppThemeProvider>
-        <LayoutDefault>
-          <NextNProgress showOnShallow={true} />
-          <SessionProvider session={session}>
+        <SessionProvider session={session}>
+          <LayoutDefault>
+            <NextNProgress showOnShallow={true} />
             <Component {...pageProps} />
-          </SessionProvider>
-        </LayoutDefault>
+          </LayoutDefault>
+        </SessionProvider>
       </AppThemeProvider>
     </>
   );

@@ -1,4 +1,5 @@
 import { DataGridLayout, HeaderLayout } from "@/components";
+import { constumersApi } from "@/services/api/costumersApi";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
@@ -6,6 +7,10 @@ import { Button, Stack, TextField, useTheme } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+const data = constumersApi.getAllCostumers().then((res) => {
+  console.log(res);
+});
 
 export default function Client() {
   const router = useRouter();
@@ -125,16 +130,11 @@ export default function Client() {
             width: 180,
           }}
         />
-        <Button
-          size="medium"
-          variant="contained"
-          sx={{ borderRadius: 3 }}
-          onClick={handleClickLink}
-        >
+        <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
           Novo
         </Button>
       </Stack>
-      <DataGridLayout rows={rows} columns={columns} />
+      <DataGridLayout rows={rows} columns={columns} PageSize={10} />
     </>
   );
 }

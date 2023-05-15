@@ -19,9 +19,11 @@
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
+    "axios": "^1.4.0",
     "date-fns": "^2.29.3",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "js-cookie": "^3.0.5",
     "next": "13.3.0",
     "next-auth": "^4.22.1",
     "nextjs-progressbar": "^0.0.16",
@@ -35,6 +37,7 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/react-datepicker": "^4.10.0",
     "@types/validator": "^13.7.15"
   }
