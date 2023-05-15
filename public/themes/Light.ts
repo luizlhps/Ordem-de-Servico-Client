@@ -4,6 +4,7 @@ export const LightTheme = createTheme({
   typography: {
     h1: {
       fontSize: "36px", // Tamanho de fonte para h1
+      fontWeight: "600",
     },
     h2: {
       fontSize: "24px", // Tamanho de fonte para h2

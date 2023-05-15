@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { DataGrid, gridPageCountSelector, GridPagination, useGridApiContext, useGridSelector } from "@mui/x-data-grid";
 import MuiPagination from "@mui/material/Pagination";
 import { TablePaginationProps } from "@mui/material/TablePagination";
-
+import LinearProgress from '@mui/material/LinearProgress';
 //interface
 
 interface PropsDataGrid {
@@ -45,6 +45,7 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns, PageSiz
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
+
         autoHeight={true}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
@@ -54,12 +55,17 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns, PageSiz
         rows={rows}
         slots={{
           pagination: CustomPagination,
+          loadingOverlay: LinearProgress,
+
         }}
         columns={columns}
         initialState={{
           pagination: { paginationModel: { pageSize: PageSize } },
+          sorting: {
+            sortModel: [{ field: 'id', sort: 'desc' }],
+          },
         }}
-        pageSizeOptions={[9]}
+        pageSizeOptions={[PageSize]}
       />
     </Box>
   );

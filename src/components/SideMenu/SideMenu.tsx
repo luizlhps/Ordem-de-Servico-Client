@@ -110,7 +110,10 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
             </Box>
           </BoxHeaderContent>
           <Box sx={{ marginTop: 3 }}>
-            <List component="nav" sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+            <List
+              component="nav"
+              sx={{ display: "flex", alignItems: "center", flexDirection: "column", "span": { fontWeight:300} }}
+            >
               <ButtonLinks
                 width={200}
                 href="/"
@@ -153,7 +156,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           </Box>
         </Box>
         <FooterBox matches={matches} color={theme.palette.primary.main}>
-          <Divider variant="middle" color={theme.palette.secondary.main} sx={{ height: 2, width: 200 }} />
+          <Divider variant="middle" color={theme.palette.secondary.main} sx={{ height: 2, width: 200, }} />
           <List
             component="nav"
             sx={{
@@ -161,6 +164,8 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               alignItems: "center",
               flexDirection: "column",
               marginTop: 5,
+              "span": { fontWeight:300}
+
             }}
           >
             <ButtonLinks

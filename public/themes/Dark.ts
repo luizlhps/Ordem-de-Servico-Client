@@ -4,6 +4,7 @@ export const DarkTheme = createTheme({
   typography: {
     h1: {
       fontSize: "36px", // Tamanho de fonte para h1
+      fontWeight: "600",
     },
     h2: {
       fontSize: "24px", // Tamanho de fonte para h2
@@ -11,6 +12,7 @@ export const DarkTheme = createTheme({
     h3: {
       fontSize: "16px", // Tamanho de fonte para h3
     },
+
     fontFamily: [
       "Inter",
       "Poopins",
