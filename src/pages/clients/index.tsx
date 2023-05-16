@@ -8,10 +8,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const data = constumersApi.getAllCostumers().then((res) => {
-  console.log(res);
-});
-
 export default function Client() {
   const router = useRouter();
   //style custom

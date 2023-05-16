@@ -1,12 +1,15 @@
 import { AxiosError } from "axios";
 export const errorInteceptors = (error: AxiosError) => {
-  if (error.message === "Network Error") {
-    return Promise.reject(new Error("erro de conexão"));
+  // Se ocorrer um erro na requisição, entra aqui
+  if (error.status === 404) {
+    // Trata o erro de página não encontrada
+    console.error("Página não encontrada:", error);
+  } else if (error.status === 401) {
+    // Trata o erro de não autorizado
+    console.error("Não autorizado:", error);
+  } else {
+    // Trata qualquer outro erro
+    console.error("Ocorreu um erro na requisição:", error);
   }
-
-  if (error.status === 401) {
-    //
-  }
-
   return Promise.reject(error);
 };

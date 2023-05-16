@@ -2,8 +2,33 @@ import { GridColDef } from "@mui/x-data-grid";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import { IconButton } from "@mui/material";
+import { servicesApi } from "@/services/api/servicesApi";
+import { useEffect } from "react";
 
-export const columnsDataGrid = (theme: any) => {
+export const columnsDataGrid = (
+  theme: any,
+  fetchApi: any,
+  modalUpdateHandleOpen: () => void,
+  setSelectedItemUpdate: any
+) => {
+  const handleRemove = async (id: string) => {
+    servicesApi
+      .deleteServices(id)
+      .then((res) => {
+        fetchApi(id); //Chama a api
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleUpdate = async (data: any) => {
+    /* await servicesApi.updateServices(data); */
+    modalUpdateHandleOpen();
+    setSelectedItemUpdate(data);
+  };
+
   const columnConfig: GridColDef[] = [
     { field: "id", headerName: "ID", width: 60 },
     {
@@ -56,9 +81,25 @@ export const columnsDataGrid = (theme: any) => {
               verticalAlign: "right",
             }}
           >
-            <RemoveRedEyeOutlinedIcon />
-            <ModeOutlinedIcon />
-            <CloseRoundedIcon />
+            <IconButton
+              onClick={() => {
+                handleUpdate(params.row);
+              }}
+            >
+              <RemoveRedEyeOutlinedIcon />
+            </IconButton>
+
+            <IconButton
+              onClick={() => {
+                handleUpdate(params.row);
+              }}
+            >
+              <ModeOutlinedIcon />
+            </IconButton>
+
+            <IconButton onClick={() => handleRemove(params.row._id)}>
+              <CloseRoundedIcon />
+            </IconButton>
           </div>
         );
       },
