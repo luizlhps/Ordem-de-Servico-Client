@@ -10,7 +10,7 @@ import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/materi
 import { useForm } from "react-hook-form";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { servicesApi } from "@/services/api/servicesApi";
-import { IServices } from "@/pages/services";
+import { IServices } from "@/components/ServicesPage/Services";
 import { format } from "date-fns";
 
 interface IModal {

@@ -23,6 +23,9 @@ input::-webkit-inner-spin-button {
  input:focus{
    outline: 0;
  }
+ textarea:focus{
+   outline: 0;
+ }
 
  `;
 
