@@ -5,12 +5,11 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import * as Styled from "./styles";
+import * as Styled from "../styles";
 import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { servicesApi } from "@/services/api/servicesApi";
-import { IServices } from "@/components/ServicesPage/Services";
 import { format } from "date-fns";
 
 interface IModal {
@@ -28,7 +27,6 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
 
-  const batata = "frango";
   //form
   const {
     register,
@@ -39,8 +37,6 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
   } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     servicesApi
       .createServices(data)
       .then((res) => {

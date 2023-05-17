@@ -1,47 +1,38 @@
-import { CustomPagination, DataGridLayout, HeaderLayout } from "@/components";
-import { useDebouse } from "@/hook";
-
-import { servicesApi } from "@/services/api/servicesApi";
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
-import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage/columnConfig";
-import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
-import UpdateServiceModal from "../Modal/servicesPage/Service/UpdateServiceModal";
+import { DataGridLayout, HeaderLayout } from "@/components";
+import { useDebouse } from "@/hook";
 
-export interface IService {
-  deleted: boolean;
-  _id: string;
+import { statusApi } from "@/services/api/statusApi";
+import CreateStatusModal from "../Modal/servicesPage/Status/CreateStatusModal";
+import UpdateStatusModal from "../Modal/servicesPage/Status/UpdateStatusModal";
+import { statusColumnsDataGrid } from "../DataGrid/utils/servicePage/statusColumnConfig";
+
+export interface IStatus {
+  _id?: string;
   id: number;
   title: string;
   description: string;
   amount: number;
   createdAt: string;
-  updatedAt: string;
-}
-export interface IData {
-  Total: number;
-  Page: number;
-  limit: number;
-  service: IService[] | [];
+  updatedAt?: string;
 }
 
-const Services = () => {
+const Status = () => {
   const theme = useTheme();
 
-  const { debouse } = useDebouse(200);
+  const { debouse } = useDebouse(1000);
   const [searchField, setSearchField] = useState("");
-  const [servicesData, setServicesData] = useState<IData>({ Total: 0, Page: 0, limit: 0, service: [] });
-  const [newItem, setNewService] = useState(false);
+  const [StatusData, setStatusData] = useState<IStatus[]>([]);
+  const [newItem, setNewstatus] = useState(false);
   const [newUpdateItem, setNewUpdateService] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  console.log(currentPage);
 
   //modal Create
   const [modalOpen, setModalOpen] = useState(false);
   const modalHandleOpen = () => setModalOpen(true);
   const modalHandleClose = () => {
     setModalOpen(false);
-    setNewService(false);
+    setNewstatus(false);
   };
 
   //modal Update
@@ -59,52 +50,44 @@ const Services = () => {
     return searchField;
   }, [searchField]);
 
-  const fetchApi = (search = "", page = 1, limit = 5) => {
+  const fetchApi = (search = "", limit?: number, page?: number) => {
     debouse(() => {
-      let currentPage = page;
-      if (page === 0) {
-        setCurrentPage(currentPage + 1);
-      }
-      if (search !== "") {
-        currentPage = 1;
-        console.log("aqui estás", currentPage);
-      }
-
-      servicesApi.getAllServices(search, currentPage, limit).then((data: { data: IData }) => {
-        console.log(data.data.service);
-        setServicesData(data.data);
+      statusApi.getAllStatus(search).then((data) => {
+        setStatusData(data.data);
       });
     });
   };
 
-  const columns = columnsDataGrid(theme, fetchApi, modalUpdateHandleOpen, setSelectedItemUpdate);
+  const columns = statusColumnsDataGrid(theme, fetchApi, modalUpdateHandleOpen, setSelectedItemUpdate);
 
   useEffect(() => {
-    fetchApi(search, currentPage + 1);
-  }, [search, currentPage]);
+    fetchApi(search);
+  }, [search]);
 
   return (
     <>
-      <CreateServiceModal
+      <CreateStatusModal
         fetchApi={fetchApi}
         newItem={newItem}
-        setNewService={setNewService}
+        setNewstatus={setNewstatus}
         setOpen={setModalOpen}
         open={modalOpen}
         handleClose={modalHandleClose}
         handleOpen={modalHandleOpen}
       >
-        <UpdateServiceModal
+        <UpdateStatusModal
           selectedItemUpdate={selectedItemUpdate}
           fetchApi={fetchApi}
           newItem={newUpdateItem}
-          setNewService={setNewUpdateService}
+          setNewService={setNewstatus}
           setOpen={setModaUpdatelOpen}
           open={modalUpdateOpen}
           handleClose={modalHandleUpdateClose}
           handleOpen={modalUpdateHandleOpen}
         >
-          <HeaderLayout title="Serviços" subTitle="Bem-vindo a área de serviços" />
+          <Typography variant="h1" marginTop={7}>
+            Serviços
+          </Typography>
 
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <TextField
@@ -124,18 +107,11 @@ const Services = () => {
               Novo
             </Button>
           </Stack>
-          <DataGridLayout
-            rows={servicesData.service}
-            columns={columns}
-            PageSize={10}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalCount={servicesData.Total}
-          />
-        </UpdateServiceModal>
-      </CreateServiceModal>
+          {/*     <DataGridLayout rows={StatusData} columns={columns} PageSize={10} /> */}
+        </UpdateStatusModal>
+      </CreateStatusModal>
     </>
   );
 };
 
-export default Services;
+export default Status;

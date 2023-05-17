@@ -1,54 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 //Material Ui
 import { Box } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
-  GridPagination,
+  gridPageSelector,
   useGridApiContext,
   useGridSelector,
-  nlNL,
 } from "@mui/x-data-grid";
-import MuiPagination from "@mui/material/Pagination";
-import { TablePaginationProps } from "@mui/material/TablePagination";
 import LinearProgress from "@mui/material/LinearProgress";
+import Pagination from "@mui/material/Pagination";
 //interface
 
 interface PropsDataGrid {
   rows: any;
   columns: any;
   PageSize: number;
+  totalCount: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  currentPage: number;
+}
+interface PropsCustomPagination {
+  PageSize: number;
+  totalCount: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  currentPage: number;
 }
 
 //Config Pagination
-function CustomPagination(props: any) {
-  return <GridPagination ActionsComponent={Pagination} {...props} />;
-}
-
-function Pagination({
-  page,
-  onPageChange,
-  className,
-}: Pick<TablePaginationProps, "page" | "onPageChange" | "className">) {
+export function CustomPagination({ totalCount, PageSize, currentPage, setCurrentPage }: PropsCustomPagination) {
   const apiRef = useGridApiContext();
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  const pageTotalCount = totalCount / PageSize;
 
   return (
-    <MuiPagination
+    <Pagination
       color="primary"
-      className={className}
-      count={pageCount}
-      page={page + 1}
-      onChange={(event, newPage) => {
-        onPageChange(event as any, newPage - 1);
+      count={Math.ceil(pageTotalCount)}
+      page={currentPage}
+      onChange={(event, value) => {
+        event as any, setCurrentPage(value - 1);
       }}
     />
   );
 }
 
 //Code
-export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns, PageSize }) => {
+export const DataGridLayout: React.FC<PropsDataGrid> = ({
+  rows,
+  columns,
+  PageSize,
+  totalCount,
+  setCurrentPage,
+  currentPage,
+}) => {
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
@@ -59,9 +64,16 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({ rows, columns, PageSiz
             outline: "none !important",
           },
         }}
-        rows={rows}
+        rows={rows ? rows : []}
         slots={{
-          pagination: CustomPagination,
+          pagination: () => (
+            <CustomPagination
+              totalCount={totalCount}
+              PageSize={PageSize}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          ),
           loadingOverlay: LinearProgress,
         }}
         columns={columns}

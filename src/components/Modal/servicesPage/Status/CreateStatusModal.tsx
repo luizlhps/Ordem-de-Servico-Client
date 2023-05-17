@@ -1,17 +1,16 @@
-import react, { useEffect, useState } from "react";
+import react, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import * as Styled from "./styles";
+import * as Styled from "../styles";
 import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { servicesApi } from "@/services/api/servicesApi";
-import { IServices } from "@/components/ServicesPage/Services";
 import { format } from "date-fns";
+import { statusApi } from "@/services/api/statusApi";
 
 interface IModal {
   open: boolean;
@@ -19,21 +18,12 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  setNewService: any;
+  setNewstatus: any;
   newItem: any;
-  selectedItemUpdate: any;
-  children: react.ReactNode;
+  children: React.ReactNode;
 }
 
-export default function UpdateServiceModal({
-  open,
-  handleClose,
-  setNewService,
-  newItem,
-  fetchApi,
-  selectedItemUpdate,
-  children,
-}: IModal) {
+export default function CreateStatusModal({ open, handleClose, setNewstatus, newItem, fetchApi, children }: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
 
@@ -46,25 +36,19 @@ export default function UpdateServiceModal({
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (selectedItemUpdate.title && selectedItemUpdate.title !== undefined) setValue("title", selectedItemUpdate.title);
-    if (selectedItemUpdate.description !== undefined) setValue("description", selectedItemUpdate.description);
-    if (selectedItemUpdate.amount !== undefined) setValue("amount", selectedItemUpdate.amount);
-  }, [selectedItemUpdate.title]);
-
   const onSubmit = (data: any) => {
     console.log(data);
 
-    servicesApi
-      .updateServices(data, selectedItemUpdate._id)
+    statusApi
+      .createStatus(data)
       .then((res) => {
-        fetchApi();
-
         setError(false);
-        setNewService(true);
-        setValue("title", data.title);
-        setValue("description", data.description);
-        setValue("amount", data.amount);
+        setNewstatus(true);
+        setValue("title", "");
+        setValue("description", "");
+        setValue("amount", "");
+
+        fetchApi();
       })
       .catch((error) => {
         setError(true);
@@ -109,7 +93,7 @@ export default function UpdateServiceModal({
             </Box>
             <Box marginTop={4} width={"80%"}>
               <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
-                Atualizar Serviço
+                Novo Serviço
               </Typography>
 
               <Stack marginTop={4}>
@@ -118,7 +102,7 @@ export default function UpdateServiceModal({
                   placeholder="Digite seu email"
                   {...register("title", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
-                {errors.title?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
+                {errors.title?.type === "required" && <Typography color={"error"}>Digite o `título`.</Typography>}
                 {errors.title?.type === "minLength" && (
                   <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
                 )}
