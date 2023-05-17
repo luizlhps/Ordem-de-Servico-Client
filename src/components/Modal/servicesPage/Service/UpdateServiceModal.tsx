@@ -9,7 +9,6 @@ import * as Styled from "../styles";
 import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { servicesApi } from "@/services/api/servicesApi";
-import { IServices } from "@/components/ServicesPage/Services";
 import { format } from "date-fns";
 
 interface IModal {
@@ -52,8 +51,6 @@ export default function UpdateServiceModal({
   }, [selectedItemUpdate.title]);
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     servicesApi
       .updateServices(data, selectedItemUpdate._id)
       .then((res) => {

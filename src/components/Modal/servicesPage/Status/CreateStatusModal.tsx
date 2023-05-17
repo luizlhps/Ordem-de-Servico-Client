@@ -37,8 +37,6 @@ export default function CreateStatusModal({ open, handleClose, setNewstatus, new
   } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     statusApi
       .createStatus(data)
       .then((res) => {

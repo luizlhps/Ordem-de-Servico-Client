@@ -28,13 +28,16 @@ export interface IData {
 const Services = () => {
   const theme = useTheme();
 
-  const { debouse } = useDebouse(200);
+  const { debouse } = useDebouse(300);
   const [searchField, setSearchField] = useState("");
   const [servicesData, setServicesData] = useState<IData>({ Total: 0, Page: 0, limit: 0, service: [] });
   const [newItem, setNewService] = useState(false);
   const [newUpdateItem, setNewUpdateService] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(false);
   console.log(currentPage);
+
+  const limitPorPage = 10;
 
   //modal Create
   const [modalOpen, setModalOpen] = useState(false);
@@ -55,11 +58,11 @@ const Services = () => {
 
   //inputSearch
   const search = useMemo(() => {
-    console.log(searchField);
     return searchField;
   }, [searchField]);
 
   const fetchApi = (search = "", page = 1, limit = 5) => {
+    setLoading(true);
     debouse(() => {
       let currentPage = page;
       if (page === 0) {
@@ -67,20 +70,25 @@ const Services = () => {
       }
       if (search !== "") {
         currentPage = 1;
-        console.log("aqui estás", currentPage);
       }
 
-      servicesApi.getAllServices(search, currentPage, limit).then((data: { data: IData }) => {
-        console.log(data.data.service);
-        setServicesData(data.data);
-      });
+      servicesApi
+        .getAllServices(search, currentPage, limit)
+        .then((data: { data: IData }) => {
+          setServicesData(data.data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+          setServicesData({ Total: 0, Page: 0, limit: 0, service: [] });
+        });
+      setLoading(false);
     });
   };
 
   const columns = columnsDataGrid(theme, fetchApi, modalUpdateHandleOpen, setSelectedItemUpdate);
 
   useEffect(() => {
-    fetchApi(search, currentPage + 1);
+    fetchApi(search, currentPage + 1, limitPorPage);
   }, [search, currentPage]);
 
   return (
@@ -125,9 +133,11 @@ const Services = () => {
             </Button>
           </Stack>
           <DataGridLayout
+            loading={loading}
             rows={servicesData.service}
             columns={columns}
-            PageSize={10}
+            PageSize={limitPorPage}
+            page={servicesData.Page}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalCount={servicesData.Total}

@@ -16,11 +16,7 @@ import {
   normalizeTelPhoneNumber,
 } from "@/utils/Masks";
 import validator from "validator";
-import {
-  MarketSVG,
-  OsProcessSVG,
-  UserProcessSVG,
-} from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
 const InputCustom = styled.input`
@@ -119,11 +115,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
               }}
             />
             <form>
-              <Stack
-                direction={columnMedia ? "column" : "row"}
-                justifyContent={"space-between"}
-                marginTop={4}
-              >
+              <Stack direction={columnMedia ? "column" : "row"} justifyContent={"space-between"} marginTop={4}>
                 <Box
                   color={theme.palette.primary.main}
                   sx={{
@@ -136,13 +128,8 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   <Typography fontWeight={500} marginTop={2}>
                     Nome*
                   </Typography>
-                  <InputCustom
-                    placeholder="Digite o nome"
-                    {...register("name", { required: true })}
-                  />
-                  {errors.name?.type === "required" && (
-                    <Typography color={"error"}>ruim</Typography>
-                  )}
+                  <InputCustom placeholder="Digite o nome" {...register("name", { required: true })} />
+                  {errors.name?.type === "required" && <Typography color={"error"}>ruim</Typography>}
 
                   <Typography fontWeight={500} marginTop={2}>
                     Celular*
@@ -252,9 +239,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                       },
                     })}
                   />
-                  {errors.email?.type === "validate" && (
-                    <Typography color={"error"}>Digite um email válido</Typography>
-                  )}
+                  {errors.email?.type === "validate" && <Typography color={"error"}>Digite um email válido</Typography>}
                 </Box>
               </Stack>
               <Stack flexDirection={"row"} justifyContent={"center"} marginTop={8}>
@@ -287,7 +272,6 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                     setValue("tel", TransformForbackEndPhoneNumber(telValue));
                     setValue("cpf", TransformForbackEndCpf(cpf));
                     handleSubmit(onSubmit)();
-                    console.log("cliquei");
                   }}
                   size="large"
                   sx={{

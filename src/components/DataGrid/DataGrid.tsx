@@ -20,16 +20,19 @@ interface PropsDataGrid {
   totalCount: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
+  page: number;
+  loading: boolean;
 }
 interface PropsCustomPagination {
   PageSize: number;
   totalCount: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
+  page: number;
 }
 
 //Config Pagination
-export function CustomPagination({ totalCount, PageSize, currentPage, setCurrentPage }: PropsCustomPagination) {
+export function CustomPagination({ totalCount, PageSize, currentPage, setCurrentPage, page }: PropsCustomPagination) {
   const apiRef = useGridApiContext();
   const pageTotalCount = totalCount / PageSize;
 
@@ -37,7 +40,7 @@ export function CustomPagination({ totalCount, PageSize, currentPage, setCurrent
     <Pagination
       color="primary"
       count={Math.ceil(pageTotalCount)}
-      page={currentPage}
+      page={page !== currentPage + 1 ? page : currentPage + 1}
       onChange={(event, value) => {
         event as any, setCurrentPage(value - 1);
       }}
@@ -45,19 +48,26 @@ export function CustomPagination({ totalCount, PageSize, currentPage, setCurrent
   );
 }
 
+function CustomLoadingOverlay() {
+  return <LinearProgress color="secondary" />;
+}
+
 //Code
 export const DataGridLayout: React.FC<PropsDataGrid> = ({
   rows,
   columns,
   PageSize,
+  page,
   totalCount,
   setCurrentPage,
   currentPage,
+  loading,
 }) => {
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
         disableRowSelectionOnClick
+        loading={loading}
         autoHeight={true}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
@@ -72,9 +82,10 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
               PageSize={PageSize}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              page={page}
             />
           ),
-          loadingOverlay: LinearProgress,
+          loadingOverlay: CustomLoadingOverlay,
         }}
         columns={columns}
         initialState={{

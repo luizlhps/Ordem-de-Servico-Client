@@ -46,7 +46,6 @@ const Status = () => {
 
   //inputSearch
   const search = useMemo(() => {
-    console.log(searchField);
     return searchField;
   }, [searchField]);
 

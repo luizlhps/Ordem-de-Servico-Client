@@ -51,8 +51,6 @@ export default function UpdateStatusModal({
   }, [selectedItemUpdate.title]);
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     statusApi
       .updateStatus(data, selectedItemUpdate._id)
       .then((res) => {
