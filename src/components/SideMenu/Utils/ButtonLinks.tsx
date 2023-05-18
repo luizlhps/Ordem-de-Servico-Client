@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  ListItemButton,
-  Box,
-  Icon,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-} from "@mui/material";
+import { ListItemButton, Box, ListItemIcon, ListItemText, useTheme } from "@mui/material";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
@@ -19,11 +12,6 @@ import {
   ProfileSVG,
   ServicesSVG,
 } from "../../../../public/icon/SVGS/IconsSVG";
-import ordens from "../../../../public/icon/ordens.svg";
-import services from "../../../../public/icon/services.svg";
-import clients from "../../../../public/icon/clients.svg";
-import finance from "../../../../public/icon/finance.svg";
-import profile from "../../../../public/icon/profile.svg";
 import logout from "../../../../public/icon/logout.svg";
 import Image from "next/image";
 

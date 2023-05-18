@@ -8,6 +8,7 @@ import {
   gridPageSelector,
   useGridApiContext,
   useGridSelector,
+  useGridApiRef,
 } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import Pagination from "@mui/material/Pagination";
@@ -38,6 +39,7 @@ export function CustomPagination({ totalCount, PageSize, currentPage, setCurrent
 
   return (
     <Pagination
+      disabled={Math.ceil(pageTotalCount) === 1 ? true : false}
       color="primary"
       count={Math.ceil(pageTotalCount)}
       page={page !== currentPage + 1 ? page : currentPage + 1}
@@ -63,9 +65,11 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
   currentPage,
   loading,
 }) => {
+  const apiRef = useGridApiRef();
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
+        apiRef={apiRef}
         disableRowSelectionOnClick
         loading={loading}
         autoHeight={true}

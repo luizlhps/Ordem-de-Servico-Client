@@ -1,5 +1,5 @@
 import { HeaderLayout } from "@/components";
-import { AdminPanel } from "@/services/api/admin";
+
 import { Stack, useTheme } from "@mui/material";
 import styled from "styled-components";
 

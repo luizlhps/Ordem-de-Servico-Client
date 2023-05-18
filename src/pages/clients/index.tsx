@@ -130,7 +130,7 @@ export default function Client() {
           Novo
         </Button>
       </Stack>
-      <DataGridLayout rows={rows} columns={columns} PageSize={10} />
+      {/* <DataGridLayout rows={rows} columns={columns} PageSize={10} /> */}
     </>
   );
 }

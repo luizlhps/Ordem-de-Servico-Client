@@ -8,6 +8,7 @@ export interface IService {
 class Services {
   async getAllServices(filter = "", page = 1, limit = 10) {
     const res = await Api.get(`services/?filter=${filter}&page=${page}&limit=${limit}`);
+    console.log(`services/?filter=${filter}&page=${page}&limit=${limit}`);
     return res;
   }
   async createServices(data: IService) {

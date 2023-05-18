@@ -10,17 +10,12 @@ export const columnsDataGrid = (
   theme: any,
   fetchApi: any,
   modalUpdateHandleOpen: () => void,
-  setSelectedItemUpdate: any
+  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
+  modalDeleteHandleOpen: () => void
 ) => {
-  const handleRemove = async (id: string) => {
-    servicesApi
-      .deleteServices(id)
-      .then((res) => {
-        fetchApi(id); //Chama a api
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleRemove = async (data: any) => {
+    modalDeleteHandleOpen();
+    setSelectedItemUpdate(data);
   };
 
   const handleUpdate = async (data: any) => {
@@ -35,6 +30,7 @@ export const columnsDataGrid = (
       field: "title",
       headerName: "Título",
       flex: 1,
+      minWidth: 5,
       headerAlign: "left",
       align: "left",
     },
@@ -42,6 +38,7 @@ export const columnsDataGrid = (
       field: "description",
       headerName: "Descrição",
       flex: 2,
+      minWidth: 200,
       headerAlign: "left",
       align: "left",
     },
@@ -50,6 +47,7 @@ export const columnsDataGrid = (
       headerName: "Valor",
       type: "number",
       flex: 0,
+      minWidth: 22,
       description: "Contato",
       headerAlign: "left",
       align: "left",
@@ -59,6 +57,7 @@ export const columnsDataGrid = (
       headerName: "Criado em",
       type: "number",
       flex: 1,
+      minWidth: 200,
       description: "Endereço",
       headerAlign: "left",
       align: "left",
@@ -69,6 +68,7 @@ export const columnsDataGrid = (
       headerName: "Status",
       description: "Status",
       flex: 1,
+      minWidth: 150,
       headerAlign: "right",
       align: "right",
       renderCell: (params) => {
@@ -97,7 +97,7 @@ export const columnsDataGrid = (
               <ModeOutlinedIcon />
             </IconButton>
 
-            <IconButton onClick={() => handleRemove(params.row._id)}>
+            <IconButton onClick={() => handleRemove(params.row)}>
               <CloseRoundedIcon />
             </IconButton>
           </div>
