@@ -48,7 +48,13 @@ export default function UpdateServiceModal({
     if (selectedItemUpdate.title && selectedItemUpdate.title !== undefined) setValue("title", selectedItemUpdate.title);
     if (selectedItemUpdate.description !== undefined) setValue("description", selectedItemUpdate.description);
     if (selectedItemUpdate.amount !== undefined) setValue("amount", selectedItemUpdate.amount);
-  }, [selectedItemUpdate.title]);
+  }, [selectedItemUpdate.description, selectedItemUpdate.title]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValue("title", selectedItemUpdate.title);
+    }, 200);
+  }, [handleClose]);
 
   const onSubmit = (data: any) => {
     servicesApi
@@ -66,10 +72,7 @@ export default function UpdateServiceModal({
         setError(true);
         if (error.response) {
           console.log(error.response.data); // erro do backend
-
-          if (error.response.data === "Título é necessario") return setErrorName(error.response.data);
-          if (error.response.data === "Descrição é necessaria") return setErrorName(error.response.data);
-          if (error.response.data === "Valor é necessario") return setErrorName(error.response.data);
+          setErrorName(error.response.data.message);
         } else {
           console.log(error.message); //erro do Axios
         }
@@ -155,7 +158,7 @@ export default function UpdateServiceModal({
                   Criar
                 </Button>
 
-                {newItem && <Typography textAlign={"center"}>Item criado om sucesso!!</Typography>}
+                {newItem && <Typography textAlign={"center"}>Item atualizado com sucesso!!</Typography>}
                 {error && (
                   <Typography color="error" textAlign={"center"}>
                     Ocorreu um Problema{`: ${errorName}`}

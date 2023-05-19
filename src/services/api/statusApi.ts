@@ -7,6 +7,7 @@ export interface IStatus {
 class Status {
   async getAllStatus(filter = "", page = 1, limit = 5) {
     const res = Api.get(`status/?filter=${filter}&page=${page}&limit=${limit}`);
+    console.log(`status/?filter=${filter}&page=${page}&limit=${limit}`);
     return res;
   }
   async createStatus(data: IStatus) {
@@ -16,13 +17,13 @@ class Status {
     return res;
   }
   async updateStatus(data: IStatus, _id: string) {
-    const res = Api.post(`status/${_id}`, {
+    const res = Api.put(`status/${_id}`, {
       name: data.name,
     });
     return res;
   }
   async deleteStatus(_id: string) {
-    const res = Api.post(`status/${_id}`);
+    const res = Api.delete(`status/${_id}`);
     return res;
   }
 }

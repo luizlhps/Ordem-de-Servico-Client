@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage/columnConfig";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
 import UpdateServiceModal from "../Modal/servicesPage/Service/UpdateServiceModal";
-import DeleteModal from "../Modal/servicesPage/Service/deleteServiceModal";
+import DeleteModal from "../Modal/servicesPage/deleteModal";
 
 export interface IService {
   deleted: boolean;
@@ -57,6 +57,7 @@ const Services = () => {
 
   //Modal Delete
   const [modalOpendelete, setModalOpendelete] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
   const modalDeleteHandleOpen = () => setModalOpendelete(true);
   const modalDeleteHandleClose = () => {
     setModalOpendelete(false);
@@ -79,7 +80,6 @@ const Services = () => {
       if (page === 0 && currentPage) {
         setCurrentPage(currentPage + 1);
       }
-      console.log("aqui n passa");
       servicesApi
         .getAllServices(search, currentPage, limit)
         .then((data: { data: IData }) => {
@@ -94,15 +94,17 @@ const Services = () => {
   };
 
   //Delete Api
-  const HandleDeleted = useCallback(async (id: string) => {
+  const HandleDeleted = async (id: string) => {
     try {
       await servicesApi.deleteServices(id);
       fetchApi();
       modalDeleteHandleClose();
+      setDeleteError(false);
     } catch (error) {
+      setDeleteError(true);
       console.log(error);
     }
-  }, []);
+  };
 
   //Config Grid
   const limitPorPage = 10;
@@ -126,6 +128,7 @@ const Services = () => {
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
         selectedItemUpdate={selectedItemUpdate}
+        deleteError={deleteError}
       >
         <CreateServiceModal
           fetchApi={fetchApi}

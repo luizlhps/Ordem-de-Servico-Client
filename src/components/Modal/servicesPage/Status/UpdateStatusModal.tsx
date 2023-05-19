@@ -17,7 +17,7 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  setNewService: any;
+  setNewItem: any;
   newItem: any;
   selectedItemUpdate: any;
   children: react.ReactNode;
@@ -26,7 +26,7 @@ interface IModal {
 export default function UpdateStatusModal({
   open,
   handleClose,
-  setNewService,
+  setNewItem,
   newItem,
   fetchApi,
   selectedItemUpdate,
@@ -45,31 +45,30 @@ export default function UpdateStatusModal({
   } = useForm();
 
   useEffect(() => {
-    if (selectedItemUpdate.title && selectedItemUpdate.title !== undefined) setValue("title", selectedItemUpdate.title);
-    if (selectedItemUpdate.description !== undefined) setValue("description", selectedItemUpdate.description);
-    if (selectedItemUpdate.amount !== undefined) setValue("amount", selectedItemUpdate.amount);
-  }, [selectedItemUpdate.title]);
+    if (selectedItemUpdate.name && selectedItemUpdate.name !== undefined) setValue("name", selectedItemUpdate.name);
+  }, [selectedItemUpdate.name]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValue("name", selectedItemUpdate.name);
+    }, 200);
+  }, [handleClose]);
 
   const onSubmit = (data: any) => {
     statusApi
       .updateStatus(data, selectedItemUpdate._id)
       .then((res) => {
         fetchApi();
+        console.log("data:", data);
 
         setError(false);
-        setNewService(true);
-        setValue("title", data.title);
-        setValue("description", data.description);
-        setValue("amount", data.amount);
+        setNewItem(true);
+        setValue("name", data.name);
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
           console.log(error.response.data); // erro do backend
-
-          if (error.response.data === "Título é necessario") return setErrorName(error.response.data);
-          if (error.response.data === "Descrição é necessaria") return setErrorName(error.response.data);
-          if (error.response.data === "Valor é necessario") return setErrorName(error.response.data);
         } else {
           console.log(error.message); //erro do Axios
         }
@@ -83,7 +82,7 @@ export default function UpdateStatusModal({
   return (
     <div>
       <Modal
-        aria-labelledby="transition-modal-title"
+        aria-labelledby="transition-modal-name"
         aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
@@ -98,52 +97,31 @@ export default function UpdateStatusModal({
         <Fade in={open}>
           <Box sx={Styled.style}>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
-              <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
+              <Typography id="transition-modal-name">Entrada {formattedDate}</Typography>
               <IconButton onClick={handleClose}>
                 <Icon>close</Icon>
               </IconButton>
             </Box>
             <Box marginTop={4} width={"80%"}>
-              <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
-                Atualizar Serviço
+              <Typography id="transition-modal-name" variant="h1" textAlign={"center"}>
+                Atualizar Status
               </Typography>
 
               <Stack marginTop={4}>
                 <Typography fontWeight={600}>Título</Typography>
                 <Styled.InputCustom
                   placeholder="Digite seu email"
-                  {...register("title", { required: true, minLength: 3 })}
+                  {...register("name", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
-                {errors.title?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
-                {errors.title?.type === "minLength" && (
+                {errors.name?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
+                {errors.name?.type === "minLength" && (
                   <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
                 )}
 
-                <Typography marginTop={2} fontWeight={600}>
-                  Descrição
-                </Typography>
-                <Styled.InputCustomDescription
-                  placeholder="Digite a descrição do serviço"
-                  {...register("description", { required: true, minLength: 3 })}
-                ></Styled.InputCustomDescription>
-                {errors.description?.type === "required" && (
-                  <Typography color={"error"}>Digite a descrição.</Typography>
-                )}
-                {errors.description?.type === "minLength" && (
-                  <Typography color={"error"}>Digite a descrição com até 3 caracteres.</Typography>
-                )}
-
-                <Typography marginTop={2} fontWeight={600}>
-                  Valor
-                </Typography>
-                <Styled.ValueInputCustom
-                  placeholder="00.00"
-                  type="number"
-                  {...register("amount", { required: true })}
-                />
-                {errors.amount?.type === "required" && <Typography color={"error"}>Digite o valor.</Typography>}
-
                 <Button
+                  disabled={
+                    selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto" ? true : false
+                  }
                   size="large"
                   sx={{
                     marginTop: 6,
@@ -152,13 +130,18 @@ export default function UpdateStatusModal({
                   }}
                   onClick={() => handleSubmit(onSubmit)()}
                 >
-                  Criar
+                  Atualizar
                 </Button>
 
-                {newItem && <Typography textAlign={"center"}>Item criado om sucesso!!</Typography>}
+                {newItem && <Typography textAlign={"center"}>Item atualizado com sucesso!!</Typography>}
                 {error && (
                   <Typography color="error" textAlign={"center"}>
                     Ocorreu um Problema{`: ${errorName}`}
+                  </Typography>
+                )}
+                {(selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto") && (
+                  <Typography color="error" textAlign={"center"}>
+                    Não é possivel Editar os Status Aberto ou Fechado
                   </Typography>
                 )}
               </Stack>

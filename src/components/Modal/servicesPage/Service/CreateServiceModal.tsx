@@ -53,9 +53,7 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
         if (error.response) {
           console.log(error.response.data); // erro do backend
 
-          if (error.response.data === "Título é necessario") return setErrorName(error.response.data);
-          if (error.response.data === "Descrição é necessaria") return setErrorName(error.response.data);
-          if (error.response.data === "Valor é necessario") return setErrorName(error.response.data);
+          setErrorName(error.response.data.message);
         } else {
           console.log(error.message); //erro do Axios
         }
@@ -123,11 +121,20 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
                   Valor
                 </Typography>
                 <Styled.ValueInputCustom
-                  placeholder="00.00"
+                  placeholder="0000"
                   type="number"
-                  {...register("amount", { required: true })}
+                  {...register("amount", {
+                    required: true,
+                    validate: (currentValue) => {
+                      const isValid = /^\d+(\.\d{1,2})?$/.test(currentValue);
+                      return isValid;
+                    },
+                  })}
                 />
                 {errors.amount?.type === "required" && <Typography color={"error"}>Digite o valor.</Typography>}
+                {errors.amount?.type === "validate" && (
+                  <Typography color={"error"}>O número após o ponto deve ter no máximo 2 dígitos..</Typography>
+                )}
 
                 <Button
                   size="large"
@@ -141,7 +148,7 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
                   Criar
                 </Button>
 
-                {newItem && <Typography textAlign={"center"}>Item criado om sucesso!!</Typography>}
+                {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}
                 {error && (
                   <Typography color="error" textAlign={"center"}>
                     Ocorreu um Problema{`: ${errorName}`}

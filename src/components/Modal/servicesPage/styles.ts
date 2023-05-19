@@ -14,6 +14,13 @@ export const style = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+
+  "@media (max-width: 768px)": {
+    /* Estilos específicos para telas menores que 768px */
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+  },
 };
 
 export const InputCustom = styled.input`

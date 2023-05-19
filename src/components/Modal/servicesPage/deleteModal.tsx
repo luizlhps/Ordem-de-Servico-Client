@@ -3,7 +3,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import * as Styled from "../styles";
+import * as Styled from "./styles";
 import { Button, Typography, useTheme } from "@mui/material";
 import { format } from "date-fns";
 
@@ -16,12 +16,17 @@ interface IModal {
   children: React.ReactNode;
   HandleDeleted: (id: string) => Promise<void>;
   selectedItemUpdate: any;
+  deleteError: boolean;
 }
 
-export default function DeleteModal({ open, handleClose, children, HandleDeleted, selectedItemUpdate }: IModal) {
-  const [error, setError] = useState(false);
-  const [errorName, setErrorName] = useState();
-
+export default function DeleteModal({
+  open,
+  handleClose,
+  children,
+  HandleDeleted,
+  selectedItemUpdate,
+  deleteError,
+}: IModal) {
   return (
     <div>
       <Modal
@@ -50,6 +55,11 @@ export default function DeleteModal({ open, handleClose, children, HandleDeleted
             >
               Continuar
             </Button>
+            {deleteError && (
+              <Typography marginTop={2} color={"error"}>
+                Ocorreu um erro ao deletar
+              </Typography>
+            )}
           </Box>
         </Fade>
       </Modal>

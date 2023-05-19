@@ -10,21 +10,16 @@ export const statusColumnsDataGrid = (
   theme: any,
   fetchApi: any,
   modalUpdateHandleOpen: () => void,
-  setSelectedItemUpdate: any
+  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
+  modalDeleteHandleOpen: () => void
 ) => {
-  const handleRemove = async (id: string) => {
-    servicesApi
-      .deleteServices(id)
-      .then((res) => {
-        fetchApi(id); //Chama a api
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleRemove = async (data: any) => {
+    modalDeleteHandleOpen();
+    setSelectedItemUpdate(data);
   };
 
   const handleUpdate = async (data: any) => {
-    /* await servicesApi.updateServices(data); */
+    console.log("aqui", data);
     modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
   };
@@ -34,7 +29,8 @@ export const statusColumnsDataGrid = (
     {
       field: "name",
       headerName: "Título",
-      flex: 3.4,
+      flex: 4.28,
+      minWidth: 200,
       headerAlign: "left",
       align: "left",
     },
@@ -44,6 +40,7 @@ export const statusColumnsDataGrid = (
       headerName: "Criado em",
       type: "number",
       flex: 1,
+      minWidth: 200,
       description: "Endereço",
       headerAlign: "left",
       align: "left",
@@ -54,6 +51,7 @@ export const statusColumnsDataGrid = (
       headerName: "Status",
       description: "Status",
       flex: 1,
+      minWidth: 150,
       headerAlign: "right",
       align: "right",
       renderCell: (params) => {
@@ -82,7 +80,7 @@ export const statusColumnsDataGrid = (
               <ModeOutlinedIcon />
             </IconButton>
 
-            <IconButton onClick={() => handleRemove(params.row._id)}>
+            <IconButton onClick={() => handleRemove(params.row)}>
               <CloseRoundedIcon />
             </IconButton>
           </div>

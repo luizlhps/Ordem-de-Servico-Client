@@ -2,14 +2,7 @@ import React from "react";
 
 //Material Ui
 import { Box } from "@mui/material";
-import {
-  DataGrid,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridApiContext,
-  useGridSelector,
-  useGridApiRef,
-} from "@mui/x-data-grid";
+import { DataGrid, useGridApiContext, useGridApiRef } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import Pagination from "@mui/material/Pagination";
 //interface
@@ -65,11 +58,9 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
   currentPage,
   loading,
 }) => {
-  const apiRef = useGridApiRef();
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
-        apiRef={apiRef}
         disableRowSelectionOnClick
         loading={loading}
         autoHeight={true}

@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -18,12 +18,12 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  setNewstatus: any;
+  setNewItem: any;
   newItem: any;
   children: React.ReactNode;
 }
 
-export default function CreateStatusModal({ open, handleClose, setNewstatus, newItem, fetchApi, children }: IModal) {
+export default function CreateStatusModal({ open, handleClose, setNewItem, newItem, fetchApi, children }: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
 
@@ -41,10 +41,8 @@ export default function CreateStatusModal({ open, handleClose, setNewstatus, new
       .createStatus(data)
       .then((res) => {
         setError(false);
-        setNewstatus(true);
-        setValue("title", "");
-        setValue("description", "");
-        setValue("amount", "");
+        setNewItem(true);
+        setValue("name", "");
 
         fetchApi();
       })
@@ -91,43 +89,19 @@ export default function CreateStatusModal({ open, handleClose, setNewstatus, new
             </Box>
             <Box marginTop={4} width={"80%"}>
               <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
-                Novo Serviço
+                Novo Status
               </Typography>
 
               <Stack marginTop={4}>
-                <Typography fontWeight={600}>Título</Typography>
+                <Typography fontWeight={600}>Nome do status</Typography>
                 <Styled.InputCustom
-                  placeholder="Digite seu email"
-                  {...register("title", { required: true, minLength: 3 })}
+                  placeholder="Digite o nome do Status"
+                  {...register("name", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
                 {errors.title?.type === "required" && <Typography color={"error"}>Digite o `título`.</Typography>}
                 {errors.title?.type === "minLength" && (
                   <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
                 )}
-
-                <Typography marginTop={2} fontWeight={600}>
-                  Descrição
-                </Typography>
-                <Styled.InputCustomDescription
-                  placeholder="Digite a descrição do serviço"
-                  {...register("description", { required: true, minLength: 3 })}
-                ></Styled.InputCustomDescription>
-                {errors.description?.type === "required" && (
-                  <Typography color={"error"}>Digite a descrição.</Typography>
-                )}
-                {errors.description?.type === "minLength" && (
-                  <Typography color={"error"}>Digite a descrição com até 3 caracteres.</Typography>
-                )}
-
-                <Typography marginTop={2} fontWeight={600}>
-                  Valor
-                </Typography>
-                <Styled.ValueInputCustom
-                  placeholder="00.00"
-                  type="number"
-                  {...register("amount", { required: true })}
-                />
-                {errors.amount?.type === "required" && <Typography color={"error"}>Digite o valor.</Typography>}
 
                 <Button
                   size="large"
@@ -141,7 +115,7 @@ export default function CreateStatusModal({ open, handleClose, setNewstatus, new
                   Criar
                 </Button>
 
-                {newItem && <Typography textAlign={"center"}>Item criado om sucesso!!</Typography>}
+                {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}
                 {error && (
                   <Typography color="error" textAlign={"center"}>
                     Ocorreu um Problema{`: ${errorName}`}

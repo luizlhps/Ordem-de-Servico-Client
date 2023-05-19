@@ -30,7 +30,7 @@ export const columnsDataGrid = (
       field: "title",
       headerName: "Título",
       flex: 1,
-      minWidth: 5,
+      minWidth: 200,
       headerAlign: "left",
       align: "left",
     },
@@ -45,12 +45,19 @@ export const columnsDataGrid = (
     {
       field: "amount",
       headerName: "Valor",
-      type: "number",
-      flex: 0,
-      minWidth: 22,
+      flex: 1.2,
+      minWidth: 150,
       description: "Contato",
       headerAlign: "left",
       align: "left",
+      valueFormatter: (params) => {
+        const value = params.value.toString();
+        if (typeof value === "string") {
+          const formattedValue = value;
+          return Number(formattedValue).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        }
+        return value;
+      },
     },
     {
       field: "createdAt",

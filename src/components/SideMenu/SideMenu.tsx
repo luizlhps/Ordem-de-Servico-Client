@@ -83,7 +83,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         onClose={handleMenuOpen}
         open={isOpen}
         variant={smDown ? "temporary" : "permanent"}
-        sx={{ "& .MuiDrawer-paper": { backgroundImage: "none" } }}
+        sx={{ "& .MuiDrawer-paper": { backgroundImage: "none", border: "none" } }}
       >
         <Box
           flex={1}
