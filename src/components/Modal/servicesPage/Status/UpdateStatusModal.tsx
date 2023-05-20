@@ -110,7 +110,7 @@ export default function UpdateStatusModal({
               <Stack marginTop={4}>
                 <Typography fontWeight={600}>Título</Typography>
                 <Styled.InputCustom
-                  placeholder="Digite seu email"
+                  placeholder="Digite o título"
                   {...register("name", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
                 {errors.name?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}

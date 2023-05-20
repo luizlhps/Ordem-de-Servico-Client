@@ -114,7 +114,7 @@ export default function UpdateServiceModal({
               <Stack marginTop={4}>
                 <Typography fontWeight={600}>Título</Typography>
                 <Styled.InputCustom
-                  placeholder="Digite seu email"
+                  placeholder="Digite o título"
                   {...register("title", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
                 {errors.title?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}

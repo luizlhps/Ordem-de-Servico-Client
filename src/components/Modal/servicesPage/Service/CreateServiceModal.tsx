@@ -95,10 +95,10 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
               <Stack marginTop={4}>
                 <Typography fontWeight={600}>Título</Typography>
                 <Styled.InputCustom
-                  placeholder="Digite seu email"
+                  placeholder="Digite o título"
                   {...register("title", { required: true, minLength: 3 })}
                 ></Styled.InputCustom>
-                {errors.title?.type === "required" && <Typography color={"error"}>Digite o `título`.</Typography>}
+                {errors.title?.type === "required" && <Typography color={"error"}>Digite o título.</Typography>}
                 {errors.title?.type === "minLength" && (
                   <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
                 )}

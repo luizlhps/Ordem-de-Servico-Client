@@ -19,6 +19,7 @@ interface propsStyled {
 //Image
 import Image from "next/image";
 import imageProfile from "../../../public/img/profile.svg";
+import zIndex from "@mui/material/styles/zIndex";
 
 //Custom Styled
 
@@ -41,10 +42,12 @@ const FooterBox = styled.div<propsStyled>`
 const DrawerHeader = styled.div<propsStyled>`
   position: relative;
   display: ${({ smDown }) => (smDown ? "flex" : "none")};
-  div {
+  height: 60px;
+
+  .menu {
     position: fixed;
-    width: 30px;
-    height: 30px;
+    width: 70px;
+    height: 40px;
     top: 10px;
     left: 10px;
     right: 0;
@@ -73,7 +76,13 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   return (
     <>
       <DrawerHeader smDown={smDown}>
-        <div>
+        <Box
+          width={"100%"}
+          height={60}
+          sx={{ background: theme.palette.background.paper, position: "fixed", zIndex: 2 }}
+        ></Box>
+
+        <div className="menu">
           <Button onClick={handleMenuOpen}>
             <Icon>menu</Icon>
           </Button>
