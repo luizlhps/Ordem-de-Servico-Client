@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import * as Styled from "../styles";
+import * as Styled from "../../styles";
 import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";

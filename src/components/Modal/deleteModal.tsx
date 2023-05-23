@@ -48,7 +48,9 @@ export default function DeleteModal({
               Tem certeza que quer apagar ?
             </Typography>
             <Button
-              onClick={() => HandleDeleted(selectedItemUpdate._id)}
+              onClick={() => {
+                HandleDeleted(selectedItemUpdate._id);
+              }}
               size="large"
               color="error"
               sx={{ border: "1px red solid" }}

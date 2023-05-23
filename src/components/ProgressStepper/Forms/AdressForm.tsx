@@ -11,11 +11,7 @@ import { useDebouse } from "@/hook";
 import { CepSearch } from "@/services/api/SearchCep";
 import { numbersOnly } from "@/utils/Masks";
 import { useForm } from "react-hook-form";
-import {
-  MarketSVG,
-  OsProcessSVG,
-  UserProcessSVG,
-} from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
 const InputCustom = styled.input`
@@ -79,11 +75,11 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
   const cepForm = watch("cep");
 
   useEffect(() => {
-    if (data.cep !== undefined) {
-      const CepLength = data.cep.split("").length;
+    if (data?.cep !== undefined) {
+      const CepLength = data?.cep.split("").length;
       if (CepLength > 2) {
-        setValue("number", data.number);
-        setValue("cep", data.cep);
+        setValue("number", data?.number);
+        setValue("cep", data?.cep);
       }
     }
 
@@ -139,11 +135,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 marginLeft: 1,
               }}
             />
-            <Stack
-              direction={columnMedia ? "column" : "row"}
-              justifyContent={"space-between"}
-              marginTop={4}
-            >
+            <Stack direction={columnMedia ? "column" : "row"} justifyContent={"space-between"} marginTop={4}>
               <Box
                 color={theme.palette.primary.main}
                 sx={{
@@ -161,41 +153,33 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                   placeholder="Digite o Nome"
                   {...register("cep", { required: true })}
                   onBlur={searchCep}
-                  defaultValue={data.cep}
+                  defaultValue={data?.cep}
                 />
-                {errors.cep?.type === "required" && (
-                  <Typography color={"error"}>Digite um cep</Typography>
-                )}
-                {errorForm === true && (
-                  <Typography color={"error"}>Digite um cep válido</Typography>
-                )}
+                {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
+                {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
 
                 <Typography marginTop={2}>Cidade*</Typography>
                 <InputCustom
                   id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                   {...register("city", { required: true })}
-                  defaultValue={data.city}
+                  defaultValue={data?.city}
                 />
-                {errors.city?.type === "required" && (
-                  <Typography color={"error"}>Digite o numero</Typography>
-                )}
+                {errors.city?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
                 <Typography marginTop={2}>Bairro*</Typography>
                 <InputCustom
                   id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                   {...register("neighborhood", { required: true })}
-                  defaultValue={data.neighborhood}
+                  defaultValue={data?.neighborhood}
                 />
-                {errors.neighborhood?.type === "required" && (
-                  <Typography color={"error"}>Digite o numero</Typography>
-                )}
+                {errors.neighborhood?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
                 <Typography marginTop={2}>Complemento</Typography>
                 <InputCustom
                   id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                   {...register("complement")}
-                  defaultValue={data.complement}
+                  defaultValue={data?.complement}
                 />
               </Box>
               <Box
@@ -211,30 +195,24 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 <InputCustom
                   placeholder="Digite o Nome"
                   {...register("state", { required: true })}
-                  defaultValue={data.state}
+                  defaultValue={data?.state}
                 />
-                {errors.state?.type === "required" && (
-                  <Typography color={"error"}>Digite o numero</Typography>
-                )}
+                {errors.state?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
                 <Typography marginTop={2}>Rua*</Typography>
                 <InputCustom
                   placeholder="Digite o Nome"
-                  defaultValue={data.street}
+                  defaultValue={data?.street}
                   {...register("street", { required: true })}
                 />
-                {errors.street?.type === "required" && (
-                  <Typography color={"error"}>Digite o numero</Typography>
-                )}
+                {errors.street?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
                 <Typography marginTop={2}>Numero*</Typography>
                 <InputCustom
                   type="text"
                   placeholder="Digite o Nome"
                   {...register("number", { required: true })}
-                  defaultValue={data.number}
+                  defaultValue={data?.number}
                 />
-                {errors.number?.type === "required" && (
-                  <Typography color={"error"}>Digite o numero</Typography>
-                )}
+                {errors.number?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
               </Box>
             </Stack>
           </ContainerCustom>

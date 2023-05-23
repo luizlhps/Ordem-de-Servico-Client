@@ -1,20 +1,8 @@
 import React, { useContext } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import {
-  Container,
-  Divider,
-  Stack,
-  Typography,
-  useTheme,
-  Grid,
-  Box,
-  Button,
-  ButtonBase,
-} from "@mui/material";
+import { Container, Divider, Typography, useTheme, Grid, Button } from "@mui/material";
 import styled from "styled-components";
 
-import party from "../../../../public/icon/party.svg";
 import { HeaderLayout } from "@/components/HeaderLayout/HeaderLayout";
 import { FormContext } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
@@ -27,7 +15,6 @@ const InputCustom = styled.input`
   border-radius: 1rem;
   padding: 4px;
   border-style: none;
-  border: 1px solid;
   margin-top: 4px;
 
   text-align: center;
@@ -57,11 +44,12 @@ const ContainerCustom = styled.div`
 
 const CompletedForm: React.FC = () => {
   const theme = useTheme();
-  const { data } = useContext(FormContext);
+  const { data, confirmData } = useContext(FormContext);
 
   const router = useRouter();
   const Redirect = () => {
     router.push("/clients");
+    confirmData();
   };
 
   return (
@@ -75,7 +63,6 @@ const CompletedForm: React.FC = () => {
           borderRadius: "1rem",
           marginTop: "60px",
           color: theme.palette.primary.main,
-          border: `1px solid ${theme.palette.primary.light}`,
         }}
       >
         <ContainerCustom>
@@ -99,7 +86,7 @@ const CompletedForm: React.FC = () => {
               <Typography fontWeight={500}>Nome</Typography>
               <InputCustom
                 readOnly
-                defaultValue={data.name !== undefined ? data.name : ""}
+                defaultValue={data?.name ? data?.name : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>
@@ -107,7 +94,7 @@ const CompletedForm: React.FC = () => {
               <Typography fontWeight={500}>Celular</Typography>
               <InputCustom
                 readOnly
-                defaultValue={data.phone !== undefined ? data.phone : ""}
+                defaultValue={data?.phone ? data?.phone : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>
@@ -117,11 +104,7 @@ const CompletedForm: React.FC = () => {
               </Typography>
               <InputCustom
                 readOnly
-                defaultValue={
-                  data.equipment !== undefined
-                    ? `${data.brand}  ${data.model}  ${data.equipment}`
-                    : ""
-                }
+                defaultValue={data?.equipment ? `${data?.brand}  ${data?.model}  ${data?.equipment}` : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>
@@ -131,7 +114,7 @@ const CompletedForm: React.FC = () => {
               </Typography>
               <InputCustom
                 readOnly
-                defaultValue={data.description !== undefined ? data.description : ""}
+                defaultValue={data?.description ? data?.description : ""}
                 style={{
                   color: theme.palette.primary.light,
                   width: "100%",
@@ -143,7 +126,7 @@ const CompletedForm: React.FC = () => {
               <Typography fontWeight={500}>Status</Typography>
               <InputCustom
                 readOnly
-                defaultValue={data.stats !== undefined ? data.stats : ""}
+                defaultValue={data?.stats ? data?.stats : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>
@@ -151,7 +134,7 @@ const CompletedForm: React.FC = () => {
               <Typography fontWeight={500}>Data</Typography>
               <InputCustom
                 readOnly
-                defaultValue={data.dateEntry !== undefined ? data.dateEntry : ""}
+                defaultValue={data?.dateEntry ? data?.dateEntry : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>
@@ -167,7 +150,7 @@ const CompletedForm: React.FC = () => {
               borderRadius: "1rem",
             }}
           >
-            Ir Para Ordens de Serviço
+            Confirmar
           </Button>
         </ContainerCustom>
       </Container>

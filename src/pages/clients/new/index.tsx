@@ -28,6 +28,7 @@ export default function Home() {
           <>
             <HeaderLayout subTitle="Digite os dados do novo cliente" title="Novo Cliente" />
             <Container
+              maxWidth={"md"}
               sx={{
                 paddingTop: 6,
                 paddingBottom: 6,

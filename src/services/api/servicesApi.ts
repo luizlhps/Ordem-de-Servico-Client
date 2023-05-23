@@ -32,8 +32,8 @@ class Services {
     return res;
   }
 
-  async deleteServices(data: any) {
-    const deleteId = await Api.delete(`services/${data}`);
+  async deleteServices(_id: any) {
+    const deleteId = await Api.delete(`services/${_id}`);
     return deleteId;
   }
 }

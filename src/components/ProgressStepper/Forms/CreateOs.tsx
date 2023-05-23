@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Divider,
@@ -9,15 +9,14 @@ import {
   Box,
   Button,
   useMediaQuery,
+  MenuItem,
 } from "@mui/material";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { FormContext } from "@/contexts";
-import {
-  MarketSVG,
-  OsProcessSVG,
-  UserProcessSVG,
-} from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { TStatusData, statusApi } from "@/services/api/statusApi";
+import FormSelect from "@/components/FormSelect";
 
 //style custom
 const InputCustom = styled.input`
@@ -53,7 +52,7 @@ const ContainerCustom = styled.div`
   }
 `;
 
-const InputCustomDescription = styled.textarea`
+const InputCustomDefect = styled.textarea`
   font-size: 16px;
   color: #1e2737;
   width: 350px;
@@ -86,21 +85,40 @@ type Inputs = {
   brand: string;
   dateEntry: string;
   stats: string;
-  description: string;
+  defect: string;
   observation: string;
 };
 
 const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormStep }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
+  const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
 
   const { setFormValues } = useContext(FormContext);
+  useEffect(() => {
+    async function FetchGetStatus() {
+      try {
+        const data = await statusApi.getAllStatus("", 0, 0);
+
+        if (data instanceof Error) {
+          return console.error(data.message);
+        } else {
+          console.log(data);
+          setStatusData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    FetchGetStatus();
+  }, []);
 
   //form
   const {
     register,
     handleSubmit,
     watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
@@ -118,6 +136,7 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
             <Typography variant="h1" fontWeight={500}>
               Criar O.S
             </Typography>
+
             <Divider
               sx={{
                 width: 39,
@@ -126,6 +145,15 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
                 marginLeft: 1,
               }}
             />
+            <Box display={"flex"} justifyContent={"flex-start"}>
+              <FormSelect name={"stats"} defaultValue={""} label={"status"} control={control}>
+                {statusData?.status.map((item) => (
+                  <MenuItem key={item._id} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </FormSelect>
+            </Box>
             <Grid
               color={theme.palette.primary.main}
               sx={{
@@ -155,35 +183,15 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
                   placeholder="Digite o Nome"
                   {...register("model", { required: true })}
                 />
-                {errors.model?.type === "required" && (
-                  <Typography color={"error"}>Digite o modelo</Typography>
-                )}
-                <Typography marginTop={2}>Status*</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite o Nome"
-                  {...register("stats", { required: true })}
-                />
-                {errors.stats?.type === "required" && (
-                  <Typography color={"error"}>Coloque o status</Typography>
-                )}
+                {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
               </Grid>
               <Grid item>
                 <Box>
                   <Typography marginTop={2}>Marca*</Typography>
-                  <InputCustom
-                    placeholder="Digite o Nome"
-                    {...register("brand", { required: true })}
-                  />
-                  {errors.brand?.type === "required" && (
-                    <Typography color={"error"}>Digite a marca</Typography>
-                  )}
+                  <InputCustom placeholder="Digite o Nome" {...register("brand", { required: true })} />
+                  {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
                   <Typography marginTop={2}>Data de Entrada*</Typography>
-                  <InputCustom
-                    type="date"
-                    placeholder="Digite o Nome"
-                    {...register("dateEntry", { required: true })}
-                  />
+                  <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
                   {errors.dateEntry?.type === "required" && (
                     <Typography color={"error"}>Coloque a data de entrada</Typography>
                   )}
@@ -208,15 +216,15 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               flexDirection={columnMedia ? "column" : "row"}
             >
               <Grid item xs>
-                <Typography marginTop={2}>Descrição</Typography>
-                <InputCustomDescription {...register("description", { required: true })} />
-                {errors.description?.type === "required" && (
-                  <Typography color={"error"}>Digite a descrição</Typography>
-                )}
+                <Typography marginTop={2}>Defeito</Typography>
+                <InputCustomDefect {...register("defect", { required: true })} />
+                {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
               </Grid>
               <Grid item>
                 <Typography marginTop={2}>Observação</Typography>
-                <InputCustomDescription {...register("observation")} />
+                <InputCustomDefect {...register("observation")} />
+
+                {errors.stats?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
               </Grid>
             </Grid>
           </ContainerCustom>

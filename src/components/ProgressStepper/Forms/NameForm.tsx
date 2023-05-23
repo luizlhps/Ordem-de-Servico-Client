@@ -1,13 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
-import { Container, Divider, Stack, Typography, useTheme, Box, Button } from "@mui/material";
+import { Divider, Stack, Typography, useTheme, Box, Button } from "@mui/material";
 import styled from "styled-components";
 import { FormContext } from "@/contexts";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 //ReactHookForm
 import { useForm, Controller } from "react-hook-form";
+
+//utils
 import {
   TransformForbackEndCpf,
   TransformForbackEndPhoneNumber,
@@ -67,7 +69,7 @@ type Inputs = {
   name: string;
   phone: string | undefined;
   contact: string | undefined;
-  cpf: string | undefined;
+  cpfOrCnpj: string | undefined;
   tel: string | undefined;
   email: string;
 
@@ -80,6 +82,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
   const columnMedia = useMediaQuery("(max-width:1110px)");
 
   const { setFormValues } = useContext(FormContext);
+
   const {
     register,
     handleSubmit,
@@ -96,7 +99,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
 
   const phoneValue = watch("phone");
   const telValue = watch("tel");
-  const cpf = watch("cpf");
+  const cpf = watch("cpfOrCnpj");
 
   return (
     <>
@@ -106,6 +109,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
             <Typography variant="h1" fontWeight={500}>
               Cadastro
             </Typography>
+
             <Divider
               sx={{
                 width: 39,
@@ -193,13 +197,13 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                         />
                       )}
                       control={control}
-                      name="cpf"
+                      name="cpfOrCnpj"
                       rules={{ required: true, minLength: 11 }}
                     />
-                    {errors.cpf?.type === "required" && (
+                    {errors.cpfOrCnpj?.type === "required" && (
                       <Typography color={"error"}>Digite um numero celular</Typography>
                     )}
-                    {errors.cpf?.type === "minLength" && (
+                    {errors.cpfOrCnpj?.type === "minLength" && (
                       <Typography color={"error"}>Digite um numero válido</Typography>
                     )}
                   </InputImaskCustom>
@@ -270,7 +274,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   onClick={() => {
                     setValue("phone", TransformForbackEndPhoneNumber(phoneValue));
                     setValue("tel", TransformForbackEndPhoneNumber(telValue));
-                    setValue("cpf", TransformForbackEndCpf(cpf));
+                    setValue("cpfOrCnpj", TransformForbackEndCpf(cpf));
                     handleSubmit(onSubmit)();
                   }}
                   size="large"

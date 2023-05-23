@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage/columnConfig";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
 import UpdateServiceModal from "../Modal/servicesPage/Service/UpdateServiceModal";
-import DeleteModal from "../Modal/servicesPage/deleteModal";
+import DeleteModal from "../Modal/deleteModal";
 
 export interface IService {
   deleted: boolean;
@@ -32,6 +32,7 @@ const Services = () => {
   const { debouse } = useDebouse(300);
   const [searchField, setSearchField] = useState("");
   const [servicesData, setServicesData] = useState<IData>({ Total: 0, Page: 0, limit: 0, service: [] || "" });
+
   const [newItem, setNewService] = useState(false);
   const [newUpdateItem, setNewUpdateService] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);

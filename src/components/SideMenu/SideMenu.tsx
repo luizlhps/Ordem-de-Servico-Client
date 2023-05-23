@@ -51,7 +51,7 @@ const DrawerHeader = styled.div<propsStyled>`
     top: 10px;
     left: 10px;
     right: 0;
-    z-index: 2000;
+    z-index: 1201;
   }
 `;
 

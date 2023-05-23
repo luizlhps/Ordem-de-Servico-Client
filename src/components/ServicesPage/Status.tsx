@@ -3,11 +3,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { useDebouse } from "@/hook";
 
-import { statusApi } from "@/services/api/statusApi";
+import { TStatusData, statusApi } from "@/services/api/statusApi";
 import CreateStatusModal from "../Modal/servicesPage/Status/CreateStatusModal";
 import UpdateStatusModal from "../Modal/servicesPage/Status/UpdateStatusModal";
 import { statusColumnsDataGrid } from "../DataGrid/utils/servicePage/statusColumnConfig";
-import DeleteModal from "../Modal/servicesPage/deleteModal";
+import DeleteModal from "../Modal/deleteModal";
 
 export interface IStatus {
   _id?: string;
@@ -19,19 +19,12 @@ export interface IStatus {
   updatedAt?: string;
 }
 
-export interface IData {
-  Total: number;
-  Page: number;
-  limit: number;
-  status: IStatus[] | [] | "";
-}
-
 const Status = () => {
   const theme = useTheme();
 
   const { debouse } = useDebouse(300);
   const [searchField, setSearchField] = useState("");
-  const [statusData, setStatusData] = useState<IData>({ Total: 0, Page: 0, limit: 0, status: [] || "" });
+  const [statusData, setStatusData] = useState<TStatusData>({ total: 0, page: 0, limit: 0, status: [] });
   const [newItem, setNewItem] = useState(false);
   const [newUpdateItem, setNewUpdateItem] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -82,12 +75,16 @@ const Status = () => {
         if (page === 0 && currentPage) {
           setCurrentPage(currentPage + 1);
         }
-        const res = await statusApi.getAllStatus(search, currentPage, limit);
-        console.log(res, "meu res");
-        setStatusData(res.data);
+        const data = await statusApi.getAllStatus(search, currentPage, limit);
+
+        if (data instanceof Error) {
+          return console.error(data.message);
+        } else {
+          setStatusData(data);
+        }
       } catch (error) {
         console.log(error);
-        setStatusData({ Total: 0, Page: 0, limit: 0, status: [] });
+        setStatusData({ total: 0, page: 0, limit: 0, status: [] });
       }
       setLoading(false);
     });
@@ -182,10 +179,10 @@ const Status = () => {
               rows={statusData.status}
               columns={columns}
               PageSize={limitPorPage}
-              page={statusData.Page}
+              page={statusData.page}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              totalCount={statusData.Total}
+              totalCount={statusData.total}
             />
           </UpdateStatusModal>
         </CreateStatusModal>
