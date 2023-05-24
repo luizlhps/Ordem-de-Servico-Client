@@ -17,8 +17,9 @@ export const style = {
 
   "@media (max-width: 768px)": {
     /* Estilos específicos para telas menores que 768px */
-    width: "100%",
-    height: "100%",
+    textAlign: "center",
+
+    width: "90%",
     justifyContent: "center",
   },
 };

@@ -10,9 +10,10 @@ import {
   Button,
   useMediaQuery,
   MenuItem,
+  TextField,
 } from "@mui/material";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FormContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
@@ -60,7 +61,7 @@ const InputCustomDefect = styled.textarea`
   border-radius: 0.3rem;
   padding: 4px;
   border-style: none;
-  border: 1px #878787 solid;
+  border: 0.1px #878787 solid;
   margin-top: 14px;
   font-size: 16px;
   resize: none;
@@ -169,27 +170,41 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
             >
               <Grid item xs>
                 <Typography marginTop={2}>Equipamento*</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite sobre o equipamento"
-                  {...register("equipment", { required: true })}
+                <Controller
+                  name={"equipment"}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                  )}
                 />
                 {errors.equipment?.type === "required" && (
                   <Typography color={"error"}>Digite o sobre o equipamento</Typography>
                 )}
                 <Typography marginTop={2}>Modelo*</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite o Nome"
-                  {...register("model", { required: true })}
+                <Controller
+                  name={"model"}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                  )}
                 />
                 {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
               </Grid>
               <Grid item>
                 <Box>
                   <Typography marginTop={2}>Marca*</Typography>
-                  <InputCustom placeholder="Digite o Nome" {...register("brand", { required: true })} />
+                  <Controller
+                    name={"brand"}
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                    )}
+                  />
                   {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
+
                   <Typography marginTop={2}>Data de Entrada*</Typography>
                   <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
                   {errors.dateEntry?.type === "required" && (

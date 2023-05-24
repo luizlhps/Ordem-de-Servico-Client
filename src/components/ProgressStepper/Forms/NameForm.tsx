@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
-import { Divider, Stack, Typography, useTheme, Box, Button } from "@mui/material";
+import { Divider, Stack, Typography, useTheme, Box, Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { FormContext } from "@/contexts";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -21,43 +21,12 @@ import validator from "validator";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 
 //style custom
-const InputCustom = styled.input`
-  height: 35px;
-  font-size: 16px;
-  color: #1e2737;
-  width: 300px;
-  border-radius: 0.3rem;
-  padding: 4px;
-  border-style: none;
-  border: 1px #878787 solid;
-  margin-top: 4px;
-  font-family: arial;
 
-  @media (max-width: 1110px) {
-    width: 100%;
-  }
-`;
-const InputImaskCustom = styled.div`
-  input {
-    height: 35px;
-    font-size: 16px;
-    width: 300px;
-    border-radius: 0.3rem;
-    padding: 4px;
-    border-style: none;
-    border: 1px #878787 solid;
-    margin-top: 4px;
-
-    @media (max-width: 1110px) {
-      width: 100%;
-    }
-  }
-`;
 const ContainerCustom = styled.div`
   padding: 60px;
 
   @media (max-width: 600px) {
-    padding: 0px;
+    padding: 6px;
   }
 `;
 
@@ -79,7 +48,7 @@ type Inputs = {
 //code
 const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
   const theme = useTheme();
-  const columnMedia = useMediaQuery("(max-width:1110px)");
+  const columnMedia = useMediaQuery("(max-width:720px)");
 
   const { setFormValues } = useContext(FormContext);
 
@@ -119,7 +88,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
               }}
             />
             <form>
-              <Stack direction={columnMedia ? "column" : "row"} justifyContent={"space-between"} marginTop={4}>
+              <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
                 <Box
                   color={theme.palette.primary.main}
                   sx={{
@@ -129,66 +98,85 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                     },
                   }}
                 >
-                  <Typography fontWeight={500} marginTop={2}>
+                  <Typography fontWeight={500} marginTop={3} marginBottom={1}>
                     Nome*
                   </Typography>
-                  <InputCustom placeholder="Digite o nome" {...register("name", { required: true })} />
-                  {errors.name?.type === "required" && <Typography color={"error"}>ruim</Typography>}
+                  <Controller
+                    name={"name"}
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={""}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField
+                        error={!!errors.name}
+                        onChange={onChange}
+                        value={value}
+                        size="small"
+                        placeholder="Digite seu nome"
+                        fullWidth
+                      />
+                    )}
+                  />
+                  {errors.name?.type === "required" && <Typography color={"error"}>Digite um nome*</Typography>}
 
-                  <Typography fontWeight={500} marginTop={2}>
-                    Celular*
+                  <Typography marginTop={3} marginBottom={1}>
+                    Email
                   </Typography>
-                  <InputImaskCustom>
-                    <Controller
-                      render={({ field }) => (
-                        <input
-                          type="text"
-                          value={normalizePhoneNumber(field.value)}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          placeholder="Ex: (11) 98765-4321"
-                        />
-                      )}
-                      control={control}
-                      name="phone"
-                      rules={{ required: true, minLength: 11 }}
-                    />
-                    {errors.phone?.type === "required" && (
-                      <Typography color={"error"}>Digite um numero celular</Typography>
-                    )}
-                    {errors.phone?.type === "minLength" && (
-                      <Typography color={"error"}>Digite um numero válido</Typography>
-                    )}
-                  </InputImaskCustom>
 
-                  <Typography marginTop={2}>Contato</Typography>
-                  <InputCustom
-                    id="outlined-multiline-flexible"
-                    placeholder="Digite o contato"
-                    {...register("contact", { minLength: 6 })}
+                  <Controller
+                    name={"email"}
+                    control={control}
+                    rules={{ required: false }}
+                    defaultValue={""}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField
+                        error={!!errors.email}
+                        onChange={onChange}
+                        value={value}
+                        size="small"
+                        placeholder="Digite seu email"
+                        fullWidth
+                      />
+                    )}
+                  />
+                  {errors.email?.type === "validate" && (
+                    <Typography color={"error"}>Digite um email válido*</Typography>
+                  )}
+
+                  <Typography marginTop={3} marginBottom={1}>
+                    Contato
+                  </Typography>
+                  <Controller
+                    name={"contact"}
+                    control={control}
+                    rules={{ required: false }}
+                    defaultValue={""}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField
+                        error={!!errors.contact}
+                        onChange={onChange}
+                        value={value}
+                        size="small"
+                        placeholder="Robson celular: 99+ 99999-9999"
+                        fullWidth
+                      />
+                    )}
                   />
                   {errors.contact?.type === "minLength" && (
-                    <Typography color={"error"}>Digite um numero válido</Typography>
+                    <Typography color={"error"}>Digite um numero válido*</Typography>
                   )}
-                </Box>
 
-                <Box
-                  color={theme.palette.primary.main}
-                  sx={{
-                    input: {
-                      background: theme.palette.background.paper,
-                      color: theme.palette.primary.main,
-                    },
-                  }}
-                >
-                  <Typography marginTop={2}>CPF/CNPJ*</Typography>
-                  <InputImaskCustom>
+                  <Box>
+                    <Typography marginTop={3} marginBottom={1}>
+                      CPF/CNPJ*
+                    </Typography>
                     <Controller
                       render={({ field }) => (
-                        <input
-                          maxLength={15}
-                          type="text"
+                        <TextField
+                          error={!!errors.cpfOrCnpj}
+                          fullWidth
+                          inputProps={{ maxLength: 16 }}
+                          size="small"
                           value={cpfOrCnpj(field.value)}
                           onChange={(e) => {
                             field.onChange(e.target.value);
@@ -201,51 +189,75 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                       rules={{ required: true, minLength: 11 }}
                     />
                     {errors.cpfOrCnpj?.type === "required" && (
-                      <Typography color={"error"}>Digite um numero celular</Typography>
+                      <Typography color={"error"}>Digite um numero celular*</Typography>
                     )}
                     {errors.cpfOrCnpj?.type === "minLength" && (
-                      <Typography color={"error"}>Digite um numero válido</Typography>
+                      <Typography color={"error"}>Digite um numero válido*</Typography>
                     )}
-                  </InputImaskCustom>
+                  </Box>
 
-                  <Typography marginTop={2}>Telefone</Typography>
-                  <InputImaskCustom>
-                    <Controller
-                      render={({ field }) => (
-                        <input
-                          maxLength={14}
-                          type="text"
-                          value={normalizeTelPhoneNumber(field.value)}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          placeholder="Ex: (11) 3265-4321"
-                        />
+                  <Stack flexDirection={columnMedia ? "column" : "row"} justifyContent={"space-between"} gap={1}>
+                    <Box flex={1} minWidth={200}>
+                      <Typography fontWeight={500} marginTop={3} marginBottom={1}>
+                        Celular*
+                      </Typography>
+                      <Controller
+                        render={({ field }) => (
+                          <TextField
+                            error={!!errors.phone}
+                            type="text"
+                            fullWidth
+                            size="small"
+                            value={normalizePhoneNumber(field.value)}
+                            onChange={(e) => {
+                              field.onChange(e.target.value);
+                            }}
+                            placeholder="Ex: (11) 98765-4321"
+                          />
+                        )}
+                        control={control}
+                        name="phone"
+                        rules={{ required: true, minLength: 11 }}
+                      />
+                      {errors.phone?.type === "required" && (
+                        <Typography color={"error"}>Digite um numero celular</Typography>
                       )}
-                      control={control}
-                      name="tel"
-                      rules={{ required: false, minLength: 10 }}
-                    />
-                    {errors.tel?.type === "minLength" && (
-                      <Typography color={"error"}>Digite um numero válido</Typography>
-                    )}
-                  </InputImaskCustom>
-                  <Typography marginTop={2}>Email</Typography>
-                  <InputCustom
-                    placeholder="Digite o email"
-                    {...register("email", {
-                      validate: (value) => {
-                        if (value === "") {
-                          return true;
-                        } else {
-                          return validator.isEmail(value);
-                        }
-                      },
-                    })}
-                  />
-                  {errors.email?.type === "validate" && <Typography color={"error"}>Digite um email válido</Typography>}
+                      {errors.phone?.type === "minLength" && (
+                        <Typography color={"error"}>Digite um numero válido</Typography>
+                      )}
+                    </Box>
+
+                    <Box>
+                      <Typography marginTop={3} marginBottom={1}>
+                        Telefone
+                      </Typography>
+                      <Controller
+                        render={({ field }) => (
+                          <TextField
+                            error={!!errors.tel}
+                            inputProps={{ maxLength: 14 }}
+                            size="small"
+                            fullWidth
+                            type="text"
+                            value={normalizeTelPhoneNumber(field.value)}
+                            onChange={(e) => {
+                              field.onChange(e.target.value);
+                            }}
+                            placeholder="Ex: (11) 3265-4321"
+                          />
+                        )}
+                        control={control}
+                        name="tel"
+                        rules={{ required: false, minLength: 10 }}
+                      />
+                      {errors.tel?.type === "minLength" && (
+                        <Typography color={"error"}>Digite um numero válido</Typography>
+                      )}
+                    </Box>
+                  </Stack>
                 </Box>
               </Stack>
+
               <Stack flexDirection={"row"} justifyContent={"center"} marginTop={8}>
                 <UserProcessSVG color={theme.palette.secondary.main} />
                 <Box
