@@ -152,7 +152,7 @@ const Services = () => {
           >
             <HeaderLayout title="Serviços" subTitle="Bem-vindo a área de serviços" />
 
-            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
               <TextField
                 value={searchField || ""}
                 onChange={(e) => setSearchField(e.target.value)}

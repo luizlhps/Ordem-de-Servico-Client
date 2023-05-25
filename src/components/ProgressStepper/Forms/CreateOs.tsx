@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { FormContext } from "@/contexts";
+import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
 import FormSelect from "@/components/FormSelect";
+import { useDebouse } from "@/hook";
+import { TypeForm } from "./types";
 
 //style custom
 const InputCustom = styled.input`
@@ -73,6 +75,9 @@ interface NameFormProps {
   formStep: number;
   nextFormStep: () => void;
   prevFormStep: () => void;
+  data: any;
+  setData: any;
+  typeForm: TypeForm;
 }
 
 type Inputs = {
@@ -85,12 +90,13 @@ type Inputs = {
   observation: string;
 };
 
-const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormStep }) => {
+export const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormStep, data, setData }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
 
-  const { setFormValues } = useContext(FormContext);
+  const { setFormValues } = useContext(FormRegisterCostumerContext);
+
   useEffect(() => {
     async function FetchGetStatus() {
       try {
@@ -306,4 +312,3 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
     </>
   );
 };
-export default CreateOs;

@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 
+import { FormRegisterCostumerContext } from "@/contexts";
+
 //CSS Import MUI AND STYLED COMPONENTS
 import { Divider, Stack, Typography, useTheme, Box, Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import { FormContext } from "@/contexts";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 //ReactHookForm
@@ -19,6 +21,7 @@ import {
 } from "@/utils/Masks";
 import validator from "validator";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { TypeForm } from "./types";
 
 //style custom
 
@@ -33,7 +36,11 @@ const ContainerCustom = styled.div`
 interface NameFormProps {
   formStep: number;
   nextFormStep: () => void;
+  typeForm: TypeForm;
+  setData: any;
+  data: any;
 }
+
 type Inputs = {
   name: string;
   phone: string | undefined;
@@ -46,11 +53,9 @@ type Inputs = {
 };
 
 //code
-const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
+export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, typeForm, setData }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:720px)");
-
-  const { setFormValues } = useContext(FormContext);
 
   const {
     register,
@@ -62,7 +67,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
-    setFormValues(data);
+    setData(data);
     nextFormStep();
   };
 
@@ -281,16 +286,21 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   }}
                 />
                 <MarketSVG color={theme.palette.primary.light} />
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.primary.light,
-                  }}
-                />
-                <OsProcessSVG color={theme.palette.primary.light} />
+
+                {typeForm === "createCostumer" && (
+                  <>
+                    <Box
+                      sx={{
+                        width: 22,
+                        margin: "auto 10px",
+                        height: 3,
+                        alignContent: "center",
+                        background: theme.palette.primary.light,
+                      }}
+                    />
+                    <OsProcessSVG color={theme.palette.primary.light} />{" "}
+                  </>
+                )}
               </Stack>
               <Box justifyContent={"center"} display={"flex"}>
                 <Button
@@ -317,4 +327,3 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
     </>
   );
 };
-export default NameForm;

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
-import { FormContext } from "@/contexts";
+import { FormRegisterCostumerContext } from "@/contexts";
 import { Button, Divider, Stack, Typography, useTheme, Box, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import { CepSearch } from "@/services/api/SearchCep";
 import { numbersOnly } from "@/utils/Masks";
 import { Controller, useForm } from "react-hook-form";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { TypeForm } from "./types";
 
 const ContainerCustom = styled.div`
   padding: 60px;
@@ -26,6 +27,9 @@ interface NameFormProps {
   formStep: number;
   nextFormStep: () => void;
   prevFormStep: () => void;
+  setData: any;
+  typeForm: TypeForm;
+  data: any;
 }
 type Inputs = {
   cep: any;
@@ -37,14 +41,20 @@ type Inputs = {
   number: string;
 };
 
-const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormStep }) => {
+export const AdressForm: React.FC<NameFormProps> = ({
+  formStep,
+  nextFormStep,
+  prevFormStep,
+  setData,
+  typeForm,
+  data,
+}) => {
   const { debouse } = useDebouse();
   const [errorForm, setErrorForm] = useState(false);
 
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1110px)");
 
-  const { setFormValues, data } = useContext(FormContext);
   const {
     register,
     handleSubmit,
@@ -100,7 +110,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
   };
 
   const onSubmit = (data: Inputs) => {
-    setFormValues(data);
+    setData(data);
     nextFormStep();
   };
   return (
@@ -311,16 +321,31 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
               }}
             />
             <MarketSVG color={theme.palette.secondary.main} />
-            <Box
-              sx={{
-                width: 22,
-                margin: "auto 10px",
-                height: 3,
-                alignContent: "center",
-                background: theme.palette.primary.light,
-              }}
-            />
-            <OsProcessSVG color={theme.palette.primary.light} />
+
+            {typeForm === "createCostumer" && (
+              <>
+                <Box
+                  sx={{
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.primary.light,
+                  }}
+                />
+
+                <Box
+                  sx={{
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.primary.light,
+                  }}
+                />
+                <OsProcessSVG color={theme.palette.primary.light} />
+              </>
+            )}
           </Stack>
           <Box justifyContent={"center"} display={"flex"}>
             <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
@@ -356,4 +381,3 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
     </>
   );
 };
-export default AdressForm;

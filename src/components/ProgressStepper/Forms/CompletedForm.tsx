@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { Container, Divider, Typography, useTheme, Grid, Button } from "@mui/material";
 import styled from "styled-components";
 
-import { HeaderLayout } from "@/components/HeaderLayout/HeaderLayout";
-import { FormContext } from "@/contexts";
+import { HeaderLayout } from "@/components/HeaderLayout";
+import { FormRegisterCostumerContext } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 //style custom
 const InputCustom = styled.input`
@@ -42,9 +42,13 @@ const ContainerCustom = styled.div`
   }
 `;
 
-const CompletedForm: React.FC = () => {
+interface Iprops {
+  confirmData: (() => void) | undefined;
+  data: any;
+}
+
+export const CompletedForm: React.FC<Iprops> = ({ confirmData, data }) => {
   const theme = useTheme();
-  const { data, confirmData } = useContext(FormContext);
 
   const router = useRouter();
   const Redirect = () => {
@@ -160,4 +164,3 @@ const CompletedForm: React.FC = () => {
     </>
   );
 };
-export default CompletedForm;

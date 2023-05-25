@@ -1,15 +1,17 @@
+import { useState, createContext, useContext } from "react";
+
 import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
-import { useState, createContext, useContext } from "react";
 
-export const FormContext = createContext({} as Context);
+export const FormRegisterCostumerContext = createContext({} as Context);
 
 type Context = {
   onDiscountChange?: () => void;
   data?: ICustomer;
   setFormValues?: any;
   confirmData?: () => void;
+  test: (valor: any) => void;
 };
 
 export interface ICustomer {
@@ -45,7 +47,7 @@ interface FormProviderProps {
   children: React.ReactNode;
 }
 
-export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
+export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ children }) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
   const [idCustomer, setIdCustomer] = useState<String>();
 
@@ -56,10 +58,15 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     }
   }
   const setFormValues = (values: any) => {
+    console.log("exist", values);
     setData((prevValues) => ({
       ...prevValues,
       ...values,
     }));
+  };
+
+  const test = (valor: any) => {
+    console.log(valor);
   };
 
   function confirmData() {
@@ -86,9 +93,11 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     costumer(data);
   }
 
-  const equipment = {};
-
-  return <FormContext.Provider value={{ data, setFormValues, confirmData }}>{children}</FormContext.Provider>;
+  return (
+    <FormRegisterCostumerContext.Provider value={{ data, setFormValues, confirmData, test }}>
+      {children}
+    </FormRegisterCostumerContext.Provider>
+  );
 };
 
-export const useFormData = () => useContext(FormContext);
+export const useFormData = () => useContext(FormRegisterCostumerContext);

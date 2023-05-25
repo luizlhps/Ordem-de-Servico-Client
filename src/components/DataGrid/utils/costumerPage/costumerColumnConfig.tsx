@@ -6,19 +6,22 @@ import { IconButton } from "@mui/material";
 import { servicesApi } from "@/services/api/servicesApi";
 import { useEffect } from "react";
 import { constumersApi } from "@/services/api/costumersApi";
+import { useRouter } from "next/router";
 
-export const columnsDataGrid = (
+export const ColumnsDataGrid = (
   theme: any,
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>,
   modalDeleteHandleOpen: () => void
 ) => {
+  const router = useRouter();
+
   const handleRemove = async (data: any) => {
     modalDeleteHandleOpen();
     setSelectedItem(data);
   };
 
   const handleUpdate = async (data: any) => {
-    /* await servicesApi.updateServices(data); */
+    router.push(`/clients/update/${data._id}`);
     setSelectedItem(data);
   };
 

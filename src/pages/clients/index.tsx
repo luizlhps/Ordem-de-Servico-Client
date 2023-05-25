@@ -1,10 +1,14 @@
-import react, { useEffect, useState } from "react";
-import { DataGridLayout, HeaderLayout } from "@/components";
-import { columnsDataGrid } from "@/components/DataGrid/utils/costumerPage/costumerColumnConfig";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+
 import { Button, Stack, TextField, useTheme } from "@mui/material";
 import { useRouter } from "next/router";
+
+import { DataGridLayout, HeaderLayout } from "@/components";
+import { ColumnsDataGrid } from "@/components/DataGrid/utils/costumerPage/costumerColumnConfig";
 import { constumersApi } from "@/services/api/costumersApi";
 import DeleteModal from "@/components/Modal/deleteModal";
+
+import { useDebouse } from "@/hook";
 
 export interface IData {
   Total: number;
@@ -41,6 +45,7 @@ export interface IAddress {
 
 export default function Client() {
   const router = useRouter();
+  const { debouse } = useDebouse();
 
   //Theme
   const theme = useTheme();
@@ -61,7 +66,7 @@ export default function Client() {
   };
 
   const limitPorPage = 10;
-  const columns = columnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen);
+  const columns = ColumnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen);
 
   //Ao clicar no botton ele vai para a pagina de cadastro de cliente
   function handleClickLink() {
@@ -69,26 +74,43 @@ export default function Client() {
   }
 
   async function fetchApi(filter?: string, page?: number, limit?: number) {
+    let currentPage = page;
+
+    if (page === 0 && currentPage) {
+      setCurrentPage(currentPage + 1);
+    }
+
     const res = await constumersApi.getAllCostumers(filter, page, limit);
     setCostumersData(res.data);
   }
 
+  //inputSearch
+  const search = useMemo(() => {
+    return searchField;
+  }, [searchField]);
+
   //Delete Api
   const HandleDeleted = async (id: string) => {
-    try {
-      await constumersApi.deleteCostumer(id);
-      fetchApi();
-      modalDeleteHandleClose();
-      setDeleteError(false);
-    } catch (error) {
-      setDeleteError(true);
-      console.log(error);
-    }
+    debouse(async () => {
+      try {
+        await constumersApi.deleteCostumer(id);
+        fetchApi();
+        modalDeleteHandleClose();
+        setDeleteError(false);
+      } catch (error) {
+        setDeleteError(true);
+        console.log(error);
+      }
+    });
   };
 
   useEffect(() => {
-    fetchApi();
-  }, []);
+    if (search !== "") {
+      fetchApi(search, 1, limitPorPage);
+      return setCurrentPage(0);
+    }
+    fetchApi(search, currentPage + 1, limitPorPage);
+  }, [search, currentPage]);
 
   return (
     <>
@@ -103,8 +125,10 @@ export default function Client() {
         deleteError={deleteError}
       >
         <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
           <TextField
+            value={searchField || ""}
+            onChange={(e) => setSearchField(e.target.value)}
             hiddenLabel
             id="filled-hidden-label-small"
             placeholder="Search"
