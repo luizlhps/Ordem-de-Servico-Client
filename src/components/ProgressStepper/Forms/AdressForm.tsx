@@ -330,6 +330,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 sx={{
                   marginTop: 6,
                   background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
                 }}
               >
                 Prev
@@ -343,6 +344,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 sx={{
                   marginTop: 6,
                   background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
                 }}
               >
                 Next

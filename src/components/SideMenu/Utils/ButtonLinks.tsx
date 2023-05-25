@@ -56,32 +56,32 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
           >
             <ListItemIcon sx={{ minWidth: 29 }}>
               {icon === "dashboard" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <DasboardSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "ordens" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <OrdensSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "services" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <ServicesSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "clients" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <ClientsSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "finance" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <FinanceSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "profile" && (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <ProfileSVG color={theme.palette.primary.main} />
                 </Box>
               )}

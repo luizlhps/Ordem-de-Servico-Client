@@ -72,7 +72,7 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
           },
 
           "&.MuiDataGrid-root": {
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: theme.palette.background.default,
           },
         }}
         rows={rows ? rows : []}

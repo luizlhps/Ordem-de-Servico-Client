@@ -150,6 +150,7 @@ const CompletedForm: React.FC = () => {
               background: theme.palette.secondary.main,
               ":hover": { backgroundColor: theme.palette.secondary.main },
               borderRadius: "1rem",
+              color: theme.palette.background.paper,
             }}
           >
             Confirmar

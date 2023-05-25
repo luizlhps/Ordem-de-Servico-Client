@@ -304,6 +304,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   sx={{
                     marginTop: 6,
                     background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
                   }}
                 >
                   Next

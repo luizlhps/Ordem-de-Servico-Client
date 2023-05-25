@@ -283,6 +283,7 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
                 sx={{
                   marginTop: 6,
                   background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
                 }}
               >
                 Prev
@@ -292,6 +293,7 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
                 sx={{
                   marginTop: 6,
                   background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
                 }}
                 onClick={() => handleSubmit(onSubmit)()}
               >

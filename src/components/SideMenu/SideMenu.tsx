@@ -121,17 +121,17 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           <Box sx={{ marginTop: 3 }}>
             <List
               component="nav"
-              sx={{ display: "flex", alignItems: "center", flexDirection: "column", span: { fontWeight: 300 } }}
+              sx={{ display: "flex", alignItems: "center", flexDirection: "column", span: { fontWeight: 400 } }}
             >
               <ButtonLinks
-                width={200}
+                width={202}
                 href="/"
                 icon="dashboard"
                 label={"Dashboard"}
                 onclick={handleMenuOpen}
               ></ButtonLinks>
               <ButtonLinks
-                width={200}
+                width={202}
                 href="/teste"
                 icon="ordens"
                 label={"Ordens de Serviço"}
@@ -139,7 +139,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={200}
+                width={202}
                 href="/services"
                 icon="services"
                 label={"Serviços"}
@@ -147,7 +147,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={200}
+                width={202}
                 href="/clients"
                 icon="clients"
                 label={"Clientes"}
@@ -155,7 +155,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={200}
+                width={202}
                 href="/teste"
                 icon="finance"
                 label={"Finanças"}
