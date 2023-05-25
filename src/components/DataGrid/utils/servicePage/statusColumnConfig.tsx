@@ -19,7 +19,6 @@ export const statusColumnsDataGrid = (
   };
 
   const handleUpdate = async (data: any) => {
-    console.log("aqui", data);
     modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
   };

@@ -1,13 +1,15 @@
 import { constumersApi } from "@/services/api/costumersApi";
+import { orderApi } from "@/services/api/orderApi";
+import { IDetailsStatus } from "@/services/api/statusApi";
 import { useState, createContext, useContext } from "react";
 
 export const FormContext = createContext({} as Context);
 
 type Context = {
-  onDiscountChange?: any;
+  onDiscountChange?: () => void;
   data?: ICustomer;
   setFormValues?: any;
-  confirmData?: any;
+  confirmData?: () => void;
 };
 
 export interface ICustomer {
@@ -35,8 +37,8 @@ export interface ICustomer {
   brand: string;
   dateEntry: string;
   model: string;
-  description: string;
-  stats: string;
+  defect: string;
+  status: string;
 }
 
 interface FormProviderProps {
@@ -44,11 +46,15 @@ interface FormProviderProps {
 }
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
-  const [data, setData] = useState<ICustomer>();
+  const [data, setData] = useState<ICustomer | undefined>(undefined);
+  const [idCustomer, setIdCustomer] = useState<String>();
+
   console.log(data);
-
-  const batata = data?.equipment;
-
+  if (data?.status) {
+    if (data?.status.length > 0) {
+      console.log(data.status[0]);
+    }
+  }
   const setFormValues = (values: any) => {
     setData((prevValues) => ({
       ...prevValues,
@@ -60,14 +66,18 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     async function costumer(data: any) {
       try {
         const res = await constumersApi.createCostumer(data);
+        console.log(res);
+        setIdCustomer(res.data._id);
+        await order(data, res.data._id);
       } catch (error) {
         console.error(error);
       }
     }
-    async function order(data: any) {
+
+    async function order(data: any, costumerId: string) {
       try {
-        console.log(data, "existo");
-        /* const res = await constumersApi.createCostumer(data); */
+        console.log(data, costumerId);
+        const res = await orderApi.createOrder(data, costumerId);
       } catch (error) {
         console.error(error);
       }

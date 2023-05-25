@@ -63,8 +63,6 @@ export default function Client() {
   const limitPorPage = 10;
   const columns = columnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen);
 
-  console.log(selectedItem);
-
   //Ao clicar no botton ele vai para a pagina de cadastro de cliente
   function handleClickLink() {
     router.push("/clients/new");

@@ -59,7 +59,6 @@ export default function UpdateStatusModal({
       .updateStatus(data, selectedItemUpdate._id)
       .then((res) => {
         fetchApi();
-        console.log("data:", data);
 
         setError(false);
         setNewItem(true);

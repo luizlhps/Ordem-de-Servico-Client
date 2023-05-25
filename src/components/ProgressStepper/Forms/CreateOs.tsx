@@ -56,21 +56,16 @@ const ContainerCustom = styled.div`
 const InputCustomDefect = styled.textarea`
   font-size: 16px;
   color: #1e2737;
-  width: 350px;
-  height: 140px;
+  width: 100%;
+
+  height: 200px;
   border-radius: 0.3rem;
-  padding: 4px;
+  padding: 14px;
   border-style: none;
   border: 0.1px #878787 solid;
   margin-top: 14px;
-  font-size: 16px;
   resize: none;
   font-family: arial;
-  font-size: 14px;
-
-  @media (max-width: 1212px) {
-    width: 100%;
-  }
 `;
 
 //Interface
@@ -85,7 +80,7 @@ type Inputs = {
   model: string;
   brand: string;
   dateEntry: string;
-  stats: string;
+  status: string;
   defect: string;
   observation: string;
 };
@@ -104,7 +99,6 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
         if (data instanceof Error) {
           return console.error(data.message);
         } else {
-          console.log(data);
           setStatusData(data);
         }
       } catch (error) {
@@ -147,9 +141,9 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               }}
             />
             <Box display={"flex"} justifyContent={"flex-start"}>
-              <FormSelect name={"stats"} defaultValue={""} label={"status"} control={control}>
+              <FormSelect name={"status"} defaultValue={""} label={"status"} control={control}>
                 {statusData?.status.map((item) => (
-                  <MenuItem key={item._id} value={item._id}>
+                  <MenuItem key={item._id} value={[item._id, item.name]}>
                     {item.name}
                   </MenuItem>
                 ))}
@@ -169,43 +163,54 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               flexDirection={columnMedia ? "column" : "row"}
             >
               <Grid item xs>
-                <Typography marginTop={2}>Equipamento*</Typography>
+                <Typography marginTop={3} marginBottom={1}>
+                  Equipamento*
+                </Typography>
                 <Controller
+                  defaultValue=""
                   name={"equipment"}
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
-                    <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                    <TextField sx={{ fontWeight: 300 }} onChange={onChange} value={value} size="small" fullWidth />
                   )}
                 />
                 {errors.equipment?.type === "required" && (
                   <Typography color={"error"}>Digite o sobre o equipamento</Typography>
                 )}
-                <Typography marginTop={2}>Modelo*</Typography>
+                <Typography marginTop={3} marginBottom={1}>
+                  Modelo*
+                </Typography>
                 <Controller
+                  defaultValue=""
                   name={"model"}
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
-                    <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                    <TextField onChange={onChange} value={value} size="small" fullWidth />
                   )}
                 />
                 {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
               </Grid>
               <Grid item>
                 <Box>
-                  <Typography marginTop={2}>Marca*</Typography>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Marca*
+                  </Typography>
                   <Controller
                     name={"brand"}
                     control={control}
                     rules={{ required: true }}
+                    defaultValue={""}
                     render={({ field: { onChange, value } }) => (
-                      <TextField onChange={onChange} value={value} size="small" fullWidth defaultValue={""} />
+                      <TextField onChange={onChange} value={value} size="small" fullWidth />
                     )}
                   />
                   {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                  <Typography marginTop={2}>Data de Entrada*</Typography>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Data de Entrada*
+                  </Typography>
                   <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
                   {errors.dateEntry?.type === "required" && (
                     <Typography color={"error"}>Coloque a data de entrada</Typography>
@@ -228,18 +233,22 @@ const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormSte
               container
               spacing={3}
               marginTop={2}
-              flexDirection={columnMedia ? "column" : "row"}
+              flexDirection={"column"}
             >
               <Grid item xs>
-                <Typography marginTop={2}>Defeito</Typography>
+                <Typography marginTop={3} marginBottom={1}>
+                  Defeito
+                </Typography>
                 <InputCustomDefect {...register("defect", { required: true })} />
                 {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
               </Grid>
               <Grid item>
-                <Typography marginTop={2}>Observação</Typography>
+                <Typography marginTop={3} marginBottom={1}>
+                  Observação
+                </Typography>
                 <InputCustomDefect {...register("observation")} />
 
-                {errors.stats?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
+                {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
               </Grid>
             </Grid>
           </ContainerCustom>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
 import { FormContext } from "@/contexts";
-import { Button, Divider, Stack, Typography, useTheme, Box } from "@mui/material";
+import { Button, Divider, Stack, Typography, useTheme, Box, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
 
@@ -10,26 +10,8 @@ import styled from "styled-components";
 import { useDebouse } from "@/hook";
 import { CepSearch } from "@/services/api/SearchCep";
 import { numbersOnly } from "@/utils/Masks";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
-
-//style custom
-const InputCustom = styled.input`
-  height: 35px;
-  font-size: 16px;
-  color: #1e2737;
-  width: 300px;
-  border-radius: 0.3rem;
-  padding: 4px;
-  border-style: none;
-  border: 1px #878787 solid;
-  margin-top: 4px;
-  font-family: arial;
-
-  @media (max-width: 1110px) {
-    width: 100%;
-  }
-`;
 
 const ContainerCustom = styled.div`
   padding: 60px;
@@ -67,6 +49,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
     register,
     handleSubmit,
     watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
@@ -92,6 +75,7 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
   //Search Cep
   const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
     const cep = e.target.value.replace(/\D/g, "");
+
     setErrorForm(false);
 
     if (cep.split("").length === 8) {
@@ -135,85 +119,184 @@ const AdressForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, prevFormS
                 marginLeft: 1,
               }}
             />
-            <Stack direction={columnMedia ? "column" : "row"} justifyContent={"space-between"} marginTop={4}>
-              <Box
-                color={theme.palette.primary.main}
-                sx={{
-                  input: {
-                    background: theme.palette.background.paper,
-                    color: theme.palette.primary.main,
-                  },
-                }}
-              >
-                <Typography fontWeight={500} marginTop={2}>
-                  CEP*
-                </Typography>
-                <InputCustom
-                  maxLength={8}
-                  placeholder="Digite o Nome"
-                  {...register("cep", { required: true })}
-                  onBlur={searchCep}
-                  defaultValue={data?.cep}
-                />
-                {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
-                {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
 
-                <Typography marginTop={2}>Cidade*</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite o Nome"
-                  {...register("city", { required: true })}
-                  defaultValue={data?.city}
-                />
-                {errors.city?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-                <Typography marginTop={2}>Bairro*</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite o Nome"
-                  {...register("neighborhood", { required: true })}
-                  defaultValue={data?.neighborhood}
-                />
-                {errors.neighborhood?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-                <Typography marginTop={2}>Complemento</Typography>
-                <InputCustom
-                  id="outlined-multiline-flexible"
-                  placeholder="Digite o Nome"
-                  {...register("complement")}
-                  defaultValue={data?.complement}
-                />
-              </Box>
-              <Box
-                color={theme.palette.primary.main}
-                sx={{
-                  input: {
-                    background: theme.palette.background.paper,
-                    color: theme.palette.primary.main,
-                  },
-                }}
-              >
-                <Typography marginTop={2}>Estado*</Typography>
-                <InputCustom
-                  placeholder="Digite o Nome"
-                  {...register("state", { required: true })}
-                  defaultValue={data?.state}
-                />
-                {errors.state?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-                <Typography marginTop={2}>Rua*</Typography>
-                <InputCustom
-                  placeholder="Digite o Nome"
-                  defaultValue={data?.street}
-                  {...register("street", { required: true })}
-                />
-                {errors.street?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-                <Typography marginTop={2}>Numero*</Typography>
-                <InputCustom
-                  type="text"
-                  placeholder="Digite o Nome"
-                  {...register("number", { required: true })}
-                  defaultValue={data?.number}
-                />
-                {errors.number?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-              </Box>
+            <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
+              <Typography fontWeight={500} marginTop={3} marginBottom={1}>
+                CEP*
+              </Typography>
+              <Controller
+                name="cep"
+                defaultValue={""}
+                rules={{ required: true, minLength: 8, validate: (value) => !errorForm }}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    onBlur={searchCep}
+                    error={!!errors.cep}
+                    inputProps={{ maxLength: 8, pattern: "/d+/" }}
+                    fullWidth
+                    value={numbersOnly(value).replace(/^(\d{5})(\d{3})$/, "$1-$2")}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    size="small"
+                    placeholder="Digite o Nome"
+                    defaultValue={data?.cep}
+                  />
+                )}
+              />
+              {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
+              {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
+
+              <Typography marginTop={3} marginBottom={1}>
+                Cidade*
+              </Typography>
+              <Controller
+                name="city"
+                defaultValue={""}
+                rules={{ required: true }}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    size="small"
+                    error={!!errors.city}
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    fullWidth
+                    id="outlined-multiline-flexible"
+                    placeholder="Digite o Nome"
+                    defaultValue={data?.city}
+                  />
+                )}
+              />
+              {errors.city?.type === "required" && <Typography color={"error"}>Digite a cidade</Typography>}
+              <Typography marginTop={3} marginBottom={1}>
+                Bairro*
+              </Typography>
+              <Controller
+                rules={{ required: true }}
+                name="neighborhood"
+                defaultValue={""}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    size="small"
+                    fullWidth
+                    error={!!errors.neighborhood}
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    id="outlined-multiline-flexible"
+                    placeholder="Digite o Nome"
+                    defaultValue={data?.neighborhood}
+                  />
+                )}
+              />
+              {errors.neighborhood?.type === "required" && <Typography color={"error"}>Digite o bairro</Typography>}
+              <Typography marginTop={3} marginBottom={1}>
+                Complemento
+              </Typography>
+
+              <Controller
+                name="complement"
+                defaultValue={""}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    error={!!errors.complement}
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    id="outlined-multiline-flexible"
+                    placeholder="Digite o Nome"
+                    defaultValue={data?.complement}
+                  />
+                )}
+              />
+
+              <Typography marginTop={3} marginBottom={1}>
+                Estado*
+              </Typography>
+              <Controller
+                rules={{ required: true }}
+                name="state"
+                defaultValue={""}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    error={!!errors.state}
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    placeholder="Digite o Nome"
+                    defaultValue={data?.state}
+                  />
+                )}
+              />
+              {errors.state?.type === "required" && <Typography color={"error"}>Digite o estado</Typography>}
+
+              <Stack flexDirection={!columnMedia ? "row" : "column"} gap={1}>
+                <Box flex={1}>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Rua*
+                  </Typography>
+                  <Controller
+                    rules={{ required: true }}
+                    name="street"
+                    defaultValue={""}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField
+                        fullWidth
+                        size="small"
+                        error={!!errors.street}
+                        value={value}
+                        onChange={(e) => {
+                          onChange(e.target.value);
+                        }}
+                        placeholder="Digite o Nome"
+                        defaultValue={data?.street}
+                      />
+                    )}
+                  />
+                  {errors.street?.type === "required" && <Typography color={"error"}>Digite a rua</Typography>}
+                </Box>
+                <Box>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Numero*
+                  </Typography>
+                  <Controller
+                    rules={{ required: true }}
+                    name="number"
+                    defaultValue={""}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <TextField
+                        fullWidth
+                        size="small"
+                        error={!!errors.number}
+                        value={value}
+                        onChange={(e) => {
+                          onChange(e.target.value);
+                        }}
+                        type="text"
+                        placeholder="Digite o Nome"
+                        defaultValue={data?.number}
+                      />
+                    )}
+                  />
+                  {errors.number?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
+                </Box>
+              </Stack>
             </Stack>
           </ContainerCustom>
           <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>

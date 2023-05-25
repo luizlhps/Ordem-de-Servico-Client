@@ -49,7 +49,9 @@ const CompletedForm: React.FC = () => {
   const router = useRouter();
   const Redirect = () => {
     router.push("/clients");
-    confirmData();
+    if (confirmData) {
+      confirmData();
+    }
   };
 
   return (
@@ -114,7 +116,7 @@ const CompletedForm: React.FC = () => {
               </Typography>
               <InputCustom
                 readOnly
-                defaultValue={data?.description ? data?.description : ""}
+                defaultValue={data?.defect ? data?.defect : ""}
                 style={{
                   color: theme.palette.primary.light,
                   width: "100%",
@@ -126,7 +128,7 @@ const CompletedForm: React.FC = () => {
               <Typography fontWeight={500}>Status</Typography>
               <InputCustom
                 readOnly
-                defaultValue={data?.stats ? data?.stats : ""}
+                defaultValue={data?.status ? data?.status[1] : ""}
                 style={{ color: theme.palette.primary.light, width: "100%" }}
               />
             </Grid>

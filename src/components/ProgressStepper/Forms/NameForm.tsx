@@ -126,7 +126,15 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                   <Controller
                     name={"email"}
                     control={control}
-                    rules={{ required: false }}
+                    rules={{
+                      required: false,
+                      validate: (value) => {
+                        if (value.length > 0) {
+                          return validator.isEmail(value);
+                        }
+                        return true;
+                      },
+                    }}
                     defaultValue={""}
                     render={({ field: { onChange, value } }) => (
                       <TextField
@@ -184,6 +192,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                           placeholder="Ex: 00.000.000/0001-91"
                         />
                       )}
+                      defaultValue=""
                       control={control}
                       name="cpfOrCnpj"
                       rules={{ required: true, minLength: 11 }}
@@ -215,6 +224,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                             placeholder="Ex: (11) 98765-4321"
                           />
                         )}
+                        defaultValue=""
                         control={control}
                         name="phone"
                         rules={{ required: true, minLength: 11 }}
@@ -246,6 +256,7 @@ const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep }) => {
                             placeholder="Ex: (11) 3265-4321"
                           />
                         )}
+                        defaultValue=""
                         control={control}
                         name="tel"
                         rules={{ required: false, minLength: 10 }}

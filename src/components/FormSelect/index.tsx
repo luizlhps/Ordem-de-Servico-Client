@@ -11,14 +11,16 @@ interface IProps {
   name: string;
   defaultValue: string;
   label: string;
+  setState?: React.Dispatch<React.SetStateAction<any | undefined>>;
 }
 
-export default function FormSelect({ children, control, name, defaultValue, label }: IProps) {
+export default function FormSelect({ children, control, name, defaultValue, label, setState }: IProps) {
   return (
     <Box sx={{ minWidth: 120, marginTop: 6 }}>
       <FormControl size="small" sx={{ width: "100%" }}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Controller
+          defaultValue=""
           control={control}
           name={name}
           render={({
@@ -31,7 +33,13 @@ export default function FormSelect({ children, control, name, defaultValue, labe
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Age"
-              onChange={onChange}
+              onChange={(event) => {
+                const selectedValue = event.target.value;
+                onChange(selectedValue);
+                if (setState) {
+                  setState(selectedValue);
+                }
+              }}
             >
               {children}
             </Select>

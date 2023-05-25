@@ -21,10 +21,12 @@ input::-webkit-inner-spin-button {
 
 
  input:focus{
-   outline: 0;
+  outline: none;
+  border-color: #719ECE;
  }
  textarea:focus{
-   outline: 0;
+  outline: none;
+  border-color: #719ECE;
  }
 
  `;

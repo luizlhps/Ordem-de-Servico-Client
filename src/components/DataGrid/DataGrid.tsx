@@ -1,7 +1,7 @@
 import React from "react";
 
 //Material Ui
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid, useGridApiContext, useGridApiRef } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import Pagination from "@mui/material/Pagination";
@@ -58,6 +58,8 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
   currentPage,
   loading,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
@@ -67,6 +69,10 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
+          },
+
+          "&.MuiDataGrid-root": {
+            backgroundColor: theme.palette.background.paper,
           },
         }}
         rows={rows ? rows : []}

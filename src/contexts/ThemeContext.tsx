@@ -17,7 +17,7 @@ export const AppThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => 
   const [themeName, setThemeName] = useState<"light" | "dark">("light");
   return (
     <ThemeContext.Provider value={{ themeName }}>
-      <ThemeProvider theme={DarkTheme}>
+      <ThemeProvider theme={LightTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

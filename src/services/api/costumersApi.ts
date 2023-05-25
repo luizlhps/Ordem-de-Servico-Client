@@ -5,7 +5,6 @@ import { Api } from "./axios-config";
 class Costumers {
   async getAllCostumers(filter = "", page = 1, limit = 10) {
     const res = await Api.get(`costumers/?filter=${filter}&page=${page}&limit=${limit}`);
-    console.log(`costumers/?filter=${filter}&page=${page}&limit=${limit}`);
     return res;
   }
 

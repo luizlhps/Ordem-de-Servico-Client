@@ -9,7 +9,6 @@ interface Params extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { costumerId } = context.params as Params;
-  console.log(costumerId);
 
   try {
     const res = await constumersApi.getById(costumerId);

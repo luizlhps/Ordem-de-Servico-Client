@@ -31,10 +31,7 @@ export default NextAuth({
 
           const authorization = { id: userData.accessToken };
 
-          console.log(authorization.id);
-
           if (authorization.id) {
-            console.log("data", userData);
             return userData;
           }
         } catch (error: any) {
@@ -46,10 +43,7 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        console.log(user);
-
         token.sub = user.accessToken;
-        console.log(token);
       }
       return token;
     },

@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material";
 import { DataGrid, bgBG } from "@mui/x-data-grid";
 import { ptBR as ptBRGridToolbar } from "@mui/x-data-grid";
 import { ptBR as coreBgBG } from "@mui/material/locale";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { ptBR } from "@mui/material/locale";
 
 export const DarkTheme = createTheme(
@@ -30,6 +31,21 @@ export const DarkTheme = createTheme(
 
       allVariants: {
         color: "white",
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "#719ECE",
+            },
+            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+              outline: "none",
+              borderColor: "#719ECE",
+            },
+          },
+        },
       },
     },
 
