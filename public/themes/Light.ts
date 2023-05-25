@@ -1,4 +1,6 @@
 import { createTheme } from "@mui/material";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
+
 import { DataGrid, bgBG } from "@mui/x-data-grid";
 import { ptBR as ptBRGridToolbar } from "@mui/x-data-grid";
 import { ptBR as coreBgBG } from "@mui/material/locale";
@@ -26,6 +28,20 @@ export const LightTheme = createTheme(
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(","),
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "#06B0AB",
+            },
+            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "#06B0AB",
+            },
+          },
+        },
+      },
     },
 
     palette: {
