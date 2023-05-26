@@ -3,6 +3,7 @@ import { useState, createContext, useContext } from "react";
 import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
+import { FormSucessOrErrorContext, FormSucessOrErrorProvider } from "./formSuccessOrErrorContext";
 
 export const FormRegisterCostumerContext = createContext({} as Context);
 
@@ -12,6 +13,7 @@ type Context = {
   setFormValues?: any;
   confirmData?: () => void;
   test: (valor: any) => void;
+  loading: boolean;
 };
 
 export interface ICustomer {
@@ -49,14 +51,18 @@ interface FormProviderProps {
 
 export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ children }) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
-  const [idCustomer, setIdCustomer] = useState<String>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { setFormSucessoValue, setErrorMessageValue } = useContext(FormSucessOrErrorContext);
 
   console.log(data);
+
   if (data?.status) {
     if (data?.status.length > 0) {
       console.log(data.status[0]);
     }
   }
+
   const setFormValues = (values: any) => {
     console.log("exist", values);
     setData((prevValues) => ({
@@ -71,13 +77,21 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
 
   function confirmData() {
     async function costumer(data: any) {
+      setLoading(true);
       try {
         const res = await constumersApi.createCostumer(data);
         console.log(res);
-        setIdCustomer(res.data._id);
+
+        if (res instanceof Error) {
+          throw new Error("Ocorreu um erro");
+        }
         await order(data, res.data._id);
-      } catch (error) {
+
+        setFormSucessoValue(true);
+      } catch (error: any) {
+        setFormSucessoValue(false);
         console.error(error);
+        setErrorMessageValue(error.response.data.message); //
       }
     }
 
@@ -85,16 +99,19 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
       try {
         console.log(data, costumerId);
         const res = await orderApi.createOrder(data, costumerId);
+        setFormSucessoValue(true);
       } catch (error) {
+        setFormSucessoValue(false);
         console.error(error);
       }
+      setLoading(false);
     }
 
     costumer(data);
   }
 
   return (
-    <FormRegisterCostumerContext.Provider value={{ data, setFormValues, confirmData, test }}>
+    <FormRegisterCostumerContext.Provider value={{ data, setFormValues, confirmData, test, loading }}>
       {children}
     </FormRegisterCostumerContext.Provider>
   );

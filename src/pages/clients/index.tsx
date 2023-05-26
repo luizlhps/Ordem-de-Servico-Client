@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
-import { Button, Stack, TextField, useTheme } from "@mui/material";
+import { Alert, Button, Snackbar, SnackbarOrigin, Stack, TextField, useTheme } from "@mui/material";
 import { useRouter } from "next/router";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
@@ -9,6 +9,7 @@ import { constumersApi } from "@/services/api/costumersApi";
 import DeleteModal from "@/components/Modal/deleteModal";
 
 import { useDebouse } from "@/hook";
+import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 export interface IData {
   Total: number;
@@ -46,7 +47,6 @@ export interface IAddress {
 export default function Client() {
   const router = useRouter();
   const { debouse } = useDebouse();
-
   //Theme
   const theme = useTheme();
 
@@ -112,8 +112,70 @@ export default function Client() {
     fetchApi(search, currentPage + 1, limitPorPage);
   }, [search, currentPage]);
 
+  /////////
+
+  const { formError, formSuccess, setFormSucessoValue, errorMessage } = useContext(FormSucessOrErrorContext);
+  interface State extends SnackbarOrigin {
+    open: boolean;
+  }
+
+  const [sucessState, setSucessState] = React.useState<boolean>(false);
+  const [errorState, setErrorState] = React.useState<boolean>(true);
+
+  //Sucess
+  const handleFormSuccessClick = () => {
+    setSucessState(true);
+  };
+  const handleFormSuccessClose = () => {
+    setSucessState(false);
+  };
+
+  //Error
+  const handleFormErrorClick = () => {
+    setErrorState(true);
+  };
+  const handleFormErrorClose = () => {
+    setErrorState(false);
+  };
+
+  useEffect(() => {
+    if (formSuccess === true) {
+      handleFormSuccessClick();
+
+      setFormSucessoValue(false);
+    }
+    if (formError === true) {
+      handleFormErrorClick();
+
+      /*  setFormErrorValue(false); */
+    }
+  }, [formSuccess, formError]);
+
+  console.log(formSuccess);
+  console.log(errorMessage);
+
+  const errorD = errorMessage;
   return (
     <>
+      <Snackbar
+        open={sucessState}
+        onClose={handleFormSuccessClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleFormSuccessClose} severity="success" sx={{ width: "100%" }}>
+          O.S e cliente cadastrados com sucesso!!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={errorState}
+        onClose={handleFormErrorClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleFormErrorClose} severity="error" sx={{ width: "100%" }}>
+          Ocorreu um Erro ao criar : {errorD === String && errorD !== undefined ? errorD : "Desconhecido"}
+        </Alert>
+      </Snackbar>
+
       <DeleteModal
         fetchApi={fetchApi}
         open={modalOpendelete}

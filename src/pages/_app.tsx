@@ -8,9 +8,10 @@ import { SessionProvider } from "next-auth/react";
 
 //CSS
 import GlobaStyles from "../styles/global";
-import { AppThemeProvider, FormProvider } from "../contexts";
+import { AppThemeProvider } from "../contexts";
 import styled from "styled-components";
 import LayoutDefault from "@/layout/LayoutDefault";
+import { FormSucessOrErrorProvider } from "@/contexts/formSuccessOrErrorContext";
 
 //LAYOUT
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -21,14 +22,18 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
+  //Layout Get
+
   if (Component.getLayout) {
     return Component.getLayout(
       <>
         <GlobaStyles />
         <AppThemeProvider>
           <SessionProvider session={session}>
-            <NextNProgress showOnShallow={true} />
-            <Component {...pageProps} />
+            <FormSucessOrErrorProvider>
+              <NextNProgress showOnShallow={true} />
+              <Component {...pageProps} />
+            </FormSucessOrErrorProvider>
           </SessionProvider>
         </AppThemeProvider>
       </>
@@ -41,8 +46,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <AppThemeProvider>
         <SessionProvider session={session}>
           <LayoutDefault>
-            <NextNProgress showOnShallow={true} />
-            <Component {...pageProps} />
+            <FormSucessOrErrorProvider>
+              <NextNProgress showOnShallow={true} />
+              <Component {...pageProps} />
+            </FormSucessOrErrorProvider>
           </LayoutDefault>
         </SessionProvider>
       </AppThemeProvider>

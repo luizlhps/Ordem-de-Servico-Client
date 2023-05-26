@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import { Container, Divider, Typography, useTheme, Grid, Button } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import styled from "styled-components";
 
 import { HeaderLayout } from "@/components/HeaderLayout";
@@ -45,14 +46,15 @@ const ContainerCustom = styled.div`
 interface Iprops {
   confirmData: (() => void) | undefined;
   data: any;
+  loading: boolean;
 }
 
-export const CompletedForm: React.FC<Iprops> = ({ confirmData, data }) => {
+export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading }) => {
   const theme = useTheme();
 
   const router = useRouter();
   const Redirect = () => {
-    router.push("/clients");
+    if (loading === false) router.push("/clients");
     if (confirmData) {
       confirmData();
     }
@@ -157,7 +159,13 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data }) => {
               color: theme.palette.background.paper,
             }}
           >
-            Confirmar
+            {loading ? (
+              <>
+                <CircularProgress size={25} />
+              </>
+            ) : (
+              <>Confirmar</>
+            )}
           </Button>
         </ContainerCustom>
       </Container>

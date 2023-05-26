@@ -221,6 +221,7 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
                             error={!!errors.phone}
                             type="text"
                             fullWidth
+                            inputProps={{ maxLength: 16 }}
                             size="small"
                             value={normalizePhoneNumber(field.value)}
                             onChange={(e) => {

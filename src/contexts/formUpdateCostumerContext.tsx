@@ -1,14 +1,22 @@
+import { useState, createContext, useContext } from "react";
+
 import { constumersApi } from "@/services/api/costumersApi";
-import React, { useState, createContext, useContext } from "react";
+import { orderApi } from "@/services/api/orderApi";
+import { IDetailsStatus } from "@/services/api/statusApi";
+import { useRouter } from "next/router";
+
+export const formUpdateCostumerContext = createContext({} as Context);
 
 type Context = {
   onDiscountChange?: () => void;
-  setFormValues?: any;
   data?: ICustomer;
+  setFormValues?: any;
   confirmData?: () => void;
+  test: (valor: any) => void;
+  loading: boolean;
 };
 
-interface ICustomer {
+export interface ICustomer {
   id: number;
   name: string;
   email: string;
@@ -27,40 +35,70 @@ interface ICustomer {
   number: string;
   complement: string;
   _id: string;
+
+  //equipament
+  equipment: string;
+  brand: string;
+  dateEntry: string;
+  model: string;
+  defect: string;
+  status: string;
 }
 
 interface FormProviderProps {
   children: React.ReactNode;
 }
 
-export const formUpdateCostumerContext = createContext({} as Context);
-
-export const FormUpdateCostumerProvider = ({ children }: FormProviderProps) => {
+export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ children }) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
-  const [idCustomer, setIdCustomer] = useState<String>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { query } = useRouter();
+
+  const idCustomer = query.costumerId;
+
+  console.log(data);
+
+  if (data?.status) {
+    if (data?.status.length > 0) {
+      console.log(data.status[0]);
+    }
+  }
 
   const setFormValues = (values: any) => {
+    console.log("exist", values);
     setData((prevValues) => ({
       ...prevValues,
       ...values,
     }));
   };
 
-  function confirmData() {
-    /*       async function costumer(data: any) {
-        try {
-          const res = await constumersApi.(data);
-          console.log(res);
+  const test = (valor: any) => {
+    console.log(valor);
+  };
 
-        } catch (error) {
-          console.error(error);
-        } */
+  function confirmData() {
+    async function costumer(data: any, _id: string | string[]) {
+      setLoading(true);
+      console.log(data, _id);
+      try {
+        const res = await constumersApi.updateCostumer(data, _id);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    }
+    if (idCustomer) {
+      costumer(data, idCustomer);
+    }
   }
+
   return (
-    <>
-      <formUpdateCostumerContext.Provider value={{ data }}>{children}</formUpdateCostumerContext.Provider>
-    </>
+    <formUpdateCostumerContext.Provider value={{ data, setFormValues, confirmData, test, loading }}>
+      {children}
+    </formUpdateCostumerContext.Provider>
   );
 };
 
-export const FormUpdateCostumerData = () => useContext(formUpdateCostumerContext);
+export const useFormData = () => useContext(formUpdateCostumerContext);

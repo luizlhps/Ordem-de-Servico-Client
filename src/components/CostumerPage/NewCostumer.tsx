@@ -12,19 +12,16 @@ import {
   useMediaQuery,
   MenuItem,
   TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { HeaderLayout } from "../HeaderLayout";
 import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressStepper";
+import { FormSucessOrErrorProvider } from "@/contexts/formSuccessOrErrorContext";
 
 const NewCostumer = () => {
   const [agoravai, setData] = useState();
-  const { confirmData, data, test } = useContext(FormRegisterCostumerContext);
-
-  useEffect(() => {
-    test("batata");
-  }, []);
-
-  const { setFormValues } = useContext(FormRegisterCostumerContext);
+  const { confirmData, data, setFormValues, loading } = useContext(FormRegisterCostumerContext);
 
   const [formStep, setFormStep] = useState(0);
 
@@ -58,7 +55,7 @@ const NewCostumer = () => {
                 formStep={formStep}
                 nextFormStep={nextFormStep}
                 data={data}
-                setData={setData}
+                setData={setFormValues}
                 typeForm="createCostumer"
               />
             )}
@@ -68,7 +65,7 @@ const NewCostumer = () => {
                 nextFormStep={nextFormStep}
                 prevFormStep={prevFormStep}
                 data={data}
-                setData={setData}
+                setData={setFormValues}
                 typeForm="createCostumer"
               />
             )}
@@ -78,7 +75,7 @@ const NewCostumer = () => {
                 nextFormStep={nextFormStep}
                 prevFormStep={prevFormStep}
                 data={data}
-                setData={setData}
+                setData={setFormValues}
                 typeForm="createCostumer"
               />
             )}
@@ -86,7 +83,7 @@ const NewCostumer = () => {
         </>
       )}
 
-      {formStep > 2 && <CompletedForm data={data} confirmData={confirmData} />}
+      {formStep > 2 && <CompletedForm loading={loading} data={data} confirmData={confirmData} />}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { ICustomer } from "@/contexts";
 import { Api } from "./axios-config";
 
 //[] - Adicionar trycatch e validação de erro
@@ -17,8 +18,30 @@ class Costumers {
     return deleteId;
   }
 
-  async createCostumer(data: any) {
+  async createCostumer(data: ICustomer) {
     const res = await Api.post("costumers", {
+      /*  name: data?.name, */
+      email: data?.email,
+      contact: data?.contact,
+      phone: data?.phone,
+      cpfOrCnpj: data?.cpfOrCnpj,
+      telephone: data?.tel,
+      address: [
+        {
+          cep: data?.cep,
+          state: data?.state,
+          neighborhood: data?.neighborhood,
+          street: data?.street,
+          city: data?.city,
+          number: data?.number,
+          complement: data?.complement,
+        },
+      ],
+    });
+    return res;
+  }
+  async updateCostumer(data: any, _id: string | string[]) {
+    const res = await Api.put(`costumers/${_id}`, {
       name: data?.name,
       email: data?.email,
       contact: data?.contact,
