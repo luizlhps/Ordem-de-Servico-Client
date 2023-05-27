@@ -4,6 +4,7 @@ import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { useRouter } from "next/router";
+import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
 
 export const formUpdateCostumerContext = createContext({} as Context);
 
@@ -57,6 +58,8 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ childr
 
   const idCustomer = query.costumerId;
 
+  const { setFormSucessoValue, setErrorMessageValue, setFormSuccess } = useContext(FormSucessOrErrorContext);
+
   console.log(data);
 
   if (data?.status) {
@@ -84,8 +87,16 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ childr
       try {
         const res = await constumersApi.updateCostumer(data, _id);
         console.log(res);
-      } catch (error) {
+
+        if (res instanceof Error) {
+          throw new Error("Ocorreu um erro");
+        }
+
+        setFormSucessoValue(true);
+      } catch (error: any) {
+        setFormSucessoValue(false);
         console.error(error);
+        setErrorMessageValue(error.response.data.message); //
       }
       setLoading(false);
     }

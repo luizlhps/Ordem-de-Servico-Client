@@ -114,9 +114,12 @@ export default function Client() {
   }, [search, currentPage]);
 
   /////////
-
-  const { formError, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue } =
+  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue } =
     useContext(FormSucessOrErrorContext);
+
+  useEffect(() => {
+    setFormSuccess(false);
+  }, [formSuccess, setFormSucessoValue]);
 
   return (
     <>

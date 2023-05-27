@@ -20,7 +20,7 @@ class Costumers {
 
   async createCostumer(data: ICustomer) {
     const res = await Api.post("costumers", {
-      /*  name: data?.name, */
+      name: data?.name,
       email: data?.email,
       contact: data?.contact,
       phone: data?.phone,

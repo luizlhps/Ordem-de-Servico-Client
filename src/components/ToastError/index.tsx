@@ -6,10 +6,10 @@ interface State extends SnackbarOrigin {
 }
 
 interface IToast {
-  formSuccess: any;
+  formSuccess: boolean;
   errorMessage: any;
-  setFormSucessoValue: any;
-  setErrorMessageValue: any;
+  setFormSucessoValue: (value: boolean) => void;
+  setErrorMessageValue: (value: any) => void;
 }
 
 export const ToastError: React.FC<IToast> = ({
@@ -40,15 +40,16 @@ export const ToastError: React.FC<IToast> = ({
   useEffect(() => {
     if (formSuccess === true) {
       handleFormSuccessClick();
-
-      setFormSucessoValue(false);
     }
+
     if (errorMessage !== undefined) {
       handleFormErrorClick();
 
       setErrorMessageValue(undefined);
     }
-  }, [formSuccess, errorMessage]);
+  }, [formSuccess, errorMessage, errorState]);
+
+  console.log("aqui,, ", sucessState);
 
   console.log(formSuccess);
   console.log(errorMessage);
