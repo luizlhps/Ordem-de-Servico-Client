@@ -53,7 +53,7 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
   const [data, setData] = useState<ICustomer | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { setFormSucessoValue, setErrorMessageValue } = useContext(FormSucessOrErrorContext);
+  const { setFormSucessoValue, setErrorMessageValue, setFormErrorValue } = useContext(FormSucessOrErrorContext);
 
   console.log(data);
 
@@ -86,8 +86,6 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
           throw new Error("Ocorreu um erro");
         }
         await order(data, res.data._id);
-
-        setFormSucessoValue(true);
       } catch (error: any) {
         setFormSucessoValue(false);
         console.error(error);

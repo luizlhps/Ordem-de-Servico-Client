@@ -20,7 +20,7 @@ export const useFormData = () => useContext(FormSucessOrErrorContext);
 export const FormSucessOrErrorProvider: React.FC<IProviderProps> = ({ children }) => {
   const [formError, setFormError] = useState<boolean>(false);
   const [formSuccess, setFormSuccess] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState<any>(undefined);
 
   const setFormSucessoValue = (value: boolean) => {
     if (value) {

@@ -10,6 +10,7 @@ import DeleteModal from "@/components/Modal/deleteModal";
 
 import { useDebouse } from "@/hook";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
+import { ToastError } from "@/components/ToastError";
 
 export interface IData {
   Total: number;
@@ -114,67 +115,17 @@ export default function Client() {
 
   /////////
 
-  const { formError, formSuccess, setFormSucessoValue, errorMessage } = useContext(FormSucessOrErrorContext);
-  interface State extends SnackbarOrigin {
-    open: boolean;
-  }
+  const { formError, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue } =
+    useContext(FormSucessOrErrorContext);
 
-  const [sucessState, setSucessState] = React.useState<boolean>(false);
-  const [errorState, setErrorState] = React.useState<boolean>(true);
-
-  //Sucess
-  const handleFormSuccessClick = () => {
-    setSucessState(true);
-  };
-  const handleFormSuccessClose = () => {
-    setSucessState(false);
-  };
-
-  //Error
-  const handleFormErrorClick = () => {
-    setErrorState(true);
-  };
-  const handleFormErrorClose = () => {
-    setErrorState(false);
-  };
-
-  useEffect(() => {
-    if (formSuccess === true) {
-      handleFormSuccessClick();
-
-      setFormSucessoValue(false);
-    }
-    if (formError === true) {
-      handleFormErrorClick();
-
-      /*  setFormErrorValue(false); */
-    }
-  }, [formSuccess, formError]);
-
-  console.log(formSuccess);
-  console.log(errorMessage);
-
-  const errorD = errorMessage;
   return (
     <>
-      <Snackbar
-        open={sucessState}
-        onClose={handleFormSuccessClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleFormSuccessClose} severity="success" sx={{ width: "100%" }}>
-          O.S e cliente cadastrados com sucesso!!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={errorState}
-        onClose={handleFormErrorClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleFormErrorClose} severity="error" sx={{ width: "100%" }}>
-          Ocorreu um Erro ao criar : {errorD === String && errorD !== undefined ? errorD : "Desconhecido"}
-        </Alert>
-      </Snackbar>
+      <ToastError
+        errorMessage={errorMessage}
+        formSuccess={formSuccess}
+        setErrorMessageValue={setErrorMessageValue}
+        setFormSucessoValue={setFormSucessoValue}
+      />
 
       <DeleteModal
         fetchApi={fetchApi}

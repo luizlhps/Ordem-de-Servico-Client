@@ -8,9 +8,8 @@ import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 const UpdateCostumer = ({ costumer }: any) => {
   const { confirmData, data, setFormValues, loading } = useContext(formUpdateCostumerContext);
-  const { formError, formSuccess, setFormSucessoValue } = useContext(FormSucessOrErrorContext);
+  const { formError, formSuccess } = useContext(FormSucessOrErrorContext);
 
-  setFormSucessoValue(true);
   const [formStep, setFormStep] = useState(0);
 
   const nextFormStep = () => {
