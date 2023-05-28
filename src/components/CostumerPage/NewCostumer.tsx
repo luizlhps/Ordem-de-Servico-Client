@@ -1,26 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { FormRegisterCostumerContext } from "@/contexts";
-import {
-  Container,
-  Divider,
-  Stack,
-  Typography,
-  useTheme,
-  Grid,
-  Box,
-  Button,
-  useMediaQuery,
-  MenuItem,
-  TextField,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Container, useTheme } from "@mui/material";
 import { HeaderLayout } from "../HeaderLayout";
 import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressStepper";
-import { FormSucessOrErrorProvider } from "@/contexts/formSuccessOrErrorContext";
 
 const NewCostumer = () => {
-  const [agoravai, setData] = useState();
   const { confirmData, data, setFormValues, loading } = useContext(FormRegisterCostumerContext);
 
   const [formStep, setFormStep] = useState(0);

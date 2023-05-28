@@ -10,7 +10,8 @@ import DeleteModal from "@/components/Modal/deleteModal";
 
 import { useDebouse } from "@/hook";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
-import { ToastError } from "@/components/ToastError";
+import { ToastSuccess } from "@/components/Toast/ToastSuccess";
+import { ToastError } from "@/components/Toast/ToastError";
 
 export interface IData {
   Total: number;
@@ -58,9 +59,12 @@ export default function Client() {
 
   const [loading, setLoading] = useState(false);
 
+  //context
+  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue, setErrorMessage } =
+    useContext(FormSucessOrErrorContext);
+
   //Modal Delete
   const [modalOpendelete, setModalOpendelete] = useState(false);
-  const [deleteError, setDeleteError] = useState(false);
   const modalDeleteHandleOpen = () => setModalOpendelete(true);
   const modalDeleteHandleClose = () => {
     setModalOpendelete(false);
@@ -69,7 +73,6 @@ export default function Client() {
   const limitPorPage = 10;
   const columns = ColumnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen);
 
-  //Ao clicar no botton ele vai para a pagina de cadastro de cliente
   function handleClickLink() {
     router.push("/clients/new");
   }
@@ -97,9 +100,7 @@ export default function Client() {
         await constumersApi.deleteCostumer(id);
         fetchApi();
         modalDeleteHandleClose();
-        setDeleteError(false);
       } catch (error) {
-        setDeleteError(true);
         console.log(error);
       }
     });
@@ -113,10 +114,6 @@ export default function Client() {
     fetchApi(search, currentPage + 1, limitPorPage);
   }, [search, currentPage]);
 
-  /////////
-  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue } =
-    useContext(FormSucessOrErrorContext);
-
   useEffect(() => {
     setFormSuccess(false);
   }, [formSuccess, setFormSucessoValue]);
@@ -125,9 +122,13 @@ export default function Client() {
     <>
       <ToastError
         errorMessage={errorMessage}
-        formSuccess={formSuccess}
         setErrorMessageValue={setErrorMessageValue}
+        setErrorMessage={setErrorMessage}
+      />
+      <ToastSuccess
+        formSuccess={formSuccess}
         setFormSucessoValue={setFormSucessoValue}
+        alertSuccess="bunda atualizados com sucesso!!"
       />
 
       <DeleteModal
@@ -138,7 +139,6 @@ export default function Client() {
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
         selectedItemUpdate={selectedItem}
-        deleteError={deleteError}
       >
         <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
         <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>

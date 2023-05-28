@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import react, { useContext, useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -10,6 +10,7 @@ import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/materi
 import { useForm } from "react-hook-form";
 import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
+import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 interface IModal {
   open: boolean;
@@ -34,6 +35,8 @@ export default function UpdateServiceModal({
 }: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
+
+  const { setFormSuccess, setFormSucessoValue, setErrorMessageValue } = useContext(FormSucessOrErrorContext);
 
   //form
   const {
@@ -61,20 +64,24 @@ export default function UpdateServiceModal({
       .updateServices(data, selectedItemUpdate._id)
       .then((res) => {
         fetchApi();
-
         setError(false);
         setNewService(true);
         setValue("title", data.title);
         setValue("description", data.description);
         setValue("amount", data.amount);
+        setFormSucessoValue(true);
+        handleClose();
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
-          console.log(error.response.data); // erro do backend
-          setErrorName(error.response.data.message);
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
         } else {
-          console.log(error.message); //erro do Axios
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
         }
       });
   };

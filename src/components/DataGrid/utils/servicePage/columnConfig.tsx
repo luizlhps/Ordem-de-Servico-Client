@@ -3,12 +3,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
-import { servicesApi } from "@/services/api/servicesApi";
-import { useEffect } from "react";
 
 export const columnsDataGrid = (
   theme: any,
-  fetchApi: any,
   modalUpdateHandleOpen: () => void,
   setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
   modalDeleteHandleOpen: () => void
@@ -19,7 +16,6 @@ export const columnsDataGrid = (
   };
 
   const handleUpdate = async (data: any) => {
-    /* await servicesApi.updateServices(data); */
     modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
   };

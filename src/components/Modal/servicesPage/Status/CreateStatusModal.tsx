@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -6,11 +6,11 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as Styled from "../../styles";
-import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
+import { Icon, IconButton, Stack, useTheme, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { format } from "date-fns";
 import { statusApi } from "@/services/api/statusApi";
+import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 interface IModal {
   open: boolean;
@@ -21,12 +21,25 @@ interface IModal {
   setNewItem: any;
   newItem: any;
   children: React.ReactNode;
+  setMessageForm: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setFormSucessoValue: any;
 }
 
-export default function CreateStatusModal({ open, handleClose, setNewItem, newItem, fetchApi, children }: IModal) {
+export default function CreateStatusModal({
+  open,
+  handleClose,
+  setNewItem,
+  newItem,
+  fetchApi,
+  children,
+  setFormSucessoValue,
+  setMessageForm,
+}: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
+  const [loading, setLoading] = useState(false);
 
+  const { setErrorMessageValue, setErrorMessage } = useContext(FormSucessOrErrorContext);
   //form
   const {
     register,
@@ -37,27 +50,35 @@ export default function CreateStatusModal({ open, handleClose, setNewItem, newIt
   } = useForm();
 
   const onSubmit = (data: any) => {
+    setLoading(true);
     statusApi
       .createStatus(data)
       .then((res) => {
         setError(false);
         setNewItem(true);
         setValue("name", "");
+        setMessageForm("Status criado com sucesso!!");
+        setFormSucessoValue(true);
 
         fetchApi();
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
-          console.log(error.response.data); // erro do backend
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
 
           if (error.response.data === "Título é necessario") return setErrorName(error.response.data);
           if (error.response.data === "Descrição é necessaria") return setErrorName(error.response.data);
           if (error.response.data === "Valor é necessario") return setErrorName(error.response.data);
         } else {
-          console.log(error.message); //erro do Axios
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
         }
       });
+    setLoading(false);
   };
 
   const dateEntry = new Date();
@@ -112,7 +133,13 @@ export default function CreateStatusModal({ open, handleClose, setNewItem, newIt
                   }}
                   onClick={() => handleSubmit(onSubmit)()}
                 >
-                  Criar
+                  {loading ? (
+                    <>
+                      <CircularProgress size={25} />
+                    </>
+                  ) : (
+                    <>Confirmar</>
+                  )}
                 </Button>
 
                 {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}

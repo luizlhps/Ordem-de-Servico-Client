@@ -13,20 +13,11 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  children: React.ReactNode;
   HandleDeleted: (id: string) => Promise<void>;
   selectedItemUpdate: any;
-  deleteError: boolean;
 }
 
-export default function DeleteModal({
-  open,
-  handleClose,
-  children,
-  HandleDeleted,
-  selectedItemUpdate,
-  deleteError,
-}: IModal) {
+export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItemUpdate }: IModal) {
   return (
     <div>
       <Modal
@@ -57,15 +48,9 @@ export default function DeleteModal({
             >
               Continuar
             </Button>
-            {deleteError && (
-              <Typography marginTop={2} color={"error"}>
-                Ocorreu um erro ao deletar
-              </Typography>
-            )}
           </Box>
         </Fade>
       </Modal>
-      {children}
     </div>
   );
 }

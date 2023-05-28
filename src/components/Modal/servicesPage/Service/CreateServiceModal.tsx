@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import { useContext, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -6,11 +6,11 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as Styled from "../../styles";
-import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/material";
+import { CircularProgress, Icon, IconButton, Stack, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
+import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 interface IModal {
   open: boolean;
@@ -18,15 +18,25 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  setNewService: any;
-  newItem: any;
   children: React.ReactNode;
+  setMessageForm: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setFormSucessoValue: any;
 }
 
-export default function CreateServiceModal({ open, handleClose, setNewService, newItem, fetchApi, children }: IModal) {
+export default function CreateServiceModal({
+  open,
+  handleClose,
+
+  fetchApi,
+  children,
+  setMessageForm,
+  setFormSucessoValue,
+}: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
+  const [loading, setLoading] = useState(false);
 
+  const { setErrorMessageValue, setErrorMessage } = useContext(FormSucessOrErrorContext);
   //form
   const {
     register,
@@ -37,26 +47,33 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
   } = useForm();
 
   const onSubmit = (data: any) => {
+    setLoading(true);
     servicesApi
       .createServices(data)
       .then((res) => {
         setError(false);
-        setNewService(true);
         setValue("title", "");
         setValue("description", "");
         setValue("amount", "");
+        setMessageForm("Serviço criado com sucesso!!");
+        setFormSucessoValue(true);
 
         fetchApi();
+        setLoading(false);
+        handleClose();
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
-          console.log(error.response.data); // erro do backend
-
-          setErrorName(error.response.data.message);
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
         } else {
-          console.log(error.message); //erro do Axios
+          setFormSucessoValue(false);
+          console.error(error);
+          setErrorMessageValue(error.response.data.message);
         }
+        setLoading(false);
       });
   };
 
@@ -145,15 +162,14 @@ export default function CreateServiceModal({ open, handleClose, setNewService, n
                   }}
                   onClick={() => handleSubmit(onSubmit)()}
                 >
-                  Criar
+                  {loading ? (
+                    <>
+                      <CircularProgress size={25} />
+                    </>
+                  ) : (
+                    <>Confirmar</>
+                  )}
                 </Button>
-
-                {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}
-                {error && (
-                  <Typography color="error" textAlign={"center"}>
-                    Ocorreu um Problema{`: ${errorName}`}
-                  </Typography>
-                )}
               </Stack>
             </Box>
           </Box>

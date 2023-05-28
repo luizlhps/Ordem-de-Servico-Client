@@ -3,12 +3,9 @@ import { formUpdateCostumerContext } from "@/contexts";
 import { Container, useTheme } from "@mui/material";
 import { HeaderLayout } from "../HeaderLayout";
 import { AdressForm, CompletedForm, NameForm } from "../ProgressStepper";
-import { useRouter } from "next/router";
-import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 const UpdateCostumer = ({ costumer }: any) => {
   const { confirmData, data, setFormValues, loading } = useContext(formUpdateCostumerContext);
-  const { formError, formSuccess } = useContext(FormSucessOrErrorContext);
 
   const [formStep, setFormStep] = useState(0);
 

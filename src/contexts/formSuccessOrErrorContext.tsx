@@ -9,6 +9,7 @@ interface Context {
   setErrorMessageValue: (value: any) => void;
   errorMessage: any;
   setFormSuccess: any;
+  setErrorMessage: Dispatch<any>;
 }
 
 interface IProviderProps {
@@ -50,6 +51,7 @@ export const FormSucessOrErrorProvider: React.FC<IProviderProps> = ({ children }
         errorMessage,
         formError,
         setFormSuccess,
+        setErrorMessage,
       }}
     >
       {children}

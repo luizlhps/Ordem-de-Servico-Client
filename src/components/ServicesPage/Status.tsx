@@ -1,5 +1,5 @@
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { useDebouse } from "@/hook";
 
@@ -8,6 +8,9 @@ import CreateStatusModal from "../Modal/servicesPage/Status/CreateStatusModal";
 import UpdateStatusModal from "../Modal/servicesPage/Status/UpdateStatusModal";
 import { statusColumnsDataGrid } from "../DataGrid/utils/servicePage/statusColumnConfig";
 import DeleteModal from "../Modal/deleteModal";
+import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
+import { ToastSuccess } from "../Toast/ToastSuccess";
+import { ToastError } from "../Toast/ToastError";
 
 export interface IStatus {
   _id?: string;
@@ -29,6 +32,10 @@ const Status = () => {
   const [newUpdateItem, setNewUpdateItem] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
+
+  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue, setErrorMessage } =
+    useContext(FormSucessOrErrorContext);
+  const [messageForm, setMessageForm] = useState<string | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -93,13 +100,20 @@ const Status = () => {
   //Delete Api
   const HandleDeleted = async (id: string) => {
     try {
-      await statusApi.deleteStatus(id);
+      const res = await statusApi.deleteStatus(id);
       fetchApi();
       modalDeleteHandleClose();
       setDeleteError(false);
-    } catch (error) {
-      setDeleteError(true);
-      console.log(error);
+
+      if (res instanceof Error) {
+        throw new Error("Ocorreu um erro");
+      }
+      setMessageForm("O status foi apagado com sucesso!!");
+      setFormSucessoValue(true);
+    } catch (error: any) {
+      setFormSucessoValue(false);
+      console.error(error);
+      setErrorMessageValue(error.response.data.message); //
     }
   };
 
@@ -121,8 +135,22 @@ const Status = () => {
     fetchApi(search, currentPage + 1, limitPorPage);
   }, [search, currentPage]);
 
+  useEffect(() => {
+    setFormSuccess(false);
+  }, [formSuccess, setFormSucessoValue]);
+
   return (
     <>
+      <ToastError
+        errorMessage={errorMessage}
+        setErrorMessageValue={setErrorMessageValue}
+        setErrorMessage={setErrorMessage}
+      />
+      <ToastSuccess
+        formSuccess={formSuccess}
+        setFormSucessoValue={setFormSucessoValue}
+        alertSuccess="Dados atualizados com sucesso!!"
+      />
       <DeleteModal
         fetchApi={fetchApi}
         open={modalOpendelete}
@@ -131,62 +159,62 @@ const Status = () => {
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
         selectedItemUpdate={selectedItemUpdate}
-        deleteError={deleteError}
+      />
+      <CreateStatusModal
+        fetchApi={fetchApi}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        setOpen={setModalOpen}
+        open={modalOpen}
+        handleClose={modalHandleClose}
+        handleOpen={modalHandleOpen}
+        setMessageForm={setMessageForm}
+        setFormSucessoValue={setFormSucessoValue}
       >
-        <CreateStatusModal
+        <UpdateStatusModal
+          selectedItemUpdate={selectedItemUpdate}
           fetchApi={fetchApi}
-          newItem={newItem}
+          newItem={newUpdateItem}
           setNewItem={setNewItem}
-          setOpen={setModalOpen}
-          open={modalOpen}
-          handleClose={modalHandleClose}
-          handleOpen={modalHandleOpen}
+          setOpen={setModaUpdatelOpen}
+          open={modalUpdateOpen}
+          handleClose={modalHandleUpdateClose}
+          handleOpen={modalUpdateHandleOpen}
         >
-          <UpdateStatusModal
-            selectedItemUpdate={selectedItemUpdate}
-            fetchApi={fetchApi}
-            newItem={newUpdateItem}
-            setNewItem={setNewItem}
-            setOpen={setModaUpdatelOpen}
-            open={modalUpdateOpen}
-            handleClose={modalHandleUpdateClose}
-            handleOpen={modalUpdateHandleOpen}
-          >
-            <Typography variant="h1" marginTop={7}>
-              Status
-            </Typography>
+          <Typography variant="h1" marginTop={7}>
+            Status
+          </Typography>
 
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-              <TextField
-                value={searchField || ""}
-                onChange={(e) => setSearchField(e.target.value)}
-                hiddenLabel
-                id="filled-hidden-label-small"
-                placeholder="Search"
-                variant="filled"
-                size="small"
-                sx={{
-                  marginTop: 3,
-                  width: 180,
-                }}
-              />
-              <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-                Novo
-              </Button>
-            </Stack>
-            <DataGridLayout
-              loading={loading}
-              rows={statusData.status}
-              columns={columns}
-              PageSize={limitPorPage}
-              page={statusData.page}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalCount={statusData.total}
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+            <TextField
+              value={searchField || ""}
+              onChange={(e) => setSearchField(e.target.value)}
+              hiddenLabel
+              id="filled-hidden-label-small"
+              placeholder="Search"
+              variant="filled"
+              size="small"
+              sx={{
+                marginTop: 3,
+                width: 180,
+              }}
             />
-          </UpdateStatusModal>
-        </CreateStatusModal>
-      </DeleteModal>
+            <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+              Novo
+            </Button>
+          </Stack>
+          <DataGridLayout
+            loading={loading}
+            rows={statusData.status}
+            columns={columns}
+            PageSize={limitPorPage}
+            page={statusData.page}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalCount={statusData.total}
+          />
+        </UpdateStatusModal>
+      </CreateStatusModal>
     </>
   );
 };
