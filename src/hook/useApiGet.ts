@@ -1,9 +1,11 @@
 // useApiRequest hook
 import { useState } from "react";
+import { useDebouse } from "./useDebouse";
 
 const useApiRequest = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { debouse } = useDebouse(300);
 
   const request = async (apiFunction: any, ...args: any) => {
     setLoading(true);

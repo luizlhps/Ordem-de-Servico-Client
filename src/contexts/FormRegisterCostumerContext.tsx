@@ -12,7 +12,6 @@ type Context = {
   data?: ICustomer;
   setFormValues?: any;
   confirmData?: () => void;
-  test: (valor: any) => void;
   loading: boolean;
 };
 
@@ -71,10 +70,6 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
     }));
   };
 
-  const test = (valor: any) => {
-    console.log(valor);
-  };
-
   function confirmData() {
     async function costumer(data: any) {
       setLoading(true);
@@ -110,7 +105,7 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
   }
 
   return (
-    <FormRegisterCostumerContext.Provider value={{ data, setFormValues, confirmData, test, loading }}>
+    <FormRegisterCostumerContext.Provider value={{ data, setFormValues, confirmData, loading }}>
       {children}
     </FormRegisterCostumerContext.Provider>
   );

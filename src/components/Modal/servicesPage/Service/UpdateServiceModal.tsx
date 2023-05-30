@@ -18,8 +18,7 @@ interface IModal {
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
-  setNewService: any;
-  newItem: any;
+
   selectedItemUpdate: any;
   children: react.ReactNode;
 }
@@ -27,14 +26,12 @@ interface IModal {
 export default function UpdateServiceModal({
   open,
   handleClose,
-  setNewService,
-  newItem,
+
   fetchApi,
   selectedItemUpdate,
   children,
 }: IModal) {
   const [error, setError] = useState(false);
-  const [errorName, setErrorName] = useState();
 
   const { setFormSuccess, setFormSucessoValue, setErrorMessageValue } = useContext(FormSucessOrErrorContext);
 
@@ -65,7 +62,6 @@ export default function UpdateServiceModal({
       .then((res) => {
         fetchApi();
         setError(false);
-        setNewService(true);
         setValue("title", data.title);
         setValue("description", data.description);
         setValue("amount", data.amount);
@@ -117,7 +113,6 @@ export default function UpdateServiceModal({
               <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
                 Atualizar Serviço
               </Typography>
-
               <Stack marginTop={4}>
                 <Typography fontWeight={600}>Título</Typography>
                 <Styled.InputCustom
@@ -164,13 +159,6 @@ export default function UpdateServiceModal({
                 >
                   Criar
                 </Button>
-
-                {newItem && <Typography textAlign={"center"}>Item atualizado com sucesso!!</Typography>}
-                {error && (
-                  <Typography color="error" textAlign={"center"}>
-                    Ocorreu um Problema{`: ${errorName}`}
-                  </Typography>
-                )}
               </Stack>
             </Box>
           </Box>

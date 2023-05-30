@@ -139,37 +139,36 @@ export default function Client() {
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
         selectedItemUpdate={selectedItem}
-      >
-        <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-          <TextField
-            value={searchField || ""}
-            onChange={(e) => setSearchField(e.target.value)}
-            hiddenLabel
-            id="filled-hidden-label-small"
-            placeholder="Search"
-            variant="filled"
-            size="small"
-            sx={{
-              marginTop: 3,
-              width: 180,
-            }}
-          />
-          <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
-            Novo
-          </Button>
-        </Stack>
-        <DataGridLayout
-          loading={loading}
-          page={costumerData.Page}
-          totalCount={costumerData.Total}
-          rows={costumerData.customer}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          columns={columns}
-          PageSize={limitPorPage}
+      />
+      <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+        <TextField
+          value={searchField || ""}
+          onChange={(e) => setSearchField(e.target.value)}
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
         />
-      </DeleteModal>
+        <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout
+        loading={loading}
+        page={costumerData.Page}
+        totalCount={costumerData.Total}
+        rows={costumerData.customer}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        columns={columns}
+        PageSize={limitPorPage}
+      />
     </>
   );
 }

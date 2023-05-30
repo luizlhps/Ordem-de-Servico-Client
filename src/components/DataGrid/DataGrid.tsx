@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material Ui
 import { Box, useTheme } from "@mui/material";
@@ -37,7 +37,8 @@ export function CustomPagination({ totalCount, PageSize, currentPage, setCurrent
       count={Math.ceil(pageTotalCount)}
       page={page !== currentPage + 1 ? page : currentPage + 1}
       onChange={(event, value) => {
-        event as any, setCurrentPage(value - 1);
+        console.log(value);
+        setCurrentPage(value - 1);
       }}
     />
   );

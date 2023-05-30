@@ -26,22 +26,18 @@ interface IModal {
 export default function CreateServiceModal({
   open,
   handleClose,
-
   fetchApi,
   children,
   setMessageForm,
   setFormSucessoValue,
 }: IModal) {
-  const [error, setError] = useState(false);
-  const [errorName, setErrorName] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { setErrorMessageValue, setErrorMessage } = useContext(FormSucessOrErrorContext);
+  const { setErrorMessageValue } = useContext(FormSucessOrErrorContext);
   //form
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
   } = useForm();
@@ -51,7 +47,6 @@ export default function CreateServiceModal({
     servicesApi
       .createServices(data)
       .then((res) => {
-        setError(false);
         setValue("title", "");
         setValue("description", "");
         setValue("amount", "");
@@ -63,7 +58,6 @@ export default function CreateServiceModal({
         handleClose();
       })
       .catch((error) => {
-        setError(true);
         if (error.response) {
           setFormSucessoValue(false);
           console.error(error);
@@ -82,7 +76,7 @@ export default function CreateServiceModal({
 
   const theme = useTheme();
   return (
-    <div>
+    <>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -176,6 +170,6 @@ export default function CreateServiceModal({
         </Fade>
       </Modal>
       {children}
-    </div>
+    </>
   );
 }
