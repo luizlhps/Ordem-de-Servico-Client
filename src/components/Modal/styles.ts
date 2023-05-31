@@ -15,12 +15,16 @@ export const style = {
   flexDirection: "column",
   alignItems: "center",
 
+  overflow: "auto",
   "@media (max-width: 768px)": {
-    /* Estilos específicos para telas menores que 768px */
     textAlign: "center",
-
     width: "90%",
+    overflow: "auto",
     justifyContent: "center",
+  },
+
+  "@media (max-height: 600px)": {
+    height: "560px",
   },
 };
 

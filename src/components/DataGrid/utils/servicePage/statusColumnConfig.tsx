@@ -46,8 +46,8 @@ export const statusColumnsDataGrid = (
     },
 
     {
-      field: "status",
-      headerName: "Status",
+      field: "actions",
+      headerName: "Ações",
       description: "Status",
       flex: 1,
       minWidth: 150,

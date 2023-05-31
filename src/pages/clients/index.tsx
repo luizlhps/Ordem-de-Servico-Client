@@ -12,6 +12,7 @@ import { useDebouse } from "@/hook";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
+import { OrdensSVG } from "../../../public/icon/SVGS/IconsSVG";
 
 export interface IData {
   Total: number;
@@ -60,8 +61,7 @@ export default function Client() {
   const [loading, setLoading] = useState(false);
 
   //context
-  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue, setErrorMessage } =
-    useContext(FormSucessOrErrorContext);
+  const { setFormSuccess, formSuccess, errorMessage, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
   //Modal Delete
   const [modalOpendelete, setModalOpendelete] = useState(false);
@@ -116,18 +116,14 @@ export default function Client() {
 
   useEffect(() => {
     setFormSuccess(false);
-  }, [formSuccess, setFormSucessoValue]);
+  }, [formSuccess, setFormSuccess]);
 
   return (
     <>
-      <ToastError
-        errorMessage={errorMessage}
-        setErrorMessageValue={setErrorMessageValue}
-        setErrorMessage={setErrorMessage}
-      />
+      <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
       <ToastSuccess
         formSuccess={formSuccess}
-        setFormSucessoValue={setFormSucessoValue}
+        setFormSuccess={setFormSuccess}
         alertSuccess="bunda atualizados com sucesso!!"
       />
 

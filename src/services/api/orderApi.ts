@@ -28,6 +28,17 @@ class OrderApi {
     });
     return res;
   }
+
+  async getCostumerOrders(id: string, filter: string, page: number, limit: number) {
+    try {
+      const data = await Api.get(`order/costumer?costumerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw new Error((error as { message: string }).message || "Erro ao listar os status.");
+    }
+  }
 }
 
 export const orderApi = new OrderApi();

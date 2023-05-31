@@ -23,15 +23,18 @@ const NewCostumer = () => {
     <>
       {formStep >= 0 && formStep <= 2 && (
         <>
-          <HeaderLayout subTitle="Digite os dados do novo cliente" title="Novo Cliente" />
+          {/* <HeaderLayout subTitle="Digite os dados do novo cliente" title="Novo Cliente" /> */}
           <Container
             maxWidth="md"
             sx={{
-              paddingTop: 6,
-              paddingBottom: 6,
+              /*         paddingTop: 6,
+              paddingBottom: 6, */
               background: theme.palette.background.paper,
-              marginTop: 10,
+              /* marginTop: 10, */
               borderRadius: "1rem",
+              ":root": {
+                paddingBottom: 10,
+              },
             }}
           >
             {formStep >= 0 && (

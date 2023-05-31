@@ -3,77 +3,101 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
-import { servicesApi } from "@/services/api/servicesApi";
-import { useEffect } from "react";
-import { constumersApi } from "@/services/api/costumersApi";
-import { useRouter } from "next/router";
-import { OrdensSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 
-export const ColumnsDataGrid = (
+import { format } from "date-fns";
+
+export const columnsDataGrid = (
   theme: any,
-  setSelectedItem: React.Dispatch<React.SetStateAction<string>>,
+  modalUpdateHandleOpen: () => void,
+  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
   modalDeleteHandleOpen: () => void
 ) => {
-  const router = useRouter();
-
   const handleRemove = async (data: any) => {
     modalDeleteHandleOpen();
-    setSelectedItem(data);
+    setSelectedItemUpdate(data);
   };
 
   const handleUpdate = async (data: any) => {
-    router.push(`/clients/update/${data._id}`);
-    setSelectedItem(data);
-  };
-  const handleViewOrders = async (data: any) => {
-    router.push(`/clients/${data._id}`);
-    setSelectedItem(data);
+    modalUpdateHandleOpen();
+    setSelectedItemUpdate(data);
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "OS", width: 60 },
+
     {
-      field: "name",
-      headerName: "Nome",
-      flex: 1,
-      minWidth: 200,
+      field: "brand",
+      headerName: "Marca",
+      flex: 0.5,
+      minWidth: 100,
       headerAlign: "left",
       align: "left",
     },
+
     {
-      field: "contact",
-      headerName: "Contato",
-      flex: 2,
-      minWidth: 200,
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "cpfOrCnpj",
-      headerName: "CPF/CNPJ",
-      flex: 1.2,
-      minWidth: 150,
-      description: "Contato",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "createdAt",
-      headerName: "Criado em",
+      field: "model",
+      headerName: "Modelo",
       type: "number",
-      flex: 1,
-      minWidth: 200,
+      flex: 0.5,
+      minWidth: 100,
       description: "Endereço",
       headerAlign: "left",
       align: "left",
     },
 
     {
+      field: "equipment",
+      headerName: "Equipamento",
+      flex: 1,
+      minWidth: 250,
+      headerAlign: "left",
+      align: "left",
+    },
+    {
+      field: "defect",
+      headerName: "Defeito",
+      flex: 3,
+      minWidth: 300,
+      description: "Contato",
+      headerAlign: "left",
+      align: "left",
+    },
+
+    {
+      field: "dateEntry",
+      headerName: "Criado em",
+      type: "number",
+      flex: 0.5,
+      minWidth: 200,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+      valueFormatter(params: any) {
+        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+        return dataFormatada;
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      type: "number",
+      flex: 1,
+      minWidth: 200,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+
+      valueFormatter(params) {
+        return params.value.name;
+      },
+    },
+
+    {
       field: "actions",
       headerName: "Ações",
-      description: "Status",
+      description: "Ações",
       flex: 1,
-      minWidth: 190,
+      minWidth: 150,
       headerAlign: "right",
       align: "right",
       renderCell: (params) => {
@@ -92,13 +116,6 @@ export const ColumnsDataGrid = (
               }}
             >
               <RemoveRedEyeOutlinedIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                handleViewOrders(params.row);
-              }}
-            >
-              <OrdensSVG color={theme.palette.primary.main} />
             </IconButton>
 
             <IconButton

@@ -67,9 +67,9 @@ export const columnsDataGrid = (
     },
 
     {
-      field: "status",
+      field: "actions",
       headerName: "Status",
-      description: "Status",
+      description: "Ações",
       flex: 1,
       minWidth: 150,
       headerAlign: "right",

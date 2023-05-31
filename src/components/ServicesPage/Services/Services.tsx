@@ -63,12 +63,8 @@ const Services = () => {
 
   return (
     <>
-      <ToastError
-        errorMessage={errorMessage}
-        setErrorMessageValue={setErrorMessage}
-        setErrorMessage={setErrorMessage}
-      />
-      <ToastSuccess formSuccess={formSuccess} setFormSucessoValue={setFormSuccess} alertSuccess={messageForm} />
+      <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+      <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
       <DeleteServiceModal
         fetchApi={fetchApi}

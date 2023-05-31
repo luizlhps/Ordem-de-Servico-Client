@@ -45,8 +45,9 @@ const InputCustom = styled.input`
 `;
 const ContainerCustom = styled.div`
   padding: 60px;
+  padding-bottom: 40px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     padding: 8px;
     display: flex;
     justify-content: center;

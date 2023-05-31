@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
+import TransitionsModal from "../../Modal";
 
 interface IModal {
   open: boolean;
@@ -33,7 +34,7 @@ export default function UpdateServiceModal({
 }: IModal) {
   const [error, setError] = useState(false);
 
-  const { setFormSuccess, setFormSucessoValue, setErrorMessageValue } = useContext(FormSucessOrErrorContext);
+  const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
   //form
   const {
@@ -65,19 +66,19 @@ export default function UpdateServiceModal({
         setValue("title", data.title);
         setValue("description", data.description);
         setValue("amount", data.amount);
-        setFormSucessoValue(true);
+        setFormSuccess(true);
         handleClose();
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
-          setFormSucessoValue(false);
+          setFormSuccess(false);
           console.error(error);
-          setErrorMessageValue(error.response.data.message);
+          setErrorMessage(error.response.data.message);
         } else {
-          setFormSucessoValue(false);
+          setFormSuccess(false);
           console.error(error);
-          setErrorMessageValue(error.response.data.message);
+          setErrorMessage(error.response.data.message);
         }
       });
   };
@@ -88,82 +89,60 @@ export default function UpdateServiceModal({
   const theme = useTheme();
   return (
     <div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={Styled.style}>
-            <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
-              <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
-              <IconButton onClick={handleClose}>
-                <Icon>close</Icon>
-              </IconButton>
-            </Box>
-            <Box marginTop={4} width={"80%"}>
-              <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
-                Atualizar Serviço
-              </Typography>
-              <Stack marginTop={4}>
-                <Typography fontWeight={600}>Título</Typography>
-                <Styled.InputCustom
-                  placeholder="Digite o título"
-                  {...register("title", { required: true, minLength: 3 })}
-                ></Styled.InputCustom>
-                {errors.title?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
-                {errors.title?.type === "minLength" && (
-                  <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
-                )}
+      <TransitionsModal handleClose={handleClose} open={open} style={Styled.style}>
+        <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
+          <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
+          <IconButton onClick={handleClose}>
+            <Icon>close</Icon>
+          </IconButton>
+        </Box>
+        <Box marginTop={4} width={"80%"}>
+          <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
+            Atualizar Serviço
+          </Typography>
+          <Stack marginTop={4}>
+            <Typography fontWeight={600}>Título</Typography>
+            <Styled.InputCustom
+              placeholder="Digite o título"
+              {...register("title", { required: true, minLength: 3 })}
+            ></Styled.InputCustom>
+            {errors.title?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
+            {errors.title?.type === "minLength" && (
+              <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
+            )}
 
-                <Typography marginTop={2} fontWeight={600}>
-                  Descrição
-                </Typography>
-                <Styled.InputCustomDescription
-                  placeholder="Digite a descrição do serviço"
-                  {...register("description", { required: true, minLength: 3 })}
-                ></Styled.InputCustomDescription>
-                {errors.description?.type === "required" && (
-                  <Typography color={"error"}>Digite a descrição.</Typography>
-                )}
-                {errors.description?.type === "minLength" && (
-                  <Typography color={"error"}>Digite a descrição com até 3 caracteres.</Typography>
-                )}
+            <Typography marginTop={2} fontWeight={600}>
+              Descrição
+            </Typography>
+            <Styled.InputCustomDescription
+              placeholder="Digite a descrição do serviço"
+              {...register("description", { required: true, minLength: 3 })}
+            ></Styled.InputCustomDescription>
+            {errors.description?.type === "required" && <Typography color={"error"}>Digite a descrição.</Typography>}
+            {errors.description?.type === "minLength" && (
+              <Typography color={"error"}>Digite a descrição com até 3 caracteres.</Typography>
+            )}
 
-                <Typography marginTop={2} fontWeight={600}>
-                  Valor
-                </Typography>
-                <Styled.ValueInputCustom
-                  placeholder="00.00"
-                  type="number"
-                  {...register("amount", { required: true })}
-                />
-                {errors.amount?.type === "required" && <Typography color={"error"}>Digite o valor.</Typography>}
+            <Typography marginTop={2} fontWeight={600}>
+              Valor
+            </Typography>
+            <Styled.ValueInputCustom placeholder="00.00" type="number" {...register("amount", { required: true })} />
+            {errors.amount?.type === "required" && <Typography color={"error"}>Digite o valor.</Typography>}
 
-                <Button
-                  size="large"
-                  sx={{
-                    marginTop: 6,
-                    marginBottom: 3,
-                    background: theme.palette.secondary.main,
-                  }}
-                  onClick={() => handleSubmit(onSubmit)()}
-                >
-                  Criar
-                </Button>
-              </Stack>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+            <Button
+              size="large"
+              sx={{
+                marginTop: 6,
+                marginBottom: 3,
+                background: theme.palette.secondary.main,
+              }}
+              onClick={() => handleSubmit(onSubmit)()}
+            >
+              Criar
+            </Button>
+          </Stack>
+        </Box>
+      </TransitionsModal>
       {children}
     </div>
   );

@@ -102,7 +102,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           alignItems={"center"}
           sx={{ color: theme.palette.primary.main }}
         >
-          <BoxHeaderContent height={theme.spacing(25)} marginTop={4}>
+          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={4}>
             <Image
               priority={true} // definir como true para indicar prioridade
               unoptimized={true}
@@ -172,7 +172,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              marginTop: 5,
+              marginTop: !matches ? 3 : 0,
               span: { fontWeight: 300 },
             }}
           >

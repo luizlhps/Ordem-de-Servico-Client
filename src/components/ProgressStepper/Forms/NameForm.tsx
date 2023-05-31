@@ -27,6 +27,7 @@ import { TypeForm } from "./types";
 
 const ContainerCustom = styled.div`
   padding: 60px;
+  padding-bottom: 40px;
 
   @media (max-width: 600px) {
     padding: 6px;

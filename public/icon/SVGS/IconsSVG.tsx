@@ -1,6 +1,10 @@
 import { useTheme } from "@mui/material";
 
-export const DasboardSVG = ({ color }: any) => {
+interface IColor {
+  color: string;
+}
+
+export const DasboardSVG = ({ color }: IColor) => {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -24,7 +28,7 @@ export const DasboardSVG = ({ color }: any) => {
     </svg>
   );
 };
-export const OrdensSVG = ({ color }: any) => {
+export const OrdensSVG = ({ color }: IColor) => {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       U
@@ -35,7 +39,7 @@ export const OrdensSVG = ({ color }: any) => {
     </svg>
   );
 };
-export const ServicesSVG = ({ color }: any) => {
+export const ServicesSVG = ({ color }: IColor) => {
   return (
     <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -45,7 +49,7 @@ export const ServicesSVG = ({ color }: any) => {
     </svg>
   );
 };
-export const ClientsSVG = ({ color }: any) => {
+export const ClientsSVG = ({ color }: IColor) => {
   return (
     <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -58,7 +62,7 @@ export const ClientsSVG = ({ color }: any) => {
     </svg>
   );
 };
-export const FinanceSVG = ({ color }: any) => {
+export const FinanceSVG = ({ color }: IColor) => {
   return (
     <div>
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +85,7 @@ export const FinanceSVG = ({ color }: any) => {
     </div>
   );
 };
-export const ProfileSVG = ({ color }: any) => {
+export const ProfileSVG = ({ color }: IColor) => {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="9" cy="9" r="9" fill={color} />
@@ -100,7 +104,7 @@ export const ProfileSVG = ({ color }: any) => {
     </svg>
   );
 };
-export const MarketSVG = ({ color }: any) => {
+export const MarketSVG = ({ color }: IColor) => {
   const theme = useTheme();
   return (
     <div>
@@ -139,7 +143,7 @@ export const MarketSVG = ({ color }: any) => {
   );
 };
 
-export const UserProcessSVG = ({ color }: any) => {
+export const UserProcessSVG = ({ color }: IColor) => {
   const theme = useTheme();
   return (
     <div>
@@ -181,7 +185,7 @@ export const UserProcessSVG = ({ color }: any) => {
     </div>
   );
 };
-export const OsProcessSVG = ({ color }: any) => {
+export const OsProcessSVG = ({ color }: IColor) => {
   return (
     <div>
       <svg width="36" height="54" viewBox="0 0 36 54" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,7 +202,7 @@ export const OsProcessSVG = ({ color }: any) => {
     </div>
   );
 };
-export const PartySVG = ({ color }: any) => {
+export const PartySVG = ({ color }: IColor) => {
   return (
     <div>
       <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,7 +226,7 @@ export const PartySVG = ({ color }: any) => {
     </div>
   );
 };
-export const LogoutSVG = ({ color }: any) => {
+export const LogoutSVG = ({ color }: IColor) => {
   return (
     <div>
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
