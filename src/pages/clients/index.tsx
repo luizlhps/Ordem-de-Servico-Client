@@ -130,7 +130,7 @@ export default function Client() {
   return (
     <>
       <FormRegisterCostumerProvider fetchApi={fetchApi}>
-        <FormUpdateCostumerProvider fetchApi={fetchApi} CostumerID={selectedItem._id}>
+        <FormUpdateCostumerProvider fetchApi={fetchApi} CostumerID={selectedItem._id} CostumerData={selectedItem}>
           <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
           <ToastSuccess
             formSuccess={formSuccess}

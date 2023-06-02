@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
 import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
@@ -49,29 +49,58 @@ interface FormProviderProps {
   children: React.ReactNode;
   fetchApi: () => void;
   CostumerID: string;
+  CostumerData: any;
 }
 
-export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ children, fetchApi, CostumerID }) => {
+export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
+  children,
+  fetchApi,
+  CostumerID,
+  CostumerData,
+}) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
-  console.log(data);
+  console.log(CostumerData);
 
   if (data?.status) {
     if (data?.status.length > 0) {
       console.log(data.status[0]);
     }
   }
+  useEffect(() => {
+    const form = {
+      //Name and Contact
+      name: CostumerData.name,
+      email: CostumerData.email,
+      contact: CostumerData.contact,
+      cpfOrCnpj: CostumerData.cpfOrCnpj,
+      phone: CostumerData.phone,
+      tel: CostumerData.tel,
+
+      //Andress
+    };
+
+    setData((prevValues: any) => ({
+      ...prevValues,
+      ...form,
+    }));
+  }, [CostumerData]);
+
+  console.log(data);
 
   const setFormValues = (values: any) => {
     console.log("exist", values);
+
     setData((prevValues) => ({
       ...prevValues,
       ...values,
     }));
   };
+
+  console.log(data);
 
   function confirmData() {
     async function costumer(data: any, _id: string | string[]) {
