@@ -12,7 +12,8 @@ import { OrdensSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 export const ColumnsDataGrid = (
   theme: any,
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>,
-  modalDeleteHandleOpen: () => void
+  modalDeleteHandleOpen: () => void,
+  modalUpdateHandleOpen: () => void
 ) => {
   const router = useRouter();
 
@@ -22,7 +23,7 @@ export const ColumnsDataGrid = (
   };
 
   const handleUpdate = async (data: any) => {
-    router.push(`/clients/update/${data._id}`);
+    modalUpdateHandleOpen();
     setSelectedItem(data);
   };
   const handleViewOrders = async (data: any) => {
@@ -60,6 +61,16 @@ export const ColumnsDataGrid = (
     {
       field: "createdAt",
       headerName: "Criado em",
+      type: "number",
+      flex: 1,
+      minWidth: 200,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+    },
+    {
+      field: "updatedAt",
+      headerName: "Atualizado em",
       type: "number",
       flex: 1,
       minWidth: 200,

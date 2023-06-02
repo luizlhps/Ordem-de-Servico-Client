@@ -13,13 +13,7 @@ interface IModal {
   style: any;
 }
 
-export default function TransitionsModal({
-  open,
-  handleClose,
-  children,
-
-  style,
-}: IModal) {
+export default function TransitionsModal({ open, handleClose, children, style }: IModal) {
   return (
     <div>
       <Modal

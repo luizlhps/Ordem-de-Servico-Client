@@ -47,13 +47,15 @@ interface Iprops {
   confirmData: (() => void) | undefined;
   data: any;
   loading: boolean;
+  handleClose: any;
 }
 
-export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading }) => {
+export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose }) => {
   const theme = useTheme();
 
   const router = useRouter();
   const Redirect = () => {
+    handleClose();
     if (loading === false) router.push("/clients");
     if (confirmData) {
       confirmData();

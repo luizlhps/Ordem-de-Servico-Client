@@ -15,12 +15,14 @@ interface IProps {
 }
 
 export default function FormSelect({ children, control, name, defaultValue, label, setState }: IProps) {
+  const [first, setfirst] = React.useState("");
+
   return (
     <Box sx={{ minWidth: 120, marginTop: 6 }}>
       <FormControl size="small" sx={{ width: "100%" }}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Controller
-          defaultValue=""
+          defaultValue={first[0]}
           control={control}
           name={name}
           render={({
@@ -29,16 +31,15 @@ export default function FormSelect({ children, control, name, defaultValue, labe
             formState,
           }) => (
             <Select
-              defaultValue={defaultValue}
+              defaultValue={first[0]}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Age"
               onChange={(event) => {
                 const selectedValue = event.target.value;
                 onChange(selectedValue);
-                if (setState) {
-                  setState(selectedValue);
-                }
+                setfirst(selectedValue);
+                console.log(first);
               }}
             >
               {children}

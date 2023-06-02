@@ -308,74 +308,74 @@ export const AdressForm: React.FC<NameFormProps> = ({
                 </Box>
               </Stack>
             </Stack>
-          </ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
-            <UserProcessSVG color={theme.palette.secondary.main} />
-            <Box
-              sx={{
-                width: 22,
-                margin: "auto 10px",
-                height: 3,
-                alignContent: "center",
-                background: theme.palette.secondary.main,
-              }}
-            />
-            <MarketSVG color={theme.palette.secondary.main} />
-
-            {typeForm === "createCostumer" && (
-              <>
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.primary.light,
-                  }}
-                />
-
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.primary.light,
-                  }}
-                />
-                <OsProcessSVG color={theme.palette.primary.light} />
-              </>
-            )}
-          </Stack>
-          <Box justifyContent={"center"} display={"flex"}>
-            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-              <Button
-                onClick={prevFormStep}
-                size="large"
+            <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+              <UserProcessSVG color={theme.palette.secondary.main} />
+              <Box
                 sx={{
-                  marginTop: 6,
+                  width: 22,
+                  margin: "auto 10px",
+                  height: 3,
+                  alignContent: "center",
                   background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
                 }}
-              >
-                Prev
-              </Button>
-              <Button
-                onClick={() => {
-                  handleSubmit(onSubmit)();
-                  searchCep;
-                }}
-                size="large"
-                sx={{
-                  marginTop: 6,
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-              >
-                Next
-              </Button>
+              />
+              <MarketSVG color={theme.palette.secondary.main} />
+
+              {typeForm === "createCostumer" && (
+                <>
+                  <Box
+                    sx={{
+                      width: 22,
+                      margin: "auto 10px",
+                      height: 3,
+                      alignContent: "center",
+                      background: theme.palette.primary.light,
+                    }}
+                  />
+
+                  <Box
+                    sx={{
+                      width: 22,
+                      margin: "auto 10px",
+                      height: 3,
+                      alignContent: "center",
+                      background: theme.palette.primary.light,
+                    }}
+                  />
+                  <OsProcessSVG color={theme.palette.primary.light} />
+                </>
+              )}
             </Stack>
-          </Box>
+            <Box justifyContent={"center"} display={"flex"}>
+              <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+                <Button
+                  onClick={prevFormStep}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                >
+                  Prev
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleSubmit(onSubmit)();
+                    searchCep;
+                  }}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                >
+                  Next
+                </Button>
+              </Stack>
+            </Box>
+          </ContainerCustom>
         </form>
       )}
     </>

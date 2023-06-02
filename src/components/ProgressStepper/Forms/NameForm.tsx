@@ -27,8 +27,9 @@ import { TypeForm } from "./types";
 
 const ContainerCustom = styled.div`
   padding: 60px;
-  padding-bottom: 40px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   @media (max-width: 600px) {
     padding: 6px;
   }
@@ -156,63 +157,65 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
                   {errors.email?.type === "validate" && (
                     <Typography color={"error"}>Digite um email válido*</Typography>
                   )}
-
-                  <Typography marginTop={3} marginBottom={1}>
-                    Contato
-                  </Typography>
-                  <Controller
-                    name={"contact"}
-                    control={control}
-                    rules={{ required: false }}
-                    defaultValue={""}
-                    render={({ field: { onChange, value } }) => (
-                      <TextField
-                        error={!!errors.contact}
-                        onChange={onChange}
-                        value={value}
-                        size="small"
-                        placeholder="Robson celular: 99+ 99999-9999"
-                        fullWidth
-                      />
-                    )}
-                  />
-                  {errors.contact?.type === "minLength" && (
-                    <Typography color={"error"}>Digite um numero válido*</Typography>
-                  )}
-
-                  <Box>
-                    <Typography marginTop={3} marginBottom={1}>
-                      CPF/CNPJ*
-                    </Typography>
-                    <Controller
-                      render={({ field }) => (
-                        <TextField
-                          error={!!errors.cpfOrCnpj}
-                          fullWidth
-                          inputProps={{ maxLength: 16 }}
-                          size="small"
-                          value={cpfOrCnpj(field.value)}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          placeholder="Ex: 00.000.000/0001-91"
-                        />
-                      )}
-                      defaultValue=""
-                      control={control}
-                      name="cpfOrCnpj"
-                      rules={{ required: true, minLength: 11 }}
-                    />
-                    {errors.cpfOrCnpj?.type === "required" && (
-                      <Typography color={"error"}>Digite um numero celular*</Typography>
-                    )}
-                    {errors.cpfOrCnpj?.type === "minLength" && (
-                      <Typography color={"error"}>Digite um numero válido*</Typography>
-                    )}
-                  </Box>
-
                   <Stack flexDirection={columnMedia ? "column" : "row"} justifyContent={"space-between"} gap={1}>
-                    <Box flex={1} minWidth={200}>
+                    <Box flex={1}>
+                      <Typography marginTop={3} marginBottom={1}>
+                        Contato
+                      </Typography>
+                      <Controller
+                        name={"contact"}
+                        control={control}
+                        rules={{ required: false }}
+                        defaultValue={""}
+                        render={({ field: { onChange, value } }) => (
+                          <TextField
+                            error={!!errors.contact}
+                            onChange={onChange}
+                            value={value}
+                            size="small"
+                            placeholder="Robson celular: 99+ 99999-9999"
+                            fullWidth
+                          />
+                        )}
+                      />
+                      {errors.contact?.type === "minLength" && (
+                        <Typography color={"error"}>Digite um numero válido*</Typography>
+                      )}
+                    </Box>
+
+                    <Box>
+                      <Typography marginTop={3} marginBottom={1}>
+                        CPF/CNPJ*
+                      </Typography>
+                      <Controller
+                        render={({ field }) => (
+                          <TextField
+                            error={!!errors.cpfOrCnpj}
+                            fullWidth
+                            inputProps={{ maxLength: 16 }}
+                            size="small"
+                            value={cpfOrCnpj(field.value)}
+                            onChange={(e) => {
+                              field.onChange(e.target.value);
+                            }}
+                            placeholder="Ex: 00.000.000/0001-91"
+                          />
+                        )}
+                        defaultValue=""
+                        control={control}
+                        name="cpfOrCnpj"
+                        rules={{ required: true, minLength: 11 }}
+                      />
+                      {errors.cpfOrCnpj?.type === "required" && (
+                        <Typography color={"error"}>Digite um CPF ou CNPJ*</Typography>
+                      )}
+                      {errors.cpfOrCnpj?.type === "minLength" && (
+                        <Typography color={"error"}>Digite um numero válido*</Typography>
+                      )}
+                    </Box>
+                  </Stack>
+                  <Stack flexDirection={columnMedia ? "column" : "row"} justifyContent={"space-between"} gap={1}>
+                    <Box flex={1}>
                       <Typography fontWeight={500} marginTop={3} marginBottom={1}>
                         Celular*
                       </Typography>

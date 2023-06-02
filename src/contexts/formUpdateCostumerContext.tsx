@@ -13,7 +13,6 @@ type Context = {
   data?: ICustomer;
   setFormValues?: any;
   confirmData?: () => void;
-  test: (valor: any) => void;
   loading: boolean;
 };
 
@@ -48,17 +47,15 @@ export interface ICustomer {
 
 interface FormProviderProps {
   children: React.ReactNode;
+  fetchApi: () => void;
+  CostumerID: string;
 }
 
-export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ children }) => {
+export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ children, fetchApi, CostumerID }) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { query } = useRouter();
-
-  const idCustomer = query.costumerId;
-
-  const { setFormSucessoValue, setErrorMessageValue, setFormSuccess } = useContext(FormSucessOrErrorContext);
+  const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
   console.log(data);
 
@@ -76,10 +73,6 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ childr
     }));
   };
 
-  const test = (valor: any) => {
-    console.log(valor);
-  };
-
   function confirmData() {
     async function costumer(data: any, _id: string | string[]) {
       setLoading(true);
@@ -92,21 +85,21 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({ childr
           throw new Error("Ocorreu um erro");
         }
 
-        setFormSucessoValue(true);
+        setFormSuccess(true);
+        fetchApi();
       } catch (error: any) {
-        setFormSucessoValue(false);
+        setFormSuccess(false);
         console.error(error);
-        setErrorMessageValue(error.response.data.message); //
+        setErrorMessage(error.response.data.message); //
       }
       setLoading(false);
     }
-    if (idCustomer) {
-      costumer(data, idCustomer);
-    }
+
+    costumer(data, CostumerID);
   }
 
   return (
-    <formUpdateCostumerContext.Provider value={{ data, setFormValues, confirmData, test, loading }}>
+    <formUpdateCostumerContext.Provider value={{ data, setFormValues, confirmData, loading }}>
       {children}
     </formUpdateCostumerContext.Provider>
   );

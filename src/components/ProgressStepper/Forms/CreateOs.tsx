@@ -149,11 +149,13 @@ export const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prev
             />
             <Box display={"flex"} justifyContent={"flex-start"}>
               <FormSelect name={"status"} defaultValue={""} label={"status"} control={control}>
-                {statusData?.status.map((item) => (
-                  <MenuItem key={item._id} value={[item._id, item.name]}>
-                    {item.name}
-                  </MenuItem>
-                ))}
+                {statusData?.status.map((item) => {
+                  return (
+                    <MenuItem key={item._id} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  );
+                })}
               </FormSelect>
             </Box>
             <Grid
@@ -258,56 +260,56 @@ export const CreateOs: React.FC<NameFormProps> = ({ formStep, nextFormStep, prev
                 {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
               </Grid>
             </Grid>
-          </ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
-            <UserProcessSVG color={theme.palette.secondary.main} />
-            <Box
-              sx={{
-                width: 22,
-                margin: "auto 10px",
-                height: 3,
-                alignContent: "center",
-                background: theme.palette.secondary.main,
-              }}
-            />
-            <MarketSVG color={theme.palette.secondary.main} />
-            <Box
-              sx={{
-                width: 22,
-                margin: "auto 10px",
-                height: 3,
-                alignContent: "center",
-                background: theme.palette.secondary.main,
-              }}
-            />
-            <OsProcessSVG color={theme.palette.secondary.main} />
-          </Stack>
-          <Box justifyContent={"center"} display={"flex"}>
-            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-              <Button
-                onClick={prevFormStep}
-                size="large"
+            <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+              <UserProcessSVG color={theme.palette.secondary.main} />
+              <Box
                 sx={{
-                  marginTop: 6,
+                  width: 22,
+                  margin: "auto 10px",
+                  height: 3,
+                  alignContent: "center",
                   background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
                 }}
-              >
-                Prev
-              </Button>
-              <Button
-                size="large"
+              />
+              <MarketSVG color={theme.palette.secondary.main} />
+              <Box
                 sx={{
-                  marginTop: 6,
+                  width: 22,
+                  margin: "auto 10px",
+                  height: 3,
+                  alignContent: "center",
                   background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
                 }}
-                onClick={() => handleSubmit(onSubmit)()}
-              >
-                Criar
-              </Button>
+              />
+              <OsProcessSVG color={theme.palette.secondary.main} />
             </Stack>
-          </Box>
+            <Box justifyContent={"center"} display={"flex"}>
+              <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+                <Button
+                  onClick={prevFormStep}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                >
+                  Prev
+                </Button>
+                <Button
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                  onClick={() => handleSubmit(onSubmit)()}
+                >
+                  Criar
+                </Button>
+              </Stack>
+            </Box>
+          </ContainerCustom>
         </form>
       )}
     </>

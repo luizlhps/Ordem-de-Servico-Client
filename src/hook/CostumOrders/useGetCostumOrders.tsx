@@ -45,6 +45,7 @@ export const useGetCostumOrders = () => {
     debouse(async () => {
       const costumerOrders = await request(orderApi.getCostumerOrders, id, search, page, limit);
       console.log(costumerOrders);
+      console.log("existo");
 
       setData(costumerOrders);
       if (error) {

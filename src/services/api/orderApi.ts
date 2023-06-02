@@ -23,7 +23,8 @@ class OrderApi {
       defect: data.defect,
       observation: data.observation,
       dateEntry: data.dateEntry,
-      status: data.status[0], // [0]status is an array [id, name of status]
+      services: [],
+      status: data.status,
       customer: Costumerid,
     });
     return res;

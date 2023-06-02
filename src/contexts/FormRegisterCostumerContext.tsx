@@ -4,18 +4,19 @@ import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { FormSucessOrErrorContext, FormSucessOrErrorProvider } from "./formSuccessOrErrorContext";
+import { statusApi } from "@/services/api/statusApi";
 
 export const FormRegisterCostumerContext = createContext({} as Context);
 
 type Context = {
   onDiscountChange?: () => void;
-  data?: ICustomer;
+  data?: ICustomerAndOrderData;
   setFormValues?: any;
   confirmData?: () => void;
   loading: boolean;
 };
 
-export interface ICustomer {
+export interface ICustomerAndOrderData {
   id: number;
   name: string;
   email: string;
@@ -46,10 +47,11 @@ export interface ICustomer {
 
 interface FormProviderProps {
   children: React.ReactNode;
+  fetchApi: () => void;
 }
 
-export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ children }) => {
-  const [data, setData] = useState<ICustomer | undefined>(undefined);
+export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ children, fetchApi }) => {
+  const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
@@ -70,17 +72,39 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
     }));
   };
 
+  async function updateStatusForId(data: any) {
+    const requestStatusApi = await statusApi.getAllStatus("", 0, 0);
+    try {
+      if (!(requestStatusApi instanceof Error)) {
+        const { status } = requestStatusApi;
+        const statusID = status.find((status: IDetailsStatus) => status.name === data?.status);
+
+        console.log(statusID);
+
+        const updateStatus = { ...data, status: statusID?._id };
+        return updateStatus;
+      } else {
+        throw new Error("Ocorreu um erro ao encontrar o statusId");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   function confirmData() {
     async function costumer(data: any) {
       setLoading(true);
       try {
-        const res = await constumersApi.createCostumer(data);
+        const res = await constumersApi.createCostumer(await updateStatusForId(data));
         console.log(res);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
         }
-        await order(data, res.data._id);
+        console.log("aqui estás", await updateStatusForId(data), res.data._id);
+
+        await order(await updateStatusForId(data), res.data._id);
+        fetchApi();
       } catch (error: any) {
         setFormSuccess(false);
         console.error(error);
@@ -93,6 +117,7 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
         console.log(data, costumerId);
         const res = await orderApi.createOrder(data, costumerId);
         setFormSuccess(true);
+        fetchApi();
       } catch (error: any) {
         setFormSuccess(false);
         setErrorMessage(error.response.data.message); //

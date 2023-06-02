@@ -15,7 +15,8 @@ import { TextField, Stack, Button, Icon, IconButton } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { useGetCostumOrders } from "@/hook/CostumOrders/useGetCostumOrders";
 import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
-import { CreateOrderModal } from "@/components/Modal/CreateOrderModal";
+import { CreateCostumerModal } from "@/components/Modal/CreateCostumerModal";
+import { useRouter } from "next/router";
 
 interface Params extends ParsedUrlQuery {
   costumerId: string;
@@ -43,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const theme = useTheme();
+  const router = useRouter();
 
   const limitPorPage = 10;
 
@@ -92,6 +94,10 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
     console.log(costumer._id);
   }
 
+  const BackHandle = () => {
+    router.push("/clients");
+  };
+
   const { name, id, orders } = costumer;
 
   return (
@@ -110,12 +116,10 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
         setModalOpenDelete={setModalOpenDelete}
         modalDeleteHandleOpen={modalDeleteHandleOpen}
       />
-      <CreateOrderModal
+      <CreateCostumerModal
         open={modalOpen}
         handleClose={modalHandleClose}
         handleOpen={modalHandleOpen}
-        fetchApi={fetchApi}
-        selectedItemUpdate={selectedItemUpdate}
         setOpen={modalHandleOpen}
       >
         <UpdateServiceModal
@@ -127,7 +131,7 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
           handleOpen={modalUpdateHandleOpen}
         >
           <HeaderLayout title={`${name} # ${id}`} subTitle="Área de ordens de serviço do cliente" />
-          <IconButton sx={{ marginTop: 2 }}>
+          <IconButton onClick={BackHandle} sx={{ marginTop: 2 }}>
             <Icon>arrow_back</Icon>
           </IconButton>
 
@@ -160,7 +164,7 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
             totalCount={data.total}
           />
         </UpdateServiceModal>
-      </CreateOrderModal>
+      </CreateCostumerModal>
     </>
   );
 }

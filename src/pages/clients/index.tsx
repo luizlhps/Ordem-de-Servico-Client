@@ -13,6 +13,10 @@ import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { OrdensSVG } from "../../../public/icon/SVGS/IconsSVG";
+import { CreateCostumerModal } from "@/components/Modal/CreateCostumerModal";
+import useModal from "@/hook/useModal";
+import { FormRegisterCostumerProvider, FormUpdateCostumerProvider } from "@/contexts";
+import { UpdateCostumerModal } from "@/components/Modal/UpdateCostumerModal";
 
 export interface IData {
   Total: number;
@@ -63,23 +67,28 @@ export default function Client() {
   //context
   const { setFormSuccess, formSuccess, errorMessage, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
-  //Modal Delete
-  const [modalOpendelete, setModalOpendelete] = useState(false);
-  const modalDeleteHandleOpen = () => setModalOpendelete(true);
-  const modalDeleteHandleClose = () => {
-    setModalOpendelete(false);
-  };
+  //modal
+  const { modals, modalActions, modalSets } = useModal();
+  const { setModalOpen } = modalSets;
+  const { modalOpen, modalUpdateOpen, modalOpendelete } = modals;
+  const {
+    modalHandleOpen,
+    modalHandleClose,
+    modalUpdateHandleOpen,
+    modalHandleUpdateClose,
+    modalDeleteHandleOpen,
+    modalDeleteHandleClose,
+  } = modalActions;
 
   const limitPorPage = 10;
-  const columns = ColumnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen);
+  const columns = ColumnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen, modalUpdateHandleOpen);
 
   function handleClickLink() {
-    router.push("/clients/new");
+    modalHandleOpen();
   }
 
   async function fetchApi(filter?: string, page?: number, limit?: number) {
     let currentPage = page;
-
     if (page === 0 && currentPage) {
       setCurrentPage(currentPage + 1);
     }
@@ -120,51 +129,69 @@ export default function Client() {
 
   return (
     <>
-      <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
-      <ToastSuccess
-        formSuccess={formSuccess}
-        setFormSuccess={setFormSuccess}
-        alertSuccess="bunda atualizados com sucesso!!"
-      />
+      <FormRegisterCostumerProvider fetchApi={fetchApi}>
+        <FormUpdateCostumerProvider fetchApi={fetchApi} CostumerID={selectedItem._id}>
+          <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+          <ToastSuccess
+            formSuccess={formSuccess}
+            setFormSuccess={setFormSuccess}
+            alertSuccess="Cliente atualizado com sucesso!!"
+          />
 
-      <DeleteModal
-        fetchApi={fetchApi}
-        open={modalOpendelete}
-        setOpen={setModalOpendelete}
-        handleClose={modalDeleteHandleClose}
-        handleOpen={modalDeleteHandleOpen}
-        HandleDeleted={HandleDeleted}
-        selectedItemUpdate={selectedItem}
-      />
-      <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-        <TextField
-          value={searchField || ""}
-          onChange={(e) => setSearchField(e.target.value)}
-          hiddenLabel
-          id="filled-hidden-label-small"
-          placeholder="Search"
-          variant="filled"
-          size="small"
-          sx={{
-            marginTop: 3,
-            width: 180,
-          }}
-        />
-        <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
-          Novo
-        </Button>
-      </Stack>
-      <DataGridLayout
-        loading={loading}
-        page={costumerData.Page}
-        totalCount={costumerData.Total}
-        rows={costumerData.customer}
-        setCurrentPage={setCurrentPage}
-        currentPage={currentPage}
-        columns={columns}
-        PageSize={limitPorPage}
-      />
+          <CreateCostumerModal
+            open={modalOpen}
+            handleClose={modalHandleClose}
+            handleOpen={modalHandleOpen}
+            setOpen={modalHandleOpen}
+          >
+            <UpdateCostumerModal
+              open={modalUpdateOpen}
+              handleClose={modalHandleUpdateClose}
+              handleOpen={modalUpdateHandleOpen}
+              setOpen={modalHandleOpen}
+            >
+              <DeleteModal
+                fetchApi={fetchApi}
+                open={modalOpendelete}
+                setOpen={setModalOpen}
+                handleClose={modalDeleteHandleClose}
+                handleOpen={modalDeleteHandleOpen}
+                HandleDeleted={HandleDeleted}
+                selectedItemUpdate={selectedItem}
+              />
+              <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
+              <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+                <TextField
+                  value={searchField || ""}
+                  onChange={(e) => setSearchField(e.target.value)}
+                  hiddenLabel
+                  id="filled-hidden-label-small"
+                  placeholder="Search"
+                  variant="filled"
+                  size="small"
+                  sx={{
+                    marginTop: 3,
+                    width: 180,
+                  }}
+                />
+                <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
+                  Novo
+                </Button>
+              </Stack>
+              <DataGridLayout
+                loading={loading}
+                page={costumerData.Page}
+                totalCount={costumerData.Total}
+                rows={costumerData.customer}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+                columns={columns}
+                PageSize={limitPorPage}
+              />
+            </UpdateCostumerModal>
+          </CreateCostumerModal>
+        </FormUpdateCostumerProvider>
+      </FormRegisterCostumerProvider>
     </>
   );
 }

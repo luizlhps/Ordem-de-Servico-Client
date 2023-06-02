@@ -18,7 +18,7 @@ export const style = {
   overflow: "auto",
   "@media (max-width: 768px)": {
     textAlign: "center",
-    width: "90%",
+    width: "98%",
     overflow: "auto",
     justifyContent: "center",
   },
