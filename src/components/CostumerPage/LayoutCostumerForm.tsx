@@ -32,7 +32,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
 
   return (
     <>
-      {typeForm === "createCostomer" && (
+      {/*       {typeForm === "createCostomer" && (
         <>
           {formStep >= 0 && formStep <= 2 && (
             <>
@@ -81,10 +81,17 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
           )}
 
           {formStep > 2 && (
-            <CompletedForm loading={loading} data={data} confirmData={confirmData} handleClose={handleClose} />
+            <CompletedForm
+              loading={loading}
+              data={data}
+              confirmData={confirmData}
+              handleClose={handleClose}
+              typeForm={typeForm}
+            />
           )}
         </>
-      )}
+      )} */}
+
       {typeForm === "updateCostumer" && (
         <>
           {formStep >= 0 && formStep <= 2 && (
@@ -94,7 +101,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                 sx={{
                   margin: "auto",
                   background: theme.palette.background.paper,
-                  borderRadius: "1rem",
+
                   ":root": {
                     paddingBottom: 10,
                   },
@@ -119,12 +126,17 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="updateCostumer"
                   />
                 )}
+                {formStep >= 2 && (
+                  <CompletedForm
+                    loading={loading}
+                    data={data}
+                    confirmData={confirmData}
+                    handleClose={handleClose}
+                    typeForm="updateCostumer"
+                  />
+                )}
               </Container>
             </>
-          )}
-
-          {formStep >= 2 && (
-            <CompletedForm loading={loading} data={data} confirmData={confirmData} handleClose={handleClose} />
           )}
         </>
       )}

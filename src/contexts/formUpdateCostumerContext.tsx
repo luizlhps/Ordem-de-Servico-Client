@@ -71,22 +71,35 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
     }
   }
   useEffect(() => {
-    const form = {
-      //Name and Contact
-      name: CostumerData.name,
-      email: CostumerData.email,
-      contact: CostumerData.contact,
-      cpfOrCnpj: CostumerData.cpfOrCnpj,
-      phone: CostumerData.phone,
-      tel: CostumerData.tel,
+    if (CostumerData.address && CostumerData.address.length > 0) {
+      const form = {
+        name: CostumerData.name,
+        email: CostumerData.email,
+        contact: CostumerData.contact,
+        cpfOrCnpj: CostumerData.cpfOrCnpj,
+        phone: CostumerData.phone,
+        tel: CostumerData.tel,
+        address: [
+          {
+            cep: CostumerData?.address[0].cep,
+            state: CostumerData.address[0].state,
+            neighborhood: CostumerData.address[0].neighborhood,
+            street: CostumerData.address[0].street,
+            city: CostumerData.address[0].city,
+            number: CostumerData.address[0].number,
+            complement: CostumerData.address[0].complement,
+          },
+        ],
 
-      //Andress
-    };
-
-    setData((prevValues: any) => ({
-      ...prevValues,
-      ...form,
-    }));
+        //Andress
+      };
+      const streetValue = form.address[0].street;
+      console.log(streetValue);
+      setData((prevValues: any) => ({
+        ...prevValues,
+        ...form,
+      }));
+    }
   }, [CostumerData]);
 
   console.log(data);

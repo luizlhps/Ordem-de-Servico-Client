@@ -13,10 +13,10 @@ import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { OrdensSVG } from "../../../public/icon/SVGS/IconsSVG";
-import { CreateCostumerModal } from "@/components/Modal/CreateCostumerModal";
+import { CreateCostumerModal } from "@/components/Modal/costumerPage/CreateCostumerModal";
 import useModal from "@/hook/useModal";
 import { FormRegisterCostumerProvider, FormUpdateCostumerProvider } from "@/contexts";
-import { UpdateCostumerModal } from "@/components/Modal/UpdateCostumerModal";
+import { UpdateCostumerModal } from "@/components/Modal/costumerPage/UpdateCostumerModal";
 
 export interface IData {
   Total: number;

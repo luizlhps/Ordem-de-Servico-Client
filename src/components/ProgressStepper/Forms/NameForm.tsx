@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { FormRegisterCostumerContext } from "@/contexts";
 
@@ -55,10 +55,11 @@ type Inputs = {
 };
 
 //code
-export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, typeForm, setData }) => {
+export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, typeForm, setData, data }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:720px)");
 
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -72,6 +73,17 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
     setData(data);
     nextFormStep();
   };
+
+  useEffect(() => {
+    if (data) {
+      setValue("name", data.name);
+      setValue("email", data.email);
+      setValue("contact", data.contact);
+      setValue("cpfOrCnpj", data.cpfOrCnpj);
+      setValue("phone", data.phone);
+      setValue("tel", data.tel);
+    }
+  }, [data]);
 
   const phoneValue = watch("phone");
   const telValue = watch("tel");

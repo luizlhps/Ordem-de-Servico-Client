@@ -1,9 +1,8 @@
 import React, { ReactNode, useEffect } from "react";
-import TransitionsModal from "./Modal";
-import NewCostumer from "../CostumerPage/NewCostumer";
+import TransitionsModal from "../Modal";
+import NewCostumer from "../../CostumerPage/NewCostumer";
 import { IconButton, Icon } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
-import UpdateCostumer from "../CostumerPage/UpdateCostumer";
 
 const style = {
   position: "absolute" as "absolute",
@@ -55,17 +54,18 @@ interface IProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleOpen: () => void;
   handleClose: () => void;
+
   children: ReactNode;
 }
 
-export const UpdateCostumerModal: React.FC<IProps> = ({ open, handleClose, children }) => {
+export const CreateCostumerModal: React.FC<IProps> = ({ open, handleClose, children }) => {
   return (
     <>
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
         <IconButton onClick={handleClose} sx={buttonStyle}>
           <Icon>close</Icon>
         </IconButton>
-        <UpdateCostumer handleClose={handleClose} />
+        <NewCostumer handleClose={handleClose} />
       </TransitionsModal>
       {children}
     </>

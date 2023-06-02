@@ -68,19 +68,17 @@ export const AdressForm: React.FC<NameFormProps> = ({
   const cepForm = watch("cep");
 
   useEffect(() => {
-    if (data?.cep !== undefined) {
-      const CepLength = data?.cep.split("").length;
-      if (CepLength > 2) {
-        setValue("number", data?.number);
-        setValue("cep", data?.cep);
-      }
+    if (data && data.address) {
+      console.log("aaaa", data);
+      setValue("cep", data.address[0].cep);
+      setValue("city", data.address[0].city);
+      setValue("neighborhood", data.address[0].neighborhood);
+      setValue("state", data.address[0].state);
+      setValue("street", data.address[0].street);
+      setValue("number", data.address[0].number);
+      setValue("complement", data.address[0].complement);
     }
-
-    if (numberForm !== "") {
-      setValue("number", numbersOnly(numberForm));
-      setValue("cep", numbersOnly(cepForm));
-    }
-  }, [numberForm, cepForm]);
+  }, [data, prevFormStep]);
 
   //Search Cep
   const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
@@ -91,16 +89,18 @@ export const AdressForm: React.FC<NameFormProps> = ({
     if (cep.split("").length === 8) {
       try {
         debouse(() => {
-          CepSearch.getSeachCep(cep).then((data) => {
-            if (data.erro) {
+          CepSearch.getSeachCep(cep).then((dataCepApi) => {
+            if (dataCepApi.erro) {
               setErrorForm(true);
               return;
             }
-            setValue("city", data.localidade);
-            setValue("neighborhood", data.bairro);
-            setValue("complement", data.complemento);
-            setValue("state", data.uf);
-            setValue("street", data.logradouro);
+            if (data) {
+              setValue("city", dataCepApi.localidade);
+              setValue("neighborhood", dataCepApi.bairro);
+              setValue("complement", dataCepApi.complemento);
+              setValue("state", dataCepApi.uf);
+              setValue("street", dataCepApi.logradouro);
+            }
           });
         });
       } catch (error) {
@@ -110,8 +110,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
   };
 
   const onSubmit = (data: Inputs) => {
-    setData(data);
-    nextFormStep();
+    setData({ address: [data] });
   };
   return (
     <>
@@ -151,7 +150,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     }}
                     size="small"
                     placeholder="Digite o Nome"
-                    defaultValue={data?.cep}
                   />
                 )}
               />
@@ -177,7 +175,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     fullWidth
                     id="outlined-multiline-flexible"
                     placeholder="Digite o Nome"
-                    defaultValue={data?.city}
                   />
                 )}
               />
@@ -201,7 +198,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     }}
                     id="outlined-multiline-flexible"
                     placeholder="Digite o Nome"
-                    defaultValue={data?.neighborhood}
                   />
                 )}
               />
@@ -225,7 +221,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     }}
                     id="outlined-multiline-flexible"
                     placeholder="Digite o Nome"
-                    defaultValue={data?.complement}
                   />
                 )}
               />
@@ -248,7 +243,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                       onChange(e.target.value);
                     }}
                     placeholder="Digite o Nome"
-                    defaultValue={data?.state}
                   />
                 )}
               />
@@ -274,7 +268,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                           onChange(e.target.value);
                         }}
                         placeholder="Digite o Nome"
-                        defaultValue={data?.street}
                       />
                     )}
                   />
@@ -300,7 +293,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                         }}
                         type="text"
                         placeholder="Digite o Nome"
-                        defaultValue={data?.number}
                       />
                     )}
                   />
@@ -349,7 +341,10 @@ export const AdressForm: React.FC<NameFormProps> = ({
             <Box justifyContent={"center"} display={"flex"}>
               <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
                 <Button
-                  onClick={prevFormStep}
+                  onClick={() => {
+                    handleSubmit(onSubmit)();
+                    prevFormStep();
+                  }}
                   size="large"
                   sx={{
                     marginTop: 6,
@@ -362,7 +357,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
                 <Button
                   onClick={() => {
                     handleSubmit(onSubmit)();
-                    searchCep;
+                    nextFormStep();
                   }}
                   size="large"
                   sx={{

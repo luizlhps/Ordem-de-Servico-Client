@@ -15,7 +15,7 @@ import { TextField, Stack, Button, Icon, IconButton } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { useGetCostumOrders } from "@/hook/CostumOrders/useGetCostumOrders";
 import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
-import { CreateCostumerModal } from "@/components/Modal/CreateCostumerModal";
+import { CreateCostumerModal } from "@/components/Modal/costumerPage/CreateCostumerModal";
 import { useRouter } from "next/router";
 
 interface Params extends ParsedUrlQuery {
