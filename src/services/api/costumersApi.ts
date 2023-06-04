@@ -1,12 +1,53 @@
-import { ICustomer } from "@/contexts";
 import { Api } from "./axios-config";
 
 //[] - Adicionar trycatch e validação de erro
 
+interface ICustomer {
+  id: number;
+  name: string;
+  email: string;
+  contact: string;
+  phone: string;
+  cpfOrCnpj: string;
+  tel: string;
+  orders: any[];
+  createdAt: string;
+  updatedAt: string;
+  cep: string;
+  state: string;
+  neighborhood: string;
+  street: string;
+  city: string;
+  number: string;
+  complement: string;
+  _id: string;
+
+  //equipament
+  equipment: string;
+  brand: string;
+  dateEntry: string;
+  model: string;
+  defect: string;
+  status: string;
+}
+export interface ICostumerData {
+  Total: number;
+  Page: number;
+  limit: number;
+  customer: ICustomer[] | [];
+}
+
 class Costumers {
   async getAllCostumers(filter = "", page = 1, limit = 10) {
-    const res = await Api.get(`costumers/?filter=${filter}&page=${page}&limit=${limit}`);
-    return res;
+    try {
+      const res = await Api.get(`costumers/?filter=${filter}&page=${page}&limit=${limit}`);
+
+      if (res) return res;
+      return new Error("Erro ao listar os registros.");
+    } catch (error) {
+      console.error(error);
+      return new Error((error as { message: string }).message || "Erro ao listar os registros.");
+    }
   }
 
   async deleteCostumer(_id: string) {

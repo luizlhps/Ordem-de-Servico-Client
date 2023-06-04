@@ -114,265 +114,263 @@ export const AdressForm: React.FC<NameFormProps> = ({
   };
   return (
     <>
-      {formStep <= 1 && (
-        <form>
-          <ContainerCustom>
-            <Typography variant="h1" fontWeight={500}>
-              Endereço
+      <form>
+        <ContainerCustom>
+          <Typography variant="h1" fontWeight={500}>
+            Endereço
+          </Typography>
+          <Divider
+            sx={{
+              width: 39,
+              height: 5,
+              background: theme.palette.secondary.main,
+              marginLeft: 1,
+            }}
+          />
+
+          <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
+            <Typography fontWeight={500} marginTop={3} marginBottom={1}>
+              CEP*
             </Typography>
-            <Divider
-              sx={{
-                width: 39,
-                height: 5,
-                background: theme.palette.secondary.main,
-                marginLeft: 1,
-              }}
+            <Controller
+              name="cep"
+              defaultValue={""}
+              rules={{ required: true, minLength: 8, validate: (value) => !errorForm }}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  onBlur={searchCep}
+                  error={!!errors.cep}
+                  inputProps={{ maxLength: 8, pattern: "/d+/" }}
+                  fullWidth
+                  value={numbersOnly(value).replace(/^(\d{5})(\d{3})$/, "$1-$2")}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  size="small"
+                  placeholder="Digite o Nome"
+                />
+              )}
+            />
+            {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
+            {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
+
+            <Typography marginTop={3} marginBottom={1}>
+              Cidade*
+            </Typography>
+            <Controller
+              name="city"
+              defaultValue={""}
+              rules={{ required: true }}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  size="small"
+                  error={!!errors.city}
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  fullWidth
+                  id="outlined-multiline-flexible"
+                  placeholder="Digite o Nome"
+                />
+              )}
+            />
+            {errors.city?.type === "required" && <Typography color={"error"}>Digite a cidade</Typography>}
+            <Typography marginTop={3} marginBottom={1}>
+              Bairro*
+            </Typography>
+            <Controller
+              rules={{ required: true }}
+              name="neighborhood"
+              defaultValue={""}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  size="small"
+                  fullWidth
+                  error={!!errors.neighborhood}
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  id="outlined-multiline-flexible"
+                  placeholder="Digite o Nome"
+                />
+              )}
+            />
+            {errors.neighborhood?.type === "required" && <Typography color={"error"}>Digite o bairro</Typography>}
+            <Typography marginTop={3} marginBottom={1}>
+              Complemento
+            </Typography>
+
+            <Controller
+              name="complement"
+              defaultValue={""}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  fullWidth
+                  size="small"
+                  error={!!errors.complement}
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  id="outlined-multiline-flexible"
+                  placeholder="Digite o Nome"
+                />
+              )}
             />
 
-            <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
-              <Typography fontWeight={500} marginTop={3} marginBottom={1}>
-                CEP*
-              </Typography>
-              <Controller
-                name="cep"
-                defaultValue={""}
-                rules={{ required: true, minLength: 8, validate: (value) => !errorForm }}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    onBlur={searchCep}
-                    error={!!errors.cep}
-                    inputProps={{ maxLength: 8, pattern: "/d+/" }}
-                    fullWidth
-                    value={numbersOnly(value).replace(/^(\d{5})(\d{3})$/, "$1-$2")}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    size="small"
-                    placeholder="Digite o Nome"
-                  />
-                )}
-              />
-              {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
-              {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
-
-              <Typography marginTop={3} marginBottom={1}>
-                Cidade*
-              </Typography>
-              <Controller
-                name="city"
-                defaultValue={""}
-                rules={{ required: true }}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    size="small"
-                    error={!!errors.city}
-                    value={value}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    fullWidth
-                    id="outlined-multiline-flexible"
-                    placeholder="Digite o Nome"
-                  />
-                )}
-              />
-              {errors.city?.type === "required" && <Typography color={"error"}>Digite a cidade</Typography>}
-              <Typography marginTop={3} marginBottom={1}>
-                Bairro*
-              </Typography>
-              <Controller
-                rules={{ required: true }}
-                name="neighborhood"
-                defaultValue={""}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    size="small"
-                    fullWidth
-                    error={!!errors.neighborhood}
-                    value={value}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    id="outlined-multiline-flexible"
-                    placeholder="Digite o Nome"
-                  />
-                )}
-              />
-              {errors.neighborhood?.type === "required" && <Typography color={"error"}>Digite o bairro</Typography>}
-              <Typography marginTop={3} marginBottom={1}>
-                Complemento
-              </Typography>
-
-              <Controller
-                name="complement"
-                defaultValue={""}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    error={!!errors.complement}
-                    value={value}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    id="outlined-multiline-flexible"
-                    placeholder="Digite o Nome"
-                  />
-                )}
-              />
-
-              <Typography marginTop={3} marginBottom={1}>
-                Estado*
-              </Typography>
-              <Controller
-                rules={{ required: true }}
-                name="state"
-                defaultValue={""}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    error={!!errors.state}
-                    value={value}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    placeholder="Digite o Nome"
-                  />
-                )}
-              />
-              {errors.state?.type === "required" && <Typography color={"error"}>Digite o estado</Typography>}
-
-              <Stack flexDirection={!columnMedia ? "row" : "column"} gap={1}>
-                <Box flex={1}>
-                  <Typography marginTop={3} marginBottom={1}>
-                    Rua*
-                  </Typography>
-                  <Controller
-                    rules={{ required: true }}
-                    name="street"
-                    defaultValue={""}
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <TextField
-                        fullWidth
-                        size="small"
-                        error={!!errors.street}
-                        value={value}
-                        onChange={(e) => {
-                          onChange(e.target.value);
-                        }}
-                        placeholder="Digite o Nome"
-                      />
-                    )}
-                  />
-                  {errors.street?.type === "required" && <Typography color={"error"}>Digite a rua</Typography>}
-                </Box>
-                <Box>
-                  <Typography marginTop={3} marginBottom={1}>
-                    Numero*
-                  </Typography>
-                  <Controller
-                    rules={{ required: true }}
-                    name="number"
-                    defaultValue={""}
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <TextField
-                        fullWidth
-                        size="small"
-                        error={!!errors.number}
-                        value={value}
-                        onChange={(e) => {
-                          onChange(e.target.value);
-                        }}
-                        type="text"
-                        placeholder="Digite o Nome"
-                      />
-                    )}
-                  />
-                  {errors.number?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
-                </Box>
-              </Stack>
-            </Stack>
-            <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
-              <UserProcessSVG color={theme.palette.secondary.main} />
-              <Box
-                sx={{
-                  width: 22,
-                  margin: "auto 10px",
-                  height: 3,
-                  alignContent: "center",
-                  background: theme.palette.secondary.main,
-                }}
-              />
-              <MarketSVG color={theme.palette.secondary.main} />
-
-              {typeForm === "createCostumer" && (
-                <>
-                  <Box
-                    sx={{
-                      width: 22,
-                      margin: "auto 10px",
-                      height: 3,
-                      alignContent: "center",
-                      background: theme.palette.primary.light,
-                    }}
-                  />
-
-                  <Box
-                    sx={{
-                      width: 22,
-                      margin: "auto 10px",
-                      height: 3,
-                      alignContent: "center",
-                      background: theme.palette.primary.light,
-                    }}
-                  />
-                  <OsProcessSVG color={theme.palette.primary.light} />
-                </>
+            <Typography marginTop={3} marginBottom={1}>
+              Estado*
+            </Typography>
+            <Controller
+              rules={{ required: true }}
+              name="state"
+              defaultValue={""}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  fullWidth
+                  size="small"
+                  error={!!errors.state}
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                  placeholder="Digite o Nome"
+                />
               )}
+            />
+            {errors.state?.type === "required" && <Typography color={"error"}>Digite o estado</Typography>}
+
+            <Stack flexDirection={!columnMedia ? "row" : "column"} gap={1}>
+              <Box flex={1}>
+                <Typography marginTop={3} marginBottom={1}>
+                  Rua*
+                </Typography>
+                <Controller
+                  rules={{ required: true }}
+                  name="street"
+                  defaultValue={""}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      fullWidth
+                      size="small"
+                      error={!!errors.street}
+                      value={value}
+                      onChange={(e) => {
+                        onChange(e.target.value);
+                      }}
+                      placeholder="Digite o Nome"
+                    />
+                  )}
+                />
+                {errors.street?.type === "required" && <Typography color={"error"}>Digite a rua</Typography>}
+              </Box>
+              <Box>
+                <Typography marginTop={3} marginBottom={1}>
+                  Numero*
+                </Typography>
+                <Controller
+                  rules={{ required: true }}
+                  name="number"
+                  defaultValue={""}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      fullWidth
+                      size="small"
+                      error={!!errors.number}
+                      value={value}
+                      onChange={(e) => {
+                        onChange(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Digite o Nome"
+                    />
+                  )}
+                />
+                {errors.number?.type === "required" && <Typography color={"error"}>Digite o numero</Typography>}
+              </Box>
             </Stack>
-            <Box justifyContent={"center"} display={"flex"}>
-              <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-                <Button
-                  onClick={() => {
-                    handleSubmit(onSubmit)();
-                    prevFormStep();
-                  }}
-                  size="large"
+          </Stack>
+          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+            <UserProcessSVG color={theme.palette.secondary.main} />
+            <Box
+              sx={{
+                width: 22,
+                margin: "auto 10px",
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.secondary.main,
+              }}
+            />
+            <MarketSVG color={theme.palette.secondary.main} />
+
+            {typeForm === "createCostumer" && (
+              <>
+                <Box
                   sx={{
-                    marginTop: 6,
-                    background: theme.palette.secondary.main,
-                    color: theme.palette.background.paper,
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.primary.light,
                   }}
-                >
-                  Prev
-                </Button>
-                <Button
-                  onClick={() => {
-                    handleSubmit(onSubmit)();
-                    nextFormStep();
-                  }}
-                  size="large"
+                />
+
+                <Box
                   sx={{
-                    marginTop: 6,
-                    background: theme.palette.secondary.main,
-                    color: theme.palette.background.paper,
+                    width: 22,
+                    margin: "auto 10px",
+                    height: 3,
+                    alignContent: "center",
+                    background: theme.palette.primary.light,
                   }}
-                >
-                  Next
-                </Button>
-              </Stack>
-            </Box>
-          </ContainerCustom>
-        </form>
-      )}
+                />
+                <OsProcessSVG color={theme.palette.primary.light} />
+              </>
+            )}
+          </Stack>
+          <Box justifyContent={"center"} display={"flex"}>
+            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+              <Button
+                onClick={() => {
+                  handleSubmit(onSubmit)();
+                  prevFormStep();
+                }}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
+                }}
+              >
+                Prev
+              </Button>
+              <Button
+                onClick={() => {
+                  handleSubmit(onSubmit)();
+                  nextFormStep();
+                }}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
+                }}
+              >
+                Next
+              </Button>
+            </Stack>
+          </Box>
+        </ContainerCustom>
+      </form>
     </>
   );
 };

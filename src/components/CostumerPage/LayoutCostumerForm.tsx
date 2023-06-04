@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ICustomerAndOrderData } from "@/contexts";
 import { useTheme, Container } from "@mui/material";
 import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressStepper";
+import { TypeForm } from "../ProgressStepper/Forms/types";
 
 export interface IConfigContext {
   confirmData: any;
@@ -12,7 +13,7 @@ export interface IConfigContext {
 
 export interface ILayoutCostumerForm {
   ConfigContext: IConfigContext;
-  typeForm: "createCostomer" | "updateCostumer";
+  typeForm: TypeForm;
   handleClose: () => void;
 }
 
@@ -32,7 +33,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
 
   return (
     <>
-      {typeForm === "createCostomer" && (
+      {typeForm === "createCostumer" && (
         <>
           {formStep >= 0 && formStep <= 2 && (
             <>
@@ -47,7 +48,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                   },
                 }}
               >
-                {formStep >= 0 && (
+                {formStep >= 0 && formStep <= 0 && (
                   <NameForm
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -56,7 +57,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="createCostumer"
                   />
                 )}
-                {formStep >= 1 && (
+                {formStep >= 1 && formStep <= 1 && (
                   <AdressForm
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -66,7 +67,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="createCostumer"
                   />
                 )}
-                {formStep >= 2 && (
+                {formStep >= 2 && formStep <= 2 && (
                   <CreateOs
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -107,7 +108,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                   },
                 }}
               >
-                {formStep >= 0 && (
+                {formStep >= 0 && formStep <= 0 && (
                   <NameForm
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -116,7 +117,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="updateCostumer"
                   />
                 )}
-                {formStep >= 1 && (
+                {formStep >= 1 && formStep <= 1 && (
                   <AdressForm
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -126,7 +127,7 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="updateCostumer"
                   />
                 )}
-                {formStep >= 2 && (
+                {formStep >= 2 && formStep <= 2 && (
                   <CompletedForm
                     loading={loading}
                     data={data}

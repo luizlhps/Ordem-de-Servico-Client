@@ -15,8 +15,7 @@ type Context = {
   confirmData?: () => void;
   loading: boolean;
 };
-
-export interface ICustomer {
+interface ICustomer {
   id: number;
   name: string;
   email: string;

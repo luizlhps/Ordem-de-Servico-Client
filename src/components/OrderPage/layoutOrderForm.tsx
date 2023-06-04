@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ICustomerAndOrderData } from "@/contexts";
 import { useTheme, Container } from "@mui/material";
 import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressStepper";
+import { TypeForm } from "../ProgressStepper/Forms/types";
+import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
 
 export interface IConfigContext {
   confirmData: any;
@@ -12,7 +14,7 @@ export interface IConfigContext {
 
 export interface ILayoutCostumerForm {
   ConfigContext: IConfigContext;
-  typeForm: "createCostomer" | "updateCostumer";
+  typeForm: TypeForm;
   handleClose: () => void;
 }
 
@@ -32,7 +34,7 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, 
 
   return (
     <>
-      {typeForm === "createCostomer" && (
+      {typeForm === "createOs" && (
         <>
           {formStep >= 0 && formStep <= 2 && (
             <>
@@ -47,24 +49,24 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, 
                   },
                 }}
               >
-                {formStep >= 0 && (
-                  <NameForm
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createCostumer"
-                  />
-                )}
-
-                {formStep >= 1 && (
+                {formStep >= 0 && formStep <= 0 && (
                   <CreateOs
                     formStep={formStep}
                     nextFormStep={nextFormStep}
                     prevFormStep={prevFormStep}
                     data={data}
                     setData={setFormValues}
-                    typeForm="createCostumer"
+                    typeForm="createOs"
+                  />
+                )}
+                {formStep >= 1 && (
+                  <DescriptionOS
+                    formStep={formStep}
+                    nextFormStep={nextFormStep}
+                    prevFormStep={prevFormStep}
+                    data={data}
+                    setData={setFormValues}
+                    typeForm="createOs"
                   />
                 )}
               </Container>

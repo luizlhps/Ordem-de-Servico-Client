@@ -17,7 +17,7 @@ const NewCostumer = ({ handleClose }: IPropsNewCostumer) => {
 
   return (
     <>
-      <LayoutCostumerForm typeForm="createCostomer" ConfigContext={ConfigContext} handleClose={handleClose} />
+      <LayoutCostumerForm typeForm="createCostumer" ConfigContext={ConfigContext} handleClose={handleClose} />
     </>
   );
 };

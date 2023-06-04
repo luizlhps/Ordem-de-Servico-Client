@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { HeaderLayout } from "@/components/HeaderLayout";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { TypeForm } from "./types";
 //style custom
 const InputCustom = styled.input`
   height: 35px;
@@ -48,7 +49,7 @@ interface Iprops {
   data: any;
   loading: boolean;
   handleClose: () => void;
-  typeForm: "createCostomer" | "updateCostumer";
+  typeForm: TypeForm;
 }
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm }) => {
@@ -75,7 +76,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
             marginTop: 2,
           }}
         />
-        {typeForm === "createCostomer" && (
+        {typeForm === "createCostumer" && (
           <>
             <Typography variant="h1" fontWeight={600} marginTop={2}>
               Formulário Completo

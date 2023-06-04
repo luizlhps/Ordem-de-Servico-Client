@@ -13,7 +13,10 @@ const useApiRequest = () => {
       const response = await apiFunction(...args);
       console.log(response);
       setLoading(false);
-      return response.data;
+
+      if (response) return response.data;
+
+      return new Error("Ocorreu um Erro ao fazer a busca!!");
     } catch (error: any) {
       setLoading(false);
       setError(error);

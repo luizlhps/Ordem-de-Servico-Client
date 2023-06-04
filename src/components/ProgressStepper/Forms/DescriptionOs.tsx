@@ -20,9 +20,6 @@ import { TStatusData, statusApi } from "@/services/api/statusApi";
 import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
-import useApiRequest from "@/hook/useApiGet";
-import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
-import { ICustomer } from "@/pages/clients";
 
 //style custom
 const InputCustom = styled.input`
@@ -61,7 +58,7 @@ const ContainerCustom = styled.div`
 
 const InputCustomDefect = styled.textarea`
   font-size: 16px;
-  color: #1e2737;
+  color: red;
   width: 100%;
 
   height: 114px;
@@ -94,7 +91,7 @@ type Inputs = {
   observation: string;
 };
 
-export const CreateOs: React.FC<NameFormProps> = ({
+export const DescriptionOS: React.FC<NameFormProps> = ({
   formStep,
   nextFormStep,
   prevFormStep,
@@ -104,11 +101,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
-
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
-  const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
-
-  const { request } = useApiRequest();
 
   const { setFormValues } = useContext(FormRegisterCostumerContext);
 
@@ -127,13 +120,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
       }
     }
     FetchGetStatus();
-
-    const fetchGetCostumers = async () => {
-      const data = await request(constumersApi.getAllCostumers, "", 0, 0);
-      console.log(data);
-      setConstumerData(data);
-    };
-    fetchGetCostumers();
   }, []);
 
   //form
@@ -155,44 +141,45 @@ export const CreateOs: React.FC<NameFormProps> = ({
     <>
       <form>
         <ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            <Box>
-              <Typography variant="h1" fontWeight={500}>
-                Criar O.S
+          <Typography variant="h1" fontWeight={500}>
+            Criar O.S
+          </Typography>
+
+          <Divider
+            sx={{
+              width: 39,
+              height: 5,
+              background: theme.palette.secondary.main,
+              marginLeft: 1,
+            }}
+          />
+
+          <Grid
+            sx={{
+              input: {
+                background: theme.palette.background.paper,
+                color: theme.palette.primary.main,
+              },
+              textarea: {
+                background: theme.palette.background.paper,
+                color: theme.palette.primary.main,
+              },
+            }}
+            container
+            spacing={3}
+            marginTop={2}
+            flexDirection={"column"}
+          >
+            <Grid item xs>
+              <Typography marginTop={3} marginBottom={1}>
+                Laudo Técnico
               </Typography>
-              <Divider
-                sx={{
-                  width: 39,
-                  height: 5,
-                  background: theme.palette.secondary.main,
-                  marginLeft: 1,
-                }}
-              />
-            </Box>
-            {typeForm === "createOs" && (
-              <>
-                <Box display={"flex"}>
-                  <FormSelect
-                    name={"status"}
-                    defaultValue={""}
-                    label={"Selecione o Cliente"}
-                    control={control}
-                    width={200}
-                  >
-                    {costumerData?.customer.map((item) => {
-                      return (
-                        <MenuItem key={item._id} value={item.name}>
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </FormSelect>
-                </Box>
-              </>
-            )}
-          </Stack>
+              <InputCustomDefect {...register("defect", { required: true })} />
+              {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
+            </Grid>
+          </Grid>
           <Box display={"flex"} justifyContent={"flex-start"}>
-            <FormSelect name={"status"} defaultValue={""} label={"status"} control={control}>
+            <FormSelect name={"status"} defaultValue={""} label={"Selecione o Cliente"} control={control}>
               {statusData?.status.map((item) => {
                 return (
                   <MenuItem key={item._id} value={item.name}>
@@ -217,7 +204,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
           >
             <Grid item xs>
               <Typography marginTop={3} marginBottom={1}>
-                Equipamento*
+                Valor
               </Typography>
               <Controller
                 defaultValue=""
@@ -232,7 +219,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <Typography color={"error"}>Digite o sobre o equipamento</Typography>
               )}
               <Typography marginTop={3} marginBottom={1}>
-                Modelo*
+                Valor Total
               </Typography>
               <Controller
                 defaultValue=""
@@ -248,7 +235,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
             <Grid item>
               <Box>
                 <Typography marginTop={3} marginBottom={1}>
-                  Marca*
+                  Desconto
                 </Typography>
                 <Controller
                   name={"brand"}
@@ -262,7 +249,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
                 <Typography marginTop={3} marginBottom={1}>
-                  Data de Entrada*
+                  Data de Saída*
                 </Typography>
                 <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
                 {errors.dateEntry?.type === "required" && (
@@ -271,118 +258,33 @@ export const CreateOs: React.FC<NameFormProps> = ({
               </Box>
             </Grid>
           </Grid>
-
-          <Grid
-            sx={{
-              input: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-              textarea: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-            }}
-            container
-            spacing={3}
-            marginTop={2}
-            flexDirection={"column"}
-          >
-            <Grid item xs>
-              <Typography marginTop={3} marginBottom={1}>
-                Defeito
-              </Typography>
-              <InputCustomDefect {...register("defect", { required: true })} />
-              {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
-            </Grid>
-            <Grid item>
-              <Typography marginTop={3} marginBottom={1}>
-                Observação
-              </Typography>
-              <InputCustomDefect {...register("observation")} />
-
-              {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
-            </Grid>
-          </Grid>
           <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
-            {typeForm === "createCostumer" && (
-              <>
-                <UserProcessSVG color={theme.palette.secondary.main} />
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.secondary.main,
-                  }}
-                />
-                <MarketSVG color={theme.palette.secondary.main} />
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.secondary.main,
-                  }}
-                />
-              </>
-            )}
             <OsProcessSVG color={theme.palette.secondary.main} />
           </Stack>
           <Box justifyContent={"center"} display={"flex"}>
             <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-              {typeForm === "createCostumer" ||
-                (typeForm === "updateCostumer" && (
-                  <>
-                    {" "}
-                    <Button
-                      onClick={prevFormStep}
-                      size="large"
-                      sx={{
-                        marginTop: 6,
-                        background: theme.palette.secondary.main,
-                        color: theme.palette.background.paper,
-                      }}
-                    >
-                      Prev
-                    </Button>
-                  </>
-                ))}
-
-              {typeForm === "createCostumer" ||
-                (typeForm === "updateCostumer" && (
-                  <>
-                    <Button
-                      size="large"
-                      sx={{
-                        marginTop: 6,
-                        background: theme.palette.secondary.main,
-                        color: theme.palette.background.paper,
-                      }}
-                      onClick={() => handleSubmit(onSubmit)()}
-                    >
-                      Criar
-                    </Button>
-                  </>
-                ))}
-
-              {typeForm === "createOs" && (
-                <>
-                  <Button
-                    size="large"
-                    sx={{
-                      marginTop: 6,
-                      background: theme.palette.secondary.main,
-                      color: theme.palette.background.paper,
-                    }}
-                    onClick={() => handleSubmit(onSubmit)()}
-                  >
-                    Next
-                  </Button>
-                </>
-              )}
+              <Button
+                onClick={prevFormStep}
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
+                }}
+              >
+                Prev
+              </Button>
+              <Button
+                size="large"
+                sx={{
+                  marginTop: 6,
+                  background: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
+                }}
+                onClick={() => handleSubmit(onSubmit)()}
+              >
+                Criar
+              </Button>
             </Stack>
           </Box>
         </ContainerCustom>

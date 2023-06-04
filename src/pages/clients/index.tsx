@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { ColumnsDataGrid } from "@/components/DataGrid/utils/costumerPage/costumerColumnConfig";
-import { constumersApi } from "@/services/api/costumersApi";
+import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
 import DeleteModal from "@/components/Modal/deleteModal";
 
 import { useDebouse } from "@/hook";
@@ -17,13 +17,6 @@ import { CreateCostumerModal } from "@/components/Modal/costumerPage/CreateCostu
 import useModal from "@/hook/useModal";
 import { FormRegisterCostumerProvider, FormUpdateCostumerProvider } from "@/contexts";
 import { UpdateCostumerModal } from "@/components/Modal/costumerPage/UpdateCostumerModal";
-
-export interface IData {
-  Total: number;
-  Page: number;
-  limit: number;
-  customer: ICustomer[] | [] | "";
-}
 
 export interface ICustomer {
   _id: string;
@@ -52,14 +45,13 @@ export interface IAddress {
 }
 
 export default function Client() {
-  const router = useRouter();
   const { debouse } = useDebouse();
   //Theme
   const theme = useTheme();
 
   const [searchField, setSearchField] = useState("");
   const [selectedItem, setSelectedItem] = useState("" || Object);
-  const [costumerData, setCostumersData] = useState<IData>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
+  const [costumerData, setCostumersData] = useState<ICostumerData>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -94,6 +86,9 @@ export default function Client() {
     }
 
     const res = await constumersApi.getAllCostumers(filter, page, limit);
+    if (res instanceof Error) {
+      return new Error("Ocorreu um Erro na busca");
+    }
     setCostumersData(res.data);
   }
 
