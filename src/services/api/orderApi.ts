@@ -13,7 +13,18 @@ export interface IOrderData {
 }
 
 class OrderApi {
-  async getAllOrder() {}
+  async getAllOrder(filter = "", page = 1, limit = 10) {
+    try {
+      const res = await Api.get(`order/?filter=${filter}&page=${page}&limit=${limit}`);
+
+      if (res) return res;
+
+      return new Error("Erro ao listar os registros.");
+    } catch (error) {
+      console.error(error);
+      return new Error((error as { message: string }).message || "Erro ao listar os registros.");
+    }
+  }
 
   async createOrder(data: IOrderData, Costumerid: string) {
     const res = await Api.post("order", {
@@ -39,6 +50,11 @@ class OrderApi {
       console.error(error);
       throw new Error((error as { message: string }).message || "Erro ao listar os status.");
     }
+  }
+
+  async deleteOrder(id: string) {
+    try {
+    } catch (error) {}
   }
 }
 

@@ -132,7 +132,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
               <ButtonLinks
                 width={202}
-                href="/teste"
+                href="/orders"
                 icon="ordens"
                 label={"Ordens de Serviço"}
                 onclick={handleMenuOpen}

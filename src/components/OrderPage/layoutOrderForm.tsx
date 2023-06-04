@@ -16,7 +16,7 @@ export interface ILayoutCostumerForm {
   handleClose: () => void;
 }
 
-export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, handleClose, typeForm }) => {
+export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, handleClose, typeForm }) => {
   const { confirmData, data, setFormValues, loading } = ConfigContext;
 
   const theme = useTheme();
@@ -56,17 +56,8 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
                     typeForm="createCostumer"
                   />
                 )}
+
                 {formStep >= 1 && (
-                  <AdressForm
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createCostumer"
-                  />
-                )}
-                {formStep >= 2 && (
                   <CreateOs
                     formStep={formStep}
                     nextFormStep={nextFormStep}
@@ -88,55 +79,6 @@ export const LayoutCostumerForm: React.FC<ILayoutCostumerForm> = ({ ConfigContex
               handleClose={handleClose}
               typeForm={typeForm}
             />
-          )}
-        </>
-      )}
-
-      {typeForm === "updateCostumer" && (
-        <>
-          {formStep >= 0 && formStep <= 2 && (
-            <>
-              <Container
-                maxWidth="md"
-                sx={{
-                  margin: "auto",
-                  background: theme.palette.background.paper,
-
-                  ":root": {
-                    paddingBottom: 10,
-                  },
-                }}
-              >
-                {formStep >= 0 && (
-                  <NameForm
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="updateCostumer"
-                  />
-                )}
-                {formStep >= 1 && (
-                  <AdressForm
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="updateCostumer"
-                  />
-                )}
-                {formStep >= 2 && (
-                  <CompletedForm
-                    loading={loading}
-                    data={data}
-                    confirmData={confirmData}
-                    handleClose={handleClose}
-                    typeForm="updateCostumer"
-                  />
-                )}
-              </Container>
-            </>
           )}
         </>
       )}
