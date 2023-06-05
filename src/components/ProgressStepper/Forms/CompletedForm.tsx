@@ -58,7 +58,6 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
   const router = useRouter();
   const Redirect = () => {
     handleClose();
-    if (loading === false) router.push("/clients");
     if (confirmData) {
       confirmData();
     }
@@ -130,7 +129,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                   <Typography fontWeight={500}>Status</Typography>
                   <InputCustom
                     readOnly
-                    defaultValue={data?.status ? data?.status[1] : ""}
+                    defaultValue={data?.status ? data?.status : ""}
                     style={{ color: theme.palette.primary.light, width: "100%" }}
                   />
                 </Grid>

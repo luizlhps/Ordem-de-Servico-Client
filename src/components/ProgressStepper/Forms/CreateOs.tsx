@@ -172,7 +172,13 @@ export const CreateOs: React.FC<NameFormProps> = ({
             {typeForm === "createOs" && (
               <>
                 <Box display={"flex"}>
-                  <FormSelect name={"status"} defaultValue={""} label={"Selecione o "} control={control} width={200}>
+                  <FormSelect
+                    name={"costumer"}
+                    defaultValue={""}
+                    label={"Selecione o cliente"}
+                    control={control}
+                    width={200}
+                  >
                     {costumerData?.customer.map((item) => {
                       return (
                         <MenuItem

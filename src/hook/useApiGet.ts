@@ -11,7 +11,6 @@ const useApiRequest = () => {
     setLoading(true);
     try {
       const response = await apiFunction(...args);
-      console.log(response);
       setLoading(false);
 
       if (response) return response.data;
