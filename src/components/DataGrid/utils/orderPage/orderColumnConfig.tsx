@@ -62,6 +62,18 @@ export const columnsDataGrid = (
       headerAlign: "left",
       align: "left",
     },
+    {
+      field: "customer",
+      headerName: "Cliente",
+      flex: 3,
+      minWidth: 300,
+      description: "Contato",
+      headerAlign: "left",
+      align: "left",
+      valueFormatter(params: any) {
+        return params.value?.name;
+      },
+    },
 
     {
       field: "dateEntry",
