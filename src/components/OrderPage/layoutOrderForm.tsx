@@ -16,9 +16,15 @@ export interface ILayoutCostumerForm {
   ConfigContext: IConfigContext;
   typeForm: TypeForm;
   handleClose: () => void;
+  setCostumerId: React.Dispatch<string>;
 }
 
-export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, handleClose, typeForm }) => {
+export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
+  ConfigContext,
+  handleClose,
+  typeForm,
+  setCostumerId,
+}) => {
   const { confirmData, data, setFormValues, loading } = ConfigContext;
 
   const theme = useTheme();
@@ -57,23 +63,14 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({ ConfigContext, 
                     data={data}
                     setData={setFormValues}
                     typeForm="createOs"
-                  />
-                )}
-                {formStep >= 1 && (
-                  <DescriptionOS
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createOs"
+                    setCostumerId={setCostumerId}
                   />
                 )}
               </Container>
             </>
           )}
 
-          {formStep > 2 && (
+          {formStep > 0 && (
             <CompletedForm
               loading={loading}
               data={data}

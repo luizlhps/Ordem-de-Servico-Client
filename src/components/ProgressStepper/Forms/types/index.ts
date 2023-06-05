@@ -1,1 +1,1 @@
-export type TypeForm = "updateCostumer" | "createCostumer" | "createOs";
+export type TypeForm = "updateCostumer" | "createCostumer" | "createOs" | "updateOs";

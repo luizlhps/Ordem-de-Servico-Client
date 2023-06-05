@@ -16,8 +16,9 @@ import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateSe
 import UpdateServiceModal from "@/components/Modal/servicesPage/Service/UpdateServiceModal";
 import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 import { FormRegisterCostumerProvider } from "@/contexts";
+import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
+import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 
 const Orders = () => {
   const theme = useTheme();
@@ -63,7 +64,7 @@ const Orders = () => {
 
   return (
     <>
-      <FormRegisterCostumerProvider fetchApi={fetchApi}>
+      <FormRegisterOrderProvider fetchApi={fetchApi}>
         <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
         <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
@@ -124,7 +125,7 @@ const Orders = () => {
             />
           </UpdateServiceModal>
         </CreateOrderModal>
-      </FormRegisterCostumerProvider>
+      </FormRegisterOrderProvider>
     </>
   );
 };

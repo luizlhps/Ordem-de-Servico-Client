@@ -82,6 +82,7 @@ interface NameFormProps {
   data: any;
   setData: any;
   typeForm: TypeForm;
+  setCostumerId?: React.Dispatch<string>;
 }
 
 type Inputs = {
@@ -101,6 +102,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   data,
   setData,
   typeForm,
+  setCostumerId,
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
@@ -109,8 +111,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
 
   const { request } = useApiRequest();
-
-  const { setFormValues } = useContext(FormRegisterCostumerContext);
 
   useEffect(() => {
     async function FetchGetStatus() {
@@ -147,7 +147,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
-    setFormValues(data);
+    setData(data);
     nextFormStep();
   };
 
@@ -172,16 +172,14 @@ export const CreateOs: React.FC<NameFormProps> = ({
             {typeForm === "createOs" && (
               <>
                 <Box display={"flex"}>
-                  <FormSelect
-                    name={"status"}
-                    defaultValue={""}
-                    label={"Selecione o Cliente"}
-                    control={control}
-                    width={200}
-                  >
+                  <FormSelect name={"status"} defaultValue={""} label={"Selecione o "} control={control} width={200}>
                     {costumerData?.customer.map((item) => {
                       return (
-                        <MenuItem key={item._id} value={item.name}>
+                        <MenuItem
+                          key={item._id}
+                          value={item.name}
+                          onClick={() => (setCostumerId ? setCostumerId(item._id) : "")}
+                        >
                           {item.name}
                         </MenuItem>
                       );
