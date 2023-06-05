@@ -337,40 +337,38 @@ export const CreateOs: React.FC<NameFormProps> = ({
           </Stack>
           <Box justifyContent={"center"} display={"flex"}>
             <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-              {typeForm === "createCostumer" ||
-                (typeForm === "updateCostumer" && (
-                  <>
-                    {" "}
-                    <Button
-                      onClick={prevFormStep}
-                      size="large"
-                      sx={{
-                        marginTop: 6,
-                        background: theme.palette.secondary.main,
-                        color: theme.palette.background.paper,
-                      }}
-                    >
-                      Prev
-                    </Button>
-                  </>
-                ))}
+              {(typeForm === "createCostumer" || typeForm === "updateCostumer") && (
+                <>
+                  {" "}
+                  <Button
+                    onClick={prevFormStep}
+                    size="large"
+                    sx={{
+                      marginTop: 6,
+                      background: theme.palette.secondary.main,
+                      color: theme.palette.background.paper,
+                    }}
+                  >
+                    Prev
+                  </Button>
+                </>
+              )}
 
-              {typeForm === "createCostumer" ||
-                (typeForm === "updateCostumer" && (
-                  <>
-                    <Button
-                      size="large"
-                      sx={{
-                        marginTop: 6,
-                        background: theme.palette.secondary.main,
-                        color: theme.palette.background.paper,
-                      }}
-                      onClick={() => handleSubmit(onSubmit)()}
-                    >
-                      Criar
-                    </Button>
-                  </>
-                ))}
+              {(typeForm === "createCostumer" || typeForm === "updateCostumer") && (
+                <>
+                  <Button
+                    size="large"
+                    sx={{
+                      marginTop: 6,
+                      background: theme.palette.secondary.main,
+                      color: theme.palette.background.paper,
+                    }}
+                    onClick={() => handleSubmit(onSubmit)()}
+                  >
+                    Criar
+                  </Button>
+                </>
+              )}
 
               {typeForm === "createOs" && (
                 <>

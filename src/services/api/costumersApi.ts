@@ -13,13 +13,6 @@ interface ICustomer {
   orders: any[];
   createdAt: string;
   updatedAt: string;
-  cep: string;
-  state: string;
-  neighborhood: string;
-  street: string;
-  city: string;
-  number: string;
-  complement: string;
   _id: string;
 
   //equipament
@@ -59,7 +52,7 @@ class Costumers {
     return deleteId;
   }
 
-  async createCostumer(data: ICustomer) {
+  async createCostumer(data: any) {
     const res = await Api.post("costumers", {
       name: data?.name,
       email: data?.email,
@@ -69,13 +62,13 @@ class Costumers {
       telephone: data?.tel,
       address: [
         {
-          cep: data?.cep,
-          state: data?.state,
-          neighborhood: data?.neighborhood,
-          street: data?.street,
-          city: data?.city,
-          number: data?.number,
-          complement: data?.complement,
+          cep: data?.address[0].cep,
+          state: data.address[0].state,
+          neighborhood: data.address[0].neighborhood,
+          street: data.address[0].street,
+          city: data.address[0].city,
+          number: data.address[0].number,
+          complement: data.address[0].complement,
         },
       ],
     });
@@ -91,13 +84,13 @@ class Costumers {
       telephone: data?.tel,
       address: [
         {
-          cep: data?.cep,
-          state: data?.state,
-          neighborhood: data?.neighborhood,
-          street: data?.street,
-          city: data?.city,
-          number: data?.number,
-          complement: data?.complement,
+          cep: data?.address[0].cep,
+          state: data.address[0].state,
+          neighborhood: data.address[0].neighborhood,
+          street: data.address[0].street,
+          city: data.address[0].city,
+          number: data.address[0].number,
+          complement: data.address[0].complement,
         },
       ],
     });

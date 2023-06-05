@@ -100,7 +100,7 @@ export const columnsDataGrid = (
       align: "left",
 
       valueFormatter(params) {
-        return params.value.name;
+        return params.value?.name;
       },
     },
 
