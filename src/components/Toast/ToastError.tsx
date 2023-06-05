@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Alert, Button, Snackbar, SnackbarOrigin, Stack, TextField, useTheme } from "@mui/material";
 import { IToastError } from "./types/ToastsTypes";
 
-export const ToastError: React.FC<IToastError> = ({ errorMessage, setErrorMessage }) => {
+export const ToastError: React.FC<IToastError> = ({ errorMessage, formError, setFormError }) => {
   const [errorState, setErrorState] = useState<boolean>(false);
 
   //Error
@@ -11,15 +11,14 @@ export const ToastError: React.FC<IToastError> = ({ errorMessage, setErrorMessag
   };
   const handleFormErrorClose = () => {
     setErrorState(false);
+    setFormError(false);
   };
 
   useEffect(() => {
-    if (errorMessage !== undefined) {
+    if (formError === true) {
       handleFormErrorClick();
-
-      setErrorMessage(undefined);
     }
-  }, [errorMessage, errorState]);
+  }, [formError]);
 
   const ErrorValidade = () => {
     if (errorMessage) {

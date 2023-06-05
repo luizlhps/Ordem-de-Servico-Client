@@ -25,6 +25,8 @@ export const FormSucessOrErrorProvider: React.FC<IProviderProps> = ({ children }
   const [messageForm, setMessageForm] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<any>(undefined);
 
+  console.log(errorMessage);
+
   return (
     <FormSucessOrErrorContext.Provider
       value={{

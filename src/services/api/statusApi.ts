@@ -49,8 +49,12 @@ class Status {
   }
 
   async deleteStatus(_id: string) {
-    const res = Api.delete(`status/${_id}`);
-    return res;
+    try {
+      await Api.delete(`status/${_id}`);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      return new Error(error.response.data.message || error.response || "Ocorreu um erro ao apagar o status");
+    }
   }
 }
 

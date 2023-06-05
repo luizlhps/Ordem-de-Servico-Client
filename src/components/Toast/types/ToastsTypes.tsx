@@ -1,6 +1,7 @@
 export interface IToastError {
   errorMessage: any;
-  setErrorMessage: React.Dispatch<any>;
+  formError: boolean;
+  setFormError: any;
 }
 
 export interface IToastSuccess {

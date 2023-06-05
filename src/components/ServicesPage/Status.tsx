@@ -33,9 +33,8 @@ const Status = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
 
-  const { setFormSuccess, formSuccess, setFormSucessoValue, errorMessage, setErrorMessageValue, setErrorMessage } =
+  const { formSuccess, setFormSuccess, errorMessage, setFormError, setErrorMessage, formError } =
     useContext(FormSucessOrErrorContext);
-  const [messageForm, setMessageForm] = useState<string | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -101,19 +100,26 @@ const Status = () => {
   const HandleDeleted = async (id: string) => {
     try {
       const res = await statusApi.deleteStatus(id);
-      fetchApi();
-      modalDeleteHandleClose();
-      setDeleteError(false);
 
       if (res instanceof Error) {
-        throw new Error("Ocorreu um erro");
+        console.log(res.message);
+        setErrorMessage(res.message);
+        setFormError(true);
+
+        modalDeleteHandleClose();
+      } else {
+        fetchApi();
+        modalDeleteHandleClose();
+        setFormError(false);
+
+        setFormSuccess(true);
       }
-      setMessageForm("O status foi apagado com sucesso!!");
-      setFormSucessoValue(true);
     } catch (error: any) {
-      setFormSucessoValue(false);
+      setFormSuccess(false);
+      setFormError(true);
       console.error(error);
-      setErrorMessageValue(error.response.data.message); //
+      setErrorMessage(error.response.data.message); //
+      setFormError(false);
     }
   };
 
@@ -137,18 +143,14 @@ const Status = () => {
 
   useEffect(() => {
     setFormSuccess(false);
-  }, [formSuccess, setFormSucessoValue]);
+  }, [formSuccess, setFormSuccess]);
 
   return (
     <>
-      <ToastError
-        errorMessage={errorMessage}
-        setErrorMessageValue={setErrorMessageValue}
-        setErrorMessage={setErrorMessage}
-      />
+      <ToastError formError={formError} errorMessage={errorMessage} setFormError={setFormError} />
       <ToastSuccess
         formSuccess={formSuccess}
-        setFormSucessoValue={setFormSucessoValue}
+        setFormSuccess={setFormSuccess}
         alertSuccess="Dados atualizados com sucesso!!"
       />
       <DeleteModal
@@ -168,8 +170,7 @@ const Status = () => {
         open={modalOpen}
         handleClose={modalHandleClose}
         handleOpen={modalHandleOpen}
-        setMessageForm={setMessageForm}
-        setFormSucessoValue={setFormSucessoValue}
+        setFormSuccess={setFormSuccess}
       >
         <UpdateStatusModal
           selectedItemUpdate={selectedItemUpdate}

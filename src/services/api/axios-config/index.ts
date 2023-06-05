@@ -16,7 +16,4 @@ Api.interceptors.request.use(
   (error) => errorInteceptors(error)
 );
 
-Api.interceptors.response.use(
-  (response) => responseInteceptor(response),
-  (error) => errorInteceptors(error)
-);
+Api.interceptors.response.use(responseInteceptor, errorInteceptors);

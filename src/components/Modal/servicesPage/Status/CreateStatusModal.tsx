@@ -10,7 +10,6 @@ import { Icon, IconButton, Stack, useTheme, CircularProgress } from "@mui/materi
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { statusApi } from "@/services/api/statusApi";
-import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 
 interface IModal {
   open: boolean;
@@ -21,8 +20,7 @@ interface IModal {
   setNewItem: any;
   newItem: any;
   children: React.ReactNode;
-  setMessageForm: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setFormSucessoValue: any;
+  setFormSuccess: any;
 }
 
 export default function CreateStatusModal({
@@ -32,14 +30,12 @@ export default function CreateStatusModal({
   newItem,
   fetchApi,
   children,
-  setFormSucessoValue,
-  setMessageForm,
+  setFormSuccess,
 }: IModal) {
   const [error, setError] = useState(false);
   const [errorName, setErrorName] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { setErrorMessageValue, setErrorMessage } = useContext(FormSucessOrErrorContext);
   //form
   const {
     register,
@@ -57,25 +53,24 @@ export default function CreateStatusModal({
         setError(false);
         setNewItem(true);
         setValue("name", "");
-        setMessageForm("Status criado com sucesso!!");
-        setFormSucessoValue(true);
+        setFormSuccess(true);
 
         fetchApi();
       })
       .catch((error) => {
         setError(true);
         if (error.response) {
-          setFormSucessoValue(false);
+          setFormSuccess(false);
           console.error(error);
-          setErrorMessageValue(error.response.data.message);
+          setFormSuccess(error.response.data.message);
 
           if (error.response.data === "Título é necessario") return setErrorName(error.response.data);
           if (error.response.data === "Descrição é necessaria") return setErrorName(error.response.data);
           if (error.response.data === "Valor é necessario") return setErrorName(error.response.data);
         } else {
-          setFormSucessoValue(false);
+          setFormSuccess(false);
           console.error(error);
-          setErrorMessageValue(error.response.data.message);
+          setFormSuccess(error.response.data.message);
         }
       });
     setLoading(false);
