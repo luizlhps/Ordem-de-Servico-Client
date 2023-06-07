@@ -17,7 +17,7 @@ interface IProps {
 
 export default function FormSelect({ children, control, name, defaultValue, label, setState, width }: IProps) {
   return (
-    <Box sx={{ minWidth: 120, marginTop: 6, width: width ? width : "" }}>
+    <Box sx={{ minWidth: 120, width: width ? width : "" }}>
       <FormControl size="small" sx={{ width: "100%" }}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Controller

@@ -127,13 +127,14 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
         }
 
         setFormSuccess(true);
-        fetchApi();
       } catch (error: any) {
         setFormSuccess(false);
         console.error(error);
         setErrorMessage(error.response.data.message); //
+      } finally {
+        setLoading(false);
+        fetchApi();
       }
-      setLoading(false);
     }
 
     costumer(data, CostumerID);

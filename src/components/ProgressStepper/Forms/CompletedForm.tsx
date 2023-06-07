@@ -55,7 +55,6 @@ interface Iprops {
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm }) => {
   const theme = useTheme();
 
-  const router = useRouter();
   const Redirect = () => {
     handleClose();
     if (confirmData) {
@@ -75,7 +74,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
             marginTop: 2,
           }}
         />
-        {(typeForm === "createCostumer" || typeForm === "createOs") && (
+        {(typeForm === "createCostumer" || typeForm === "createOs" || typeForm === "updateOs") && (
           <>
             <Typography variant="h1" fontWeight={600} marginTop={2}>
               Formulário Completo

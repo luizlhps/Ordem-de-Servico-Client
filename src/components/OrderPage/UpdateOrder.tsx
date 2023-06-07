@@ -19,7 +19,7 @@ const UpdateOrder = ({ handleClose }: IPropsNewCostumer) => {
   return (
     <>
       <LayoutOrderForm
-        typeForm="createOs"
+        typeForm="updateOs"
         ConfigContext={ConfigContext}
         handleClose={handleClose}
         setCostumerId={setCostumerId}

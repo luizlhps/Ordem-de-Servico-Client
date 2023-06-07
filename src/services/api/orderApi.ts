@@ -1,6 +1,7 @@
 import { Api } from "./axios-config";
 
 export interface IOrderData {
+  _id: string;
   id: number;
   equipment: string;
   brand: string;
@@ -8,8 +9,12 @@ export interface IOrderData {
   defect: string;
   observation: string;
   dateEntry: string;
+  services: string[];
   status: string;
   customer: string;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 class OrderApi {
@@ -55,6 +60,21 @@ class OrderApi {
   async deleteOrder(id: string) {
     try {
     } catch (error) {}
+  }
+
+  async updateOrder(data: IOrderData, Costumerid: string) {
+    const res = await Api.put("order", {
+      equipment: data.equipment,
+      brand: data.brand,
+      model: data.model,
+      defect: data.defect,
+      observation: data.observation,
+      dateEntry: data.dateEntry,
+      services: data.services,
+      status: data.status,
+      customer: Costumerid,
+    });
+    return res;
   }
 }
 

@@ -117,13 +117,14 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
         console.log(data, costumerId);
         const res = await orderApi.createOrder(data, costumerId);
         setFormSuccess(true);
-        fetchApi();
       } catch (error: any) {
         setFormSuccess(false);
         setErrorMessage(error.response.data.message); //
         console.error(error);
+      } finally {
+        fetchApi();
+        setLoading(false);
       }
-      setLoading(false);
     }
 
     costumer(data);

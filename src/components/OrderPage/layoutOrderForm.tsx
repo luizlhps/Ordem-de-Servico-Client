@@ -66,18 +66,69 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
                     setCostumerId={setCostumerId}
                   />
                 )}
+                {formStep > 0 && (
+                  <CompletedForm
+                    loading={loading}
+                    data={data}
+                    confirmData={confirmData}
+                    handleClose={handleClose}
+                    typeForm={typeForm}
+                  />
+                )}
               </Container>
             </>
           )}
+        </>
+      )}
 
-          {formStep > 0 && (
-            <CompletedForm
-              loading={loading}
-              data={data}
-              confirmData={confirmData}
-              handleClose={handleClose}
-              typeForm={typeForm}
-            />
+      {typeForm === "updateOs" && (
+        <>
+          {formStep >= 0 && formStep <= 2 && (
+            <>
+              <Container
+                maxWidth="md"
+                sx={{
+                  margin: "auto",
+                  background: theme.palette.background.paper,
+                  borderRadius: "1rem",
+                  ":root": {
+                    paddingBottom: 10,
+                  },
+                }}
+              >
+                {formStep >= 0 && formStep <= 0 && (
+                  <CreateOs
+                    formStep={formStep}
+                    nextFormStep={nextFormStep}
+                    prevFormStep={prevFormStep}
+                    data={data}
+                    setData={setFormValues}
+                    typeForm="createOs"
+                    setCostumerId={setCostumerId}
+                  />
+                )}
+
+                {formStep >= 1 && formStep <= 1 && (
+                  <DescriptionOS
+                    formStep={formStep}
+                    nextFormStep={nextFormStep}
+                    prevFormStep={prevFormStep}
+                    data={data}
+                    setData={setFormValues}
+                    typeForm="createOs"
+                  />
+                )}
+                {formStep > 1 && (
+                  <CompletedForm
+                    loading={loading}
+                    data={data}
+                    confirmData={confirmData}
+                    handleClose={handleClose}
+                    typeForm={typeForm}
+                  />
+                )}
+              </Container>
+            </>
           )}
         </>
       )}

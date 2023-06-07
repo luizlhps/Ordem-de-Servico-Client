@@ -19,6 +19,8 @@ import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColu
 import { FormRegisterCostumerProvider } from "@/contexts";
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
+import UpdateOrder from "@/components/OrderPage/UpdateOrder";
+import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 
 const Orders = () => {
   const theme = useTheme();
@@ -27,8 +29,16 @@ const Orders = () => {
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
 
   //Form Sucess and Error
-  const { setFormSuccess, formSuccess, errorMessage, setErrorMessage, messageForm, setMessageForm } =
-    useContext(FormSucessOrErrorContext);
+  const {
+    setFormSuccess,
+    formSuccess,
+    errorMessage,
+    setErrorMessage,
+    messageForm,
+    setMessageForm,
+    formError,
+    setFormError,
+  } = useContext(FormSucessOrErrorContext);
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
@@ -65,7 +75,7 @@ const Orders = () => {
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>
-        <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+        <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
         <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
         <DeleteServiceModal
@@ -85,9 +95,7 @@ const Orders = () => {
           handleOpen={modalHandleOpen}
           setOpen={modalHandleOpen}
         >
-          <UpdateServiceModal
-            selectedItemUpdate={selectedItemUpdate}
-            fetchApi={fetchApi}
+          <UpdateOrderModal
             setOpen={setModalUpdateOpen}
             open={modalUpdateOpen}
             handleClose={modalHandleUpdateClose}
@@ -123,7 +131,7 @@ const Orders = () => {
               setCurrentPage={setCurrentPage}
               totalCount={ordersData.Total}
             />
-          </UpdateServiceModal>
+          </UpdateOrderModal>
         </CreateOrderModal>
       </FormRegisterOrderProvider>
     </>

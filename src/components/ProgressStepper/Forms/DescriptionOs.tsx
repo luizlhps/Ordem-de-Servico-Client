@@ -6,6 +6,8 @@ import {
   Typography,
   useTheme,
   Grid,
+  Icon,
+  IconButton,
   Box,
   Button,
   useMediaQuery,
@@ -13,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import styled from "styled-components";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
@@ -103,8 +105,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
 
-  const { setFormValues } = useContext(FormRegisterCostumerContext);
-
   useEffect(() => {
     async function FetchGetStatus() {
       try {
@@ -130,10 +130,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     control,
     setValue,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<any>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "service",
+  });
 
   const onSubmit = (data: Inputs) => {
-    setFormValues(data);
+    setData(data);
     nextFormStep();
   };
 
@@ -153,6 +157,50 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               marginLeft: 1,
             }}
           />
+          <Box display={"flex"} justifyContent={"flex-start"} marginTop={6}>
+            <FormSelect
+              name={"status"}
+              defaultValue={""}
+              label={"Selecione o serviço"}
+              width={"100%"}
+              control={control}
+            >
+              {statusData?.status.map((item) => {
+                return (
+                  <MenuItem key={item._id} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+            </FormSelect>
+          </Box>
+
+          {fields.map((row, index) => (
+            <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
+              <IconButton size="small" onClick={() => remove(index)}>
+                <Icon fontSize="small">remove</Icon>
+              </IconButton>
+              <FormSelect
+                name={`service[${index}]`}
+                defaultValue={""}
+                label={"Selecione o serviço"}
+                width={"100%"}
+                control={control}
+              >
+                {statusData?.status.map((item) => (
+                  <MenuItem key={item._id} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </FormSelect>
+            </Box>
+          ))}
+
+          <Box marginTop={2}>
+            <IconButton size="small" onClick={() => append({})}>
+              <Icon fontSize="small">add</Icon>
+            </IconButton>
+          </Box>
 
           <Grid
             sx={{
@@ -174,21 +222,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Laudo Técnico
               </Typography>
-              <InputCustomDefect {...register("defect", { required: true })} />
-              {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
+              <InputCustomDefect {...register("observation", { required: true })} />
+              {errors.observation?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
             </Grid>
           </Grid>
-          <Box display={"flex"} justifyContent={"flex-start"}>
-            <FormSelect name={"status"} defaultValue={""} label={"Selecione o Cliente"} control={control}>
-              {statusData?.status.map((item) => {
-                return (
-                  <MenuItem key={item._id} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </FormSelect>
-          </Box>
           <Grid
             color={theme.palette.primary.main}
             sx={{

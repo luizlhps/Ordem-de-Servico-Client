@@ -60,7 +60,7 @@ interface IProps {
   children: ReactNode;
 }
 
-export const CreateOrderModal: React.FC<IProps> = ({ open, handleClose, children }) => {
+export const UpdateOrderModal: React.FC<IProps> = ({ open, handleClose, children }) => {
   return (
     <>
       <TransitionsModal handleClose={handleClose} open={open} style={style}>

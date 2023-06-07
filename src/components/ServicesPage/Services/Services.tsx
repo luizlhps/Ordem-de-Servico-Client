@@ -26,8 +26,16 @@ const Services = () => {
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
 
   //Form Sucess and Error
-  const { setFormSuccess, formSuccess, errorMessage, setErrorMessage, messageForm, setMessageForm } =
-    useContext(FormSucessOrErrorContext);
+  const {
+    setFormSuccess,
+    formSuccess,
+    errorMessage,
+    setErrorMessage,
+    messageForm,
+    setMessageForm,
+    formError,
+    setFormError,
+  } = useContext(FormSucessOrErrorContext);
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
@@ -63,7 +71,7 @@ const Services = () => {
 
   return (
     <>
-      <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+      <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
       <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
       <DeleteServiceModal

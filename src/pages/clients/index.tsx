@@ -57,7 +57,16 @@ export default function Client() {
   const [loading, setLoading] = useState(false);
 
   //context
-  const { setFormSuccess, formSuccess, errorMessage, setErrorMessage } = useContext(FormSucessOrErrorContext);
+  const {
+    setFormSuccess,
+    formSuccess,
+    errorMessage,
+    formError,
+    messageForm,
+    setErrorMessage,
+    setFormError,
+    setMessageForm,
+  } = useContext(FormSucessOrErrorContext);
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
@@ -126,7 +135,7 @@ export default function Client() {
     <>
       <FormRegisterCostumerProvider fetchApi={fetchApi}>
         <FormUpdateCostumerProvider fetchApi={fetchApi} CostumerID={selectedItem._id} CostumerData={selectedItem}>
-          <ToastError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+          <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
           <ToastSuccess
             formSuccess={formSuccess}
             setFormSuccess={setFormSuccess}

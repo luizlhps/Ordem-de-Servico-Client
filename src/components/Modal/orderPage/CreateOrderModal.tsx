@@ -1,9 +1,10 @@
 import React, { ReactNode, useEffect } from "react";
 import TransitionsModal from "../Modal";
 import NewCostumer from "../../CostumerPage/NewCostumer";
-import { IconButton, Icon } from "@mui/material";
+import { IconButton, Icon, Box } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
 import NewOrder from "@/components/OrderPage/NewOrder";
+import UpdateOrder from "@/components/OrderPage/UpdateOrder";
 
 const style = {
   position: "absolute" as "absolute",

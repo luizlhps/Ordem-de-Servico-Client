@@ -17,6 +17,7 @@ export default function TransitionsModal({ open, handleClose, children, style }:
   return (
     <div>
       <Modal
+        sx={{ overflowY: "scroll" }}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
