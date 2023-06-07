@@ -5,36 +5,12 @@ import { IconButton, Icon } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
 
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "90%",
-  height: "94%",
-  maxWidth: 1100,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 0,
-  overflow: "auto",
-  borderRadius: "2rem",
+  padding: "23px",
   display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+  alignContent: "center",
   alignItems: "center",
-  outline: "none",
-
-  "@media (max-height: 1200px)": {
-    justifyContent: "center",
-  },
-
-  "@media (max-width: 768px)": {
-    overflow: "auto",
-    display: "block",
-    alignItems: "none",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    borderRadius: "0",
-    p: 4,
-  },
 };
 
 const buttonStyle = {

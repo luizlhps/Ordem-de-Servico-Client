@@ -155,20 +155,24 @@ export const CreateOs: React.FC<NameFormProps> = ({
     <>
       <form>
         <ContainerCustom>
-          <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            <Box>
-              <Typography variant="h1" fontWeight={500}>
-                Criar O.S
-              </Typography>
-              <Divider
-                sx={{
-                  width: 39,
-                  height: 5,
-                  background: theme.palette.secondary.main,
-                  marginLeft: 1,
-                }}
-              />
-            </Box>
+          <Box marginBottom={3}>
+            <Typography variant="h1" fontWeight={500}>
+              Criar O.S
+            </Typography>
+
+            <Divider
+              sx={{
+                width: 39,
+                height: 5,
+                background: theme.palette.secondary.main,
+                marginLeft: 1,
+              }}
+            />
+          </Box>
+
+          <Divider light sx={{ width: "100%", marginBottom: 6 }} />
+
+          <Box display={"flex"} justifyContent={"space-between"}>
             {typeForm === "createOs" && (
               <>
                 <Box display={"flex"}>
@@ -194,8 +198,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 </Box>
               </>
             )}
-          </Stack>
-          <Box display={"flex"} justifyContent={"flex-start"}>
+
             <FormSelect name={"status"} defaultValue={""} label={"status"} control={control}>
               {statusData?.status.map((item) => {
                 return (
@@ -214,9 +217,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 color: theme.palette.primary.main,
               },
             }}
+            marginTop={2}
             container
             spacing={3}
-            marginTop={1}
             flexDirection={columnMedia ? "column" : "row"}
           >
             <Grid item xs>
@@ -335,6 +338,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
             )}
             <OsProcessSVG color={theme.palette.secondary.main} />
           </Stack>
+
           <Box justifyContent={"center"} display={"flex"}>
             <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
               {(typeForm === "createCostumer" || typeForm === "updateCostumer") && (

@@ -10,6 +10,7 @@ import { Icon, IconButton, Stack, useTheme, CircularProgress } from "@mui/materi
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { statusApi } from "@/services/api/statusApi";
+import TransitionsModal from "../../Modal";
 
 interface IModal {
   open: boolean;
@@ -82,72 +83,56 @@ export default function CreateStatusModal({
   const theme = useTheme();
   return (
     <div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={Styled.style}>
-            <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
-              <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
-              <IconButton onClick={handleClose}>
-                <Icon>close</Icon>
-              </IconButton>
-            </Box>
-            <Box marginTop={4} width={"80%"}>
-              <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
-                Novo Status
+      <TransitionsModal handleClose={handleClose} open={open} style={Styled.style}>
+        <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
+          <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
+          <IconButton onClick={handleClose}>
+            <Icon>close</Icon>
+          </IconButton>
+        </Box>
+        <Box marginTop={4} width={"80%"}>
+          <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>
+            Novo Status
+          </Typography>
+
+          <Stack marginTop={4}>
+            <Typography fontWeight={600}>Nome do status</Typography>
+            <Styled.InputCustom
+              placeholder="Digite o nome do Status"
+              {...register("name", { required: true, minLength: 3 })}
+            ></Styled.InputCustom>
+            {errors.title?.type === "required" && <Typography color={"error"}>Digite o `título`.</Typography>}
+            {errors.title?.type === "minLength" && (
+              <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
+            )}
+
+            <Button
+              size="large"
+              sx={{
+                marginTop: 6,
+                marginBottom: 3,
+                background: theme.palette.secondary.main,
+              }}
+              onClick={() => handleSubmit(onSubmit)()}
+            >
+              {loading ? (
+                <>
+                  <CircularProgress size={25} />
+                </>
+              ) : (
+                <>Confirmar</>
+              )}
+            </Button>
+
+            {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}
+            {error && (
+              <Typography color="error" textAlign={"center"}>
+                Ocorreu um Problema{`: ${errorName}`}
               </Typography>
-
-              <Stack marginTop={4}>
-                <Typography fontWeight={600}>Nome do status</Typography>
-                <Styled.InputCustom
-                  placeholder="Digite o nome do Status"
-                  {...register("name", { required: true, minLength: 3 })}
-                ></Styled.InputCustom>
-                {errors.title?.type === "required" && <Typography color={"error"}>Digite o `título`.</Typography>}
-                {errors.title?.type === "minLength" && (
-                  <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
-                )}
-
-                <Button
-                  size="large"
-                  sx={{
-                    marginTop: 6,
-                    marginBottom: 3,
-                    background: theme.palette.secondary.main,
-                  }}
-                  onClick={() => handleSubmit(onSubmit)()}
-                >
-                  {loading ? (
-                    <>
-                      <CircularProgress size={25} />
-                    </>
-                  ) : (
-                    <>Confirmar</>
-                  )}
-                </Button>
-
-                {newItem && <Typography textAlign={"center"}>Item criado com sucesso!!</Typography>}
-                {error && (
-                  <Typography color="error" textAlign={"center"}>
-                    Ocorreu um Problema{`: ${errorName}`}
-                  </Typography>
-                )}
-              </Stack>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+            )}
+          </Stack>
+        </Box>
+      </TransitionsModal>
       {children}
     </div>
   );

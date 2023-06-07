@@ -1,31 +1,12 @@
 import styled from "styled-components";
 
 export const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "60%",
-  maxWidth: "980px",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-
+  padding: "23px",
   display: "flex",
+  justifyContent: "center",
   flexDirection: "column",
+  alignContent: "center",
   alignItems: "center",
-
-  overflow: "auto",
-  "@media (max-width: 768px)": {
-    textAlign: "center",
-    width: "98%",
-    overflow: "auto",
-    justifyContent: "center",
-  },
-
-  "@media (max-height: 600px)": {
-    height: "560px",
-  },
 };
 
 export const InputCustom = styled.input`

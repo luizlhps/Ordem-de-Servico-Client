@@ -10,6 +10,7 @@ import { Icon, IconButton, Stack, TextareaAutosize, useTheme } from "@mui/materi
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { statusApi } from "@/services/api/statusApi";
+import TransitionsModal from "../../Modal";
 
 interface IModal {
   open: boolean;
@@ -80,74 +81,56 @@ export default function UpdateStatusModal({
   const theme = useTheme();
   return (
     <div>
-      <Modal
-        aria-labelledby="transition-modal-name"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={Styled.style}>
-            <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
-              <Typography id="transition-modal-name">Entrada {formattedDate}</Typography>
-              <IconButton onClick={handleClose}>
-                <Icon>close</Icon>
-              </IconButton>
-            </Box>
-            <Box marginTop={4} width={"80%"}>
-              <Typography id="transition-modal-name" variant="h1" textAlign={"center"}>
-                Atualizar Status
+      <TransitionsModal handleClose={handleClose} open={open} style={Styled.style}>
+        <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
+          <Typography id="transition-modal-name">Entrada {formattedDate}</Typography>
+          <IconButton onClick={handleClose}>
+            <Icon>close</Icon>
+          </IconButton>
+        </Box>
+        <Box marginTop={4} width={"80%"}>
+          <Typography id="transition-modal-name" variant="h1" textAlign={"center"}>
+            Atualizar Status
+          </Typography>
+
+          <Stack marginTop={4}>
+            <Typography fontWeight={600}>Título</Typography>
+            <Styled.InputCustom
+              placeholder="Digite o título"
+              {...register("name", { required: true, minLength: 3 })}
+            ></Styled.InputCustom>
+            {errors.name?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
+            {errors.name?.type === "minLength" && (
+              <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
+            )}
+
+            <Button
+              disabled={selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto" ? true : false}
+              size="large"
+              sx={{
+                marginTop: 6,
+                marginBottom: 3,
+                background: theme.palette.secondary.main,
+              }}
+              onClick={() => handleSubmit(onSubmit)()}
+            >
+              Atualizar
+            </Button>
+
+            {newItem && <Typography textAlign={"center"}>Item atualizado com sucesso!!</Typography>}
+            {error && (
+              <Typography color="error" textAlign={"center"}>
+                Ocorreu um Problema{`: ${errorName}`}
               </Typography>
-
-              <Stack marginTop={4}>
-                <Typography fontWeight={600}>Título</Typography>
-                <Styled.InputCustom
-                  placeholder="Digite o título"
-                  {...register("name", { required: true, minLength: 3 })}
-                ></Styled.InputCustom>
-                {errors.name?.type === "required" && <Typography color={"error"}>Digite o título</Typography>}
-                {errors.name?.type === "minLength" && (
-                  <Typography color={"error"}>Digite um titulo com até 3 caracteres.</Typography>
-                )}
-
-                <Button
-                  disabled={
-                    selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto" ? true : false
-                  }
-                  size="large"
-                  sx={{
-                    marginTop: 6,
-                    marginBottom: 3,
-                    background: theme.palette.secondary.main,
-                  }}
-                  onClick={() => handleSubmit(onSubmit)()}
-                >
-                  Atualizar
-                </Button>
-
-                {newItem && <Typography textAlign={"center"}>Item atualizado com sucesso!!</Typography>}
-                {error && (
-                  <Typography color="error" textAlign={"center"}>
-                    Ocorreu um Problema{`: ${errorName}`}
-                  </Typography>
-                )}
-                {(selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto") && (
-                  <Typography color="error" textAlign={"center"}>
-                    Não é possivel Editar os Status Aberto ou Fechado
-                  </Typography>
-                )}
-              </Stack>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+            )}
+            {(selectedItemUpdate.name === "Fechado" || selectedItemUpdate.name === "Aberto") && (
+              <Typography color="error" textAlign={"center"}>
+                Não é possivel Editar os Status Aberto ou Fechado
+              </Typography>
+            )}
+          </Stack>
+        </Box>
+      </TransitionsModal>
       {children}
     </div>
   );
