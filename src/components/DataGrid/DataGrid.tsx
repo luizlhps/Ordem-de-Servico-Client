@@ -37,7 +37,6 @@ export function CustomPagination({ totalCount, PageSize, currentPage, setCurrent
       count={Math.ceil(pageTotalCount)}
       page={page !== currentPage + 1 ? page : currentPage + 1}
       onChange={(event, value) => {
-        console.log(value);
         setCurrentPage(value - 1);
       }}
     />

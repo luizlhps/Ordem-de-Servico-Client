@@ -130,7 +130,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
     const fetchGetCostumers = async () => {
       const data = await request(constumersApi.getAllCostumers, "", 0, 0);
-      console.log(data);
       setConstumerData(data);
     };
     fetchGetCostumers();

@@ -49,17 +49,20 @@ class OrderApi {
   async getCostumerOrders(id: string, filter: string, page: number, limit: number) {
     try {
       const data = await Api.get(`order/costumer?costumerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
-      console.log(data);
       return data;
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao deletar o Status!!");
       throw new Error((error as { message: string }).message || "Erro ao listar os status.");
     }
   }
 
   async deleteOrder(id: string) {
     try {
-    } catch (error) {}
+      const res = await Api.delete(`order/${id}`);
+    } catch (error) {
+      console.log("ocorreu um Erro ao deletar a O.S");
+      throw new Error((error as { message: string }).message || "Erro ao deletar a O.S.");
+    }
   }
 
   async updateOrder(data: IOrderData, Costumerid: string) {

@@ -56,16 +56,7 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
-  console.log(data);
-
-  if (data?.status) {
-    if (data?.status.length > 0) {
-      console.log(data.status[0]);
-    }
-  }
-
   const setFormValues = (values: any) => {
-    console.log("exist", values);
     setData((prevValues) => ({
       ...prevValues,
       ...values,
@@ -78,8 +69,6 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
       if (!(requestStatusApi instanceof Error)) {
         const { status } = requestStatusApi;
         const statusID = status.find((status: IDetailsStatus) => status.name === data?.status);
-
-        console.log(statusID);
 
         const updateStatus = { ...data, status: statusID?._id };
         return updateStatus;
@@ -96,12 +85,10 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
       setLoading(true);
       try {
         const res = await constumersApi.createCostumer(await updateStatusForId(data));
-        console.log(res);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
         }
-        console.log("aqui estás", await updateStatusForId(data), res.data._id);
 
         await order(await updateStatusForId(data), res.data._id);
         fetchApi();
@@ -114,7 +101,6 @@ export const FormRegisterCostumerProvider: React.FC<FormProviderProps> = ({ chil
 
     async function order(data: any, costumerId: string) {
       try {
-        console.log(data, costumerId);
         const res = await orderApi.createOrder(data, costumerId);
         setFormSuccess(true);
       } catch (error: any) {

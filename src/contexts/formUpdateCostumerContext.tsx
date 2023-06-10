@@ -62,13 +62,6 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
-  console.log(CostumerData);
-
-  if (data?.status) {
-    if (data?.status.length > 0) {
-      console.log(data.status[0]);
-    }
-  }
   useEffect(() => {
     if (CostumerData.address && CostumerData.address.length > 0) {
       const form = {
@@ -93,7 +86,6 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
         //Andress
       };
       const streetValue = form.address[0].street;
-      console.log(streetValue);
       setData((prevValues: any) => ({
         ...prevValues,
         ...form,
@@ -101,26 +93,18 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
     }
   }, [CostumerData]);
 
-  console.log(data);
-
   const setFormValues = (values: any) => {
-    console.log("exist", values);
-
     setData((prevValues) => ({
       ...prevValues,
       ...values,
     }));
   };
 
-  console.log(data);
-
   function confirmData() {
     async function costumer(data: any, _id: string | string[]) {
       setLoading(true);
-      console.log(data, _id);
       try {
         const res = await constumersApi.updateCostumer(data, _id);
-        console.log(res);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");

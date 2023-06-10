@@ -30,7 +30,6 @@ export default function TransitionsModal({ open, handleClose, children, style }:
 
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
 
-  console.log(smDown);
   return (
     <div>
       <Dialog

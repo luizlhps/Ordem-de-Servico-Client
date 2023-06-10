@@ -1,14 +1,38 @@
+import { AxiosResponse } from "axios";
 import { Api } from "./axios-config";
 
 export interface IService {
+  _id: string;
+  id: number;
   title: string;
   description: string;
   amount: number;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  v?: string;
+}
+
+export interface RootService {
+  Total: number;
+  Page: number;
+  limit: number;
+  service: IService[];
 }
 class Services {
-  async getAllServices(filter = "", page = 1, limit = 10) {
-    const res = await Api.get(`services/?filter=${filter}&page=${page}&limit=${limit}`);
-    return res;
+  async getAllServices(filter = "", page = 1, limit = 10): Promise<RootService | Error> {
+    try {
+      const res = await Api.get(`services/?filter=${filter}&page=${page}&limit=${limit}`);
+
+      if (res) {
+        return res.data;
+      }
+
+      return new Error("Erro ao listar os status.");
+    } catch (error) {
+      console.error("Erro ao listar os Status!!");
+      throw new Error((error as { message: string }).message || "Erro ao listar os status.");
+    }
   }
   async createServices(data: IService) {
     const res = await Api.post("services", {

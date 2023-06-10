@@ -59,7 +59,6 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:720px)");
 
-  console.log(data);
   const {
     register,
     handleSubmit,

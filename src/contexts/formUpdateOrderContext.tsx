@@ -55,11 +55,7 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
-  console.log(costumerId);
-  console.log(data);
-
   const setFormValues = (values: any) => {
-    console.log("exist", values);
     setData((prevValues) => ({
       ...prevValues,
       ...values,
@@ -73,10 +69,8 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
 
         if (!(requestCostumersApi instanceof Error)) {
           const { data } = requestCostumersApi;
-          console.log(data.customer);
 
           const infoCostumer = data.customer.find((costumerInfo: any) => costumerInfo._id === costumerId);
-          console.log(infoCostumer);
 
           const nameAndPhone = {
             name: infoCostumer.name,
@@ -99,7 +93,6 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
 
   function confirmData() {
     async function createOrder(data: any, costumerId: string) {
-      console.log("estou sendo chamado", data, costumerId);
       try {
         const statusUpdateId = async () => {
           try {
@@ -108,8 +101,6 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
             if (!(requestStatusApi instanceof Error)) {
               const { status } = requestStatusApi;
               const statusID = status.find((status: IDetailsStatus) => status.name === data?.status);
-
-              console.log(statusID);
 
               const updateStatus = { ...data, status: statusID?._id };
               return updateStatus;
@@ -122,7 +113,6 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
         };
 
         const res = await orderApi.createOrder(await statusUpdateId(), costumerId);
-        console.log(res);
         setFormSuccess(true);
         fetchApi();
       } catch (error: any) {

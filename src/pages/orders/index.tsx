@@ -1,25 +1,19 @@
-import { useState, useEffect, useMemo, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { useTheme } from "@mui/material";
 
 import { Button, Stack, TextField } from "@mui/material";
 import { DataGridLayout, HeaderLayout } from "@/components";
-import { useDebouse } from "@/hook";
-import { servicesApi } from "@/services/api/servicesApi";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import useModal from "@/hook/useModal";
 import { useSearchField } from "@/hook/useSearchField";
 import { ToastError } from "@/components/Toast/ToastError";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
-import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
-import UpdateServiceModal from "@/components/Modal/servicesPage/Service/UpdateServiceModal";
 import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { FormRegisterCostumerProvider } from "@/contexts";
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
-import UpdateOrder from "@/components/OrderPage/UpdateOrder";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 
 const Orders = () => {
@@ -72,6 +66,20 @@ const Orders = () => {
   //Config Grid
   const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setSelectedItemUpdate, modalDeleteHandleOpen);
 
+  let ordersFormatted = ordersData.orders.map((obj: any) => {
+    const values = [];
+    if (obj.equipment) values.push(obj.equipment);
+    if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
+    if (obj.model && !values.includes(obj.model)) values.push(obj.model);
+
+    obj.equipment = values.join(" ");
+    delete obj.brand;
+    delete obj.model;
+
+    return obj;
+  });
+
+  console.log(ordersData.orders);
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>

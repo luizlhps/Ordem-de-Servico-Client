@@ -26,26 +26,6 @@ export const columnsDataGrid = (
     { field: "id", headerName: "OS", width: 60 },
 
     {
-      field: "brand",
-      headerName: "Marca",
-      flex: 0.5,
-      minWidth: 100,
-      headerAlign: "left",
-      align: "left",
-    },
-
-    {
-      field: "model",
-      headerName: "Modelo",
-      type: "number",
-      flex: 0.5,
-      minWidth: 100,
-      description: "Endereço",
-      headerAlign: "left",
-      align: "left",
-    },
-
-    {
       field: "equipment",
       headerName: "Equipamento",
       flex: 1,

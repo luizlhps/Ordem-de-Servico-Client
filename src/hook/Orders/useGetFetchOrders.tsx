@@ -8,7 +8,7 @@ export interface IData {
   Total: number;
   Page: number;
   limit: number;
-  orders: IOrder[] | [] | "";
+  orders: IOrder[] | [];
 }
 
 export interface IOrder {

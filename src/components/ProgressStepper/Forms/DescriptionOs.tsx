@@ -22,6 +22,7 @@ import { TStatusData, statusApi } from "@/services/api/statusApi";
 import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
+import { IService, RootService, servicesApi } from "@/services/api/servicesApi";
 
 //style custom
 const InputCustom = styled.input`
@@ -104,16 +105,25 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
+  const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
+
+  console.log(serviceData);
 
   useEffect(() => {
     async function FetchGetStatus() {
       try {
-        const data = await statusApi.getAllStatus("", 0, 0);
+        const dataStatus = await statusApi.getAllStatus("", 0, 0);
+        const serviceData = await servicesApi.getAllServices("", 0, 0);
 
-        if (data instanceof Error) {
-          return console.error(data.message);
+        if (dataStatus instanceof Error) {
+          return console.error(dataStatus.message);
         } else {
-          setStatusData(data);
+          setStatusData(dataStatus);
+        }
+        if (serviceData instanceof Error) {
+          return console.error(serviceData.message);
+        } else {
+          setServiceData(serviceData);
         }
       } catch (error) {
         console.error(error);
@@ -159,16 +169,16 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
           />
           <Box display={"flex"} justifyContent={"flex-start"} marginTop={6}>
             <FormSelect
-              name={"status"}
+              name={"services"}
               defaultValue={""}
               label={"Selecione o serviço"}
               width={"100%"}
               control={control}
             >
-              {statusData?.status.map((item) => {
+              {serviceData?.service.map((item: IService) => {
                 return (
-                  <MenuItem key={item._id} value={item.name}>
-                    {item.name}
+                  <MenuItem key={item._id} value={item._id}>
+                    {item.title}
                   </MenuItem>
                 );
               })}
@@ -187,9 +197,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 width={"100%"}
                 control={control}
               >
-                {statusData?.status.map((item) => (
+                {serviceData?.service.map((item: IService) => (
                   <MenuItem key={item._id} value={item._id}>
-                    {item.name}
+                    {item.title}
                   </MenuItem>
                 ))}
               </FormSelect>

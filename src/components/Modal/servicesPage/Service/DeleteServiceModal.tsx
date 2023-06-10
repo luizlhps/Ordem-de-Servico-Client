@@ -1,7 +1,6 @@
 import React from "react";
 import DeleteModal from "../../deleteModal";
-import { servicesApi } from "@/services/api/servicesApi";
-import useModal from "@/hook/useModal";
+import { orderApi } from "@/services/api/orderApi";
 
 interface IProps {
   fetchApi: () => void;
@@ -29,13 +28,10 @@ const DeleteServiceModal: React.FC<IProps> = ({
   //Delete Api
   const HandleDeleted = async (id: string) => {
     try {
-      const res = await servicesApi.deleteServices(id);
+      const res = await orderApi.deleteOrder(id);
       fetchApi();
       modalDeleteHandleClose();
 
-      if (res instanceof Error) {
-        throw new Error("Ocorreu um erro");
-      }
       setMessageForm("O serviço foi apagado com sucesso!!");
       setFormSucessoValue(true);
     } catch (error: any) {

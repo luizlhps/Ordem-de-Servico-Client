@@ -69,7 +69,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
 
   useEffect(() => {
     if (data && data.address) {
-      console.log("aaaa", data);
       setValue("cep", data.address[0].cep);
       setValue("city", data.address[0].city);
       setValue("neighborhood", data.address[0].neighborhood);
