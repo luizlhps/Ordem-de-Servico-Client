@@ -151,15 +151,17 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   const calculateTotalPrice = (selectedServices: any, serviceData: any) => {
     let totalPrice = 0;
-    selectedServices.forEach((serviceId: any) => {
-      console.log(serviceData.service);
-      const service = serviceData?.service.find((item: any) => item._id === serviceId);
+    if (serviceData) {
+      selectedServices.forEach((serviceId: any) => {
+        console.log(serviceData.service);
+        const service = serviceData?.service.find((item: any) => item._id === serviceId);
 
-      console.log("aqui", service);
-      if (service) {
-        totalPrice += service.amount;
-      }
-    });
+        console.log("aqui", service);
+        if (service) {
+          totalPrice += service.amount;
+        }
+      });
+    }
     return totalPrice;
   };
 
@@ -259,15 +261,8 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Valor
               </Typography>
-              <Controller
-                defaultValue=""
-                name={"equipment"}
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextField sx={{ fontWeight: 300 }} onChange={onChange} value={value} size="small" fullWidth />
-                )}
-              />
+              <TextField sx={{ fontWeight: 300 }} value={totalPrice.toFixed(2)} size="small" fullWidth disabled />
+
               {errors.equipment?.type === "required" && (
                 <Typography color={"error"}>Digite o sobre o equipamento</Typography>
               )}
