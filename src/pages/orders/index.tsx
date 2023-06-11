@@ -15,6 +15,7 @@ import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColu
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
+import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
 
 const Orders = () => {
   const theme = useTheme();
@@ -83,64 +84,66 @@ const Orders = () => {
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>
-        <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
-        <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
+        <FormUpdateOrderProvider fetchApi={fetchApi}>
+          <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
+          <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
-        <DeleteServiceModal
-          fetchApi={fetchApi}
-          selectedItemUpdate={selectedItemUpdate}
-          setFormSucessoValue={setFormSuccess}
-          setErrorMessageValue={setErrorMessage}
-          setMessageForm={setMessageForm}
-          modalOpendelete={modalOpendelete}
-          modalDeleteHandleClose={modalDeleteHandleClose}
-          setModalOpenDelete={setModalOpenDelete}
-          modalDeleteHandleOpen={modalDeleteHandleOpen}
-        />
-        <CreateOrderModal
-          open={modalOpen}
-          handleClose={modalHandleClose}
-          handleOpen={modalHandleOpen}
-          setOpen={modalHandleOpen}
-        >
-          <UpdateOrderModal
-            setOpen={setModalUpdateOpen}
-            open={modalUpdateOpen}
-            handleClose={modalHandleUpdateClose}
-            handleOpen={modalUpdateHandleOpen}
+          <DeleteServiceModal
+            fetchApi={fetchApi}
+            selectedItemUpdate={selectedItemUpdate}
+            setFormSucessoValue={setFormSuccess}
+            setErrorMessageValue={setErrorMessage}
+            setMessageForm={setMessageForm}
+            modalOpendelete={modalOpendelete}
+            modalDeleteHandleClose={modalDeleteHandleClose}
+            setModalOpenDelete={setModalOpenDelete}
+            modalDeleteHandleOpen={modalDeleteHandleOpen}
+          />
+          <CreateOrderModal
+            open={modalOpen}
+            handleClose={modalHandleClose}
+            handleOpen={modalHandleOpen}
+            setOpen={modalHandleOpen}
           >
-            <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
+            <UpdateOrderModal
+              setOpen={setModalUpdateOpen}
+              open={modalUpdateOpen}
+              handleClose={modalHandleUpdateClose}
+              handleOpen={modalUpdateHandleOpen}
+            >
+              <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
 
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-              <TextField
-                value={searchField || ""}
-                onChange={searchHandle}
-                hiddenLabel
-                id="filled-hidden-label-small"
-                placeholder="Search"
-                variant="filled"
-                size="small"
-                sx={{
-                  marginTop: 3,
-                  width: 180,
-                }}
+              <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+                <TextField
+                  value={searchField || ""}
+                  onChange={searchHandle}
+                  hiddenLabel
+                  id="filled-hidden-label-small"
+                  placeholder="Search"
+                  variant="filled"
+                  size="small"
+                  sx={{
+                    marginTop: 3,
+                    width: 180,
+                  }}
+                />
+                <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+                  Novo
+                </Button>
+              </Stack>
+              <DataGridLayout
+                loading={loading}
+                rows={ordersData.orders}
+                columns={columns}
+                PageSize={limitPorPage}
+                page={ordersData.Page}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalCount={ordersData.Total}
               />
-              <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-                Novo
-              </Button>
-            </Stack>
-            <DataGridLayout
-              loading={loading}
-              rows={ordersData.orders}
-              columns={columns}
-              PageSize={limitPorPage}
-              page={ordersData.Page}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalCount={ordersData.Total}
-            />
-          </UpdateOrderModal>
-        </CreateOrderModal>
+            </UpdateOrderModal>
+          </CreateOrderModal>
+        </FormUpdateOrderProvider>
       </FormRegisterOrderProvider>
     </>
   );

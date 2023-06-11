@@ -2,13 +2,14 @@ import { useContext } from "react";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { LayoutOrderForm } from "./layoutOrderForm";
 import { FormRegisterOrderContext } from "@/contexts/formRegisterOrderContext";
+import { FormUpdateOrderContext } from "@/contexts/formUpdateOrderContext";
 
 interface IPropsNewCostumer {
   handleClose: () => void;
 }
 
 const UpdateOrder = ({ handleClose }: IPropsNewCostumer) => {
-  const { confirmData, data, setFormValues, loading, setCostumerId } = useContext(FormRegisterOrderContext);
+  const { confirmData, data, setFormValues, loading, setCostumerId } = useContext(FormUpdateOrderContext);
   const ConfigContext = {
     confirmData,
     data,

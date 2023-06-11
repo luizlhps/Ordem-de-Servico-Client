@@ -32,13 +32,18 @@ export const useGetFetchService = () => {
 
   const fetchApi = async (search = "", page?: number, limit?: number) => {
     debouse(async () => {
-      const data = await request(servicesApi.getAllServices, search, page, limit);
-      setServicesData(data);
+      try {
+        const data = await servicesApi.getAllServices(search, page, limit);
 
-      if (error) {
-        console.error(error);
-        setServicesData({ Total: 0, Page: 0, limit: 0, service: [] });
-      }
+        if (data instanceof Error) throw new Error("Erro ao listar o serviço");
+
+        setServicesData(data);
+
+        if (error) {
+          console.error(error);
+          setServicesData({ Total: 0, Page: 0, limit: 0, service: [] });
+        }
+      } catch (error) {}
     });
   };
   return {

@@ -9,7 +9,8 @@ interface IProps {
   children: React.ReactNode;
   control: Control<any>;
   name: string;
-  defaultValue: string;
+  defaultValue: any;
+
   width?: string | number;
   label: string;
   setState?: React.Dispatch<React.SetStateAction<any | undefined>>;
@@ -31,12 +32,13 @@ export default function FormSelect({ children, control, name, defaultValue, labe
           }) => (
             <Select
               defaultValue={""}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Age"
+              labelId="select-label"
+              id="select"
+              label={label}
               onChange={(event) => {
                 const selectedValue = event.target.value;
                 onChange(selectedValue);
+                console.log(value);
               }}
             >
               {children}

@@ -46,14 +46,14 @@ export interface ICustomerAndOrderData {
   defect: string;
   status: string;
 }
-export const FormRegisterOrderContext = createContext({} as IContext);
+export const FormUpdateOrderContext = createContext({} as IContext);
 
-export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi }) => {
+export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi }) => {
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [costumerId, setCostumerId] = useState<string | undefined>(undefined);
-
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
+  console.log(data);
 
   const setFormValues = (values: any) => {
     setData((prevValues) => ({
@@ -128,11 +128,11 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
   }
   return (
     <>
-      <FormRegisterOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumerId }}>
+      <FormUpdateOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumerId }}>
         {children}
-      </FormRegisterOrderContext.Provider>
+      </FormUpdateOrderContext.Provider>
     </>
   );
 };
 
-export const useFormData = () => useContext(FormRegisterOrderContext);
+export const useFormData = () => useContext(FormUpdateOrderContext);

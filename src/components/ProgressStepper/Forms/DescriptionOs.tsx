@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import styled from "styled-components";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
@@ -104,7 +104,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
-  const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
 
   console.log(serviceData);
@@ -112,14 +111,8 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   useEffect(() => {
     async function FetchGetStatus() {
       try {
-        const dataStatus = await statusApi.getAllStatus("", 0, 0);
         const serviceData = await servicesApi.getAllServices("", 0, 0);
 
-        if (dataStatus instanceof Error) {
-          return console.error(dataStatus.message);
-        } else {
-          setStatusData(dataStatus);
-        }
         if (serviceData instanceof Error) {
           return console.error(serviceData.message);
         } else {
@@ -138,15 +131,45 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     handleSubmit,
     watch,
     control,
+    getValues,
     setValue,
     formState: { errors },
-  } = useForm<any>();
+  } = useForm<any>({
+    defaultValues: {
+      service: [{}],
+    },
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "service",
   });
 
-  const onSubmit = (data: Inputs) => {
+  const watchService = useWatch({
+    control,
+    name: "service", // Insira o nome do campo de seleção corretamente
+  });
+
+  const calculateTotalPrice = (selectedServices: any, serviceData: any) => {
+    let totalPrice = 0;
+    selectedServices.forEach((serviceId: any) => {
+      console.log(serviceData.service);
+      const service = serviceData?.service.find((item: any) => item._id === serviceId);
+
+      console.log("aqui", service);
+      if (service) {
+        totalPrice += service.amount;
+      }
+    });
+    return totalPrice;
+  };
+
+  const totalPrice = calculateTotalPrice(watchService, serviceData);
+
+  useEffect(() => {
+    console.log("Preço total:", totalPrice);
+  }, [watchService, totalPrice]);
+
+  const onSubmit = (data: any) => {
     setData(data);
     nextFormStep();
   };
@@ -154,6 +177,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   return (
     <>
       <form>
+        <Typography variant="h3">Preço Total: R$ {totalPrice.toFixed(2)}</Typography>
         <ContainerCustom>
           <Typography variant="h1" fontWeight={500}>
             Criar O.S
@@ -167,38 +191,20 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               marginLeft: 1,
             }}
           />
-          <Box display={"flex"} justifyContent={"flex-start"} marginTop={6}>
-            <FormSelect
-              name={"services"}
-              defaultValue={""}
-              label={"Selecione o serviço"}
-              width={"100%"}
-              control={control}
-            >
-              {serviceData?.service.map((item: IService) => {
-                return (
-                  <MenuItem key={item._id} value={item._id}>
-                    {item.title}
-                  </MenuItem>
-                );
-              })}
-            </FormSelect>
-          </Box>
-
           {fields.map((row, index) => (
             <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
               <IconButton size="small" onClick={() => remove(index)}>
-                <Icon fontSize="small">remove</Icon>
+                {index > 0 && <Icon fontSize="small">remove</Icon>}
               </IconButton>
               <FormSelect
                 name={`service[${index}]`}
-                defaultValue={""}
-                label={"Selecione o serviço"}
-                width={"100%"}
+                defaultValue={row.id ? row.id : ""} // Atualize aqui para o valor inicial correto
+                label="Selecione o serviço"
+                width="100%"
                 control={control}
               >
                 {serviceData?.service.map((item: IService) => (
-                  <MenuItem key={item._id} value={item._id}>
+                  <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
                     {item.title}
                   </MenuItem>
                 ))}
