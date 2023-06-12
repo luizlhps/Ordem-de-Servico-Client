@@ -93,6 +93,7 @@ type Inputs = {
   status: string;
   defect: string;
   observation: string;
+  costumer: string;
 };
 
 export const CreateOs: React.FC<NameFormProps> = ({
@@ -150,6 +151,22 @@ export const CreateOs: React.FC<NameFormProps> = ({
     nextFormStep();
   };
 
+  console.log(data);
+
+  useEffect(() => {
+    if (data) {
+      setValue("equipment", data.equipment);
+      setValue("model", data.model);
+      setValue("brand", data.brand);
+      setValue("defect", data.defect);
+      setValue("observation", data.observation);
+    }
+  }, [data]);
+
+  const constumer = costumerData?.customer.find((costumer) => costumer.name === data?.costumer);
+
+  console.log(constumer);
+
   return (
     <>
       <form>
@@ -177,7 +194,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <Box display={"flex"}>
                   <FormSelect
                     name={"costumer"}
-                    defaultValue={""}
+                    defaultValue={data?.costumer}
                     label={"Selecione o cliente"}
                     control={control}
                     width={200}
@@ -198,7 +215,12 @@ export const CreateOs: React.FC<NameFormProps> = ({
               </>
             )}
 
-            <FormSelect name={"status"} defaultValue={""} label={"status"} control={control}>
+            <FormSelect
+              name={"status"}
+              defaultValue={data?.status ? data.status : ""}
+              label={"status"}
+              control={control}
+            >
               {statusData?.status.map((item) => {
                 return (
                   <MenuItem key={item._id} value={item.name}>

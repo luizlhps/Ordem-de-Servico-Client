@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { SetStateAction, useContext, useEffect, useState } from "react";
 import {
   Container,
   Divider,
@@ -105,6 +105,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
+  const [descontField, setDescontField] = useState<SetStateAction<Number | undefined>>(0);
+
+  console.log(descontField);
 
   console.log(serviceData);
 
@@ -149,27 +152,41 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     name: "service", // Insira o nome do campo de seleção corretamente
   });
 
-  const calculateTotalPrice = (selectedServices: any, serviceData: any) => {
-    let totalPrice = 0;
+  const calculatePrice = (selectedServices: any, serviceData: any) => {
+    let servicePrice = 0;
     if (serviceData) {
       selectedServices.forEach((serviceId: any) => {
         console.log(serviceData.service);
-        const service = serviceData?.service.find((item: any) => item._id === serviceId);
+        const service = serviceData?.service.find((item: any) => item._id === serviceId.service);
 
-        console.log("aqui", service);
+        console.log("aqui", serviceId.service);
         if (service) {
-          totalPrice += service.amount;
+          servicePrice += service.amount;
         }
       });
     }
+    return servicePrice;
+  };
+  const calculateTotalPrice = (servicePrice: any, descont: any) => {
+    let totalPrice = servicePrice;
+
+    if (servicePrice && descont) {
+      totalPrice = servicePrice - descont;
+    }
+
+    if (totalPrice < 0) {
+      totalPrice = 0;
+    }
+
     return totalPrice;
   };
 
-  const totalPrice = calculateTotalPrice(watchService, serviceData);
+  const servicePrice = calculatePrice(watchService, serviceData);
+  const totalPrice = calculateTotalPrice(servicePrice, descontField);
 
   useEffect(() => {
-    console.log("Preço total:", totalPrice);
-  }, [watchService, totalPrice]);
+    console.log("Preço total:", servicePrice);
+  }, [watchService, servicePrice]);
 
   const onSubmit = (data: any) => {
     setData(data);
@@ -179,7 +196,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   return (
     <>
       <form>
-        <Typography variant="h3">Preço Total: R$ {totalPrice.toFixed(2)}</Typography>
         <ContainerCustom>
           <Typography variant="h1" fontWeight={500}>
             Criar O.S
@@ -199,15 +215,15 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 {index > 0 && <Icon fontSize="small">remove</Icon>}
               </IconButton>
               <FormSelect
-                name={`service[${index}]`}
-                defaultValue={row.id ? row.id : ""} // Atualize aqui para o valor inicial correto
+                name={`service[${index}].service`}
+                defaultValue={serviceData ? "64734f052aa52cd62979570b" : ""}
                 label="Selecione o serviço"
                 width="100%"
                 control={control}
               >
                 {serviceData?.service.map((item: IService) => (
                   <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
-                    {item.title}
+                    {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
                   </MenuItem>
                 ))}
               </FormSelect>
@@ -261,7 +277,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Valor
               </Typography>
-              <TextField sx={{ fontWeight: 300 }} value={totalPrice.toFixed(2)} size="small" fullWidth disabled />
+              <TextField sx={{ fontWeight: 300 }} value={servicePrice.toFixed(2)} size="small" fullWidth disabled />
 
               {errors.equipment?.type === "required" && (
                 <Typography color={"error"}>Digite o sobre o equipamento</Typography>
@@ -269,15 +285,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Valor Total
               </Typography>
-              <Controller
-                defaultValue=""
-                name={"model"}
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextField onChange={onChange} value={value} size="small" fullWidth />
-                )}
-              />
+
+              <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
+
               {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
             </Grid>
             <Grid item>
@@ -285,16 +295,23 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 <Typography marginTop={3} marginBottom={1}>
                   Desconto
                 </Typography>
+
                 <Controller
-                  name={"brand"}
                   control={control}
-                  rules={{ required: true }}
-                  defaultValue={""}
-                  render={({ field: { onChange, value } }) => (
-                    <TextField onChange={onChange} value={value} size="small" fullWidth />
+                  name="descont"
+                  render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                    <TextField
+                      type="number"
+                      onChange={(e) => {
+                        onChange(e.target.value);
+                        setDescontField(Number(e.target.value));
+                      }}
+                      value={value}
+                      size="small"
+                      fullWidth
+                    />
                   )}
                 />
-                {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
                 <Typography marginTop={3} marginBottom={1}>
                   Data de Saída*

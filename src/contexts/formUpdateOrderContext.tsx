@@ -64,7 +64,7 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
 
   const requestInfoCostumer = async () => {
     try {
-      if (costumerId) {
+      if (costumerId && data) {
         const requestCostumersApi = await constumersApi.getAllCostumers("", 0, 0);
 
         if (!(requestCostumersApi instanceof Error)) {
