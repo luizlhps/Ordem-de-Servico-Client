@@ -7,7 +7,7 @@ interface IProps {
   setMessageForm: (message: string) => void;
   setFormSucessoValue: (value: boolean) => void;
   setErrorMessageValue: (value: string) => void;
-  selectedItemUpdate: any;
+  selectedItem: any;
   modalOpendelete: any;
   modalDeleteHandleClose: any;
   setModalOpenDelete: any;
@@ -19,7 +19,7 @@ const DeleteServiceModal: React.FC<IProps> = ({
   setMessageForm,
   setFormSucessoValue,
   setErrorMessageValue,
-  selectedItemUpdate,
+  selectedItem,
   modalOpendelete,
   modalDeleteHandleClose,
   setModalOpenDelete,
@@ -50,7 +50,7 @@ const DeleteServiceModal: React.FC<IProps> = ({
         handleClose={modalDeleteHandleClose}
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
-        selectedItemUpdate={selectedItemUpdate}
+        selectedItem={selectedItem}
       />
     </>
   );

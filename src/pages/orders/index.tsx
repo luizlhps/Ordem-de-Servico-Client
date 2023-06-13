@@ -21,7 +21,7 @@ const Orders = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
-  const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
+  const [selectItem, setselectItem] = useState("" || Object);
 
   //Form Sucess and Error
   const {
@@ -65,7 +65,7 @@ const Orders = () => {
   }, [formSuccess]);
 
   //Config Grid
-  const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setSelectedItemUpdate, modalDeleteHandleOpen);
+  const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setselectItem, modalDeleteHandleOpen);
 
   let ordersFormatted = ordersData.orders.map((obj: any) => {
     const values = [];
@@ -84,13 +84,13 @@ const Orders = () => {
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>
-        <FormUpdateOrderProvider fetchApi={fetchApi}>
+        <FormUpdateOrderProvider fetchApi={fetchApi} orderID={selectItem._id} orderData={selectItem}>
           <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
           <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
           <DeleteServiceModal
             fetchApi={fetchApi}
-            selectedItemUpdate={selectedItemUpdate}
+            selectedItem={selectItem}
             setFormSucessoValue={setFormSuccess}
             setErrorMessageValue={setErrorMessage}
             setMessageForm={setMessageForm}

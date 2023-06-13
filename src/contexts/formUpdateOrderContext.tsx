@@ -16,6 +16,8 @@ interface IContext {
 interface FormProviderProps {
   children: React.ReactNode;
   fetchApi: () => void;
+  orderID: string;
+  orderData: any;
 }
 
 export interface ICustomerAndOrderData {
@@ -48,12 +50,43 @@ export interface ICustomerAndOrderData {
 }
 export const FormUpdateOrderContext = createContext({} as IContext);
 
-export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi }) => {
+export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi, orderData, orderID }) => {
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+
   const [costumerId, setCostumerId] = useState<string | undefined>(undefined);
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
   console.log(data);
+
+  useEffect(() => {
+    if (orderData.address && orderData.address.length > 0) {
+      const form = {
+        name: orderData.name,
+        email: orderData.email,
+        contact: orderData.contact,
+        cpfOrCnpj: orderData.cpfOrCnpj,
+        phone: orderData.phone,
+        tel: orderData.tel,
+        address: [
+          {
+            cep: orderData?.address[0].cep,
+            state: orderData.address[0].state,
+            neighborhood: orderData.address[0].neighborhood,
+            street: orderData.address[0].street,
+            city: orderData.address[0].city,
+            number: orderData.address[0].number,
+            complement: orderData.address[0].complement,
+          },
+        ],
+
+        //Andress
+      };
+      setData((prevValues: any) => ({
+        ...prevValues,
+        ...form,
+      }));
+    }
+  }, [orderData]);
 
   const setFormValues = (values: any) => {
     setData((prevValues) => ({

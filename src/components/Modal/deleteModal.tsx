@@ -12,7 +12,7 @@ interface IModal {
   handleClose: () => void;
   fetchApi: () => any;
   HandleDeleted: (id: string) => Promise<void>;
-  selectedItemUpdate: any;
+  selectedItem: any;
 }
 
 import styled from "styled-components";
@@ -86,7 +86,7 @@ export const InputCustomDescription = styled.textarea`
   }
 `;
 
-export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItemUpdate }: IModal) {
+export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItem }: IModal) {
   return (
     <div>
       <Modal
@@ -109,7 +109,7 @@ export default function DeleteModal({ open, handleClose, HandleDeleted, selected
             </Typography>
             <Button
               onClick={() => {
-                HandleDeleted(selectedItemUpdate._id);
+                HandleDeleted(selectedItem._id);
               }}
               size="large"
               color="error"

@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme,
   Grid,
+  Skeleton,
   Box,
   Button,
   useMediaQuery,
@@ -147,6 +148,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
+    console.log(data);
     setData(data);
     nextFormStep();
   };
@@ -191,44 +193,56 @@ export const CreateOs: React.FC<NameFormProps> = ({
           <Box display={"flex"} justifyContent={"space-between"}>
             {typeForm === "createOs" && (
               <>
-                <Box display={"flex"}>
-                  <FormSelect
-                    name={"costumer"}
-                    defaultValue={data?.costumer}
-                    label={"Selecione o cliente"}
-                    control={control}
-                    width={200}
-                  >
-                    {costumerData?.customer.map((item) => {
-                      return (
-                        <MenuItem
-                          key={item._id}
-                          value={item.name}
-                          onClick={() => (setCostumerId ? setCostumerId(item._id) : "")}
-                        >
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </FormSelect>
-                </Box>
+                {costumerData ? (
+                  <>
+                    <Box display={"flex"}>
+                      <FormSelect
+                        name={"costumer"}
+                        defaultValue={data?.costumer}
+                        label={"Selecione o cliente"}
+                        control={control}
+                        width={200}
+                      >
+                        {costumerData?.customer.map((item) => {
+                          return (
+                            <MenuItem
+                              key={item._id}
+                              value={item.name}
+                              onClick={() => (setCostumerId ? setCostumerId(item._id) : "")}
+                            >
+                              {item.name}
+                            </MenuItem>
+                          );
+                        })}
+                      </FormSelect>
+                    </Box>
+                  </>
+                ) : (
+                  <Box display={"flex"}>
+                    <Skeleton variant="rectangular" width={200} height={36} />
+                  </Box>
+                )}
               </>
             )}
 
-            <FormSelect
-              name={"status"}
-              defaultValue={data?.status ? data.status : ""}
-              label={"status"}
-              control={control}
-            >
-              {statusData?.status.map((item) => {
-                return (
-                  <MenuItem key={item._id} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </FormSelect>
+            {statusData ? (
+              <FormSelect
+                name={"status"}
+                defaultValue={data?.status ? data.status : ""}
+                label={"status"}
+                control={control}
+              >
+                {statusData?.status.map((item) => {
+                  return (
+                    <MenuItem key={item._id} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  );
+                })}
+              </FormSelect>
+            ) : (
+              <Skeleton variant="rectangular" width={200} height={36} />
+            )}
           </Box>
           <Grid
             color={theme.palette.primary.main}

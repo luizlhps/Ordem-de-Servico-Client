@@ -85,7 +85,6 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
 
         //Andress
       };
-      const streetValue = form.address[0].street;
       setData((prevValues: any) => ({
         ...prevValues,
         ...form,
