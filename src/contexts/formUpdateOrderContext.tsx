@@ -58,14 +58,16 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
   console.log(data);
 
+  console.log(orderData);
+
   useEffect(() => {
     if (orderData.address && orderData.address.length > 0) {
       const form = {
-        name: orderData.name,
-        email: orderData.email,
-        contact: orderData.contact,
-        cpfOrCnpj: orderData.cpfOrCnpj,
-        phone: orderData.phone,
+        equipment: orderData.equipment,
+        defect: orderData.defect,
+        observation: orderData.observation,
+        dateEntry: orderData.dateEntry,
+        Fechado: orderData.Fechado,
         tel: orderData.tel,
         address: [
           {

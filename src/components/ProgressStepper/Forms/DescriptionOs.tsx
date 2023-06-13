@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   MenuItem,
   TextField,
+  Skeleton,
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
@@ -107,8 +108,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
   const [descontField, setDescontField] = useState<SetStateAction<Number | undefined>>(0);
 
-  console.log(descontField);
-
   console.log(serviceData);
 
   useEffect(() => {
@@ -128,6 +127,15 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     FetchGetStatus();
   }, []);
 
+  const defaultValueService = () => {
+    if (data.service) {
+      const service = data.service?.map((item: any) => item);
+      console.log({ service });
+      return { service };
+    }
+    return { service: [{}] };
+  };
+
   //form
   const {
     register,
@@ -138,10 +146,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     setValue,
     formState: { errors },
   } = useForm<any>({
-    defaultValues: {
-      service: [{}],
-    },
+    defaultValues: defaultValueService(),
   });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "service",
@@ -154,12 +161,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   const calculatePrice = (selectedServices: any, serviceData: any) => {
     let servicePrice = 0;
-    if (serviceData) {
+    if (serviceData && selectedServices) {
       selectedServices.forEach((serviceId: any) => {
-        console.log(serviceData.service);
         const service = serviceData?.service.find((item: any) => item._id === serviceId.service);
 
-        console.log("aqui", serviceId.service);
         if (service) {
           servicePrice += service.amount;
         }
@@ -184,13 +189,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const servicePrice = calculatePrice(watchService, serviceData);
   const totalPrice = calculateTotalPrice(servicePrice, descontField);
 
-  useEffect(() => {
-    console.log("Preço total:", servicePrice);
-  }, [watchService, servicePrice]);
-
   const onSubmit = (data: any) => {
     setData(data);
-    nextFormStep();
+    console.log(data);
   };
 
   return (
@@ -209,26 +210,32 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               marginLeft: 1,
             }}
           />
-          {fields.map((row, index) => (
-            <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
-              <IconButton size="small" onClick={() => remove(index)}>
-                {index > 0 && <Icon fontSize="small">remove</Icon>}
-              </IconButton>
-              <FormSelect
-                name={`service[${index}].service`}
-                defaultValue={serviceData ? "64734f052aa52cd62979570b" : ""}
-                label="Selecione o serviço"
-                width="100%"
-                control={control}
-              >
-                {serviceData?.service.map((item: IService) => (
-                  <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
-                    {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
-                  </MenuItem>
-                ))}
-              </FormSelect>
-            </Box>
-          ))}
+          {serviceData ? (
+            <>
+              {fields.map((row, index) => (
+                <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
+                  <IconButton size="small" onClick={() => remove(index)}>
+                    {index > 0 && <Icon fontSize="small">remove</Icon>}
+                  </IconButton>
+                  <FormSelect
+                    name={`service[${index}].service`}
+                    defaultValue={serviceData ? "64734f052aa52cd62979570b" : ""}
+                    label="Selecione o serviço"
+                    width="100%"
+                    control={control}
+                  >
+                    {serviceData?.service.map((item: IService) => (
+                      <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
+                        {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
+                      </MenuItem>
+                    ))}
+                  </FormSelect>
+                </Box>
+              ))}
+            </>
+          ) : (
+            <Skeleton variant="rectangular" width={200} height={36} />
+          )}
 
           <Box marginTop={2}>
             <IconButton size="small" onClick={() => append({})}>
@@ -329,7 +336,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
           <Box justifyContent={"center"} display={"flex"}>
             <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
               <Button
-                onClick={prevFormStep}
+                onClick={() => {
+                  handleSubmit(onSubmit)();
+                  prevFormStep();
+                }}
                 size="large"
                 sx={{
                   marginTop: 6,
@@ -340,15 +350,18 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 Prev
               </Button>
               <Button
+                onClick={() => {
+                  handleSubmit(onSubmit)();
+                  nextFormStep();
+                }}
                 size="large"
                 sx={{
                   marginTop: 6,
                   background: theme.palette.secondary.main,
                   color: theme.palette.background.paper,
                 }}
-                onClick={() => handleSubmit(onSubmit)()}
               >
-                Criar
+                next
               </Button>
             </Stack>
           </Box>

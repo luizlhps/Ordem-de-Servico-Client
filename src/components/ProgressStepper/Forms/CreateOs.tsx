@@ -153,14 +153,14 @@ export const CreateOs: React.FC<NameFormProps> = ({
     nextFormStep();
   };
 
-  console.log(data);
-
   useEffect(() => {
     if (data) {
       setValue("equipment", data.equipment);
       setValue("model", data.model);
       setValue("brand", data.brand);
       setValue("defect", data.defect);
+      setValue("status", data.status);
+      setValue("dateEntry", data.dateEntry);
       setValue("observation", data.observation);
     }
   }, [data]);
