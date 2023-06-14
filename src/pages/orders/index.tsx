@@ -68,16 +68,21 @@ const Orders = () => {
   const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setselectItem, modalDeleteHandleOpen);
 
   let ordersFormatted = ordersData.orders.map((obj: any) => {
-    const values = [];
+    const values: any[] = [];
     if (obj.equipment) values.push(obj.equipment);
     if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
     if (obj.model && !values.includes(obj.model)) values.push(obj.model);
 
-    obj.equipment = values.join(" ");
-    delete obj.brand;
-    delete obj.model;
+    let uniqueChars: any[] = [];
+    values.forEach((obj) => {
+      console.log(obj);
+      if (!uniqueChars.includes(obj)) {
+        uniqueChars.push(obj);
+      }
+      return uniqueChars;
+    });
 
-    return obj;
+    return (obj.equipmentField = uniqueChars.join(" "));
   });
 
   console.log(ordersData.orders);

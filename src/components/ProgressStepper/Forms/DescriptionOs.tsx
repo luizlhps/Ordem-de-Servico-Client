@@ -108,6 +108,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
   const [descontField, setDescontField] = useState<SetStateAction<Number | undefined>>(0);
 
+  useEffect(() => {
+    if (data && data.descont) {
+      setValue("exitDate", data.exitDate);
+      setValue("descont", data.descont);
+      setValue("technicalOpinion", data.technicalOpinion);
+    }
+  }, [data, prevFormStep]);
+
   console.log(serviceData);
 
   useEffect(() => {
@@ -263,8 +271,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Laudo Técnico
               </Typography>
-              <InputCustomDefect {...register("observation", { required: true })} />
-              {errors.observation?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
+              <InputCustomDefect {...register("technicalOpinion", { required: false })} />
+              {errors.technicalOpinion?.type === "required" && (
+                <Typography color={"error"}>Digite a descrição</Typography>
+              )}
             </Grid>
           </Grid>
           <Grid
@@ -286,16 +296,11 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               </Typography>
               <TextField sx={{ fontWeight: 300 }} value={servicePrice.toFixed(2)} size="small" fullWidth disabled />
 
-              {errors.equipment?.type === "required" && (
-                <Typography color={"error"}>Digite o sobre o equipamento</Typography>
-              )}
               <Typography marginTop={3} marginBottom={1}>
                 Valor Total
               </Typography>
 
               <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
-
-              {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
             </Grid>
             <Grid item>
               <Box>
@@ -323,7 +328,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 <Typography marginTop={3} marginBottom={1}>
                   Data de Saída*
                 </Typography>
-                <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
+                <InputCustom type="date" placeholder="Digite o Nome" {...register("exitDate", { required: true })} />
                 {errors.dateEntry?.type === "required" && (
                   <Typography color={"error"}>Coloque a data de entrada</Typography>
                 )}

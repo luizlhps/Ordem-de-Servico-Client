@@ -26,7 +26,7 @@ export const columnsDataGrid = (
     { field: "id", headerName: "OS", width: 60 },
 
     {
-      field: "equipment",
+      field: "equipmentField",
       headerName: "Equipamento",
       flex: 1,
       minWidth: 250,

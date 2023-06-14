@@ -61,25 +61,21 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
   console.log(orderData);
 
   useEffect(() => {
-    if (orderData.address && orderData.address.length > 0) {
+    if (orderData.equipment) {
       const form = {
         equipment: orderData.equipment,
         defect: orderData.defect,
         observation: orderData.observation,
         dateEntry: orderData.dateEntry,
-        Fechado: orderData.Fechado,
-        tel: orderData.tel,
-        address: [
-          {
-            cep: orderData?.address[0].cep,
-            state: orderData.address[0].state,
-            neighborhood: orderData.address[0].neighborhood,
-            street: orderData.address[0].street,
-            city: orderData.address[0].city,
-            number: orderData.address[0].number,
-            complement: orderData.address[0].complement,
-          },
-        ],
+        status: orderData.status,
+        brand: orderData.brand,
+        model: orderData.model,
+
+        costumer: orderData.customer,
+        services: orderData.services,
+        discount: orderData.discount,
+        exitDate: orderData.exitDate,
+        technicalOpinion: orderData.technicalOpinion,
 
         //Andress
       };
