@@ -4,6 +4,7 @@ import { useTheme, Container } from "@mui/material";
 import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressStepper";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
+import { ICustomer } from "@/pages/clients";
 
 export interface IConfigContext {
   confirmData: any;
@@ -15,8 +16,9 @@ export interface IConfigContext {
 export interface ILayoutCostumerForm {
   ConfigContext: IConfigContext;
   typeForm: TypeForm;
+  costumer: ICustomer | undefined;
   handleClose: () => void;
-  setCostumerId: React.Dispatch<string>;
+  setCostumerId: React.Dispatch<ICustomer | undefined>;
 }
 
 export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
@@ -24,6 +26,7 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
   handleClose,
   typeForm,
   setCostumerId,
+  costumer,
 }) => {
   const { confirmData, data, setFormValues, loading } = ConfigContext;
 
@@ -72,6 +75,7 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
                     data={data}
                     confirmData={confirmData}
                     handleClose={handleClose}
+                    costumer={costumer}
                     typeForm={typeForm}
                   />
                 )}
@@ -122,6 +126,7 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
                   <CompletedForm
                     loading={loading}
                     data={data}
+                    costumer={costumer}
                     confirmData={confirmData}
                     handleClose={handleClose}
                     typeForm={typeForm}

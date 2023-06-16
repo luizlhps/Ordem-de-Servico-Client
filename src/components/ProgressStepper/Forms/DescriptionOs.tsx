@@ -105,28 +105,26 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
-  const [serviceData, setServiceData] = useState<RootService | undefined>(undefined);
-  const [descontField, setDescontField] = useState<SetStateAction<Number | undefined>>(0);
+  const [servicesData, setServicesData] = useState<RootService | undefined>(undefined);
+  const [discount, setDiscount] = useState<SetStateAction<Number | undefined>>(0);
 
   useEffect(() => {
-    if (data && data.descont) {
+    if (data && data.technicalOpinion) {
       setValue("exitDate", data.exitDate);
-      setValue("descont", data.descont);
+      setValue("discount", data.discount);
       setValue("technicalOpinion", data.technicalOpinion);
     }
   }, [data, prevFormStep]);
 
-  console.log(serviceData);
-
   useEffect(() => {
     async function FetchGetStatus() {
       try {
-        const serviceData = await servicesApi.getAllServices("", 0, 0);
+        const servicesData = await servicesApi.getAllServices("", 0, 0);
 
-        if (serviceData instanceof Error) {
-          return console.error(serviceData.message);
+        if (servicesData instanceof Error) {
+          return console.error(servicesData.message);
         } else {
-          setServiceData(serviceData);
+          setServicesData(servicesData);
         }
       } catch (error) {
         console.error(error);
@@ -135,14 +133,19 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     FetchGetStatus();
   }, []);
 
-  const defaultValueService = () => {
-    if (data.service) {
-      const service = data.service?.map((item: any) => item);
-      console.log({ service });
-      return { service };
+  const defaultValueServices = () => {
+    if (data.services) {
+      const services = data.services?.map((item: any) => item);
+      return services;
     }
-    return { service: [{}] };
   };
+
+  console.log(defaultValueServices());
+
+  useEffect(() => {
+    defaultValueServices();
+    setDiscount(data.discount);
+  }, []);
 
   //form
   const {
@@ -154,37 +157,43 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     setValue,
     formState: { errors },
   } = useForm<any>({
-    defaultValues: defaultValueService(),
+    defaultValues: { services: defaultValueServices() },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "service",
+    name: "services",
   });
 
-  const watchService = useWatch({
+  const watchServices = useWatch({
     control,
-    name: "service", // Insira o nome do campo de seleção corretamente
+    name: "services", // Insira o nome do campo de seleção corretamente
   });
 
-  const calculatePrice = (selectedServices: any, serviceData: any) => {
-    let servicePrice = 0;
-    if (serviceData && selectedServices) {
-      selectedServices.forEach((serviceId: any) => {
-        const service = serviceData?.service.find((item: any) => item._id === serviceId.service);
+  const calculatePrice = (selectedServices: any, servicesData: any) => {
+    let servicesPrice = 0;
 
-        if (service) {
-          servicePrice += service.amount;
+    if (servicesData && selectedServices) {
+      selectedServices.forEach((servicesId: any) => {
+        console.log("aa", servicesId);
+        const services = servicesData?.service?.find((item: any) => item._id === servicesId);
+
+        console.log(services);
+
+        if (services) {
+          servicesPrice += services.amount;
         }
       });
     }
-    return servicePrice;
+    return servicesPrice;
   };
-  const calculateTotalPrice = (servicePrice: any, descont: any) => {
-    let totalPrice = servicePrice;
 
-    if (servicePrice && descont) {
-      totalPrice = servicePrice - descont;
+  const calculateTotalPrice = (servicesPrice: any, discount: any) => {
+    console.log("discount", discount);
+    let totalPrice = servicesPrice;
+
+    if (discount) {
+      totalPrice = servicesPrice - discount;
     }
 
     if (totalPrice < 0) {
@@ -194,12 +203,13 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     return totalPrice;
   };
 
-  const servicePrice = calculatePrice(watchService, serviceData);
-  const totalPrice = calculateTotalPrice(servicePrice, descontField);
+  const servicesPrice = calculatePrice(watchServices, servicesData);
+
+  const totalPrice = calculateTotalPrice(servicesPrice, discount);
 
   const onSubmit = (data: any) => {
-    setData(data);
     console.log(data);
+    setData(data);
   };
 
   return (
@@ -218,7 +228,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               marginLeft: 1,
             }}
           />
-          {serviceData ? (
+          {servicesData ? (
             <>
               {fields.map((row, index) => (
                 <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
@@ -226,13 +236,13 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                     {index > 0 && <Icon fontSize="small">remove</Icon>}
                   </IconButton>
                   <FormSelect
-                    name={`service[${index}].service`}
-                    defaultValue={serviceData ? "64734f052aa52cd62979570b" : ""}
+                    name={`services[${index}]`}
+                    defaultValue={servicesData ? "64734f052aa52cd62979570b" : ""}
                     label="Selecione o serviço"
                     width="100%"
                     control={control}
                   >
-                    {serviceData?.service.map((item: IService) => (
+                    {servicesData?.service.map((item: IService) => (
                       <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
                         {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
                       </MenuItem>
@@ -294,7 +304,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Valor
               </Typography>
-              <TextField sx={{ fontWeight: 300 }} value={servicePrice.toFixed(2)} size="small" fullWidth disabled />
+              <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
 
               <Typography marginTop={3} marginBottom={1}>
                 Valor Total
@@ -305,18 +315,18 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
             <Grid item>
               <Box>
                 <Typography marginTop={3} marginBottom={1}>
-                  Desconto
+                  discounto
                 </Typography>
 
                 <Controller
                   control={control}
-                  name="descont"
+                  name="discount"
                   render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
                     <TextField
                       type="number"
                       onChange={(e) => {
                         onChange(e.target.value);
-                        setDescontField(Number(e.target.value));
+                        setDiscount(Number(e.target.value));
                       }}
                       value={value}
                       size="small"

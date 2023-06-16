@@ -54,8 +54,6 @@ const Services = () => {
   //Api
   const { currentPage, fetchApi, loading, servicesData, setCurrentPage } = useGetFetchService();
 
-  console.log(servicesData);
-
   //Search
   const { searchHandle, searchField } = useSearchField({
     limitPorPage: limitPorPage,
@@ -78,7 +76,7 @@ const Services = () => {
 
       <DeleteServiceModal
         fetchApi={fetchApi}
-        selectedItemUpdate={selectedItemUpdate}
+        selectedItem={selectedItemUpdate}
         setFormSucessoValue={setFormSuccess}
         setErrorMessageValue={setErrorMessage}
         setMessageForm={setMessageForm}

@@ -67,25 +67,23 @@ const Orders = () => {
   //Config Grid
   const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setselectItem, modalDeleteHandleOpen);
 
-  let ordersFormatted = ordersData.orders.map((obj: any) => {
+  let ordersFormatted = ordersData?.orders.map((obj: any) => {
     const values: any[] = [];
     if (obj.equipment) values.push(obj.equipment);
     if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
     if (obj.model && !values.includes(obj.model)) values.push(obj.model);
 
-    let uniqueChars: any[] = [];
+    let uniqueValues: any[] = [];
     values.forEach((obj) => {
-      console.log(obj);
-      if (!uniqueChars.includes(obj)) {
-        uniqueChars.push(obj);
+      if (!uniqueValues.includes(obj)) {
+        uniqueValues.push(obj);
       }
-      return uniqueChars;
+      return uniqueValues;
     });
 
-    return (obj.equipmentField = uniqueChars.join(" "));
+    return (obj.equipmentField = uniqueValues.join(" "));
   });
 
-  console.log(ordersData.orders);
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>

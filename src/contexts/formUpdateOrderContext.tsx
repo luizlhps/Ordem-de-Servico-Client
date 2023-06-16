@@ -1,14 +1,17 @@
 import { useState, createContext, useContext, Dispatch, useEffect } from "react";
 import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
+import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
-import { constumersApi } from "@/services/api/costumersApi";
+import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
+import { ICustomer } from "@/pages/clients";
 
 interface IContext {
   onDiscountChange?: () => void;
   data?: ICustomerAndOrderData;
   setFormValues?: any;
-  setCostumerId: Dispatch<string>;
+  costumer: ICustomer | undefined;
+  setCostumer: Dispatch<ICustomer | undefined>;
   confirmData?: () => void;
   loading: boolean;
 }
@@ -54,11 +57,29 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [costumerId, setCostumerId] = useState<string | undefined>(undefined);
-  const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
-  console.log(data);
+  const pre = {
+    _id: orderData.customer?._id,
+    id: orderData.customer?.id,
+    name: orderData.customer?.name,
+    email: orderData.customer?.email,
+    contact: orderData.customer?.contact,
+    phone: orderData.customer?.phone,
+    cpfOrCnpj: orderData.customer?.cpfOrCnpj,
+    telephone: orderData.customer?.telephone,
+    address: orderData.customer?.address,
+    orders: orderData.customer?.orders,
+    createdAt: orderData.customer?.createdAt,
+    updatedAt: orderData.customer?.updatedAt,
+  };
 
-  console.log(orderData);
+  const [costumer, setCostumer] = useState<ICustomer | undefined>(pre);
+  const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
+
+  const orderDataServices: string[] = [];
+
+  orderData?.services?.map((item: any) => {
+    orderDataServices.push(item._id);
+  });
 
   useEffect(() => {
     if (orderData.equipment) {
@@ -67,18 +88,21 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
         defect: orderData.defect,
         observation: orderData.observation,
         dateEntry: orderData.dateEntry,
-        status: orderData.status,
+        status: orderData.status.name,
         brand: orderData.brand,
         model: orderData.model,
 
-        costumer: orderData.customer,
-        services: orderData.services,
+        phone: orderData.customer.phone,
+        name: orderData.customer._id,
+        costumer: orderData.customer.name,
+        services: orderDataServices,
         discount: orderData.discount,
         exitDate: orderData.exitDate,
         technicalOpinion: orderData.technicalOpinion,
-
-        //Andress
       };
+
+      setCostumer(pre);
+
       setData((prevValues: any) => ({
         ...prevValues,
         ...form,
@@ -93,37 +117,11 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
     }));
   };
 
-  const requestInfoCostumer = async () => {
-    try {
-      if (costumerId && data) {
-        const requestCostumersApi = await constumersApi.getAllCostumers("", 0, 0);
-
-        if (!(requestCostumersApi instanceof Error)) {
-          const { data } = requestCostumersApi;
-
-          const infoCostumer = data.customer.find((costumerInfo: any) => costumerInfo._id === costumerId);
-
-          const nameAndPhone = {
-            name: infoCostumer.name,
-            phone: infoCostumer.phone,
-          };
-          setData((oldValue: any) => ({
-            ...oldValue,
-            ...nameAndPhone,
-          }));
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    requestInfoCostumer();
-  }, [costumerId]);
-
   function confirmData() {
-    async function createOrder(data: any, costumerId: string) {
+    if (!orderData._id) return new Error("O id do cliente não foi selecionado");
+    console.log(data);
+    updateOrder(data, orderData._id);
+    async function updateOrder(data: any, costumer: string) {
       try {
         const statusUpdateId = async () => {
           try {
@@ -134,6 +132,7 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
               const statusID = status.find((status: IDetailsStatus) => status.name === data?.status);
 
               const updateStatus = { ...data, status: statusID?._id };
+
               return updateStatus;
             } else {
               throw new Error("Ocorreu um erro ao encontrar o statusId");
@@ -143,7 +142,7 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
           }
         };
 
-        const res = await orderApi.createOrder(await statusUpdateId(), costumerId);
+        const res = await orderApi.updateOrder(await statusUpdateId(), orderID);
         setFormSuccess(true);
         fetchApi();
       } catch (error: any) {
@@ -153,13 +152,11 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
       }
       setLoading(false);
     }
-
-    if (!costumerId) return new Error("O id do cliente não foi selecionado");
-    createOrder(data, costumerId);
   }
+
   return (
     <>
-      <FormUpdateOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumerId }}>
+      <FormUpdateOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumer, costumer }}>
         {children}
       </FormUpdateOrderContext.Provider>
     </>

@@ -3,12 +3,14 @@ import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
 import { constumersApi } from "@/services/api/costumersApi";
+import { ICustomer } from "@/pages/clients";
 
 interface IContext {
   onDiscountChange?: () => void;
   data?: ICustomerAndOrderData;
   setFormValues?: any;
-  setCostumerId: Dispatch<string>;
+  setCostumer: React.Dispatch<ICustomer | undefined>;
+  costumer: ICustomer | undefined;
   confirmData?: () => void;
   loading: boolean;
 }
@@ -51,7 +53,7 @@ export const FormRegisterOrderContext = createContext({} as IContext);
 export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi }) => {
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [costumerId, setCostumerId] = useState<string | undefined>(undefined);
+  const [costumer, setCostumer] = useState<ICustomer | undefined>(undefined);
 
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
@@ -62,37 +64,8 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
     }));
   };
 
-  const requestInfoCostumer = async () => {
-    try {
-      if (costumerId) {
-        const requestCostumersApi = await constumersApi.getAllCostumers("", 0, 0);
-
-        if (!(requestCostumersApi instanceof Error)) {
-          const { data } = requestCostumersApi;
-
-          const infoCostumer = data.customer.find((costumerInfo: any) => costumerInfo._id === costumerId);
-
-          const nameAndPhone = {
-            name: infoCostumer.name,
-            phone: infoCostumer.phone,
-          };
-          setData((oldValue: any) => ({
-            ...oldValue,
-            ...nameAndPhone,
-          }));
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    requestInfoCostumer();
-  }, [costumerId]);
-
   function confirmData() {
-    async function createOrder(data: any, costumerId: string) {
+    async function createOrder(data: any, costumer: string) {
       try {
         const statusUpdateId = async () => {
           try {
@@ -112,7 +85,7 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
           }
         };
 
-        const res = await orderApi.createOrder(await statusUpdateId(), costumerId);
+        const res = await orderApi.createOrder(await statusUpdateId(), costumer);
         setFormSuccess(true);
         fetchApi();
       } catch (error: any) {
@@ -123,12 +96,12 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
       setLoading(false);
     }
 
-    if (!costumerId) return new Error("O id do cliente não foi selecionado");
-    createOrder(data, costumerId);
+    if (!costumer) return new Error("O id do cliente não foi selecionado");
+    createOrder(data, costumer._id);
   }
   return (
     <>
-      <FormRegisterOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumerId }}>
+      <FormRegisterOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumer, costumer }}>
         {children}
       </FormRegisterOrderContext.Provider>
     </>

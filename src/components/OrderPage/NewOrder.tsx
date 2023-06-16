@@ -8,7 +8,7 @@ interface IPropsNewCostumer {
 }
 
 const NewOrder = ({ handleClose }: IPropsNewCostumer) => {
-  const { confirmData, data, setFormValues, loading, setCostumerId } = useContext(FormRegisterOrderContext);
+  const { confirmData, data, setFormValues, loading, setCostumer, costumer } = useContext(FormRegisterOrderContext);
   const ConfigContext = {
     confirmData,
     data,
@@ -22,7 +22,8 @@ const NewOrder = ({ handleClose }: IPropsNewCostumer) => {
         typeForm="createOs"
         ConfigContext={ConfigContext}
         handleClose={handleClose}
-        setCostumerId={setCostumerId}
+        setCostumerId={setCostumer}
+        costumer={costumer}
       />
     </>
   );

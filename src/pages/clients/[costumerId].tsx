@@ -90,9 +90,6 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
   if (!costumer) {
     return <p>Loading...</p>;
   }
-  if (costumer) {
-    console.log(costumer._id);
-  }
 
   const BackHandle = () => {
     router.push("/clients");
@@ -107,7 +104,7 @@ function CostumerPageID({ costumer }: InferGetServerSidePropsType<typeof getServ
 
       <DeleteServiceModal
         fetchApi={fetchApi}
-        selectedItemUpdate={selectedItemUpdate}
+        selectedItem={selectedItemUpdate}
         setFormSucessoValue={setFormSuccess}
         setErrorMessageValue={setErrorMessage}
         setMessageForm={setMessageForm}

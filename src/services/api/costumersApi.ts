@@ -47,6 +47,7 @@ class Costumers {
     const deleteId = await Api.delete(`costumers/${_id}`);
     return deleteId;
   }
+
   async getById(_id: string) {
     const deleteId = await Api.get(`costumers/${_id}`);
     return deleteId;
@@ -74,6 +75,7 @@ class Costumers {
     });
     return res;
   }
+
   async updateCostumer(data: any, _id: string | string[]) {
     const res = await Api.put(`costumers/${_id}`, {
       name: data?.name,

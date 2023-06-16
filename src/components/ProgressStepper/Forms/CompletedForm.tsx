@@ -8,6 +8,7 @@ import { HeaderLayout } from "@/components/HeaderLayout";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
+import { ICustomer } from "@/pages/clients";
 //style custom
 const InputCustom = styled.input`
   height: 35px;
@@ -50,9 +51,10 @@ interface Iprops {
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
+  costumer: ICustomer | undefined;
 }
 
-export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm }) => {
+export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {
   const theme = useTheme();
 
   const Redirect = () => {
@@ -61,6 +63,8 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
       confirmData();
     }
   };
+
+  console.log("meu dado", costumer);
 
   return (
     <>
@@ -87,7 +91,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Nome</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={data?.name ? data?.name : ""}
+                  defaultValue={costumer?.name ? costumer?.name : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -95,7 +99,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Celular</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={data?.phone ? data?.phone : ""}
+                  defaultValue={costumer?.phone ? costumer?.phone : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -176,7 +180,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Nome</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={data?.name ? data?.name : ""}
+                  defaultValue={costumer?.name ? costumer?.name : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -184,7 +188,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Celular</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={data?.phone ? data?.phone : ""}
+                  defaultValue={costumer?.phone ? costumer?.phone : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>

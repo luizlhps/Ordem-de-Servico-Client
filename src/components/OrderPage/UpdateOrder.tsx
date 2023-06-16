@@ -9,7 +9,7 @@ interface IPropsNewCostumer {
 }
 
 const UpdateOrder = ({ handleClose }: IPropsNewCostumer) => {
-  const { confirmData, data, setFormValues, loading, setCostumerId } = useContext(FormUpdateOrderContext);
+  const { confirmData, data, setFormValues, loading, setCostumer, costumer } = useContext(FormUpdateOrderContext);
   const ConfigContext = {
     confirmData,
     data,
@@ -20,10 +20,11 @@ const UpdateOrder = ({ handleClose }: IPropsNewCostumer) => {
   return (
     <>
       <LayoutOrderForm
+        costumer={costumer}
         typeForm="updateOs"
         ConfigContext={ConfigContext}
         handleClose={handleClose}
-        setCostumerId={setCostumerId}
+        setCostumerId={setCostumer}
       />
     </>
   );

@@ -160,7 +160,7 @@ const Status = () => {
         handleClose={modalDeleteHandleClose}
         handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
-        selectedItemUpdate={selectedItemUpdate}
+        selectedItem={selectedItemUpdate}
       />
       <CreateStatusModal
         fetchApi={fetchApi}

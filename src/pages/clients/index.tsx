@@ -161,7 +161,7 @@ export default function Client() {
                 handleClose={modalDeleteHandleClose}
                 handleOpen={modalDeleteHandleOpen}
                 HandleDeleted={HandleDeleted}
-                selectedItemUpdate={selectedItem}
+                selectedItem={selectedItem}
               />
               <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
               <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>

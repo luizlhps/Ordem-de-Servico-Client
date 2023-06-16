@@ -18,12 +18,23 @@ import { Controller, useForm } from "react-hook-form";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/pt-br";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale("pt-br");
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
 import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
 import { ICustomer } from "@/pages/clients";
+import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
 
 //style custom
 const InputCustom = styled.input`
@@ -83,14 +94,14 @@ interface NameFormProps {
   data: any;
   setData: any;
   typeForm: TypeForm;
-  setCostumerId?: React.Dispatch<string>;
+  setCostumerId?: React.Dispatch<ICustomer | undefined>;
 }
 
 type Inputs = {
   equipment: string;
   model: string;
   brand: string;
-  dateEntry: string;
+  dateEntry: any;
   status: string;
   defect: string;
   observation: string;
@@ -98,7 +109,6 @@ type Inputs = {
 };
 
 export const CreateOs: React.FC<NameFormProps> = ({
-  formStep,
   nextFormStep,
   prevFormStep,
   data,
@@ -111,6 +121,8 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
+
+  const [dateValue, setDateValue] = useState<any>(dayjs(undefined));
 
   const { request } = useApiRequest();
 
@@ -148,7 +160,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
-    console.log(data);
+    console.log("sub", data);
     setData(data);
     nextFormStep();
   };
@@ -160,14 +172,25 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("brand", data.brand);
       setValue("defect", data.defect);
       setValue("status", data.status);
-      setValue("dateEntry", data.dateEntry);
+      setValue("dateEntry", dayjs(dateValue).format());
+
       setValue("observation", data.observation);
     }
   }, [data]);
 
-  const constumer = costumerData?.customer.find((costumer) => costumer.name === data?.costumer);
+  useEffect(() => {
+    gu();
+  }, [data?.dateEntry]);
 
-  console.log(constumer);
+  useEffect(() => {
+    console.log(dateValue);
+  }, [dateValue]);
+
+  const gu = () => {
+    console.log(data?.dateEntry);
+    const newDateValue = data?.dateEntry;
+    setDateValue(dayjs(newDateValue));
+  };
 
   return (
     <>
@@ -208,7 +231,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
                             <MenuItem
                               key={item._id}
                               value={item.name}
-                              onClick={() => (setCostumerId ? setCostumerId(item._id) : "")}
+                              onClick={() => {
+                                setCostumerId ? setCostumerId(item as any) : undefined;
+                              }}
                             >
                               {item.name}
                             </MenuItem>
@@ -285,6 +310,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                   <TextField onChange={onChange} value={value} size="small" fullWidth />
                 )}
               />
+
               {errors.model?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
             </Grid>
             <Grid item>
@@ -303,12 +329,37 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 />
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                <Typography marginTop={3} marginBottom={1}>
-                  Data de Entrada*
-                </Typography>
-                <InputCustom type="date" placeholder="Digite o Nome" {...register("dateEntry", { required: true })} />
-                {errors.dateEntry?.type === "required" && (
-                  <Typography color={"error"}>Coloque a data de entrada</Typography>
+                {dateValue ? (
+                  <>
+                    <Controller
+                      name="dateEntry"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <>
+                          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                            <DateTimePicker
+                              {...field}
+                              sx={{ marginTop: 6 }}
+                              label="Data de Entrada"
+                              value={dateValue}
+                              onChange={(newValue) => {
+                                console.log(newValue);
+                                field.onChange(dayjs(newValue).format());
+                                console.log("fgiekld", field.value);
+                                setDateValue(newValue);
+                              }}
+                            />
+                          </LocalizationProvider>
+                        </>
+                      )}
+                    />
+                    {errors.dateEntry?.type === "required" && (
+                      <Typography color={"error"}>Coloque a data de entrada</Typography>
+                    )}
+                  </>
+                ) : (
+                  <Skeleton variant="rectangular" width={200} height={36} />
                 )}
               </Box>
             </Grid>
