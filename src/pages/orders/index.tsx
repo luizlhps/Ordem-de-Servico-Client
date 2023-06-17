@@ -136,13 +136,13 @@ const Orders = () => {
               </Stack>
               <DataGridLayout
                 loading={loading}
-                rows={ordersData.orders}
+                rows={ordersData?.orders}
                 columns={columns}
                 PageSize={limitPorPage}
-                page={ordersData.Page}
+                page={ordersData?.Page}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                totalCount={ordersData.Total}
+                totalCount={ordersData?.Total}
               />
             </UpdateOrderModal>
           </CreateOrderModal>

@@ -184,9 +184,9 @@ export default function Client() {
               </Stack>
               <DataGridLayout
                 loading={loading}
-                page={costumerData.Page}
-                totalCount={costumerData.Total}
-                rows={costumerData.customer}
+                page={costumerData?.Page}
+                totalCount={costumerData?.Total}
+                rows={costumerData?.customer}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
                 columns={columns}

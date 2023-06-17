@@ -10,13 +10,19 @@ interface IProps {
   control: Control<any>;
   name: string;
   defaultValue: any;
+  rules?: {
+    minLength?: number;
+    required?: boolean;
+    maxLength?: number;
+    validade?: any;
+  };
 
   width?: string | number;
   label: string;
   setState?: React.Dispatch<React.SetStateAction<any | undefined>>;
 }
 
-export default function FormSelect({ children, control, name, defaultValue, label, setState, width }: IProps) {
+export default function FormSelect({ children, control, name, defaultValue, label, setState, width, rules }: IProps) {
   return (
     <Box sx={{ minWidth: 120, width: width ? width : "" }}>
       <FormControl size="small" sx={{ width: "100%" }}>
@@ -24,6 +30,7 @@ export default function FormSelect({ children, control, name, defaultValue, labe
         <Controller
           defaultValue={defaultValue ? defaultValue : ""}
           control={control}
+          rules={rules}
           name={name}
           render={({
             field: { onChange, onBlur, value, name, ref },
@@ -37,6 +44,7 @@ export default function FormSelect({ children, control, name, defaultValue, labe
               id="select"
               label={label}
               onChange={(event) => {
+                console.log("aqui esta meu value", defaultValue);
                 const selectedValue = event.target.value;
                 onChange(selectedValue);
               }}

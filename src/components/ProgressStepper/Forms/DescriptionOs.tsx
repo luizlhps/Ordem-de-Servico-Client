@@ -153,6 +153,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     handleSubmit,
     watch,
     control,
+    setError,
     getValues,
     setValue,
     formState: { errors },
@@ -169,6 +170,19 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     control,
     name: "services", // Insira o nome do campo de seleção corretamente
   });
+
+  const handleAddService = () => {
+    const emptyFieldIndex = fields.findIndex((field: any) => !field);
+    if (emptyFieldIndex) {
+      setError(`services[${0}]`, {
+        type: "required",
+        message: "Não é possível prosseguir se o campo de serviços estiver vazio.",
+      });
+      return;
+    }
+
+    // Resto da lógica de adicionar serviço
+  };
 
   const calculatePrice = (selectedServices: any, servicesData: any) => {
     let servicesPrice = 0;
@@ -236,8 +250,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                     {index > 0 && <Icon fontSize="small">remove</Icon>}
                   </IconButton>
                   <FormSelect
+                    rules={{
+                      required: true,
+                      validade: () => {
+                        return true;
+                      },
+                    }}
                     name={`services[${index}]`}
-                    defaultValue={servicesData ? "64734f052aa52cd62979570b" : ""}
+                    defaultValue={""}
                     label="Selecione o serviço"
                     width="100%"
                     control={control}
@@ -256,7 +276,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
           )}
 
           <Box marginTop={2}>
-            <IconButton size="small" onClick={() => append({})}>
+            <IconButton size="small" onClick={() => append("")}>
               <Icon fontSize="small">add</Icon>
             </IconButton>
           </Box>

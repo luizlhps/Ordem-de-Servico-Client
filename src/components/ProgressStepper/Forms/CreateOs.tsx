@@ -175,22 +175,11 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("dateEntry", dayjs(dateValue).format());
 
       setValue("observation", data.observation);
+
+      const newDateValue = data?.dateEntry;
+      setDateValue(dayjs(newDateValue));
     }
   }, [data]);
-
-  useEffect(() => {
-    gu();
-  }, [data?.dateEntry]);
-
-  useEffect(() => {
-    console.log(dateValue);
-  }, [dateValue]);
-
-  const gu = () => {
-    console.log(data?.dateEntry);
-    const newDateValue = data?.dateEntry;
-    setDateValue(dayjs(newDateValue));
-  };
 
   return (
     <>
@@ -213,15 +202,16 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
           <Divider light sx={{ width: "100%", marginBottom: 6 }} />
 
-          <Box display={"flex"} justifyContent={"space-between"}>
+          <Box display={"flex"} justifyContent={"space-between"} flexWrap={"inherit"}>
             {typeForm === "createOs" && (
               <>
                 {costumerData ? (
                   <>
-                    <Box display={"flex"}>
+                    <Box display={"flex"} flexDirection={"column"}>
                       <FormSelect
                         name={"costumer"}
-                        defaultValue={data?.costumer}
+                        defaultValue={data?.costumer ? data?.costumer : ""}
+                        rules={{ required: true }}
                         label={"Selecione o cliente"}
                         control={control}
                         width={200}
@@ -240,6 +230,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
                           );
                         })}
                       </FormSelect>
+                      {errors.costumer?.type === "required" && (
+                        <Typography color={"error"}>selecione o cliente</Typography>
+                      )}
                     </Box>
                   </>
                 ) : (
@@ -251,20 +244,24 @@ export const CreateOs: React.FC<NameFormProps> = ({
             )}
 
             {statusData ? (
-              <FormSelect
-                name={"status"}
-                defaultValue={data?.status ? data.status : ""}
-                label={"status"}
-                control={control}
-              >
-                {statusData?.status.map((item) => {
-                  return (
-                    <MenuItem key={item._id} value={item.name}>
-                      {item.name}
-                    </MenuItem>
-                  );
-                })}
-              </FormSelect>
+              <Box>
+                <FormSelect
+                  name={"status"}
+                  rules={{ required: true }}
+                  defaultValue={data?.status ? data.status : ""}
+                  label={"status"}
+                  control={control}
+                >
+                  {statusData?.status.map((item) => {
+                    return (
+                      <MenuItem key={item._id} value={item.name}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+                </FormSelect>
+                {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
+              </Box>
             ) : (
               <Skeleton variant="rectangular" width={200} height={36} />
             )}
@@ -331,6 +328,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
                 {dateValue ? (
                   <>
+                    <Typography marginTop={3} marginBottom={1}>
+                      Data de entrada*
+                    </Typography>
                     <Controller
                       name="dateEntry"
                       control={control}
@@ -340,8 +340,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                             <DateTimePicker
                               {...field}
-                              sx={{ marginTop: 6 }}
-                              label="Data de Entrada"
+                              sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
                               value={dateValue}
                               onChange={(newValue) => {
                                 console.log(newValue);
@@ -393,8 +392,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 Observação
               </Typography>
               <InputCustomDefect {...register("observation")} />
-
-              {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
             </Grid>
           </Grid>
           <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
