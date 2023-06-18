@@ -22,6 +22,19 @@ import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon
 import { TStatusData, statusApi } from "@/services/api/statusApi";
 import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
+
+import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
+
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/pt-br";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale("pt-br");
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TypeForm } from "./types";
 import { IService, RootService, servicesApi } from "@/services/api/servicesApi";
 
@@ -108,11 +121,15 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const [servicesData, setServicesData] = useState<RootService | undefined>(undefined);
   const [discount, setDiscount] = useState<SetStateAction<Number | undefined>>(0);
 
+  const [dateValue, setDateValue] = useState<any>(dayjs(undefined));
+
   useEffect(() => {
     if (data && data.technicalOpinion) {
-      setValue("exitDate", data.exitDate);
       setValue("discount", data.discount);
       setValue("technicalOpinion", data.technicalOpinion);
+
+      const newDateValue = data?.exitDate;
+      setDateValue(dayjs(newDateValue));
     }
   }, [data, prevFormStep]);
 
@@ -139,8 +156,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
       return services;
     }
   };
-
-  console.log(defaultValueServices());
 
   useEffect(() => {
     defaultValueServices();
@@ -189,10 +204,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
     if (servicesData && selectedServices) {
       selectedServices.forEach((servicesId: any) => {
-        console.log("aa", servicesId);
         const services = servicesData?.service?.find((item: any) => item._id === servicesId);
-
-        console.log(services);
 
         if (services) {
           servicesPrice += services.amount;
@@ -203,7 +215,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   };
 
   const calculateTotalPrice = (servicesPrice: any, discount: any) => {
-    console.log("discount", discount);
     let totalPrice = servicesPrice;
 
     if (discount) {
@@ -355,12 +366,38 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                   )}
                 />
 
-                <Typography marginTop={3} marginBottom={1}>
-                  Data de Saída*
-                </Typography>
-                <InputCustom type="date" placeholder="Digite o Nome" {...register("exitDate", { required: true })} />
-                {errors.dateEntry?.type === "required" && (
-                  <Typography color={"error"}>Coloque a data de entrada</Typography>
+                {dateValue ? (
+                  <>
+                    <Typography marginTop={3} marginBottom={1}>
+                      Data de Saída
+                    </Typography>
+                    <Controller
+                      name="exitDate"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <>
+                          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                            <DateTimePicker
+                              {...field}
+                              sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
+                              value={dateValue}
+                              onChange={(newValue) => {
+                                console.log(newValue);
+                                field.onChange(dayjs(newValue).format());
+                                setDateValue(newValue);
+                              }}
+                            />
+                          </LocalizationProvider>
+                        </>
+                      )}
+                    />
+                    {errors.exitDate?.type === "required" && (
+                      <Typography color={"error"}>Coloque a data de entrada</Typography>
+                    )}
+                  </>
+                ) : (
+                  <Skeleton variant="rectangular" width={200} height={36} />
                 )}
               </Box>
             </Grid>

@@ -122,7 +122,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
 
-  const [dateValue, setDateValue] = useState<any>(dayjs(undefined));
+  const [dateValue, setDateValue] = useState<any>();
 
   const { request } = useApiRequest();
 
@@ -153,6 +153,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     control,
     setValue,
@@ -172,12 +173,12 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("brand", data.brand);
       setValue("defect", data.defect);
       setValue("status", data.status);
-      setValue("dateEntry", dayjs(dateValue).format());
-
       setValue("observation", data.observation);
 
       const newDateValue = data?.dateEntry;
+
       setDateValue(dayjs(newDateValue));
+      setValue("dateEntry", dayjs(dateValue).format());
     }
   }, [data]);
 
@@ -326,27 +327,25 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 />
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                {dateValue ? (
+                {data ? (
                   <>
                     <Typography marginTop={3} marginBottom={1}>
                       Data de entrada*
                     </Typography>
                     <Controller
                       name="dateEntry"
+                      defaultValue={dateValue ? dayjs(dateValue).format() : null}
                       control={control}
                       rules={{ required: true }}
                       render={({ field }) => (
                         <>
                           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                             <DateTimePicker
-                              {...field}
                               sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
                               value={dateValue}
                               onChange={(newValue) => {
-                                console.log(newValue);
-                                field.onChange(dayjs(newValue).format());
-                                console.log("fgiekld", field.value);
                                 setDateValue(newValue);
+                                field.onChange(dateValue);
                               }}
                             />
                           </LocalizationProvider>
