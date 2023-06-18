@@ -178,9 +178,11 @@ export const CreateOs: React.FC<NameFormProps> = ({
       const newDateValue = data?.dateEntry;
 
       setDateValue(dayjs(newDateValue));
-      setValue("dateEntry", dayjs(dateValue).format());
+      setValue("dateEntry", dayjs(newDateValue).format());
     }
   }, [data]);
+
+  console.log(dateValue);
 
   return (
     <>
