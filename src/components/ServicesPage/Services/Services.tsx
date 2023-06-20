@@ -87,7 +87,6 @@ const Services = () => {
       />
       <CreateServiceModal
         fetchApi={fetchApi}
-        setOpen={setModalOpen}
         open={modalOpen}
         handleClose={modalHandleClose}
         handleOpen={modalHandleOpen}

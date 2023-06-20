@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 
 import { useTheme } from "@mui/material";
 
@@ -67,22 +67,24 @@ const Orders = () => {
   //Config Grid
   const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setselectItem, modalDeleteHandleOpen);
 
-  let ordersFormatted = ordersData?.orders.map((obj: any) => {
-    const values: any[] = [];
-    if (obj.equipment) values.push(obj.equipment);
-    if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
-    if (obj.model && !values.includes(obj.model)) values.push(obj.model);
+  const ordersFormatted = useMemo(() => {
+    return ordersData?.orders.map((obj: any) => {
+      const values: any[] = [];
+      if (obj.equipment) values.push(obj.equipment);
+      if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
+      if (obj.model && !values.includes(obj.model)) values.push(obj.model);
 
-    let uniqueValues: any[] = [];
-    values.forEach((obj) => {
-      if (!uniqueValues.includes(obj)) {
-        uniqueValues.push(obj);
-      }
-      return uniqueValues;
+      let uniqueValues: any[] = [];
+      values.forEach((obj) => {
+        if (!uniqueValues.includes(obj)) {
+          uniqueValues.push(obj);
+        }
+        return uniqueValues;
+      });
+
+      return (obj.equipmentField = uniqueValues.join(" "));
     });
-
-    return (obj.equipmentField = uniqueValues.join(" "));
-  });
+  }, [ordersData?.orders]);
 
   return (
     <>
@@ -107,45 +109,43 @@ const Orders = () => {
             handleClose={modalHandleClose}
             handleOpen={modalHandleOpen}
             setOpen={modalHandleOpen}
-          >
-            <UpdateOrderModal
-              setOpen={setModalUpdateOpen}
-              open={modalUpdateOpen}
-              handleClose={modalHandleUpdateClose}
-              handleOpen={modalUpdateHandleOpen}
-            >
-              <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
+          />
+          <UpdateOrderModal
+            setOpen={setModalUpdateOpen}
+            open={modalUpdateOpen}
+            handleClose={modalHandleUpdateClose}
+            handleOpen={modalUpdateHandleOpen}
+          />
+          <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
 
-              <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-                <TextField
-                  value={searchField || ""}
-                  onChange={searchHandle}
-                  hiddenLabel
-                  id="filled-hidden-label-small"
-                  placeholder="Search"
-                  variant="filled"
-                  size="small"
-                  sx={{
-                    marginTop: 3,
-                    width: 180,
-                  }}
-                />
-                <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-                  Novo
-                </Button>
-              </Stack>
-              <DataGridLayout
-                loading={loading}
-                rows={ordersData?.orders}
-                columns={columns}
-                PageSize={limitPorPage}
-                page={ordersData?.Page}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalCount={ordersData?.Total}
-              />
-            </UpdateOrderModal>
-          </CreateOrderModal>
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+            <TextField
+              value={searchField || ""}
+              onChange={searchHandle}
+              hiddenLabel
+              id="filled-hidden-label-small"
+              placeholder="Search"
+              variant="filled"
+              size="small"
+              sx={{
+                marginTop: 3,
+                width: 180,
+              }}
+            />
+            <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+              Novo
+            </Button>
+          </Stack>
+          <DataGridLayout
+            loading={loading}
+            rows={ordersData?.orders}
+            columns={columns}
+            PageSize={limitPorPage}
+            page={ordersData?.Page}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalCount={ordersData?.Total}
+          />
         </FormUpdateOrderProvider>
       </FormRegisterOrderProvider>
     </>

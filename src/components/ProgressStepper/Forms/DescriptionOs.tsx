@@ -1,4 +1,4 @@
-import React, { SetStateAction, useContext, useEffect, useState } from "react";
+import React, { SetStateAction, useContext, useEffect, useMemo, useState } from "react";
 import {
   Container,
   Divider,
@@ -37,6 +37,8 @@ dayjs.locale("pt-br");
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TypeForm } from "./types";
 import { IService, RootService, servicesApi } from "@/services/api/servicesApi";
+import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
+import useModal from "@/hook/useModal";
 
 //style custom
 const InputCustom = styled.input`
@@ -102,7 +104,7 @@ type Inputs = {
   equipment: string;
   model: string;
   brand: string;
-  dateEntry: string;
+  dateExit: string;
   status: string;
   defect: string;
   observation: string;
@@ -120,6 +122,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [servicesData, setServicesData] = useState<RootService | undefined>(undefined);
   const [discount, setDiscount] = useState<SetStateAction<Number | undefined>>(0);
+  const [newStatus, setNewStatus] = useState<SetStateAction<string | undefined>>();
 
   const [dateValue, setDateValue] = useState<any>(dayjs(undefined));
 
@@ -127,27 +130,31 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     if (data && data.technicalOpinion) {
       setValue("discount", data.discount);
       setValue("technicalOpinion", data.technicalOpinion);
+      const newDateValue = data?.dateExit;
 
-      const newDateValue = data?.exitDate;
       setDateValue(dayjs(newDateValue));
+      setValue("dateExit", dayjs(newDateValue).format());
     }
   }, [data, prevFormStep]);
 
-  useEffect(() => {
-    async function FetchGetStatus() {
-      try {
-        const servicesData = await servicesApi.getAllServices("", 0, 0);
+  async function FetchGetServices() {
+    try {
+      const servicesData = await servicesApi.getAllServices("", 0, 0);
 
-        if (servicesData instanceof Error) {
-          return console.error(servicesData.message);
-        } else {
-          setServicesData(servicesData);
-        }
-      } catch (error) {
-        console.error(error);
+      if (servicesData instanceof Error) {
+        return console.error(servicesData.message);
+      } else {
+        setServicesData(servicesData);
       }
+    } catch (error) {
+      console.error(error);
     }
-    FetchGetStatus();
+  }
+
+  useEffect(() => {
+    FetchGetServices();
+    defaultValueServices();
+    setDiscount(data.discount);
   }, []);
 
   const defaultValueServices = () => {
@@ -157,10 +164,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     }
   };
 
-  useEffect(() => {
-    defaultValueServices();
-    setDiscount(data.discount);
-  }, []);
+  const { modalActions, modals, modalSets } = useModal();
+  const { modalOpen } = modals;
+  const { modalHandleOpen, modalHandleClose } = modalActions;
 
   //form
   const {
@@ -183,50 +189,42 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   const watchServices = useWatch({
     control,
-    name: "services", // Insira o nome do campo de seleção corretamente
+    name: "services",
   });
 
-  const handleAddService = () => {
-    const emptyFieldIndex = fields.findIndex((field: any) => !field);
-    if (emptyFieldIndex) {
-      setError(`services[${0}]`, {
-        type: "required",
-        message: "Não é possível prosseguir se o campo de serviços estiver vazio.",
-      });
-      return;
-    }
+  const calculatePrice = useMemo(() => {
+    return (selectedServices: any, servicesData: any) => {
+      let servicesPrice = 0;
 
-    // Resto da lógica de adicionar serviço
-  };
+      if (servicesData && selectedServices) {
+        selectedServices.forEach((servicesId: any) => {
+          const services = servicesData?.service?.find((item: any) => item._id === servicesId);
 
-  const calculatePrice = (selectedServices: any, servicesData: any) => {
-    let servicesPrice = 0;
+          if (services) {
+            servicesPrice += services.amount;
+          }
+        });
+      }
 
-    if (servicesData && selectedServices) {
-      selectedServices.forEach((servicesId: any) => {
-        const services = servicesData?.service?.find((item: any) => item._id === servicesId);
+      return servicesPrice;
+    };
+  }, [servicesData]);
 
-        if (services) {
-          servicesPrice += services.amount;
-        }
-      });
-    }
-    return servicesPrice;
-  };
+  const calculateTotalPrice = useMemo(() => {
+    return (servicesPrice: any, discount: any) => {
+      let totalPrice = servicesPrice;
 
-  const calculateTotalPrice = (servicesPrice: any, discount: any) => {
-    let totalPrice = servicesPrice;
+      if (discount) {
+        totalPrice = servicesPrice - discount;
+      }
 
-    if (discount) {
-      totalPrice = servicesPrice - discount;
-    }
+      if (totalPrice < 0) {
+        totalPrice = 0;
+      }
 
-    if (totalPrice < 0) {
-      totalPrice = 0;
-    }
-
-    return totalPrice;
-  };
+      return totalPrice;
+    };
+  }, [discount]);
 
   const servicesPrice = calculatePrice(watchServices, servicesData);
 
@@ -239,206 +237,225 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   return (
     <>
-      <form>
-        <ContainerCustom>
-          <Typography variant="h1" fontWeight={500}>
-            Criar O.S
-          </Typography>
+      <CreateServiceModal
+        fetchApi={FetchGetServices}
+        open={modalOpen}
+        handleClose={modalHandleClose}
+        handleOpen={modalHandleOpen}
+        setFormSucessoValue={false}
+        setMessageForm={setNewStatus}
+      >
+        <form>
+          <ContainerCustom>
+            <Typography variant="h1" fontWeight={500}>
+              Criar O.S
+            </Typography>
 
-          <Divider
-            sx={{
-              width: 39,
-              height: 5,
-              background: theme.palette.secondary.main,
-              marginLeft: 1,
-            }}
-          />
-          {servicesData ? (
-            <>
-              {fields.map((row, index) => (
-                <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
-                  <IconButton size="small" onClick={() => remove(index)}>
-                    {index > 0 && <Icon fontSize="small">remove</Icon>}
-                  </IconButton>
-                  <FormSelect
-                    rules={{
-                      required: true,
-                      validade: () => {
-                        return true;
-                      },
-                    }}
-                    name={`services[${index}]`}
-                    defaultValue={""}
-                    label="Selecione o serviço"
-                    width="100%"
-                    control={control}
-                  >
-                    {servicesData?.service.map((item: IService) => (
-                      <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
-                        {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
-                      </MenuItem>
-                    ))}
-                  </FormSelect>
-                </Box>
-              ))}
-            </>
-          ) : (
-            <Skeleton variant="rectangular" width={200} height={36} />
-          )}
+            <Divider
+              sx={{
+                width: 39,
+                height: 5,
+                background: theme.palette.secondary.main,
+                marginLeft: 1,
+              }}
+            />
 
-          <Box marginTop={2}>
-            <IconButton size="small" onClick={() => append("")}>
-              <Icon fontSize="small">add</Icon>
-            </IconButton>
-          </Box>
+            <Box display={"flex"} justifyContent={"flex-end"}>
+              <Button
+                onClick={modalActions.modalHandleOpen}
+                size="small"
+                sx={{ background: theme.palette.secondary.main, color: theme.palette.background.default }}
+              >
+                Novo
+              </Button>
+            </Box>
+            {servicesData ? (
+              <>
+                {fields.map((row, index) => (
+                  <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
+                    <IconButton size="small" onClick={() => remove(index)}>
+                      {index > 0 && <Icon fontSize="small">remove</Icon>}
+                    </IconButton>
+                    <FormSelect
+                      rules={{
+                        required: true,
+                        validade: () => {
+                          return true;
+                        },
+                      }}
+                      name={`services[${index}]`}
+                      defaultValue={""}
+                      label="Selecione o serviço"
+                      width="100%"
+                      control={control}
+                    >
+                      {servicesData?.service.map((item: IService) => (
+                        <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
+                          {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
+                        </MenuItem>
+                      ))}
+                    </FormSelect>
+                  </Box>
+                ))}
+              </>
+            ) : (
+              <Skeleton variant="rectangular" width={200} height={36} />
+            )}
 
-          <Grid
-            sx={{
-              input: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-              textarea: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-            }}
-            container
-            spacing={3}
-            marginTop={2}
-            flexDirection={"column"}
-          >
-            <Grid item xs>
-              <Typography marginTop={3} marginBottom={1}>
-                Laudo Técnico
-              </Typography>
-              <InputCustomDefect {...register("technicalOpinion", { required: false })} />
-              {errors.technicalOpinion?.type === "required" && (
-                <Typography color={"error"}>Digite a descrição</Typography>
-              )}
-            </Grid>
-          </Grid>
-          <Grid
-            color={theme.palette.primary.main}
-            sx={{
-              input: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-            }}
-            container
-            spacing={3}
-            marginTop={1}
-            flexDirection={columnMedia ? "column" : "row"}
-          >
-            <Grid item xs>
-              <Typography marginTop={3} marginBottom={1}>
-                Valor
-              </Typography>
-              <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
+            <Box marginTop={2}>
+              <IconButton size="small" onClick={() => append("")}>
+                <Icon fontSize="small">add</Icon>
+              </IconButton>
+            </Box>
 
-              <Typography marginTop={3} marginBottom={1}>
-                Valor Total
-              </Typography>
-
-              <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
-            </Grid>
-            <Grid item>
-              <Box>
+            <Grid
+              sx={{
+                input: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+                textarea: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+              }}
+              container
+              spacing={3}
+              marginTop={2}
+              flexDirection={"column"}
+            >
+              <Grid item xs>
                 <Typography marginTop={3} marginBottom={1}>
-                  discounto
+                  Laudo Técnico
+                </Typography>
+                <InputCustomDefect {...register("technicalOpinion", { required: false })} />
+                {errors.technicalOpinion?.type === "required" && (
+                  <Typography color={"error"}>Digite a descrição</Typography>
+                )}
+              </Grid>
+            </Grid>
+            <Grid
+              color={theme.palette.primary.main}
+              sx={{
+                input: {
+                  background: theme.palette.background.paper,
+                  color: theme.palette.primary.main,
+                },
+              }}
+              container
+              spacing={3}
+              marginTop={1}
+              flexDirection={columnMedia ? "column" : "row"}
+            >
+              <Grid item xs>
+                <Typography marginTop={3} marginBottom={1}>
+                  Valor
+                </Typography>
+                <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
+
+                <Typography marginTop={3} marginBottom={1}>
+                  Valor Total
                 </Typography>
 
-                <Controller
-                  control={control}
-                  name="discount"
-                  render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
-                    <TextField
-                      type="number"
-                      onChange={(e) => {
-                        onChange(e.target.value);
-                        setDiscount(Number(e.target.value));
-                      }}
-                      value={value}
-                      size="small"
-                      fullWidth
-                    />
-                  )}
-                />
+                <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
+              </Grid>
+              <Grid item>
+                <Box>
+                  <Typography marginTop={3} marginBottom={1}>
+                    discounto
+                  </Typography>
 
-                {dateValue ? (
-                  <>
-                    <Typography marginTop={3} marginBottom={1}>
-                      Data de Saída
-                    </Typography>
-                    <Controller
-                      name="exitDate"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <>
-                          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                            <DateTimePicker
-                              {...field}
-                              sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                              value={dateValue}
-                              onChange={(newValue) => {
-                                console.log(newValue);
-                                field.onChange(dayjs(newValue).format());
-                                setDateValue(newValue);
-                              }}
-                            />
-                          </LocalizationProvider>
-                        </>
-                      )}
-                    />
-                    {errors.exitDate?.type === "required" && (
-                      <Typography color={"error"}>Coloque a data de entrada</Typography>
+                  <Controller
+                    control={control}
+                    name="discount"
+                    render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                      <TextField
+                        type="number"
+                        onChange={(e) => {
+                          onChange(e.target.value);
+                          setDiscount(Number(e.target.value));
+                        }}
+                        value={value}
+                        size="small"
+                        fullWidth
+                      />
                     )}
-                  </>
-                ) : (
-                  <Skeleton variant="rectangular" width={200} height={36} />
-                )}
-              </Box>
+                  />
+
+                  {dateValue ? (
+                    <>
+                      <Typography marginTop={3} marginBottom={1}>
+                        Data de Saída
+                      </Typography>
+                      <Controller
+                        name="exitDate"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                              <DateTimePicker
+                                {...field}
+                                sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
+                                value={dateValue}
+                                onChange={(newValue) => {
+                                  console.log(newValue);
+                                  field.onChange(dayjs(newValue).format());
+                                  setDateValue(newValue);
+                                }}
+                              />
+                            </LocalizationProvider>
+                          </>
+                        )}
+                      />
+                      {errors.exitDate?.type === "required" && (
+                        <Typography color={"error"}>Coloque a data de entrada</Typography>
+                      )}
+                    </>
+                  ) : (
+                    <Skeleton variant="rectangular" width={200} height={36} />
+                  )}
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-          <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
-            <OsProcessSVG color={theme.palette.secondary.main} />
-          </Stack>
-          <Box justifyContent={"center"} display={"flex"}>
-            <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
-              <Button
-                onClick={() => {
-                  handleSubmit(onSubmit)();
-                  prevFormStep();
-                }}
-                size="large"
-                sx={{
-                  marginTop: 6,
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-              >
-                Prev
-              </Button>
-              <Button
-                onClick={() => {
-                  handleSubmit(onSubmit)();
-                  nextFormStep();
-                }}
-                size="large"
-                sx={{
-                  marginTop: 6,
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-              >
-                next
-              </Button>
+            <Stack flexDirection={"row"} justifyContent={"center"} marginTop={5}>
+              <OsProcessSVG color={theme.palette.secondary.main} />
             </Stack>
-          </Box>
-        </ContainerCustom>
-      </form>
+            <Box justifyContent={"center"} display={"flex"}>
+              <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
+                <Button
+                  onClick={() => {
+                    handleSubmit(onSubmit)();
+                    prevFormStep();
+                  }}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                >
+                  Prev
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleSubmit(onSubmit)();
+                    nextFormStep();
+                  }}
+                  size="large"
+                  sx={{
+                    marginTop: 6,
+                    background: theme.palette.secondary.main,
+                    color: theme.palette.background.paper,
+                  }}
+                >
+                  next
+                </Button>
+              </Stack>
+            </Box>
+          </ContainerCustom>
+        </form>
+      </CreateServiceModal>
     </>
   );
 };

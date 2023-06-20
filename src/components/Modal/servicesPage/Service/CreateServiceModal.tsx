@@ -15,7 +15,6 @@ import TransitionsModal from "../../Modal";
 
 interface IModal {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
@@ -34,7 +33,6 @@ export default function CreateServiceModal({
 }: IModal) {
   const [loading, setLoading] = useState(false);
 
-  const { setErrorMessage } = useContext(FormSucessOrErrorContext);
   //form
   const {
     register,
@@ -62,11 +60,11 @@ export default function CreateServiceModal({
         if (error.response) {
           setFormSucessoValue(false);
           console.error(error);
-          setErrorMessage(error.response.data.message);
+          /*  setErrorMessage(error.response.data.message); */
         } else {
           setFormSucessoValue(false);
           console.error(error);
-          setErrorMessage(error.response.data.message);
+          /*  setErrorMessage(error.response.data.message); */
         }
         setLoading(false);
       });

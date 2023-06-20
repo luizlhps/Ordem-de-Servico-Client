@@ -182,8 +182,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
     }
   }, [data]);
 
-  console.log(dateValue);
-
   return (
     <>
       <form>
@@ -329,7 +327,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 />
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                {data ? (
+                {data || typeForm === "createOs" ? (
                   <>
                     <Typography marginTop={3} marginBottom={1}>
                       Data de entrada*

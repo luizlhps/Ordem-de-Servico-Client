@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 //Material Ui
 import { Box, useTheme } from "@mui/material";
@@ -16,6 +16,7 @@ interface PropsDataGrid {
   currentPage: number;
   page: number;
   loading: boolean;
+  disableRowSelectionOnClick?: boolean;
 }
 interface PropsCustomPagination {
   PageSize: number;
@@ -48,7 +49,7 @@ function CustomLoadingOverlay() {
 }
 
 //Code
-export const DataGridLayout: React.FC<PropsDataGrid> = ({
+const DataGrids: React.FC<PropsDataGrid> = ({
   rows,
   columns,
   PageSize,
@@ -100,3 +101,9 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
     </Box>
   );
 };
+
+export const DataGridLayout = memo(DataGrids, (prevProps, nextProps) => {
+  console.log(prevProps);
+
+  return Object.is(prevProps.rows, nextProps.rows);
+});

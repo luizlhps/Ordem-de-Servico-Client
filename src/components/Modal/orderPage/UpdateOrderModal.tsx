@@ -32,11 +32,9 @@ interface IProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleOpen: () => void;
   handleClose: () => void;
-
-  children: ReactNode;
 }
 
-export const UpdateOrderModal: React.FC<IProps> = ({ open, handleClose, children }) => {
+export const UpdateOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
   return (
     <>
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
@@ -45,7 +43,6 @@ export const UpdateOrderModal: React.FC<IProps> = ({ open, handleClose, children
         </IconButton>
         <UpdateOrder handleClose={handleClose} />
       </TransitionsModal>
-      {children}
     </>
   );
 };
