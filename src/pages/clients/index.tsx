@@ -15,8 +15,9 @@ import { ToastError } from "@/components/Toast/ToastError";
 import { OrdensSVG } from "../../../public/icon/SVGS/IconsSVG";
 import { CreateCostumerModal } from "@/components/Modal/costumerPage/CreateCostumerModal";
 import useModal from "@/hook/useModal";
-import { FormRegisterCostumerProvider, FormUpdateCostumerProvider } from "@/contexts";
+import { FormRegisterCostumerProvider } from "@/contexts";
 import { UpdateCostumerModal } from "@/components/Modal/costumerPage/UpdateCostumerModal";
+import { FormUpdateCostumerProvider } from "@/contexts/formUpdateCostumerContext";
 
 export interface ICustomer {
   _id: string;

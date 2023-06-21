@@ -1,4 +1,4 @@
-import { HeaderLayout } from "@/components";
+import { AccordionList, HeaderLayout } from "@/components";
 
 import { Stack, useTheme } from "@mui/material";
 import styled from "styled-components";
@@ -21,6 +21,7 @@ export default function Home() {
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}></Stack>
 
       <TesteSvg></TesteSvg>
+      <AccordionList></AccordionList>
     </>
   );
 }
