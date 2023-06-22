@@ -2,6 +2,9 @@ import React, { ReactNode, useEffect } from "react";
 import TransitionsModal from "../Modal";
 import { IconButton, Icon, Typography, Stack, Box, Divider, useTheme, Button } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
+import { Order } from "../../../../types/order";
+import dayjs, { Dayjs } from "dayjs";
+import { normalizePhoneNumber } from "@/utils/Masks";
 
 const style = {
   padding: "33px",
@@ -47,14 +50,17 @@ const obj = [
 interface IProps {
   open: boolean;
   handleClose: () => void;
+  selectedItem: Order | undefined;
 }
 
-export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
+export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {
+  console.log(selectedItem);
+
   const theme = useTheme();
   return (
     <>
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
-        <Box>
+        <Box width={"100%"}>
           <Stack direction={"row"} justifyContent={"space-between"} width={1} alignItems={"center"} flexWrap={"wrap"}>
             <Stack>
               <Typography variant="h2" fontWeight={600}>
@@ -68,7 +74,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                   Data de entrada
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  17/04/2023
+                  {dayjs(selectedItem?.dateEntry).locale("pt-br").format("YYYY/MM/DD HH:mm:ss")}
                 </Typography>
               </Box>
               <Box flexDirection={"column"} display={"flex"}>
@@ -76,7 +82,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                   Valor Total
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  R$ 80,00
+                  {selectedItem?.totalAmount}
                 </Typography>
               </Box>
             </Stack>
@@ -89,9 +95,9 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
             sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
           />
           <Stack width={"100%"} marginBottom={2}>
-            <Typography>Cliente: Robierto Saltos</Typography>
+            <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer.name}</Typography>
             <Typography fontSize={14} fontWeight="300" marginBottom={2}>
-              12 99239-9823
+              {normalizePhoneNumber(selectedItem?.customer.phone)}
             </Typography>
           </Stack>
 
@@ -104,40 +110,38 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                   <Typography fontSize={14}>Modelo</Typography>
                 </Stack>
                 <Stack spacing={2}>
-                  <Typography fontSize={14}>GTX 1060</Typography>
-                  <Typography fontSize={14}>Galaxy</Typography>
-                  <Typography fontSize={14}>Nvidia</Typography>
+                  <Typography textTransform={"capitalize"} fontSize={14}>
+                    {selectedItem?.equipment}
+                  </Typography>
+                  <Typography textTransform={"capitalize"} fontSize={14}>
+                    {selectedItem?.brand}
+                  </Typography>
+                  <Typography textTransform={"capitalize"} fontSize={14}>
+                    {selectedItem?.model}
+                  </Typography>
                 </Stack>
               </Stack>
               <Box marginTop={5}>
                 <Typography marginBottom={2} fontSize={14}>
                   Defeito
                 </Typography>
-                <Typography fontSize={14}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis
-                  quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni
-                  necessitatibus! Eligendi, animi?
-                </Typography>
+                <Typography fontSize={14}>{selectedItem?.defect}</Typography>
               </Box>
               <Box marginTop={5}>
                 <Typography marginBottom={2} fontSize={14}>
                   Observação
                 </Typography>
-                <Typography fontSize={14}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis
-                  quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni
-                  necessitatibus! Eligendi, animi?
-                </Typography>
+                <Typography fontSize={14}>{selectedItem?.observation}</Typography>
               </Box>
             </AccordionList>
 
             <AccordionList
-              description={`${obj.length} serviços`}
+              description={`${selectedItem?.services.length} serviços`}
               icon="services"
               subTitle="Veja os serviços realizados"
               title="Serviços"
             >
-              {obj.map((service, index) => {
+              {selectedItem?.services.map((service, index) => {
                 console.log(index);
                 console.log(obj.length - 1);
                 return (
@@ -148,17 +152,17 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                         <Typography fontSize={14}>Valor</Typography>
                       </Stack>
                       <Stack spacing={2}>
-                        <Typography fontSize={14}>{service.service.name}</Typography>
-                        <Typography fontSize={14}>{service.service.amount}</Typography>
+                        <Typography fontSize={14}>{service.title}</Typography>
+                        <Typography fontSize={14}>{service.amount}</Typography>
                       </Stack>
                     </Stack>
                     <Box marginTop={5} marginBottom={4}>
                       <Typography marginBottom={2} fontSize={14}>
                         Descrição
                       </Typography>
-                      <Typography fontSize={14}>{service.service.description}</Typography>
+                      <Typography fontSize={14}>{service.description}</Typography>
                     </Box>
-                    {index !== obj.length - 1 && (
+                    {index !== selectedItem?.services.length - 1 && (
                       <Box
                         marginTop={2}
                         marginBottom={2}
@@ -177,11 +181,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                 <Typography marginBottom={2} fontSize={14}>
                   Laudo Técnico
                 </Typography>
-                <Typography fontSize={14}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis
-                  quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni
-                  necessitatibus! Eligendi, animi?
-                </Typography>
+                <Typography fontSize={14}>{selectedItem?.technicalOpinion}</Typography>
               </Box>
             </AccordionList>
           </Stack>

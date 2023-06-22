@@ -1,3 +1,4 @@
+import { Service } from "../../../types/order";
 import { Api } from "./axios-config";
 
 export interface IOrderData {
@@ -9,7 +10,7 @@ export interface IOrderData {
   defect: string;
   observation: string;
   dateEntry: string;
-  services: any[];
+  services: Service;
   status: string;
   costumer: string;
   deleted: boolean;

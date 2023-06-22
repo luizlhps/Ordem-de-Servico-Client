@@ -16,12 +16,13 @@ import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
+import { Order } from "../../../types/order";
 
 const Orders = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
-  const [selectItem, setselectItem] = useState("" || Object);
+  const [selectItem, setselectItem] = useState<Order | undefined>(undefined);
 
   //Form Sucess and Error
   const {
@@ -97,7 +98,7 @@ const Orders = () => {
   return (
     <>
       <FormRegisterOrderProvider fetchApi={fetchApi}>
-        <FormUpdateOrderProvider fetchApi={fetchApi} orderID={selectItem._id} orderData={selectItem}>
+        <FormUpdateOrderProvider fetchApi={fetchApi} orderID={selectItem?._id} orderData={selectItem}>
           <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
           <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
@@ -112,7 +113,7 @@ const Orders = () => {
             setModalOpenDelete={setModalOpenDelete}
             modalDeleteHandleOpen={modalDeleteHandleOpen}
           />
-          <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen}></ViewOrderModal>
+          <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem}></ViewOrderModal>
           <CreateOrderModal
             open={modalOpen}
             handleClose={modalHandleClose}

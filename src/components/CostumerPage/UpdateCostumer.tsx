@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { formUpdateCostumerContext } from "@/contexts";
 import { useTheme } from "@mui/material";
 import { LayoutCostumerForm } from "./LayoutCostumerForm";
+import { formUpdateCostumerContext } from "@/contexts/formUpdateCostumerContext";
 
 interface IPropsNewCostumer {
   handleClose: () => void;

@@ -163,6 +163,15 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const onSubmit = (data: Inputs) => {
     console.log("sub", data);
     setData(data);
+  };
+
+  const handlePrev = () => {
+    handleSubmit(onSubmit)();
+    prevFormStep();
+  };
+
+  const handleNext = () => {
+    handleSubmit(onSubmit)();
     nextFormStep();
   };
 
@@ -212,7 +221,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                       <FormSelect
                         name={"costumer"}
                         defaultValue={data?.costumer ? data?.costumer : ""}
-                        rules={{ required: true }}
+                        rules={{ required: typeForm === "createOs" ? true : false }}
                         label={"Selecione o cliente"}
                         control={control}
                         width={200}
@@ -345,7 +354,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                               value={dateValue}
                               onChange={(newValue) => {
                                 setDateValue(newValue);
-                                field.onChange(dateValue);
+                                field.onChange(dayjs(dateValue).format());
                               }}
                             />
                           </LocalizationProvider>
@@ -427,7 +436,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <>
                   {" "}
                   <Button
-                    onClick={prevFormStep}
+                    onClick={handlePrev}
                     size="large"
                     sx={{
                       marginTop: 6,
@@ -449,7 +458,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                       background: theme.palette.secondary.main,
                       color: theme.palette.background.paper,
                     }}
-                    onClick={() => handleSubmit(onSubmit)()}
+                    onClick={handleNext}
                   >
                     Criar
                   </Button>
@@ -465,7 +474,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                       background: theme.palette.secondary.main,
                       color: theme.palette.background.paper,
                     }}
-                    onClick={() => handleSubmit(onSubmit)()}
+                    onClick={handleNext}
                   >
                     Next
                   </Button>

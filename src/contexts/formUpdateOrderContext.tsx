@@ -5,6 +5,7 @@ import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
 import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
 import { ICustomer } from "@/pages/clients";
+import { Order } from "../../types/order";
 
 interface IContext {
   onDiscountChange?: () => void;
@@ -19,7 +20,7 @@ interface IContext {
 interface FormProviderProps {
   children: React.ReactNode;
   fetchApi: () => void;
-  orderID: string;
+  orderID: string | undefined;
   orderData: any;
 }
 
@@ -56,23 +57,26 @@ export const FormUpdateOrderContext = createContext({} as IContext);
 export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children, fetchApi, orderData, orderID }) => {
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  console.log(orderData);
 
-  const pre = {
-    _id: orderData.customer?._id,
-    id: orderData.customer?.id,
-    name: orderData.customer?.name,
-    email: orderData.customer?.email,
-    contact: orderData.customer?.contact,
-    phone: orderData.customer?.phone,
-    cpfOrCnpj: orderData.customer?.cpfOrCnpj,
-    telephone: orderData.customer?.telephone,
-    address: orderData.customer?.address,
-    orders: orderData.customer?.orders,
-    createdAt: orderData.customer?.createdAt,
-    updatedAt: orderData.customer?.updatedAt,
-  };
+  if (orderData) {
+    const pre = {
+      _id: orderData.customer?._id,
+      id: orderData.customer?.id,
+      name: orderData.customer?.name,
+      email: orderData.customer?.email,
+      contact: orderData.customer?.contact,
+      phone: orderData.customer?.phone,
+      cpfOrCnpj: orderData.customer?.cpfOrCnpj,
+      telephone: orderData.customer?.telephone,
+      address: orderData.customer?.address,
+      orders: orderData.customer?.orders,
+      createdAt: orderData.customer?.createdAt,
+      updatedAt: orderData.customer?.updatedAt,
+    };
+  }
 
-  const [costumer, setCostumer] = useState<ICustomer | undefined>(pre);
+  const [costumer, setCostumer] = useState<ICustomer | undefined>();
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
   const orderDataServices: string[] = [];
@@ -80,9 +84,8 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
   orderData?.services?.map((item: any) => {
     orderDataServices.push(item._id);
   });
-
   useEffect(() => {
-    if (orderData.equipment) {
+    if (orderData) {
       const form = {
         equipment: orderData.equipment,
         defect: orderData.defect,
@@ -101,7 +104,7 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
         technicalOpinion: orderData.technicalOpinion,
       };
 
-      setCostumer(pre);
+      /*  setCostumer(pre); */
 
       setData((prevValues: any) => ({
         ...prevValues,
@@ -142,7 +145,9 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
           }
         };
 
-        const res = await orderApi.updateOrder(await statusUpdateId(), orderID);
+        if (orderID) {
+          const res = await orderApi.updateOrder(await statusUpdateId(), orderID);
+        }
         setFormSuccess(true);
         fetchApi();
       } catch (error: any) {
