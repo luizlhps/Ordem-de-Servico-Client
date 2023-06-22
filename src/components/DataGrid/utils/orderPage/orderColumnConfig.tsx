@@ -10,7 +10,8 @@ export const columnsDataGrid = (
   theme: any,
   modalUpdateHandleOpen: () => void,
   setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
-  modalDeleteHandleOpen: () => void
+  modalDeleteHandleOpen: () => void,
+  modalViewHandleOpen: () => void
 ) => {
   const handleRemove = async (data: any) => {
     modalDeleteHandleOpen();
@@ -20,6 +21,11 @@ export const columnsDataGrid = (
   const handleUpdate = async (data: any) => {
     modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
+  };
+
+  const handleView = (data: any) => {
+    setSelectedItemUpdate(data);
+    modalViewHandleOpen();
   };
 
   const columnConfig: GridColDef[] = [
@@ -104,7 +110,7 @@ export const columnsDataGrid = (
           >
             <IconButton
               onClick={() => {
-                handleUpdate(params.row);
+                handleView(params.row);
               }}
             >
               <RemoveRedEyeOutlinedIcon />

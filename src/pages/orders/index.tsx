@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext, useMemo, lazy } from "react";
 
 import { useTheme } from "@mui/material";
 
 import { Button, Stack, TextField } from "@mui/material";
-import { DataGridLayout, HeaderLayout } from "@/components";
+import { DataGridLayout, HeaderLayout, ViewOrderModal } from "@/components";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import useModal from "@/hook/useModal";
 import { useSearchField } from "@/hook/useSearchField";
@@ -37,7 +37,7 @@ const Orders = () => {
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
-  const { modalOpen, modalUpdateOpen, modalOpendelete } = modals;
+  const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
   const {
     modalHandleOpen,
     modalHandleClose,
@@ -45,6 +45,8 @@ const Orders = () => {
     modalHandleUpdateClose,
     modalDeleteHandleOpen,
     modalDeleteHandleClose,
+    modalViewClose,
+    modalViewHandleOpen,
   } = modalActions;
 
   const { setModalOpen, setModalUpdateOpen, setModalOpenDelete } = modalSets;
@@ -65,7 +67,13 @@ const Orders = () => {
   }, [formSuccess]);
 
   //Config Grid
-  const columns = columnsDataGrid(theme, modalUpdateHandleOpen, setselectItem, modalDeleteHandleOpen);
+  const columns = columnsDataGrid(
+    theme,
+    modalUpdateHandleOpen,
+    setselectItem,
+    modalDeleteHandleOpen,
+    modalViewHandleOpen
+  );
 
   const ordersFormatted = useMemo(() => {
     return ordersData?.orders.map((obj: any) => {
@@ -104,6 +112,7 @@ const Orders = () => {
             setModalOpenDelete={setModalOpenDelete}
             modalDeleteHandleOpen={modalDeleteHandleOpen}
           />
+          <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen}></ViewOrderModal>
           <CreateOrderModal
             open={modalOpen}
             handleClose={modalHandleClose}

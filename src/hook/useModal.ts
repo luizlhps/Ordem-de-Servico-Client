@@ -5,12 +5,16 @@ const useModal = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
   const [modalOpendelete, setModalOpenDelete] = useState(false);
+  const [modalViewOpen, setModalViewOpen] = useState(false);
 
   const modalHandleOpen = () => setModalOpen(true);
   const modalHandleClose = () => setModalOpen(false);
 
   const modalUpdateHandleOpen = () => setModalUpdateOpen(true);
   const modalHandleUpdateClose = () => setModalUpdateOpen(false);
+
+  const modalViewHandleOpen = () => setModalViewOpen(true);
+  const modalViewClose = () => setModalViewOpen(false);
 
   const modalDeleteHandleOpen = () => setModalOpenDelete(true);
   const modalDeleteHandleClose = () => setModalOpenDelete(false);
@@ -20,6 +24,7 @@ const useModal = () => {
       modalOpen,
       modalUpdateOpen,
       modalOpendelete,
+      modalViewOpen,
     },
     modalActions: {
       modalHandleOpen,
@@ -28,11 +33,14 @@ const useModal = () => {
       modalHandleUpdateClose,
       modalDeleteHandleOpen,
       modalDeleteHandleClose,
+      modalViewHandleOpen,
+      modalViewClose,
     },
     modalSets: {
       setModalOpen,
       setModalUpdateOpen,
       setModalOpenDelete,
+      setModalViewOpen,
     },
   };
 };

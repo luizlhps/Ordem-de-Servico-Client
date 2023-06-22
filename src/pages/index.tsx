@@ -1,4 +1,4 @@
-import { AccordionList, HeaderLayout } from "@/components";
+import { HeaderLayout } from "@/components";
 import { ViewOrderModal } from "@/components/Modal/orderPage/ViewOrderModal";
 
 import { Stack, useTheme } from "@mui/material";

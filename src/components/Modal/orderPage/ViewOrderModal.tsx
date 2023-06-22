@@ -141,8 +141,8 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                 console.log(index);
                 console.log(obj.length - 1);
                 return (
-                  <>
-                    <Stack key={index} direction={"row"} spacing={6}>
+                  <React.Fragment key={index}>
+                    <Stack direction={"row"} spacing={6}>
                       <Stack spacing={2}>
                         <Typography fontSize={14}>Serviço</Typography>
                         <Typography fontSize={14}>Valor</Typography>
@@ -167,7 +167,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
                         sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
                       />
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
             </AccordionList>
