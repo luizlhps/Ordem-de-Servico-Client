@@ -1,4 +1,5 @@
 import { AccordionList, HeaderLayout } from "@/components";
+import { ViewOrderModal } from "@/components/Modal/orderPage/ViewOrderModal";
 
 import { Stack, useTheme } from "@mui/material";
 import styled from "styled-components";
@@ -21,7 +22,7 @@ export default function Home() {
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}></Stack>
 
       <TesteSvg></TesteSvg>
-      <AccordionList></AccordionList>
+      <ViewOrderModal handleClose={() => {}} open={true} />
     </>
   );
 }

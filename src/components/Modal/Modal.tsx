@@ -40,6 +40,7 @@ export default function TransitionsModal({ open, handleClose, children, style }:
         sx={{
           ".MuiDialog-paper": {
             backgroundImage: "none",
+            height: smDown ? "100%" : "none",
             width: smDown ? "100%" : "80%",
             maxWidth: smDown ? "100%!important" : "md",
             margin: smDown ? 0 : "32px",

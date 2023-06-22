@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { Box, useTheme, Typography } from "@mui/material";
-import { ServicesSVG } from "../../../public/icon/SVGS/IconsSVG";
+import { Box, useTheme, Typography, Stack } from "@mui/material";
+import { DasboardSVG, OrdensSVG, ServicesSVG } from "../../../public/icon/SVGS/IconsSVG";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-export const AccordionList = ({ children }: any) => {
+interface IProps {
+  children: React.ReactNode;
+  icon: "services" | "orders" | "technicalOpinion";
+  title: string;
+  subTitle: string;
+  dafaultOpen?: boolean;
+  description?: string;
+}
+
+export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, description }: IProps) => {
   const theme = useTheme();
 
-  const AccodionOpen = false;
+  const phoneMedia = useMediaQuery("(max-width:575px)");
+  const smallphoneMedia = useMediaQuery("(max-width:364px)");
+
+  const AccodionOpen = dafaultOpen ? dafaultOpen : false;
   const [open, setOpen] = useState<boolean>(AccodionOpen);
 
   const handleButton = () => {
@@ -16,11 +29,11 @@ export const AccordionList = ({ children }: any) => {
 
   return (
     <>
-      <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} flexWrap={"wrap"}>
+      <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} flexWrap={"wrap"} width={1}>
         <Box display={"flex"} alignItems={"center"}>
           <Box
-            width={45}
-            height={45}
+            width={40}
+            height={40}
             sx={{
               border: "solid 1px",
               borderColor: theme.palette.custom?.grey,
@@ -32,36 +45,41 @@ export const AccordionList = ({ children }: any) => {
               marginRight: 3,
             }}
           >
-            <ServicesSVG color={theme.palette.primary.main} />
+            {icon === "orders" && <OrdensSVG color={theme.palette.primary.main} />}
+            {icon === "services" && <ServicesSVG color={theme.palette.primary.main} />}
+            {icon === "technicalOpinion" && <DasboardSVG color={theme.palette.primary.main} />}
           </Box>
 
           <Box maxWidth={280}>
-            <Typography fontWeight={600}>Equipamento</Typography>
+            <Typography fontWeight={600}>{title}</Typography>
             <Typography fontSize={14} fontWeight={300}>
-              Informações sobre o equipamento
+              {subTitle}
             </Typography>
           </Box>
         </Box>
-        <Box display={"flex"} gap={2}>
-          <Box
-            height={40}
-            alignItems={"center"}
-            border={1}
-            borderRadius={10}
-            minWidth={170}
-            borderColor={theme.palette.custom?.grey}
-            display={"flex"}
-            justifyContent={"center"}
-          >
-            <Typography fontSize={14}>2 serviços</Typography>
-          </Box>
+
+        <Box display={"flex"} gap={2} marginTop={smallphoneMedia ? 1 : "none"}>
+          {description && phoneMedia === false && (
+            <Box
+              height={40}
+              alignItems={"center"}
+              border={1}
+              borderRadius={10}
+              minWidth={100}
+              borderColor={theme.palette.custom?.grey}
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              {<Typography fontSize={14}>{description}</Typography>}
+            </Box>
+          )}
           <Box
             onClick={handleButton}
             sx={{ cursor: "pointer" }}
             border={1}
             borderRadius={10}
-            width={40}
-            height={40}
+            width={smallphoneMedia ? 25 : 40}
+            height={smallphoneMedia ? 25 : 40}
             borderColor={theme.palette.custom?.grey}
             display={"flex"}
             alignItems={"center"}
@@ -72,23 +90,18 @@ export const AccordionList = ({ children }: any) => {
           </Box>
         </Box>
       </Box>
-
       <Box
         marginTop={3}
         sx={{
           border: open ? "solid 1px" : 0,
           borderColor: theme.palette.custom?.grey,
           borderRadius: "20px",
-          maxHeight: open ? "500px" : "0px",
-          transition: open ? "max-height 1s" : "all 0.4s",
+          maxHeight: open ? "9999px" : "0px",
+          transition: open ? "max-height 1s" : "all 0.1s",
           overflow: "hidden",
         }}
       >
-        <Box padding={4}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis quas eum
-          perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni necessitatibus!
-          Eligendi, animi?
-        </Box>
+        <Box padding={4}>{children}</Box>
       </Box>
     </>
   );
