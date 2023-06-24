@@ -50,7 +50,6 @@ export default function CreateServiceModal({
         setValue("description", "");
         setValue("amount", "");
         setMessageForm("Serviço criado com sucesso!!");
-        setFormSucessoValue(true);
 
         fetchApi();
         setLoading(false);
@@ -58,11 +57,9 @@ export default function CreateServiceModal({
       })
       .catch((error) => {
         if (error.response) {
-          setFormSucessoValue(false);
           console.error(error);
           /*  setErrorMessage(error.response.data.message); */
         } else {
-          setFormSucessoValue(false);
           console.error(error);
           /*  setErrorMessage(error.response.data.message); */
         }

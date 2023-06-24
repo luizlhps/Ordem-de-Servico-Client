@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from "react";
 import TransitionsModal from "../Modal";
-import { IconButton, Icon, Typography, Stack, Box, Divider, useTheme, Button } from "@mui/material";
+import { IconButton, Icon, Typography, Stack, Box, Divider, useTheme, Button, useMediaQuery } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
 import { Order } from "../../../../types/order";
 import dayjs, { Dayjs } from "dayjs";
@@ -54,6 +54,7 @@ interface IProps {
 }
 
 export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {
+  const smallphoneMedia = useMediaQuery("(max-width:364px)");
   console.log(selectedItem);
 
   const theme = useTheme();
@@ -82,7 +83,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   Valor Total
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  {selectedItem?.totalAmount}
+                  R$ {selectedItem?.totalAmount.toFixed(2)}
                 </Typography>
               </Box>
             </Stack>
@@ -153,7 +154,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                       </Stack>
                       <Stack spacing={2}>
                         <Typography fontSize={14}>{service.title}</Typography>
-                        <Typography fontSize={14}>{service.amount}</Typography>
+                        <Typography fontSize={14}>R$ {service.amount.toFixed(2)}</Typography>
                       </Stack>
                     </Stack>
                     <Box marginTop={5} marginBottom={4}>
@@ -188,10 +189,11 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
         </Box>
         <Stack width={"100%"} alignItems={"center"}>
           <Stack
+            gap={1}
             width={"100%"}
             direction={"row"}
             justifyContent={"space-between"}
-            alignItems={"center"}
+            alignItems={"flex-end"}
             flexWrap={"wrap"}
           >
             <Stack direction={"row"} gap={4} marginTop={2}>
@@ -205,21 +207,21 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
               </Box>
               <Box flexDirection={"column"} display={"flex"}>
                 <Typography fontSize={14} fontWeight={300}>
-                  R$ 80,00
+                  R$ {selectedItem?.discount.toFixed(2)}
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
                   17/04/2023
                 </Typography>
               </Box>
             </Stack>
-            <Box display={"flex"} gap={2}>
+            <Stack>
               <Typography fontSize={14} fontWeight={300}>
-                Valor Total
+                Data de saída
               </Typography>
               <Typography fontSize={14} fontWeight={300}>
-                R$ 80,00
+                {selectedItem?.exitDate ? selectedItem?.exitDate : "DD/MM/YYYY"}
               </Typography>
-            </Box>
+            </Stack>
           </Stack>
 
           <Button onClick={handleClose} sx={{ width: 173, marginTop: 4, height: "100%" }} variant="contained">

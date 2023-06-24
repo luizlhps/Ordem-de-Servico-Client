@@ -19,6 +19,7 @@ export interface Order {
   technicalOpinion: string;
   servicesPrices: ServicePrice[];
   equipmentField: string;
+  exitDate: string;
 }
 
 export interface Service {

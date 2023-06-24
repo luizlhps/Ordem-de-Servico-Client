@@ -13,10 +13,10 @@ import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteSe
 import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
-import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
 import { Order } from "../../../types/order";
+import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 
 const Orders = () => {
   const theme = useTheme();

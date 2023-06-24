@@ -42,7 +42,7 @@ export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, de
               alignItems: "center",
               justifyContent: "center",
               padding: "10px",
-              marginRight: 3,
+              marginRight: smallphoneMedia ? 1 : 3,
             }}
           >
             {icon === "orders" && <OrdensSVG color={theme.palette.primary.main} />}

@@ -274,7 +274,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 {fields.map((row, index) => (
                   <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
                     <IconButton size="small" onClick={() => remove(index)}>
-                      {index > 0 && <Icon fontSize="small">remove</Icon>}
+                      <Icon fontSize="small">remove</Icon>
                     </IconButton>
                     <FormSelect
                       rules={{

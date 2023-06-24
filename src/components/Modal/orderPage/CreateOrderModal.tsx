@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, memo } from "react";
 import TransitionsModal from "../Modal";
 import NewCostumer from "../../CostumerPage/NewCostumer";
 import { IconButton, Icon, Box } from "@mui/material";
@@ -34,15 +34,24 @@ interface IProps {
   handleClose: () => void;
 }
 
-export const CreateOrderModal: React.FC<IProps> = ({ open, handleClose }) => {
+const CreateOrderModalContent: React.FC<{ handleClose: any }> = ({ handleClose }) => {
+  console.log("rendered");
   return (
     <>
-      <TransitionsModal handleClose={handleClose} open={open} style={style}>
-        <IconButton onClick={handleClose} sx={buttonStyle}>
-          <Icon>close</Icon>
-        </IconButton>
-        <NewOrder handleClose={handleClose} />
-      </TransitionsModal>
+      <IconButton onClick={handleClose} sx={buttonStyle}>
+        <Icon>close</Icon>
+      </IconButton>
+      <NewOrder handleClose={handleClose} />
     </>
   );
 };
+
+export const CreateOrderModal: React.FC<IProps> = memo(({ open, handleClose, handleOpen, setOpen }) => {
+  return (
+    <TransitionsModal handleClose={handleClose} open={open} style={style}>
+      <CreateOrderModalContent handleClose={handleClose} />
+    </TransitionsModal>
+  );
+});
+
+CreateOrderModal.displayName = "CreateOrderModal";
