@@ -55,7 +55,6 @@ interface IProps {
 
 export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {
   const smallphoneMedia = useMediaQuery("(max-width:364px)");
-  console.log(selectedItem);
 
   const theme = useTheme();
   return (
@@ -75,7 +74,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   Data de entrada
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  {dayjs(selectedItem?.dateEntry).locale("pt-br").format("YYYY/MM/DD HH:mm:ss")}
+                  {dayjs(selectedItem?.dateEntry).format("YYYY/MM/DD HH:mm:ss")}
                 </Typography>
               </Box>
               <Box flexDirection={"column"} display={"flex"}>
@@ -143,8 +142,6 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
               title="Serviços"
             >
               {selectedItem?.services.map((service, index) => {
-                console.log(index);
-                console.log(obj.length - 1);
                 return (
                   <React.Fragment key={index}>
                     <Stack direction={"row"} spacing={6}>
@@ -219,7 +216,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                 Data de saída
               </Typography>
               <Typography fontSize={14} fontWeight={300}>
-                {selectedItem?.exitDate ? selectedItem?.exitDate : "DD/MM/YYYY"}
+                {selectedItem?.exitDate ? dayjs(selectedItem?.exitDate).format("YYYY/MM/DD HH:mm:ss") : "DD/MM/YYYY"}
               </Typography>
             </Stack>
           </Stack>
