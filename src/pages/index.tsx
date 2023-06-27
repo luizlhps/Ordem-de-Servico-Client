@@ -22,7 +22,6 @@ export default function Home() {
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}></Stack>
 
       <TesteSvg></TesteSvg>
-      <ViewOrderModal handleClose={() => {}} open={true} />
     </>
   );
 }

@@ -73,7 +73,9 @@ export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, de
               {<Typography fontSize={14}>{description}</Typography>}
             </Box>
           )}
+
           <Box
+            data-testid="arrow-icon-container"
             onClick={handleButton}
             sx={{ cursor: "pointer" }}
             border={1}
