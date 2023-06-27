@@ -1,7 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { AccordionList } from "./AccordionList";
-import { ServicesSVG } from "../../../public/icon/SVGS/IconsSVG";
 
 describe("Accodiond List Icon tests", () => {
   it("render the services icon correctly", () => {
@@ -35,7 +34,7 @@ describe("Accodiond List Icon tests", () => {
   });
 });
 
-describe("Accodion List Icon tests", () => {
+describe("Accodion List content tests", () => {
   it("should show the contents inside", () => {
     const { container } = render(
       <AccordionList icon="services" title="Title" subTitle="Subtitle" dafaultOpen>
@@ -43,6 +42,10 @@ describe("Accodion List Icon tests", () => {
       </AccordionList>
     );
     const containerContent = screen.getByTestId("content-container");
+    const iconArrowContainer = screen.getByTestId("arrow-icon-container");
+    const iconKeyboardArrowDown = screen.getByTestId("KeyboardArrowDownIcon");
+
+    expect(iconKeyboardArrowDown);
 
     expect(containerContent).toHaveStyle(`
       border: solid 1px;
@@ -51,6 +54,11 @@ describe("Accodion List Icon tests", () => {
         transition: max-height 1s;
         overflow: hidden;
       `);
+
+    fireEvent.click(iconArrowContainer);
+
+    const iconKeyboardArrowRight = screen.getByTestId("KeyboardArrowRightIcon");
+    expect(iconKeyboardArrowRight);
   });
 
   it("should not show the contents inside", () => {
@@ -60,13 +68,21 @@ describe("Accodion List Icon tests", () => {
       </AccordionList>
     );
     const containerContent = screen.getByTestId("content-container");
+    const iconKeyboardArrowRight = screen.getByTestId("KeyboardArrowRightIcon");
+    const iconArrowContainer = screen.getByTestId("arrow-icon-container");
 
+    expect(iconKeyboardArrowRight);
     expect(containerContent).toHaveStyle(`
-          border: 0 solid;
+        border: 0 solid;
         border-radius: 20px;
         max-height: 0px;
         transition: all 0.1s;
         overflow: hidden;
       `);
+
+    fireEvent.click(iconArrowContainer);
+
+    const iconKeyboardArrowDown = screen.getByTestId("KeyboardArrowDownIcon");
+    expect(iconKeyboardArrowDown);
   });
 });
