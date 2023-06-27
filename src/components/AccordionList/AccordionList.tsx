@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, useTheme, Typography, Stack } from "@mui/material";
-import { DasboardSVG, OrdensSVG, ServicesSVG } from "../../../public/icon/SVGS/IconsSVG";
+import { DashboardSVG, OrdensSVG, ServicesSVG } from "../../../public/icon/SVGS/IconsSVG";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -47,7 +47,7 @@ export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, de
           >
             {icon === "orders" && <OrdensSVG color={theme.palette.primary.main} />}
             {icon === "services" && <ServicesSVG color={theme.palette.primary.main} />}
-            {icon === "technicalOpinion" && <DasboardSVG color={theme.palette.primary.main} />}
+            {icon === "technicalOpinion" && <DashboardSVG color={theme.palette.primary.main} />}
           </Box>
 
           <Box maxWidth={280}>
@@ -91,9 +91,10 @@ export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, de
         </Box>
       </Box>
       <Box
+        data-testid="content-container"
         marginTop={3}
         sx={{
-          border: open ? "solid 1px" : 0,
+          border: open ? "solid 1px" : "0 solid",
           borderColor: theme.palette.custom?.grey,
           borderRadius: "20px",
           maxHeight: open ? "9999px" : "0px",
