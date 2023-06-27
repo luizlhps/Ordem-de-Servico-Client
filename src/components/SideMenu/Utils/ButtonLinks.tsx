@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 //svg
 import {
   ClientsSVG,
-  DasboardSVG,
+  DashboardSVG,
   FinanceSVG,
   OrdensSVG,
   ProfileSVG,
@@ -57,7 +57,7 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
             <ListItemIcon sx={{ minWidth: 29 }}>
               {icon === "dashboard" && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <DasboardSVG color={theme.palette.primary.main} />
+                  <DashboardSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "ordens" && (
