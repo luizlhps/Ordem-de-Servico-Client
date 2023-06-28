@@ -6,6 +6,17 @@ import { ptBR as ptBRGridToolbar } from "@mui/x-data-grid";
 import { ptBR as coreBgBG } from "@mui/material/locale";
 import { ptBR } from "@mui/material/locale";
 
+interface PaletteCustomColors {
+  custom?: {
+    dataGridColor: string;
+    grey: string;
+  };
+}
+declare module "@mui/material/styles" {
+  interface Palette extends PaletteCustomColors {}
+  interface PaletteOptions extends PaletteCustomColors {}
+}
+
 export const LightTheme = createTheme(
   {
     typography: {
@@ -55,6 +66,11 @@ export const LightTheme = createTheme(
       background: {
         default: "#F3F5F7",
         paper: "#fff",
+      },
+
+      custom: {
+        grey: "#d9dbdd",
+        dataGridColor: "#fff",
       },
     },
   },

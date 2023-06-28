@@ -10,6 +10,7 @@ import { ptBR as dataGridptBR } from "@mui/x-data-grid";
 
 interface PaletteCustomColors {
   custom?: {
+    dataGridColor: string;
     grey: string;
   };
 }
@@ -77,6 +78,7 @@ export const DarkTheme = createTheme(
       },
       custom: {
         grey: "#323C4C",
+        dataGridColor: "#1A2027",
       },
     },
   },

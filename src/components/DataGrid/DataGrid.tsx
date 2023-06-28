@@ -73,7 +73,8 @@ const DataGrids: React.FC<PropsDataGrid> = ({
           },
 
           "&.MuiDataGrid-root": {
-            backgroundColor: theme.palette.background.default,
+            borderRadius: "16px",
+            backgroundColor: theme.palette.custom?.dataGridColor,
           },
         }}
         rows={rows ? rows : []}

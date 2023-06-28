@@ -199,15 +199,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
             <Typography variant="h1" fontWeight={500}>
               Criar O.S
             </Typography>
-
-            <Divider
-              sx={{
-                width: 39,
-                height: 5,
-                background: theme.palette.secondary.main,
-                marginLeft: 1,
-              }}
-            />
           </Box>
 
           <Divider light sx={{ width: "100%", marginBottom: 6 }} />
