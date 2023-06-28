@@ -1,36 +1,73 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, findByText, getByText } from "@testing-library/react";
 import React from "react";
 import { AccordionList } from "./AccordionList";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+jest.mock("@mui/material/useMediaQuery");
+
+describe("not show description", () => {
+  it("should renders less description component on mobile", () => {
+    const mediaQuery = jest.mocked(useMediaQuery as any);
+    mediaQuery.mockReturnValueOnce(false);
+
+    render(
+      <AccordionList icon="services" title="Title" subTitle="Sub Title" description="Description" dafaultOpen={false}>
+        <p>fake-text</p>
+      </AccordionList>
+    );
+
+    const description = screen.getByText("Description");
+
+    expect(description).toHaveTextContent("Description");
+  });
+});
+
+describe("show description", () => {
+  it("should renders show description component on desktop", () => {
+    const mediaQuery = jest.mocked(useMediaQuery as any);
+    mediaQuery.mockReturnValueOnce(true);
+
+    render(
+      <AccordionList icon="services" title="Title" subTitle="Sub Title" description="Description" dafaultOpen={false}>
+        <p>fake-text</p>
+      </AccordionList>
+    );
+
+    const description = screen.queryByText("Description");
+
+    expect(description).toBeNull();
+  });
+});
 
 describe("Accodiond List Icon tests", () => {
-  it("render the services icon correctly", () => {
+  it("should render the services icon correctly", () => {
     const { container } = render(
       <AccordionList icon="services" title="Title" subTitle="Subtitle">
         <p>fake-text</p>
       </AccordionList>
     );
     const element = screen.getByTestId("services-icon");
-    expect(element);
+    expect(element).toBeInTheDocument();
   });
 
-  it("render the order icon correctly", () => {
+  it("should render the order icon correctly", () => {
     const { container } = render(
       <AccordionList icon="orders" title="Title" subTitle="Subtitle">
         <p>fake-text</p>
       </AccordionList>
     );
     const element = screen.getByTestId("order-icon");
-    expect(element);
+    expect(element).toBeInTheDocument();
   });
 
-  it("render the technicalOpinion icon correctly", () => {
+  it("should render the technicalOpinion icon correctly", () => {
     const { container } = render(
       <AccordionList icon="technicalOpinion" title="Title" subTitle="Subtitle">
         <p>fake-text</p>
       </AccordionList>
     );
     const element = screen.getByTestId("dashboard-icon");
-    expect(element);
+    expect(element).toBeInTheDocument();
   });
 });
 
@@ -58,7 +95,7 @@ describe("Accodion List content tests", () => {
     fireEvent.click(iconArrowContainer);
 
     const iconKeyboardArrowRight = screen.getByTestId("KeyboardArrowRightIcon");
-    expect(iconKeyboardArrowRight);
+    expect(iconKeyboardArrowRight).toBeInTheDocument();
   });
 
   it("should not show the contents inside", () => {
@@ -71,7 +108,7 @@ describe("Accodion List content tests", () => {
     const iconKeyboardArrowRight = screen.getByTestId("KeyboardArrowRightIcon");
     const iconArrowContainer = screen.getByTestId("arrow-icon-container");
 
-    expect(iconKeyboardArrowRight);
+    expect(iconKeyboardArrowRight).toBeInTheDocument();
     expect(containerContent).toHaveStyle(`
         border: 0 solid;
         border-radius: 20px;
@@ -83,6 +120,6 @@ describe("Accodion List content tests", () => {
     fireEvent.click(iconArrowContainer);
 
     const iconKeyboardArrowDown = screen.getByTestId("KeyboardArrowDownIcon");
-    expect(iconKeyboardArrowDown);
+    expect(iconKeyboardArrowDown).toBeInTheDocument();
   });
 });
