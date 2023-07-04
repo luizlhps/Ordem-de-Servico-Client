@@ -21,12 +21,10 @@ export const FeaturedFinanceSlider = () => {
     const swiperWrapper = document.querySelector(".swiper-wrapper") as HTMLElement;
     const swiperSlide = document.querySelectorAll(".swiper-slide");
     const swiperPagination = document.querySelector(".swiper-pagination") as HTMLElement;
-    const swiperPaginationBullet = document.querySelector(".swiper-pagination-bullet-active") as HTMLElement;
-
-    swiperPaginationBullet.style.background = theme.palette.primary.main;
 
     swiperPagination.style.position = "unset";
 
+    console.log(1);
     if (swiperWrapper) swiperWrapper.style.justifyContent = "space-between";
     const lastSlide = swiperSlide[swiperSlide.length - 1] as HTMLElement;
     lastSlide.style.marginRight = "0px";
@@ -35,10 +33,13 @@ export const FeaturedFinanceSlider = () => {
   return (
     <>
       <div
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
+        style={
+          {
+            width: "100%",
+            height: "100%",
+            "--swiper-pagination-color": theme.palette.primary.main,
+          } as any
+        }
       >
         <Swiper
           style={{

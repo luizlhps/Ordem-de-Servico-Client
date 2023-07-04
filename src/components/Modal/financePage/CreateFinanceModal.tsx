@@ -5,32 +5,36 @@ import { IconButton, Icon, Box } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
 import NewOrder from "@/components/OrderLayout/NewOrder";
 import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
+import NewTransation from "@/components/FinanceLayout/NewTransaction";
 
 const style = {
-  padding: "23px",
+  padding: "33px",
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-between",
   flexDirection: "column",
   alignContent: "center",
   alignItems: "center",
+  minHeight: "100%",
+
+  "@media (max-width:364px)": {
+    padding: "23px",
+  },
 };
 
 const buttonStyle = {
   position: "absolute" as "absolute",
-  top: "8%",
-  left: "90%",
+  top: "3%",
+  left: "93%",
   zIndex: 1,
 
   "@media (max-width: 768px)": {
-    top: "4.5%",
-    left: "80%",
+    top: "1%",
+    left: "92%",
   },
 };
 
 interface IProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleOpen: () => void;
   handleClose: () => void;
 }
 
@@ -41,12 +45,12 @@ const CreateFinanceModalContent: React.FC<{ handleClose: any }> = ({ handleClose
       <IconButton onClick={handleClose} sx={buttonStyle}>
         <Icon>close</Icon>
       </IconButton>
-      <NewOrder handleClose={handleClose} />
+      <NewTransation handleClose={handleClose} />
     </>
   );
 };
 
-export const CreateFinanceModal: React.FC<IProps> = memo(({ open, handleClose, handleOpen, setOpen }) => {
+export const CreateFinanceModal: React.FC<IProps> = memo(({ open, handleClose }) => {
   return (
     <TransitionsModal handleClose={handleClose} open={open} style={style}>
       <CreateFinanceModalContent handleClose={handleClose} />

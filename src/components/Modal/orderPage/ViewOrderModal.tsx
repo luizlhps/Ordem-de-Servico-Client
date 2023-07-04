@@ -20,33 +20,6 @@ const style = {
   },
 };
 
-const obj = [
-  {
-    service: {
-      name: "Formatação",
-      amount: "200,00",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni necessitatibus! Eligendi, animi?",
-    },
-  },
-  {
-    service: {
-      name: "backup",
-      amount: "100,00",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni necessitatibus! Eligendi, animi?",
-    },
-  },
-  {
-    service: {
-      name: "backup",
-      amount: "100,00",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque repellendus dolorem harum blanditiis quas eum perspiciatis molestiae, quisquam culpa nemo, accusantium cumque ea eos fuga quod magni necessitatibus! Eligendi, animi?",
-    },
-  },
-];
-
 interface IProps {
   open: boolean;
   handleClose: () => void;

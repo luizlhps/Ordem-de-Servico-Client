@@ -4,11 +4,12 @@ import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
 
-export const columnsDataGrid = (
+export const financeColumnDataGrid = (
   theme: any,
   modalUpdateHandleOpen: () => void,
   setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
-  modalDeleteHandleOpen: () => void
+  modalDeleteHandleOpen: () => void,
+  modalViewHandleOpen: () => void
 ) => {
   const handleRemove = async (data: any) => {
     modalDeleteHandleOpen();
@@ -21,7 +22,7 @@ export const columnsDataGrid = (
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 80 },
     {
       field: "title",
       headerName: "Título",

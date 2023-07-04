@@ -29,6 +29,7 @@ input::-webkit-inner-spin-button {
   border-color: #719ECE;
  }
 
+
  `;
 
 export default GlobalStyle;

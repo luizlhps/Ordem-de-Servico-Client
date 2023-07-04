@@ -362,7 +362,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Grid item>
                 <Box>
                   <Typography marginTop={3} marginBottom={1}>
-                    discounto
+                    Desconto
                   </Typography>
 
                   <Controller

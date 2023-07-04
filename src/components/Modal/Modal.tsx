@@ -44,6 +44,7 @@ export default function TransitionsModal({ open, handleClose, children, style }:
             width: smDown ? "100%" : "80%",
             maxWidth: smDown ? "100%!important" : "md",
             margin: smDown ? 0 : "32px",
+            borderRadius: smDown ? 0 : "12px",
           },
         }}
       >

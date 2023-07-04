@@ -3,10 +3,11 @@ import { Box, Stack, TextField, Button, useTheme } from "@mui/material";
 import { FeaturedFinanceSlider } from "@/components/FeaturedFinanceSlider";
 import React, { useState } from "react";
 import { useSearchField } from "@/hook/useSearchField";
-import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import useModal from "@/hook/useModal";
 import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
 import { Order } from "@/hook/CostumOrders/useGetCostumOrders";
+import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
+import { CreateFinanceModal } from "@/components/Modal/financePage/CreateFinanceModal";
 
 const Index = () => {
   const theme = useTheme();
@@ -42,7 +43,7 @@ const Index = () => {
   });
 
   //Config Grid
-  const columns = columnsDataGrid(
+  const columns = financeColumnDataGrid(
     theme,
     modalUpdateHandleOpen,
     setselectItem,
@@ -52,7 +53,8 @@ const Index = () => {
 
   return (
     <>
-      <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças"></HeaderLayout>
+      <CreateFinanceModal open={modalOpen} handleClose={modalHandleClose} />
+      <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
         <FeaturedFinanceSlider />
       </Box>
