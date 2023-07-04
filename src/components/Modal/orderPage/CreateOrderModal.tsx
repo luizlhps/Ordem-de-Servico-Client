@@ -3,8 +3,8 @@ import TransitionsModal from "../Modal";
 import NewCostumer from "../../CostumerPage/NewCostumer";
 import { IconButton, Icon, Box } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
-import NewOrder from "@/components/OrderPage/NewOrder";
-import UpdateOrder from "@/components/OrderPage/UpdateOrder";
+import NewOrder from "@/components/OrderLayout/NewOrder";
+import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 
 const style = {
   padding: "23px",
