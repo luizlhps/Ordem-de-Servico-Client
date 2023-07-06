@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import useApiRequest from "../useApiGet";
 import { servicesApi } from "@/services/api/servicesApi";
-import { useDebouse } from "../useDebouse";
+import { useDebouse } from "./useDebouse";
+import useApiRequest from "./useApiGet";
 
 export interface IData {
   Total: number;

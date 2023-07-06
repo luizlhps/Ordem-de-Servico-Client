@@ -10,7 +10,7 @@ import { useSearchField } from "@/hook/useSearchField";
 import { ToastError } from "@/components/Toast/ToastError";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
-import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
+import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";

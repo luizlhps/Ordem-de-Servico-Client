@@ -1,19 +1,21 @@
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { Box, Stack, TextField, Button, useTheme } from "@mui/material";
 import { FeaturedFinanceSlider } from "@/components/FeaturedFinanceSlider";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchField } from "@/hook/useSearchField";
 import useModal from "@/hook/useModal";
-import { useGetFetchOrders } from "@/hook/Orders/useGetFetchOrders";
-import { Order } from "@/hook/CostumOrders/useGetCostumOrders";
+import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
+import { Order } from "@/hook/useGetCostumOrders";
 import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
 import { CreateFinanceModal } from "@/components/Modal/financePage/CreateFinanceModal";
+import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
+import { IFinance } from "../../../types/finance";
 
 const Index = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
-  const [selectItem, setselectItem] = useState<Order | undefined>(undefined);
+  const [selectItem, setselectItem] = useState<IFinance | undefined>(undefined);
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
@@ -29,10 +31,9 @@ const Index = () => {
     modalViewHandleOpen,
   } = modalActions;
 
-  const { setModalOpen, setModalUpdateOpen, setModalOpenDelete } = modalSets;
-
   //Api
-  const { currentPage, fetchApi, loading, ordersData, setCurrentPage } = useGetFetchOrders();
+  const { currentPage, fetchApi, loading, financeData, setCurrentPage, balanceValue, fetchBalance } =
+    useGetFetchFinance();
 
   //Search
   const { searchHandle, searchField } = useSearchField({
@@ -50,6 +51,12 @@ const Index = () => {
     modalDeleteHandleOpen,
     modalViewHandleOpen
   );
+
+  console.log(balanceValue);
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   return (
     <>
@@ -78,13 +85,13 @@ const Index = () => {
       </Stack>
       <DataGridLayout
         loading={loading}
-        rows={ordersData?.orders}
+        rows={financeData?.transaction}
         columns={columns}
         PageSize={limitPorPage}
-        page={ordersData?.Page}
+        page={financeData?.Page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalCount={ordersData?.Total}
+        totalCount={financeData?.total}
       />
     </>
   );

@@ -231,7 +231,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const totalPrice = calculateTotalPrice(servicesPrice, discount);
 
   const onSubmit = (data: any) => {
-    console.log(data);
     setData(data);
   };
 
@@ -399,7 +398,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                                 sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
                                 value={dateValue}
                                 onChange={(newValue) => {
-                                  console.log(newValue);
                                   field.onChange(dayjs(newValue).format());
                                   setDateValue(newValue);
                                 }}

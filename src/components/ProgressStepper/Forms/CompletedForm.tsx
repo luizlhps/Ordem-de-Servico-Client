@@ -64,8 +64,6 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
     }
   };
 
-  console.log("meu dado", data);
-
   return (
     <>
       <ContainerCustom>

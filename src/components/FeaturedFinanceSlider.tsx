@@ -24,7 +24,6 @@ export const FeaturedFinanceSlider = () => {
 
     swiperPagination.style.position = "unset";
 
-    console.log(1);
     if (swiperWrapper) swiperWrapper.style.justifyContent = "space-between";
     const lastSlide = swiperSlide[swiperSlide.length - 1] as HTMLElement;
     lastSlide.style.marginRight = "0px";

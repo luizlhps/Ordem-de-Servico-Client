@@ -3,11 +3,12 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
+import { IFinance } from "../../../../types/finance";
 
 export const financeColumnDataGrid = (
   theme: any,
   modalUpdateHandleOpen: () => void,
-  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<string>>,
+  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<IFinance | undefined>>,
   modalDeleteHandleOpen: () => void,
   modalViewHandleOpen: () => void
 ) => {
@@ -42,8 +43,8 @@ export const financeColumnDataGrid = (
     {
       field: "amount",
       headerName: "Valor",
-      flex: 1.2,
-      minWidth: 150,
+      flex: 0.5,
+      minWidth: 100,
       description: "Contato",
       headerAlign: "left",
       align: "left",

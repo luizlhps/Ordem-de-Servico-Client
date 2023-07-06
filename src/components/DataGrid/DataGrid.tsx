@@ -104,7 +104,5 @@ const DataGrids: React.FC<PropsDataGrid> = ({
 };
 
 export const DataGridLayout = memo(DataGrids, (prevProps, nextProps) => {
-  console.log(prevProps);
-
   return Object.is(prevProps.rows, nextProps.rows);
 });

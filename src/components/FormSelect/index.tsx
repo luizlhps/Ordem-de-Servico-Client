@@ -44,7 +44,6 @@ export default function FormSelect({ children, control, name, defaultValue, labe
               id="select"
               label={label}
               onChange={(event) => {
-                console.log("aqui esta meu value", defaultValue);
                 const selectedValue = event.target.value;
                 onChange(selectedValue);
               }}

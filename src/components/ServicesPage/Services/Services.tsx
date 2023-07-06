@@ -17,7 +17,7 @@ import useModal from "@/hook/useModal";
 import useApiRequest from "@/hook/useApiGet";
 import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
 import { useSearchField } from "../../../hook/useSearchField";
-import { useGetFetchService } from "@/hook/ServicePage/useGetFetchService";
+import { useGetFetchService } from "@/hook/useGetFetchService";
 
 const Services = () => {
   const theme = useTheme();

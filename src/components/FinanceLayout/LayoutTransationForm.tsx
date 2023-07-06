@@ -111,8 +111,8 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
           <Box display={"flex"} justifyContent={"center"}>
             <Button
               sx={{
-                width: "400px",
-                borderRadius: "40px",
+                width: "300px",
+                borderRadius: "10px",
                 marginTop: 19,
                 marginBottom: 3,
                 background: theme.palette.secondary.main,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useApiRequest from "../useApiGet";
-import { useDebouse } from "../useDebouse";
+import useApiRequest from "./useApiGet";
+import { useDebouse } from "./useDebouse";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 

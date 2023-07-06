@@ -5,7 +5,7 @@ interface IProps {
   limitPorPage: any;
   setCurrentPage: React.Dispatch<React.SetStateAction<any>>;
   currentPage: number;
-  fetchApi: (search?: string, page?: number | undefined, limit?: number | undefined) => Promise<void>;
+  fetchApi: (search?: string, page?: number | undefined, limit?: number | undefined) => Promise<void> | void;
 }
 interface IUseSearchField {
   searchHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;

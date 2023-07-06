@@ -122,7 +122,6 @@ export const FormUpdateOrderProvider: React.FC<FormProviderProps> = ({ children,
 
   function confirmData() {
     if (!orderData._id) return new Error("O id do cliente não foi selecionado");
-    console.log(data);
     updateOrder(data, orderData._id);
     async function updateOrder(data: any, costumer: string) {
       try {

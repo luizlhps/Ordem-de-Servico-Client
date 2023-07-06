@@ -89,7 +89,6 @@ const Status = () => {
           setStatusData(data);
         }
       } catch (error) {
-        console.log(error);
         setStatusData({ total: 0, page: 0, limit: 0, status: [] });
       }
       setLoading(false);

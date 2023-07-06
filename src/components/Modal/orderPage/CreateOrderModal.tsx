@@ -35,7 +35,6 @@ interface IProps {
 }
 
 const CreateOrderModalContent: React.FC<{ handleClose: any }> = ({ handleClose }) => {
-  console.log("rendered");
   return (
     <>
       <IconButton onClick={handleClose} sx={buttonStyle}>
