@@ -6,7 +6,7 @@ import { financeApi } from "@/services/api/financeApi";
 
 export const useGetFetchFinance = () => {
   const [financeData, setFinanceData] = useState<RootFinance>({ total: 0, Page: 0, limit: 0, transaction: [] || "" });
-  const [balanceValue, setBalanceValue] = useState<IBalance>();
+  const [balanceValue, setBalanceValue] = useState<IBalance | undefined>();
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();

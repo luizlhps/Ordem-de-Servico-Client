@@ -16,7 +16,7 @@ export const FeatureFinanceNotificationHeader = ({ title, subTitle, children }: 
           <Typography fontWeight={500} variant="h2" fontSize={18}>
             {title}
           </Typography>
-          <Typography fontWeight={500} color={theme.palette.primary.dark} fontSize={12}>
+          <Typography fontWeight={500} color={theme.palette.secondary.light} fontSize={12}>
             {subTitle}
           </Typography>
         </Stack>

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
 interface FeatureFinanceNotificationProps {
-  content: string;
+  content: string | number | undefined;
 }
 
 export const FeatureFinanceNotificationContent = ({ content }: FeatureFinanceNotificationProps) => {

@@ -63,7 +63,7 @@ const Index = () => {
       <CreateFinanceModal open={modalOpen} handleClose={modalHandleClose} />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
-        <FeaturedFinanceSlider />
+        <FeaturedFinanceSlider financeData={financeData} balance={balanceValue} />
       </Box>
       <Stack marginTop={4} direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
         <TextField

@@ -8,10 +8,10 @@ export interface IFinance {
   status: string;
   order: string;
   entryDate: string;
-  exitDate?: string;
   deleted: boolean;
   createdAt: string;
   updatedAt: string;
+  payDay: string;
 }
 
 export interface RootFinance {

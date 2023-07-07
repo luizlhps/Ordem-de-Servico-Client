@@ -11,7 +11,7 @@ export const FeatureFinanceNotificationRoot = ({ children, contentWidthValue }: 
   const theme = useTheme();
 
   const styleContainer = {
-    background: theme.palette.background.paper,
+    background: theme.palette.background.default,
     color: "black",
     width: `${contentWidthValue}`,
     minHeight: "165px",
@@ -19,9 +19,6 @@ export const FeatureFinanceNotificationRoot = ({ children, contentWidthValue }: 
     padding: 3,
     border: ` 1px solid ${theme.palette.custom?.grey}`,
     borderRadius: "14px",
-    /*     "@media (max-width: 1407px)": {
-      width: "270px",
-    }, */
   };
 
   return (
