@@ -3,6 +3,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
+import { format } from "date-fns";
 import { IFinance } from "../../../../types/finance";
 
 export const financeColumnDataGrid = (
@@ -33,6 +34,19 @@ export const financeColumnDataGrid = (
       align: "left",
     },
     {
+      field: "type",
+      headerName: "Tipo",
+      flex: 0.5,
+      minWidth: 100,
+      headerAlign: "left",
+      align: "left",
+      valueFormatter: (params) => {
+        const value = params.value;
+        if (value === "credit") return "Crédito";
+        if (value === "debit") return "Debito";
+      },
+    },
+    {
       field: "description",
       headerName: "Descrição",
       flex: 2,
@@ -44,7 +58,7 @@ export const financeColumnDataGrid = (
       field: "amount",
       headerName: "Valor",
       flex: 0.5,
-      minWidth: 100,
+      minWidth: 140,
       description: "Contato",
       headerAlign: "left",
       align: "left",
@@ -58,14 +72,67 @@ export const financeColumnDataGrid = (
       },
     },
     {
-      field: "createdAt",
+      field: "entryDate",
       headerName: "Criado em",
+      type: "number",
+      flex: 1,
+      minWidth: 120,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+      valueFormatter(params: any) {
+        if (params.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
+          return dataFormatada;
+        }
+      },
+    },
+    {
+      field: "dueDate",
+      headerName: "Vencimento",
+      type: "number",
+      flex: 1,
+      minWidth: 120,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+      valueFormatter(params: any) {
+        if (params.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
+          return dataFormatada;
+        }
+      },
+    },
+    {
+      field: "payDay",
+      headerName: "Data de pagamento",
       type: "number",
       flex: 1,
       minWidth: 200,
       description: "Endereço",
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        if (params.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
+          return dataFormatada;
+        }
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      type: "number",
+      flex: 1,
+      minWidth: 100,
+      description: "Endereço",
+      headerAlign: "left",
+      align: "left",
+      valueFormatter: (params) => {
+        const value = params.value;
+        if (value === "finished") return "Finalizado";
+        if (value === "open") return "Aberto";
+      },
     },
 
     {

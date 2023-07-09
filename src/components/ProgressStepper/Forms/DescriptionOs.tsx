@@ -1,6 +1,5 @@
-import React, { SetStateAction, useContext, useEffect, useMemo, useState } from "react";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import {
-  Container,
   Divider,
   Stack,
   Typography,
@@ -17,15 +16,12 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { FormRegisterCostumerContext } from "@/contexts";
-import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
-import { TStatusData, statusApi } from "@/services/api/statusApi";
+import { OsProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import FormSelect from "@/components/FormSelect";
-import { useDebouse } from "@/hook";
 
-import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -389,7 +385,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                       <Controller
                         name="exitDate"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
                         render={({ field }) => (
                           <>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -398,8 +394,12 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                                 sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
                                 value={dateValue}
                                 onChange={(newValue) => {
-                                  field.onChange(dayjs(newValue).format());
-                                  setDateValue(newValue);
+                                  if (newValue !== null) {
+                                    field.onChange(dayjs(newValue).format());
+                                    setDateValue(newValue);
+                                  } else {
+                                    field.onChange("");
+                                  }
                                 }}
                               />
                             </LocalizationProvider>

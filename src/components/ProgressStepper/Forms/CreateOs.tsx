@@ -336,7 +336,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                       name="dateEntry"
                       defaultValue={dateValue ? dayjs(dateValue).format() : null}
                       control={control}
-                      rules={{ required: true }}
+                      rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
                       render={({ field }) => (
                         <>
                           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -344,8 +344,12 @@ export const CreateOs: React.FC<NameFormProps> = ({
                               sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
                               value={dateValue}
                               onChange={(newValue) => {
-                                setDateValue(newValue);
-                                field.onChange(dayjs(dateValue).format());
+                                if (newValue !== null) {
+                                  setDateValue(newValue);
+                                  field.onChange(dayjs(dateValue).format());
+                                } else {
+                                  field.onChange("");
+                                }
                               }}
                             />
                           </LocalizationProvider>
@@ -354,6 +358,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
                     />
                     {errors.dateEntry?.type === "required" && (
                       <Typography color={"error"}>Coloque a data de entrada</Typography>
+                    )}
+                    {errors.dateEntry?.type === "validate" && (
+                      <Typography color={"error"}>Coloque a data correta</Typography>
                     )}
                   </>
                 ) : (

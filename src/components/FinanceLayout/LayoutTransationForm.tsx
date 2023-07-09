@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ICustomerAndOrderData } from "@/contexts";
-import { Box, Stack, TextField, Button, useTheme, Typography, Grid, useMediaQuery } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import styled from "styled-components";
+import FormSelect from "../FormSelect";
+
+import {
+  Box,
+  Stack,
+  TextField,
+  Button,
+  useTheme,
+  Typography,
+  Grid,
+  useMediaQuery,
+  MenuItem,
+  CircularProgress,
+} from "@mui/material";
+import { DateTimeField, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/pt-br";
 
 export interface IConfigContext {
   confirmData: any;
-  data: ICustomerAndOrderData | undefined;
+  data: any | undefined;
   setFormValues: any;
   loading: boolean;
 }
@@ -28,55 +45,136 @@ const TextArea = styled.textarea`
 `;
 
 export interface ILayoutTransactionForm {
-  ConfigContext: IConfigContext;
-  costumer: any;
-  handleClose: () => void;
-  setCostumerId: React.Dispatch<any | undefined>;
+  ConfigContext: any;
+  transaction: any;
+  loading: boolean;
 }
 
-export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
-  ConfigContext,
-  handleClose,
-  setCostumerId,
-  costumer,
-}) => {
-  const { confirmData, data, setFormValues, loading } = ConfigContext;
+export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ ConfigContext, transaction, loading }) => {
+  const [dateEntry, setDateEntry] = React.useState<Dayjs | null>(dayjs(undefined));
+  const [dateExit, setDateExit] = React.useState<Dayjs | null>();
+  const [datePayDay, setDatePayDay] = React.useState<Dayjs | null>();
 
   const theme = useTheme();
-
-  const onSubmit = (data: any) => {};
 
   const {
     register,
     handleSubmit,
+    control,
+    watch,
     setValue,
     formState: { errors },
   } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    ConfigContext(data);
+  };
+
+  const kk = watch("status");
+  console.log(kk);
 
   const columnMedia = useMediaQuery("(max-width:602px)");
 
   return (
     <>
       <Grid width={"100%"} height={"100%"} padding={1}>
-        <Grid container spacing={2} justifyContent="space-between">
+        <Grid container spacing={2} marginTop={1} justifyContent="space-between">
           <Grid item>
             <Typography fontSize={14} fontWeight={300}>
               Data de entrada:
             </Typography>
             <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
-              16/16/1616
+              <Controller
+                name="entryDate"
+                defaultValue={dateEntry?.format()}
+                control={control}
+                rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
+                render={({ field }) => (
+                  <>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                      <DateTimeField
+                        sx={{
+                          ".MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                          },
+                          ".MuiInputBase-input": {
+                            padding: "0px!important",
+                            fontSize: "14px",
+                            color: theme.palette.primary.dark,
+                          },
+                        }}
+                        {...field}
+                        size="small"
+                        value={dateEntry}
+                        onChange={(newValue) => {
+                          if (newValue !== null) {
+                            setDateEntry(newValue);
+                            field.onChange(dayjs(newValue).format());
+                          } else {
+                            field.onChange("");
+                          }
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </>
+                )}
+              />
+              {errors.entryDate?.type === "required" && (
+                <Typography fontSize={14} color={"error"}>
+                  Coloque a data de entrada
+                </Typography>
+              )}
+              {errors.entryDate?.type === "validate" && (
+                <Typography fontSize={14} color={"error"}>
+                  Coloque uma data valida
+                </Typography>
+              )}
             </Grid>
           </Grid>
           <Grid item>
             <Typography fontSize={14} fontWeight={300}>
-              Data de entrada:
+              Data de Vencimento:
             </Typography>
             <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
-              16/16/1616
+              <Controller
+                name="dueDate"
+                defaultValue={dateExit?.format()}
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                      <DateTimeField
+                        sx={{
+                          ".MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                          },
+                          ".MuiInputBase-input": {
+                            padding: "0px!important",
+                            fontSize: "14px",
+                            color: theme.palette.primary.dark,
+                          },
+                        }}
+                        {...field}
+                        size="small"
+                        value={dateExit}
+                        onChange={(newValue) => {
+                          if (newValue !== null) {
+                            setDateExit(newValue);
+                            field.onChange(dayjs(newValue).format());
+                          } else {
+                            field.onChange("");
+                          }
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </>
+                )}
+              />
             </Grid>
           </Grid>
         </Grid>
-        <Typography marginTop={6} fontWeight={500} variant="h1" textAlign={"center"}>
+        <Typography marginTop={5} fontWeight={500} variant="h1" textAlign={"center"}>
           Novo Serviço #001
         </Typography>
 
@@ -84,12 +182,36 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
           <Grid container flexDirection={"row"} gap={2} justifyContent={"space-between"}>
             <Grid item width={columnMedia ? "100%" : "none"}>
               <Typography fontWeight={500}>Status</Typography>
-              <TextField size="small" fullWidth />
+              <Box sx={{ minWidth: 250 }}>
+                <FormSelect
+                  name={"status"}
+                  rules={{ required: true }}
+                  defaultValue={/* data?.status ? data.status : */ ""}
+                  control={control}
+                  width={"100%"}
+                >
+                  <MenuItem value={"open"}>{"Aberto"}</MenuItem>
+                  <MenuItem value={"finished"}>{"Finalizado"}</MenuItem>
+                </FormSelect>
+                {errors.status?.type === "required" && <Typography color={"error"}>Coloque o status</Typography>}
+              </Box>
             </Grid>
 
             <Grid item width={columnMedia ? "100%" : "none"}>
               <Typography fontWeight={500}>Tipo</Typography>
-              <TextField size="small" fullWidth />
+              <Box sx={{ minWidth: 250 }}>
+                <FormSelect
+                  name={"type"}
+                  rules={{ required: true }}
+                  defaultValue={/* data?.type ? data.type : */ ""}
+                  control={control}
+                  width={"100%"}
+                >
+                  <MenuItem value={"credit"}>{"Crédito"}</MenuItem>
+                  <MenuItem value={"debit"}>{"Débito"}</MenuItem>
+                </FormSelect>
+                {errors.type?.type === "required" && <Typography color={"error"}>Coloque o Tipo</Typography>}
+              </Box>
             </Grid>
           </Grid>
 
@@ -97,29 +219,58 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
             Título
           </Typography>
 
-          <TextField size="small" fullWidth />
+          <TextField size="small" fullWidth {...register("title", { required: true })} />
           <Typography marginTop={2} fontWeight={500}>
             Descrição
           </Typography>
-          <TextArea style={{ color: theme.palette.primary.main }} />
+          <TextArea style={{ color: theme.palette.primary.main }} {...register("description", { required: true })} />
 
           <Typography marginTop={2} fontWeight={500}>
             Valor
           </Typography>
-          <TextField size="small" fullWidth />
-
+          <TextField type="number" size="small" fullWidth {...register("amount", { required: true })} />
+          <Typography marginTop={2} fontWeight={500}>
+            Data de pagamento
+          </Typography>
+          <Grid item color={theme.palette.primary.dark}>
+            <Controller
+              name="payDay"
+              defaultValue={datePayDay?.format()}
+              control={control}
+              render={({ field }) => (
+                <>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                    <DateTimeField
+                      {...field}
+                      disabled
+                      size="small"
+                      value={datePayDay}
+                      onChange={(newValue) => {
+                        if (newValue !== null) {
+                          setDatePayDay(newValue);
+                          field.onChange(dayjs(newValue).format());
+                        } else {
+                          field.onChange("");
+                        }
+                      }}
+                    />
+                  </LocalizationProvider>
+                </>
+              )}
+            />
+          </Grid>
           <Box display={"flex"} justifyContent={"center"}>
             <Button
               sx={{
                 width: "300px",
                 borderRadius: "10px",
-                marginTop: 19,
+                marginTop: 9,
                 marginBottom: 3,
                 background: theme.palette.secondary.main,
               }}
               onClick={() => handleSubmit(onSubmit)()}
             >
-              Criar Transação
+              {loading ? <CircularProgress size={25} /> : "Confirmar"}
             </Button>
           </Box>
         </Grid>

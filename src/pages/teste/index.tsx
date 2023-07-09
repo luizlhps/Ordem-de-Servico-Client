@@ -7,9 +7,11 @@ import useModal from "@/hook/useModal";
 import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { Order } from "@/hook/useGetCostumOrders";
 import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
-import { CreateFinanceModal } from "@/components/Modal/financePage/CreateFinanceModal";
+import { FormCrudModals } from "@/components/Modal/financePage/FinanceModals";
 import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
+import NewTransation from "@/components/FinanceLayout/NewTransaction";
+import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
 
 const Index = () => {
   const theme = useTheme();
@@ -60,7 +62,13 @@ const Index = () => {
 
   return (
     <>
-      <CreateFinanceModal open={modalOpen} handleClose={modalHandleClose} />
+      <FormCrudModals
+        modalActions={modalActions}
+        modals={modals}
+        fetchApi={fetchApi}
+        FormCreate={NewTransation}
+        FormUpdate={UpdateTransaction}
+      />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
         <FeaturedFinanceSlider financeData={financeData} balance={balanceValue} />

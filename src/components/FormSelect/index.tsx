@@ -18,7 +18,7 @@ interface IProps {
   };
 
   width?: string | number;
-  label: string;
+  label?: string;
   setState?: React.Dispatch<React.SetStateAction<any | undefined>>;
 }
 
@@ -26,7 +26,7 @@ export default function FormSelect({ children, control, name, defaultValue, labe
   return (
     <Box sx={{ minWidth: 120, width: width ? width : "" }}>
       <FormControl size="small" sx={{ width: "100%" }}>
-        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+        {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
         <Controller
           defaultValue={defaultValue ? defaultValue : ""}
           control={control}

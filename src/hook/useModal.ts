@@ -1,5 +1,23 @@
 import { useState } from "react";
 
+export interface ImodalActions {
+  modalHandleOpen: () => void;
+  modalHandleClose: () => void;
+  modalUpdateHandleOpen: () => void;
+  modalHandleUpdateClose: () => void;
+  modalDeleteHandleOpen: () => void;
+  modalDeleteHandleClose: () => void;
+  modalViewHandleOpen: () => void;
+  modalViewClose: () => void;
+}
+
+export interface IModals {
+  modalOpen: boolean;
+  modalUpdateOpen: boolean;
+  modalOpendelete: boolean;
+  modalViewOpen: boolean;
+}
+
 const useModal = () => {
   //modal Create
   const [modalOpen, setModalOpen] = useState(false);
