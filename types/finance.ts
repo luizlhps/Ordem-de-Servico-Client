@@ -12,11 +12,12 @@ export interface IFinance {
   createdAt: string;
   updatedAt: string;
   payDay: string;
+  dueDate: string;
 }
 
 export interface RootFinance {
   total: number;
-  Page: number;
+  page: number;
   limit: number;
   transaction: IFinance[];
 }

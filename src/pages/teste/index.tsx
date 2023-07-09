@@ -37,6 +37,8 @@ const Index = () => {
   const { currentPage, fetchApi, loading, financeData, setCurrentPage, balanceValue, fetchBalance } =
     useGetFetchFinance();
 
+  console.log(financeData);
+
   //Search
   const { searchHandle, searchField } = useSearchField({
     limitPorPage: limitPorPage,
@@ -54,8 +56,6 @@ const Index = () => {
     modalViewHandleOpen
   );
 
-  console.log(balanceValue);
-
   useEffect(() => {
     fetchBalance();
   }, []);
@@ -68,6 +68,7 @@ const Index = () => {
         fetchApi={fetchApi}
         FormCreate={NewTransation}
         FormUpdate={UpdateTransaction}
+        selectItem={selectItem}
       />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
@@ -96,7 +97,7 @@ const Index = () => {
         rows={financeData?.transaction}
         columns={columns}
         PageSize={limitPorPage}
-        page={financeData?.Page}
+        page={financeData?.page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalCount={financeData?.total}

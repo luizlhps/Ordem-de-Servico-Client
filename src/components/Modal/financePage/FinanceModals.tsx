@@ -2,6 +2,7 @@ import React, { memo, ElementType } from "react";
 import TransitionsModal from "../Modal";
 import { IconButton, Icon } from "@mui/material";
 import { IModals, ImodalActions } from "@/hook/useModal";
+import { IFinance } from "../../../../types/finance";
 
 const style = {
   padding: "33px",
@@ -35,6 +36,7 @@ interface IProps {
   FormUpdate: ElementType;
   fetchApi: () => void;
   modalActions: ImodalActions;
+  selectItem: IFinance | undefined;
 }
 
 const CloseModal: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
@@ -47,32 +49,34 @@ const CloseModal: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   );
 };
 
-export const FormCrudModals: React.FC<IProps> = memo(({ modals, fetchApi, FormCreate, modalActions, FormUpdate }) => {
-  const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
-  const {
-    modalDeleteHandleClose,
-    modalDeleteHandleOpen,
-    modalHandleClose,
-    modalHandleOpen,
-    modalHandleUpdateClose,
-    modalUpdateHandleOpen,
-    modalViewClose,
-    modalViewHandleOpen,
-  } = modalActions;
+export const FormCrudModals: React.FC<IProps> = memo(
+  ({ modals, fetchApi, FormCreate, modalActions, FormUpdate, selectItem }) => {
+    const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
+    const {
+      modalDeleteHandleClose,
+      modalDeleteHandleOpen,
+      modalHandleClose,
+      modalHandleOpen,
+      modalHandleUpdateClose,
+      modalUpdateHandleOpen,
+      modalViewClose,
+      modalViewHandleOpen,
+    } = modalActions;
 
-  return (
-    <>
-      <TransitionsModal handleClose={modalHandleClose} open={modalOpen} style={style}>
-        <CloseModal handleClose={modalHandleClose} />
-        <FormCreate handleClose={modalHandleClose} fetchApi={fetchApi} />
-      </TransitionsModal>
+    return (
+      <>
+        <TransitionsModal handleClose={modalHandleClose} open={modalOpen} style={style}>
+          <CloseModal handleClose={modalHandleClose} />
+          <FormCreate handleClose={modalHandleClose} fetchApi={fetchApi} />
+        </TransitionsModal>
 
-      <TransitionsModal handleClose={modalHandleUpdateClose} open={modalUpdateOpen} style={style}>
-        <CloseModal handleClose={modalHandleUpdateClose} />
-        <FormUpdate handleClose={modalHandleUpdateClose} fetchApi={fetchApi} />
-      </TransitionsModal>
-    </>
-  );
-});
+        <TransitionsModal handleClose={modalHandleUpdateClose} open={modalUpdateOpen} style={style}>
+          <CloseModal handleClose={modalHandleUpdateClose} />
+          <FormUpdate handleClose={modalHandleUpdateClose} fetchApi={fetchApi} selectItem={selectItem} />
+        </TransitionsModal>
+      </>
+    );
+  }
+);
 
 FormCrudModals.displayName = "FormCrudModals";

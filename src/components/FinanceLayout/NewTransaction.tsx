@@ -28,14 +28,17 @@ const NewTransation = ({ handleClose, fetchApi }: INewTransationProps) => {
       .then(() => fetchApi())
       .catch((err) => console.log("Ocorreu um Erro"))
       .finally(() => {
-        setLoading(false);
+        setLoading((item: any) => {
+          console.log("test");
+          return false;
+        });
         handleClose();
       });
   };
 
   return (
     <>
-      <LayoutTransactionForm ConfigContext={setFormValue} loading={loading} transaction={"costumer"} />
+      <LayoutTransactionForm setValueData={setFormValue} loading={loading} />
     </>
   );
 };

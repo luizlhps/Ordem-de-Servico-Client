@@ -21,8 +21,9 @@ import { DateTimeField, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
+import { IFinance } from "../../../types/finance";
 
-export interface IConfigContext {
+export interface IsetValueData {
   confirmData: any;
   data: any | undefined;
   setFormValues: any;
@@ -45,12 +46,12 @@ const TextArea = styled.textarea`
 `;
 
 export interface ILayoutTransactionForm {
-  ConfigContext: any;
-  transaction: any;
+  setValueData: any;
   loading: boolean;
+  dataValue?: IFinance | undefined;
 }
 
-export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ ConfigContext, transaction, loading }) => {
+export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setValueData, loading, dataValue }) => {
   const [dateEntry, setDateEntry] = React.useState<Dayjs | null>(dayjs(undefined));
   const [dateExit, setDateExit] = React.useState<Dayjs | null>();
   const [datePayDay, setDatePayDay] = React.useState<Dayjs | null>();
@@ -62,17 +63,28 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
     handleSubmit,
     control,
     watch,
-    setValue,
-    formState: { errors },
-  } = useForm();
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<IFinance>({
+    defaultValues: {
+      title: dataValue?.title,
+      entryDate: dataValue ? dataValue.entryDate : dateEntry?.format(),
+      description: dataValue?.description,
+      payDay: dataValue ? dataValue.payDay : dateEntry?.format(),
+      dueDate: dataValue ? dataValue.dueDate : dateEntry?.format(),
+      status: dataValue?.status,
+      amount: dataValue?.amount,
+      type: dataValue?.type,
+    },
+  });
 
   const onSubmit = (data: any) => {
     console.log(data);
-    ConfigContext(data);
+    setValueData(data);
   };
 
   const kk = watch("status");
-  console.log(kk);
+  console.log(dataValue?.title);
 
   const columnMedia = useMediaQuery("(max-width:602px)");
 
@@ -87,7 +99,6 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
             <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
               <Controller
                 name="entryDate"
-                defaultValue={dateEntry?.format()}
                 control={control}
                 rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
                 render={({ field }) => (
@@ -139,7 +150,6 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
             <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
               <Controller
                 name="dueDate"
-                defaultValue={dateExit?.format()}
                 control={control}
                 render={({ field }) => (
                   <>
@@ -186,7 +196,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
                 <FormSelect
                   name={"status"}
                   rules={{ required: true }}
-                  defaultValue={/* data?.status ? data.status : */ ""}
+                  defaultValue={dataValue?.status}
                   control={control}
                   width={"100%"}
                 >
@@ -203,7 +213,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
                 <FormSelect
                   name={"type"}
                   rules={{ required: true }}
-                  defaultValue={/* data?.type ? data.type : */ ""}
+                  defaultValue={dataValue?.type}
                   control={control}
                   width={"100%"}
                 >
@@ -219,11 +229,20 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
             Título
           </Typography>
 
-          <TextField size="small" fullWidth {...register("title", { required: true })} />
+          <TextField
+            size="small"
+            defaultValue={dataValue ? dataValue.description : ""}
+            fullWidth
+            {...register("title", { required: true })}
+          />
           <Typography marginTop={2} fontWeight={500}>
             Descrição
           </Typography>
-          <TextArea style={{ color: theme.palette.primary.main }} {...register("description", { required: true })} />
+          <TextArea
+            defaultValue={dataValue ? dataValue.description : ""}
+            style={{ color: theme.palette.primary.main }}
+            {...register("description", { required: true })}
+          />
 
           <Typography marginTop={2} fontWeight={500}>
             Valor
@@ -235,7 +254,6 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ Config
           <Grid item color={theme.palette.primary.dark}>
             <Controller
               name="payDay"
-              defaultValue={datePayDay?.format()}
               control={control}
               render={({ field }) => (
                 <>

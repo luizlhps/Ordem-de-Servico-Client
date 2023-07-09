@@ -14,8 +14,6 @@ interface featFinanceProps {
 }
 
 export const FeaturedFinanceSlider = ({ balance, financeData }: featFinanceProps) => {
-  console.log(financeData);
-
   const transactiosOpens = financeData.transaction.reduce((acc, item) => {
     if (item.status === "open") acc += 1;
     return acc;
@@ -30,8 +28,6 @@ export const FeaturedFinanceSlider = ({ balance, financeData }: featFinanceProps
     if (item.type === "debit" && item.status === "finished") acc += item.amount;
     return acc;
   }, 0);
-
-  console.log(transactiosOpens);
 
   const theme = useTheme();
   const ContentWidthValue = "300px";
