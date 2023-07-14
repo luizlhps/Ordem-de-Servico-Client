@@ -1,6 +1,5 @@
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { Box, Stack, TextField, Button, useTheme } from "@mui/material";
-import { FeaturedFinanceSlider } from "@/components/FeaturedFinanceSlider";
 import React, { useEffect, useState } from "react";
 import { useSearchField } from "@/hook/useSearchField";
 import useModal from "@/hook/useModal";
@@ -12,6 +11,8 @@ import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
 import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
+import { dashboardApi } from "@/services/api/dashboardApi";
+import { DashboardFinance } from "@/components/DashBoardFinance";
 
 const Index = () => {
   const theme = useTheme();
@@ -34,10 +35,7 @@ const Index = () => {
   } = modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, financeData, setCurrentPage, balanceValue, fetchBalance } =
-    useGetFetchFinance();
-
-  console.log(financeData);
+  const { currentPage, fetchApi, loading, financeData, setCurrentPage } = useGetFetchFinance();
 
   //Search
   const { searchHandle, searchField } = useSearchField({
@@ -56,10 +54,6 @@ const Index = () => {
     modalViewHandleOpen
   );
 
-  useEffect(() => {
-    fetchBalance();
-  }, []);
-
   return (
     <>
       <FormCrudModals
@@ -72,7 +66,7 @@ const Index = () => {
       />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
-        <FeaturedFinanceSlider financeData={financeData} balance={balanceValue} />
+        <DashboardFinance />
       </Box>
       <Stack marginTop={4} direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
         <TextField

@@ -4,14 +4,12 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import * as Styled from "./styles";
 import { Button, Typography } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface IModal {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleOpen: () => void;
   handleClose: () => void;
-  fetchApi: () => any;
-  HandleDeleted: (id: string) => Promise<void>;
+  HandleDeleted: ((id: string) => Promise<void>) | ((id: string) => void);
   selectedItem: any;
 }
 
@@ -22,11 +20,11 @@ export const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "60%",
+  width: "30%",
   maxWidth: "980px",
   bgcolor: "background.paper",
   boxShadow: 24,
-  p: 4,
+  p: 6,
 
   display: "flex",
   flexDirection: "column",
@@ -104,6 +102,7 @@ export default function DeleteModal({ open, handleClose, HandleDeleted, selected
       >
         <Fade in={open}>
           <Box sx={style} width={"80%"}>
+            <DeleteForeverIcon sx={{ width: 40, height: 40 }}></DeleteForeverIcon>
             <Typography marginBottom={3} marginTop={3} variant="h2" fontWeight={600}>
               Tem certeza que quer apagar ?
             </Typography>

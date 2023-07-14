@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import useApiRequest from "./useApiGet";
 import { useDebouse } from "./useDebouse";
 import { IBalance, IFinance, RootFinance } from "../../types/finance";
@@ -6,7 +6,6 @@ import { financeApi } from "@/services/api/financeApi";
 
 export const useGetFetchFinance = () => {
   const [financeData, setFinanceData] = useState<RootFinance>({ total: 0, page: 0, limit: 0, transaction: [] || "" });
-  const [balanceValue, setBalanceValue] = useState<IBalance | undefined>();
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -15,7 +14,7 @@ export const useGetFetchFinance = () => {
 
   //Get Api
 
-  const fetchApi = (search = "", page?: number, limit?: number) => {
+  const fetchApi = useCallback((search = "", page?: number, limit?: number) => {
     setLoading(true);
     debouse(() => {
       financeApi
@@ -25,23 +24,15 @@ export const useGetFetchFinance = () => {
 
           setFinanceData(response.data);
         })
-        .catch((err) => console.log("error", err || "deu ruim"))
+        .catch((err) => {
+          console.log("error", err || "deu ruim");
+          setFinanceData({ total: 0, page: 0, limit: 0, transaction: [] || "" });
+        })
         .finally(() => setLoading(false));
     });
-  };
-
-  const fetchBalance = () => {
-    financeApi
-      .getBalance()
-      .then((res) => {
-        setBalanceValue(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  }, []);
 
   return {
-    fetchBalance,
-    balanceValue,
     loading,
     error,
     fetchApi,

@@ -153,11 +153,8 @@ const Status = () => {
         alertSuccess="Dados atualizados com sucesso!!"
       />
       <DeleteModal
-        fetchApi={fetchApi}
         open={modalOpendelete}
-        setOpen={setModalOpendelete}
         handleClose={modalDeleteHandleClose}
-        handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
         selectedItem={selectedItemUpdate}
       />
