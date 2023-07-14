@@ -1,17 +1,17 @@
-import React, { ElementType } from "react";
+import React, { ElementType, ReactNode } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
 interface FinanceNotificationProps {
-  icon: ElementType;
+  icon?: ReactNode;
   subTitle: string;
-  color: string;
+  color?: string;
 }
 
-export const FeatureFinanceNotificationFooter = ({ icon: Icon, subTitle, color }: FinanceNotificationProps) => {
+export const FeatureFinanceNotificationFooter = ({ icon, subTitle, color }: FinanceNotificationProps) => {
   return (
     <>
-      <Stack direction={"row"} alignItems={"center"} marginTop={0.2}>
-        <Icon sx={{ color: color }} />
+      <Stack direction={"row"} alignItems={"center"} marginTop={0.2} minHeight={24}>
+        {icon}
         <Typography color={color} fontSize={11}>
           {subTitle}
         </Typography>

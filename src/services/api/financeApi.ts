@@ -32,7 +32,9 @@ class FinanceApi {
     });
   }
 
-  delete() {}
+  delete(transaction_id: string) {
+    return Api.delete(`finance/${transaction_id}`);
+  }
 
   getAll(filter = "", page = 1, limit = 10) {
     return Api.get<RootFinance>(`finance/?filter=${filter}&page=${page}&limit=${limit}`);
