@@ -1,12 +1,13 @@
-import { DataGridLayout, HeaderLayout } from "@/components";
+import React, { useEffect, useState, useCallback } from "react";
 import { Box, Stack, TextField, Button, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+
+import { DataGridLayout, HeaderLayout } from "@/components";
 import { useSearchField } from "@/hook/useSearchField";
 import useModal from "@/hook/useModal";
 import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { Order } from "@/hook/useGetCostumOrders";
 import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
-import { FormCrudModals } from "@/components/Modal/financePage/FinanceModals";
+import { FormCrudModals } from "@/components/Modal/financePage/FormCrudModals";
 import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
@@ -35,7 +36,7 @@ const Index = () => {
   } = modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, financeData, setCurrentPage } = useGetFetchFinance();
+  const { currentPage, fetchApi, loading, financeData, setCurrentPage, dataDashboard } = useGetFetchFinance();
 
   //Search
   const { searchHandle, searchField } = useSearchField({
@@ -66,7 +67,7 @@ const Index = () => {
       />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>
-        <DashboardFinance />
+        <DashboardFinance dataDashboard={dataDashboard} />
       </Box>
       <Stack marginTop={4} direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
         <TextField
