@@ -56,7 +56,6 @@ const Status = () => {
 
   //Modal Delete
   const [modalOpendelete, setModalOpendelete] = useState(false);
-  const [deleteError, setDeleteError] = useState(false);
   const modalDeleteHandleOpen = () => setModalOpendelete(true);
   const modalDeleteHandleClose = () => {
     setModalOpendelete(false);
