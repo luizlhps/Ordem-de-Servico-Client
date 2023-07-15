@@ -14,22 +14,11 @@ import { IBalance, IFinance, RootFinance } from "../../types/finance";
 import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../types/dashboard";
 
-interface featFinanceProps {}
+interface featFinanceProps {
+  dataDashboard: IDashboard | undefined;
+}
 
-export const DashboardFinance = ({}: featFinanceProps) => {
-  const [dataDashboard, setDashboard] = useState<IDashboard>();
-
-  const dashboardFetchApi = () => {
-    dashboardApi
-      .getDashboard()
-      .then((item: any) => setDashboard(item.data))
-      .catch();
-  };
-
-  useEffect(() => {
-    dashboardFetchApi();
-  }, []);
-
+export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
   useEffect(() => {
     const swiperWrapper = document.querySelector(".swiper-wrapper") as HTMLElement;
     const swiperSlide = document.querySelectorAll(".swiper-slide");
@@ -41,8 +30,6 @@ export const DashboardFinance = ({}: featFinanceProps) => {
     const lastSlide = swiperSlide[swiperSlide.length - 1] as HTMLElement;
     lastSlide.style.marginRight = "0px";
   }, []);
-
-  console.log(dataDashboard);
 
   const balanceTotalAmount = dataDashboard?.balance?.totalAmount.toLocaleString("pt-BR", {
     style: "currency",

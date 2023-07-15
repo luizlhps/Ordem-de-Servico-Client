@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import * as Styled from "./styles";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, CircularProgress } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface IModal {
@@ -11,6 +11,7 @@ interface IModal {
   handleClose: () => void;
   HandleDeleted: ((id: string) => Promise<void>) | ((id: string) => void);
   selectedItem: any;
+  loading: boolean;
 }
 
 import styled from "styled-components";
@@ -84,7 +85,7 @@ export const InputCustomDescription = styled.textarea`
   }
 `;
 
-export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItem }: IModal) {
+export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItem, loading }: IModal) {
   return (
     <div>
       <Modal
@@ -114,7 +115,7 @@ export default function DeleteModal({ open, handleClose, HandleDeleted, selected
               color="error"
               sx={{ border: "1px red solid" }}
             >
-              Continuar
+              {loading ? <CircularProgress size={25} /> : "Confirmar"}
             </Button>
           </Box>
         </Fade>
