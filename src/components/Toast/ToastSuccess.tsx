@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Alert, Button, Snackbar, SnackbarOrigin, Stack, TextField, useTheme } from "@mui/material";
 import { IToastSuccess } from "./types/ToastsTypes";
 
-export const ToastSuccess: React.FC<IToastSuccess> = ({ formSuccess, alertSuccess }) => {
+export const ToastSuccess: React.FC<IToastSuccess> = ({ formSuccess, alertSuccess, setFormSuccess }) => {
   const [sucessState, setSucessState] = useState<boolean>(false);
 
   //Sucess
@@ -11,6 +11,7 @@ export const ToastSuccess: React.FC<IToastSuccess> = ({ formSuccess, alertSucces
   };
   const handleFormSuccessClose = () => {
     setSucessState(false);
+    setFormSuccess(false);
   };
 
   useEffect(() => {

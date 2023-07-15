@@ -3,6 +3,8 @@ import useApiRequest from "./useApiGet";
 import { useDebouse } from "./useDebouse";
 import { IBalance, IFinance, RootFinance } from "../../types/finance";
 import { financeApi } from "@/services/api/financeApi";
+import { dashboardApi } from "@/services/api/dashboardApi";
+import { IDashboard } from "../../types/dashboard";
 
 export const useGetFetchFinance = () => {
   const [financeData, setFinanceData] = useState<RootFinance>({ total: 0, page: 0, limit: 0, transaction: [] || "" });
@@ -12,11 +14,21 @@ export const useGetFetchFinance = () => {
 
   const { debouse } = useDebouse(300);
 
-  //Get Api
+  //dashBoard finance
+  const [dataDashboard, setDashboard] = useState<IDashboard>();
 
+  const dashboardFetchApi = () => {
+    dashboardApi
+      .getDashboard()
+      .then((item: any) => setDashboard(item.data))
+      .catch();
+  };
+
+  //Get Api
   const fetchApi = useCallback((search = "", page?: number, limit?: number) => {
     setLoading(true);
     debouse(() => {
+      dashboardFetchApi();
       financeApi
         .getAll(search, page, limit)
         .then((response) => {
@@ -40,5 +52,6 @@ export const useGetFetchFinance = () => {
     setFinanceData,
     currentPage,
     setCurrentPage,
+    dataDashboard,
   };
 };
