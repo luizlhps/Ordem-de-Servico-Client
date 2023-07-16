@@ -19,7 +19,6 @@ export const DeleteTransaction = ({ open, handleClose, selectedItem, fetchApi }:
   const [success, setSuccess] = useState<boolean>(false);
 
   const deleteTransaction = (id: string) => {
-    console.log("executei");
     financeApi
       .delete(id)
       .then(() => {

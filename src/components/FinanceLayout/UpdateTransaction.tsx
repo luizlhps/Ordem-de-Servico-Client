@@ -25,11 +25,8 @@ const UpdateTransaction = ({ handleClose, fetchApi, selectItem, style, open }: I
   const setFormValue = (form: IFinance) => {
     updateTransactionApi(form);
   };
-  console.log("executei");
 
   const updateTransactionApi = (data: IFinance) => {
-    console.log("executei");
-
     if (!selectItem) return new Error("Ocorreu um erro ao achar a transação");
     financeApi
       .update(data, selectItem?._id, data.order)

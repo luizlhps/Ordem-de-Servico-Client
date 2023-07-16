@@ -17,12 +17,12 @@ export const useGetFetchFinance = () => {
   //dashBoard finance
   const [dataDashboard, setDashboard] = useState<IDashboard>();
 
-  const dashboardFetchApi = () => {
+  const dashboardFetchApi = useCallback(() => {
     dashboardApi
       .getDashboard()
       .then((item: any) => setDashboard(item.data))
       .catch();
-  };
+  }, []);
 
   //Get Api
   const fetchApi = useCallback((search = "", page?: number, limit?: number) => {

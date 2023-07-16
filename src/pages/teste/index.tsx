@@ -1,18 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { Box, Stack, TextField, Button, useTheme } from "@mui/material";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { useSearchField } from "@/hook/useSearchField";
 import useModal from "@/hook/useModal";
-import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
-import { Order } from "@/hook/useGetCostumOrders";
 import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
 import { FormCrudModals } from "@/components/Modal/financePage/FormCrudModals";
 import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
 import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
-import { dashboardApi } from "@/services/api/dashboardApi";
 import { DashboardFinance } from "@/components/DashBoardFinance";
 
 const Index = () => {
