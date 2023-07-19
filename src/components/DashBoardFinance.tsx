@@ -1,5 +1,6 @@
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import dayjs from "dayjs";
 
 import { Navigation, Pagination } from "swiper/modules";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
@@ -13,7 +14,6 @@ import { Skeleton, useTheme } from "@mui/material";
 import { IBalance, IFinance, RootFinance } from "../../types/finance";
 import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../types/dashboard";
-
 interface featFinanceProps {
   dataDashboard: IDashboard | undefined;
 }
@@ -84,6 +84,11 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
       }
     return undefined;
   }
+  const date = dayjs();
+  const month = date.format("MMM");
+  const year = date.format("YYYY");
+  const prevMonth = date.subtract(1, "month").format("MMM");
+  const daysCurrent = date.daysInMonth();
 
   return (
     <>
@@ -112,7 +117,10 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
                 <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header subTitle="1 jan - 31 dez 2023" title="Caixa Total">
+                  <FinanceNotification.Header
+                    subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
+                    title="Caixa Total"
+                  >
                     <FinanceNotification.Icon icon={AccountBalanceWalletOutlinedIcon} />
                   </FinanceNotification.Header>
                   <FinanceNotification.Content content={balanceTotalAmount} />
@@ -130,7 +138,10 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
                 <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header subTitle="1 jan - 31 dez 2023" title="Dividas">
+                  <FinanceNotification.Header
+                    subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
+                    title="Dividas"
+                  >
                     <FinanceNotification.Icon icon={KeyboardDoubleArrowDownOutlinedIcon} />
                   </FinanceNotification.Header>
                   <FinanceNotification.Content content={debitAmount} />
@@ -148,7 +159,10 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
                 <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header subTitle="1 jan - 31 dez 2023" title="Faturamento">
+                  <FinanceNotification.Header
+                    subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
+                    title="Faturamento"
+                  >
                     <FinanceNotification.Icon icon={KeyboardDoubleArrowUpOutlinedIcon} />
                   </FinanceNotification.Header>
                   <FinanceNotification.Content content={creditAmount} />

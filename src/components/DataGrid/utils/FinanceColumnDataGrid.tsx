@@ -3,8 +3,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import { IFinance } from "../../../../types/finance";
+
+import { format } from "date-fns";
 
 export const financeColumnDataGrid = (
   theme: any,
@@ -81,16 +83,13 @@ export const financeColumnDataGrid = (
       headerAlign: "left",
       align: "left",
       valueFormatter(params: any) {
-        if (params.value) {
-          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
-          return dataFormatada;
-        }
+        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
+        return dataFormatada;
       },
     },
     {
       field: "dueDate",
       headerName: "Vencimento",
-      type: "number",
       flex: 1,
       minWidth: 120,
       description: "Endereço",
@@ -101,12 +100,12 @@ export const financeColumnDataGrid = (
           const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
           return dataFormatada;
         }
+        return;
       },
     },
     {
       field: "payDay",
       headerName: "Data de pagamento",
-      type: "number",
       flex: 1,
       minWidth: 200,
       description: "Endereço",
@@ -117,6 +116,7 @@ export const financeColumnDataGrid = (
           const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
           return dataFormatada;
         }
+        return;
       },
     },
     {

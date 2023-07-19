@@ -52,7 +52,12 @@ const UpdateTransaction = ({ handleClose, fetchApi, selectItem, style, open }: I
       <ToastSuccess alertSuccess="Atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
-        <LayoutTransactionForm setValueData={setFormValue} dataValue={selectItem} loading={loading} />
+        <LayoutTransactionForm
+          title="Atualizar serviço"
+          setValueData={setFormValue}
+          dataValue={selectItem}
+          loading={loading}
+        />
       </TransitionsModal>
     </>
   );

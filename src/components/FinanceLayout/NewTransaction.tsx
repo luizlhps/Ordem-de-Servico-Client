@@ -53,7 +53,7 @@ const NewTransation = ({ handleClose, fetchApi, style, open }: INewTransationPro
 
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
         <CloseModal handleClose={handleClose} />
-        <LayoutTransactionForm setValueData={setFormValue} loading={loading} />
+        <LayoutTransactionForm title="Novo Serviço" setValueData={setFormValue} loading={loading} />
       </TransitionsModal>
     </>
   );

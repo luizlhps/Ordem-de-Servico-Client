@@ -4,6 +4,8 @@ import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
 
+import { format } from "date-fns";
+
 export const columnsDataGrid = (
   theme: any,
   modalUpdateHandleOpen: () => void,
@@ -64,6 +66,12 @@ export const columnsDataGrid = (
       description: "Endereço",
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        if (params.value instanceof Date) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+          return dataFormatada;
+        }
+      },
     },
 
     {

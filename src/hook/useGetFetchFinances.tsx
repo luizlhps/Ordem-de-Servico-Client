@@ -49,6 +49,7 @@ export const useGetFetchFinance = () => {
     error,
     fetchApi,
     financeData,
+    dashboardFetchApi,
     setFinanceData,
     currentPage,
     setCurrentPage,

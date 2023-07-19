@@ -11,6 +11,7 @@ import DeleteModal from "../Modal/deleteModal";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import { servicesApi } from "@/services/api/servicesApi";
 
 export interface IStatus {
   _id?: string;
@@ -32,6 +33,11 @@ const Status = () => {
   const [newUpdateItem, setNewUpdateItem] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
+
+  const [loadingDel, setLoadingDel] = useState(false);
+  const [messageError, setMessageError] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const { formSuccess, setFormSuccess, errorMessage, setFormError, setErrorMessage, formError } =
     useContext(FormSucessOrErrorContext);
@@ -96,29 +102,23 @@ const Status = () => {
 
   //Delete Api
   const HandleDeleted = async (id: string) => {
-    try {
-      const res = await statusApi.deleteStatus(id);
-
-      if (res instanceof Error) {
-        console.log(res.message);
-        setErrorMessage(res.message);
-        setFormError(true);
-
-        modalDeleteHandleClose();
-      } else {
+    setLoadingDel(true);
+    servicesApi
+      .deleteServices(id)
+      .then(() => {
         fetchApi();
+        setSuccess(true);
+      })
+      .catch((err) => {
+        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
+          setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
         modalDeleteHandleClose();
-        setFormError(false);
-
-        setFormSuccess(true);
-      }
-    } catch (error: any) {
-      setFormSuccess(false);
-      setFormError(true);
-      console.error(error);
-      setErrorMessage(error.response.data.message); //
-      setFormError(false);
-    }
+        setLoadingDel(false);
+      });
   };
 
   //Config Datagrid
@@ -156,6 +156,7 @@ const Status = () => {
         handleClose={modalDeleteHandleClose}
         HandleDeleted={HandleDeleted}
         selectedItem={selectedItemUpdate}
+        loading={loadingDel}
       />
       <CreateStatusModal
         fetchApi={fetchApi}

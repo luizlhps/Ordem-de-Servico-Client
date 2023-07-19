@@ -3,11 +3,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
-import { servicesApi } from "@/services/api/servicesApi";
-import { useEffect } from "react";
-import { constumersApi } from "@/services/api/costumersApi";
 import { useRouter } from "next/router";
 import { OrdensSVG } from "../../../../../public/icon/SVGS/IconsSVG";
+
+import { format } from "date-fns";
 
 export const ColumnsDataGrid = (
   theme: any,
@@ -67,6 +66,10 @@ export const ColumnsDataGrid = (
       description: "Endereço",
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+        return dataFormatada;
+      },
     },
     {
       field: "updatedAt",
@@ -77,6 +80,10 @@ export const ColumnsDataGrid = (
       description: "Endereço",
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+        return dataFormatada;
+      },
     },
 
     {

@@ -19,6 +19,7 @@ class FinanceApi {
 
   update(data: IFinance, transaction_Id: string, orderId: string) {
     console.log(data, transaction_Id);
+    console.log(data);
 
     return Api.put(`finance/${transaction_Id}`, {
       title: data.title,

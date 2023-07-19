@@ -1,3 +1,5 @@
+import { IFinance } from "./finance";
+
 export interface IDashboard {
   totalCount: number;
   totalCountPrevMonth: number;
@@ -5,6 +7,8 @@ export interface IDashboard {
   balance: Balance;
   pending: Pending;
   finished: Pending;
+  transactions: IFinance[];
+  transactionsPreviusMonth: IFinance[];
 }
 
 export interface Pending {

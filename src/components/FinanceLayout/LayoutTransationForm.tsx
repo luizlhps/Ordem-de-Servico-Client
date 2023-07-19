@@ -49,9 +49,15 @@ export interface ILayoutTransactionForm {
   setValueData: any;
   loading: boolean;
   dataValue?: IFinance | undefined;
+  title: string;
 }
 
-export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setValueData, loading, dataValue }) => {
+export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
+  setValueData,
+  loading,
+  dataValue,
+  title,
+}) => {
   const [dateEntry, setDateEntry] = React.useState<Dayjs | null>(dayjs(undefined));
   const [dateExit, setDateExit] = React.useState<Dayjs | null>();
   const [datePayDay, setDatePayDay] = React.useState<Dayjs | null>();
@@ -70,8 +76,8 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
       title: dataValue?.title,
       entryDate: dataValue ? dataValue.entryDate : dateEntry?.format(),
       description: dataValue?.description,
-      payDay: dataValue ? dataValue.payDay : dateEntry?.format(),
-      dueDate: dataValue ? dataValue.dueDate : dateEntry?.format(),
+      payDay: dataValue ? dataValue.payDay : undefined,
+      dueDate: dataValue ? dataValue.dueDate : undefined,
       status: dataValue?.status,
       amount: dataValue?.amount,
       type: dataValue?.type,
@@ -83,8 +89,8 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
     setValueData(data);
   };
 
-  const kk = watch("status");
-  console.log(dataValue?.title);
+  const statusWatch = watch("status");
+  const payDaysWatch = watch("payDay");
 
   const columnMedia = useMediaQuery("(max-width:602px)");
 
@@ -105,6 +111,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
                   <>
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                       <DateTimeField
+                        format="DD/MM/YYYY"
                         sx={{
                           ".MuiOutlinedInput-notchedOutline": {
                             border: "none",
@@ -155,6 +162,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
                   <>
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                       <DateTimeField
+                        format="DD/MM/YYYY"
                         sx={{
                           ".MuiOutlinedInput-notchedOutline": {
                             border: "none",
@@ -185,7 +193,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
           </Grid>
         </Grid>
         <Typography marginTop={5} fontWeight={500} variant="h1" textAlign={"center"}>
-          Novo Serviço #001
+          {title}
         </Typography>
 
         <Grid marginTop={4}>
@@ -255,14 +263,33 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
             <Controller
               name="payDay"
               control={control}
+              rules={{
+                validate: () => {
+                  if (statusWatch === "finished" && !payDaysWatch) {
+                    return false;
+                  }
+                  return true;
+                },
+              }}
               render={({ field }) => (
                 <>
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                     <DateTimeField
+                      format="DD/MM/YYYY"
                       {...field}
-                      disabled
+                      disabled={statusWatch !== "finished" ? true : false}
                       size="small"
                       value={datePayDay}
+                      sx={{
+                        ".MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                        ".MuiInputBase-input": {
+                          padding: "0px!important",
+                          fontSize: "14px",
+                          color: theme.palette.primary.dark,
+                        },
+                      }}
                       onChange={(newValue) => {
                         if (newValue !== null) {
                           setDatePayDay(newValue);
@@ -276,6 +303,9 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({ setVal
                 </>
               )}
             />
+            {errors.payDay?.type === "validate" && (
+              <Typography color={"error"}>É necessário uma data de pagamento ao finalizar o serviço</Typography>
+            )}
           </Grid>
           <Box display={"flex"} justifyContent={"center"}>
             <Button
