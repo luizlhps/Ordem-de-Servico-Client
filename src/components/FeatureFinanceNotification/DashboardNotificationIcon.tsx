@@ -1,11 +1,11 @@
 import React, { ElementType } from "react";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 
-interface FinanceNotificationProps {
+interface DashboardNotificationProps {
   icon: ElementType;
 }
 
-export const FeatureFinanceNotificationIcon = ({ icon: Icon }: FinanceNotificationProps) => {
+export const DashboardNotificationIcon = ({ icon: Icon }: DashboardNotificationProps) => {
   const theme = useTheme();
   return (
     <>

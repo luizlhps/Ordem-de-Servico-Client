@@ -7,7 +7,7 @@ interface FinanceNotificationProps {
   contentWidthValue: string;
 }
 
-export const FeatureFinanceNotificationRoot = ({ children, contentWidthValue }: FinanceNotificationProps) => {
+export const DashboardNotificationRoot = ({ children, contentWidthValue }: FinanceNotificationProps) => {
   const theme = useTheme();
 
   const styleContainer = {

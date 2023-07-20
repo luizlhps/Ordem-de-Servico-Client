@@ -1,13 +1,13 @@
-import { FeatureFinanceNotificationContent } from "./FeatureFinanceNotificationContent";
-import { FeatureFinanceNotificationFooter } from "./FeatureFinanceNotificationFooter";
-import { FeatureFinanceNotificationHeader } from "./FeatureFinanceNotificationHeader";
-import { FeatureFinanceNotificationRoot } from "./FinanceNotificationRoot";
-import { FeatureFinanceNotificationIcon } from "./featureFinanceNotificationIcon";
+import { DashboardNotificationContent } from "./DashboardNotificationContent";
+import { DashboardNotificationFooter } from "./DashboardNotificationFooter";
+import { DashboardNotificationHeader } from "./DashboardNotificationHeader";
+import { DashboardNotificationIcon } from "./DashboardNotificationIcon";
+import { DashboardNotificationRoot } from "./FinanceNotificationRoot";
 
-export const FinanceNotification = {
-  Root: FeatureFinanceNotificationRoot,
-  Icon: FeatureFinanceNotificationIcon,
-  Content: FeatureFinanceNotificationContent,
-  Footer: FeatureFinanceNotificationFooter,
-  Header: FeatureFinanceNotificationHeader,
+export const DashboardNotification = {
+  Root: DashboardNotificationRoot,
+  Icon: DashboardNotificationIcon,
+  Content: DashboardNotificationContent,
+  Footer: DashboardNotificationFooter,
+  Header: DashboardNotificationHeader,
 };

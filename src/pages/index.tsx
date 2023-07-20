@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 
 import { HeaderLayout } from "@/components";
 import { ViewOrderModal } from "@/components/Modal/orderPage/ViewOrderModal";
-import { Stack, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 import dayjs from "dayjs";
+import { DashboardFinance } from "@/components/DashboardFinance";
 
 //style custom
 
@@ -19,6 +20,8 @@ const TesteSvg = styled.div`
 `;
 
 export default function Home() {
+  const theme = useTheme();
+
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();
 
@@ -65,6 +68,14 @@ export default function Home() {
 
   const options = {
     options: {
+      plotOptions: {
+        bar: {
+          barHeight: "100%",
+          distributed: true,
+          horizontal: true,
+        },
+      },
+
       chart: {
         id: "salesChart",
         foreColor: "#fff",
@@ -83,6 +94,7 @@ export default function Home() {
       grid: {
         borderColor: "#40475D",
       },
+
       xaxis: {
         categories: arrayDate,
         labels: {
@@ -94,9 +106,6 @@ export default function Home() {
         axisBorder: {
           color: "#333",
         },
-        dataLabels: {
-          enabled: false,
-        },
       },
       fill: {
         type: "gradient",
@@ -107,17 +116,18 @@ export default function Home() {
       tooltip: {
         theme: "dark",
       },
-
+      /* 
       title: {
-        text: "Caixa",
+        text: "Dividas e Faturamento",
         align: "left" as "left",
-        margin: 10,
-        offsetX: 0,
+        offsetX: 6,
         offsetY: 10,
         floating: false,
         style: {
-          fontSize: "14px",
-          fontWeight: "bold",
+          fontFamily: theme.typography.fontFamily,
+          fontSize: "20px",
+          fontWeight: 500,
+          width: "100%",
         },
       },
 
@@ -127,9 +137,11 @@ export default function Home() {
         align: "right" as "right",
         offsetY: 10,
         style: {
-          fontSize: "22px",
+          fontFamily: theme.typography.fontFamily,
+          fontWeigth: 400,
+          fontSize: "14px",
         },
-      },
+      }, */
       legend: {
         show: true,
         position: "bottom" as "bottom",
@@ -154,17 +166,40 @@ export default function Home() {
       },
     ],
   };
-  const theme = useTheme();
 
   return (
     <>
-      <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}></Stack>
-      {dataDashboard && (
-        <div id="chart">
+      <HeaderLayout subTitle="Bem vindo a area de dashboard" title="Dashboard" />
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} marginBottom={3}></Stack>
+      <DashboardFinance dataDashboard={dataDashboard} />
+      {dataDashboard ? (
+        <Box
+          marginTop={2}
+          sx={{
+            background: theme.palette.background.default,
+            color: "black",
+            padding: 3,
+            border: ` 1px solid ${theme.palette.custom?.grey}`,
+            borderRadius: "14px",
+          }}
+        >
+          <Stack flexDirection={"row"} justifyContent={"space-between"} marginBottom={1} padding={2}>
+            <Typography fontSize={18}>Dividas e Faturamento</Typography>
+            <Typography fontSize={14}>Mês de {dataAtualSaoPaulo.format("MMMM")}</Typography>
+          </Stack>
           <ApexCharts options={options.options} series={options.series} width={"100%"} height={340} />
-        </div>
+        </Box>
+      ) : (
+        <></>
       )}
+      <Box
+        id="divider"
+        marginTop={2}
+        marginBottom={2}
+        width={"100%"}
+        height={"1px"}
+        sx={{ background: theme.palette.custom?.grey }}
+      />
 
       <TesteSvg></TesteSvg>
     </>

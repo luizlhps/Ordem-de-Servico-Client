@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 import { Navigation, Pagination } from "swiper/modules";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import { FinanceNotification } from "./FeatureFinanceNotification";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardDoubleArrowUpOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowUpOutlined";
@@ -14,6 +13,7 @@ import { Skeleton, useTheme } from "@mui/material";
 import { IBalance, IFinance, RootFinance } from "../../types/finance";
 import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../types/dashboard";
+import { DashboardNotification } from "./FeatureFinanceNotification";
 interface featFinanceProps {
   dataDashboard: IDashboard | undefined;
 }
@@ -116,20 +116,20 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
           <div className="swiper-wrapper" style={{ justifyContent: "center!important" }}>
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
-                <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header
+                <DashboardNotification.Root contentWidthValue={ContentWidthValue}>
+                  <DashboardNotification.Header
                     subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
                     title="Caixa Total"
                   >
-                    <FinanceNotification.Icon icon={AccountBalanceWalletOutlinedIcon} />
-                  </FinanceNotification.Header>
-                  <FinanceNotification.Content content={balanceTotalAmount} />
-                  <FinanceNotification.Footer
+                    <DashboardNotification.Icon icon={AccountBalanceWalletOutlinedIcon} />
+                  </DashboardNotification.Header>
+                  <DashboardNotification.Content content={balanceTotalAmount} />
+                  <DashboardNotification.Footer
                     color={IconDashBoardColor(dataDashboard?.balance.percetege)}
                     icon={IconDashBoard(dataDashboard?.balance.percetege)}
                     subTitle={`${dataDashboard?.balance.percetege}%`}
                   />
-                </FinanceNotification.Root>
+                </DashboardNotification.Root>
               ) : (
                 <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>
               )}
@@ -137,20 +137,20 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
 
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
-                <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header
+                <DashboardNotification.Root contentWidthValue={ContentWidthValue}>
+                  <DashboardNotification.Header
                     subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
                     title="Dividas"
                   >
-                    <FinanceNotification.Icon icon={KeyboardDoubleArrowDownOutlinedIcon} />
-                  </FinanceNotification.Header>
-                  <FinanceNotification.Content content={debitAmount} />
-                  <FinanceNotification.Footer
+                    <DashboardNotification.Icon icon={KeyboardDoubleArrowDownOutlinedIcon} />
+                  </DashboardNotification.Header>
+                  <DashboardNotification.Content content={debitAmount} />
+                  <DashboardNotification.Footer
                     color={IconDashBoardColor(dataDashboard?.finished.debit.percetege)}
                     icon={IconDashBoard(dataDashboard?.finished.debit.percetege)}
                     subTitle={`${dataDashboard?.finished.debit.percetege}%`}
                   />
-                </FinanceNotification.Root>
+                </DashboardNotification.Root>
               ) : (
                 <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>
               )}
@@ -158,20 +158,20 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
 
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
-                <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header
+                <DashboardNotification.Root contentWidthValue={ContentWidthValue}>
+                  <DashboardNotification.Header
                     subTitle={`1 ${prevMonth} - ${daysCurrent} ${month} ${year}`}
                     title="Faturamento"
                   >
-                    <FinanceNotification.Icon icon={KeyboardDoubleArrowUpOutlinedIcon} />
-                  </FinanceNotification.Header>
-                  <FinanceNotification.Content content={creditAmount} />
-                  <FinanceNotification.Footer
+                    <DashboardNotification.Icon icon={KeyboardDoubleArrowUpOutlinedIcon} />
+                  </DashboardNotification.Header>
+                  <DashboardNotification.Content content={creditAmount} />
+                  <DashboardNotification.Footer
                     color={IconDashBoardColor(dataDashboard?.finished.credit.percetege)}
                     icon={IconDashBoard(dataDashboard?.finished.credit.percetege)}
                     subTitle={`${dataDashboard?.finished.credit.percetege}%`}
                   />
-                </FinanceNotification.Root>
+                </DashboardNotification.Root>
               ) : (
                 <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>
               )}
@@ -179,15 +179,15 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
 
             <SwiperSlide style={stylesConfig}>
               {dataDashboard ? (
-                <FinanceNotification.Root contentWidthValue={ContentWidthValue}>
-                  <FinanceNotification.Header subTitle="Abertas" title="Transações"></FinanceNotification.Header>
-                  <FinanceNotification.Content content={`${transactionsPending} Transações`} />
-                  <FinanceNotification.Footer
+                <DashboardNotification.Root contentWidthValue={ContentWidthValue}>
+                  <DashboardNotification.Header subTitle="Abertas" title="Transações"></DashboardNotification.Header>
+                  <DashboardNotification.Content content={`${transactionsPending} Transações`} />
+                  <DashboardNotification.Footer
                     color={IconDashBoardColor(transactionsPendingPending)}
                     icon={IconDashBoard(transactionsPendingPending)}
                     subTitle={`${transactionsPendingPending}%`}
                   />
-                </FinanceNotification.Root>
+                </DashboardNotification.Root>
               ) : (
                 <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>
               )}

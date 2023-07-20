@@ -1,13 +1,13 @@
 import React, { ReactNode } from "react";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 
-interface FinanceNotificationProps {
+interface DashboardNotificationProps {
   title: string;
   subTitle: string;
   children?: ReactNode;
 }
 
-export const FeatureFinanceNotificationHeader = ({ title, subTitle, children }: FinanceNotificationProps) => {
+export const DashboardNotificationHeader = ({ title, subTitle, children }: DashboardNotificationProps) => {
   const theme = useTheme();
   return (
     <>

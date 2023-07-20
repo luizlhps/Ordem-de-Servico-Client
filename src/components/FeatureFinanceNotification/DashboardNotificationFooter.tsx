@@ -1,13 +1,13 @@
 import React, { ElementType, ReactNode } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
-interface FinanceNotificationProps {
+interface DashboardNotificationProps {
   icon?: ReactNode;
   subTitle: string;
   color?: string;
 }
 
-export const FeatureFinanceNotificationFooter = ({ icon, subTitle, color }: FinanceNotificationProps) => {
+export const DashboardNotificationFooter = ({ icon, subTitle, color }: DashboardNotificationProps) => {
   return (
     <>
       <Stack direction={"row"} alignItems={"center"} marginTop={0.2} minHeight={24}>

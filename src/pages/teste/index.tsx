@@ -10,7 +10,7 @@ import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
 import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
-import { DashboardFinance } from "@/components/DashBoardFinance";
+import { DashboardFinance } from "@/components/DashboardFinance";
 
 const Index = () => {
   const theme = useTheme();
