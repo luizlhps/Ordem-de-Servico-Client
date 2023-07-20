@@ -1,4 +1,11 @@
-export interface Order {
+export interface RootOrder {
+  total: number;
+  page: number;
+  limit: number;
+  orders: IOrder[];
+}
+
+export interface IOrder {
   _id: string;
   id: number;
   equipment: string;

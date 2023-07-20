@@ -1,4 +1,4 @@
-import { Service } from "../../../types/order";
+import { RootOrder, Service } from "../../../types/order";
 import { Api } from "./axios-config";
 
 export interface IOrderData {
@@ -33,6 +33,9 @@ class OrderApi {
       console.error(error);
       return new Error((error as { message: string }).message || "Erro ao listar os registros.");
     }
+  }
+  getPendingOrder(filter = "", page = 1, limit = 10) {
+    return Api.get<RootOrder>(`order/pending?filter=${filter}&page=${page}&limit=${limit}`);
   }
 
   async createOrder(data: IOrderData, Costumerid: string) {

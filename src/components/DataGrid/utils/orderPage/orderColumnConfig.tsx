@@ -5,32 +5,32 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
 
 import { format } from "date-fns";
-import { Order } from "../../../../../types/order";
+import { IOrder } from "../../../../../types/order";
 
 export const columnsDataGrid = (
   theme: any,
   modalUpdateHandleOpen: () => void,
-  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<Order | undefined>>,
+  setSelectedItemUpdate: React.Dispatch<React.SetStateAction<IOrder | undefined>>,
   modalDeleteHandleOpen: () => void,
   modalViewHandleOpen: () => void
 ) => {
-  const handleRemove = async (data: Order) => {
+  const handleRemove = async (data: IOrder) => {
     modalDeleteHandleOpen();
     setSelectedItemUpdate(data);
   };
 
-  const handleUpdate = async (data: Order) => {
+  const handleUpdate = async (data: IOrder) => {
     modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
   };
 
-  const handleView = (data: Order) => {
+  const handleView = (data: IOrder) => {
     setSelectedItemUpdate(data);
     modalViewHandleOpen();
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "OS", width: 60 },
+    { field: "id", headerName: "OS", width: 100 },
 
     {
       field: "equipmentField",

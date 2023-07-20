@@ -1,11 +1,10 @@
 import { useState, createContext, useContext, Dispatch, useEffect } from "react";
 import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
+
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
-import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
+
 import { ICustomer } from "@/pages/clients";
-import { Order } from "../../types/order";
 
 interface IContext {
   onDiscountChange?: () => void;

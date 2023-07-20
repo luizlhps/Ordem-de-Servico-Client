@@ -31,7 +31,7 @@ export const ColumnsDataGrid = (
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 100 },
     {
       field: "name",
       headerName: "Nome",

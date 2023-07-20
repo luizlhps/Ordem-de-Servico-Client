@@ -2,40 +2,10 @@ import { useDebouse } from "@/hook";
 import useApiRequest from "@/hook/useApiGet";
 import { orderApi } from "@/services/api/orderApi";
 import React, { useState, useEffect } from "react";
-
-export interface IData {
-  total: number;
-  page: number;
-  limit: number;
-  orders: Order[];
-}
-
-export interface Order {
-  _id: string;
-  id: number;
-  equipment: string;
-  brand: string;
-  model: string;
-  defect: string;
-  observation: string;
-  dateEntry: string;
-  services: any[];
-  status: Status;
-  customer: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Status {
-  _id: string;
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { RootOrder } from "../../types/order";
 
 export const useGetCostumOrders = () => {
-  const [data, setData] = useState<IData>({ total: 0, page: 0, limit: 0, orders: [] || "" });
+  const [data, setData] = useState<RootOrder>({ total: 0, page: 0, limit: 0, orders: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
   const { debouse } = useDebouse(300);
 

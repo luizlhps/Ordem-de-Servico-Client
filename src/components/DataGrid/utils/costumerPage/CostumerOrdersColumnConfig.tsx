@@ -23,7 +23,7 @@ export const columnsDataGrid = (
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "OS", width: 60 },
+    { field: "id", headerName: "OS", width: 100 },
 
     {
       field: "brand",

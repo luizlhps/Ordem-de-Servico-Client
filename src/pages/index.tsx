@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { HeaderLayout } from "@/components";
+import { DataGridLayout, HeaderLayout } from "@/components";
 import { ViewOrderModal } from "@/components/Modal/orderPage/ViewOrderModal";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
@@ -10,6 +10,12 @@ const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 import dayjs from "dayjs";
 import { DashboardFinance } from "@/components/DashboardFinance";
+import { orderApi } from "@/services/api/orderApi";
+import { useSearchField } from "@/hook/useSearchField";
+import { IOrder, RootOrder } from "../../types/order";
+import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
+import useModal from "@/hook/useModal";
+import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 
 //style custom
 
@@ -25,10 +31,76 @@ export default function Home() {
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();
 
+  const [ordersData, setOrdersData] = useState<RootOrder>({ total: 0, page: 0, limit: 0, orders: [] || "" });
+  const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+
+  const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
+
+  const orderPendingFetchApi = () => {
+    orderApi
+      .getPendingOrder()
+      .then((res) => {
+        setOrdersData(res.data);
+      })
+      .catch();
+  };
+
+  const ordersFormatted = useMemo(() => {
+    return ordersData?.orders.map((obj: any) => {
+      const values: any[] = [];
+      if (obj.equipment) values.push(obj.equipment);
+      if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
+      if (obj.model && !values.includes(obj.model)) values.push(obj.model);
+
+      let uniqueValues: any[] = [];
+      values.forEach((obj) => {
+        if (!uniqueValues.includes(obj)) {
+          uniqueValues.push(obj);
+        }
+        return uniqueValues;
+      });
+
+      return (obj.equipmentField = uniqueValues.join(" "));
+    });
+  }, [ordersData?.orders]);
+
   useEffect(() => {
     dashboardFetchApi();
   }, []);
 
+  //modal
+  const { modals, modalActions, modalSets } = useModal();
+  const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
+  const {
+    modalHandleOpen,
+    modalHandleClose,
+    modalUpdateHandleOpen,
+    modalHandleUpdateClose,
+    modalDeleteHandleOpen,
+    modalDeleteHandleClose,
+    modalViewClose,
+    modalViewHandleOpen,
+  } = modalActions;
+
+  const limitPorPage = 10;
+  const { searchField, searchHandle, setSearchField } = useSearchField({
+    limitPorPage,
+    setCurrentPage,
+    currentPage,
+    fetchApi: orderPendingFetchApi,
+  });
+
+  const columns = columnsDataGrid(
+    theme,
+    modalUpdateHandleOpen,
+    setselectItem,
+    modalDeleteHandleOpen,
+    modalViewHandleOpen
+  );
+
+  //date
   const dataAtualSaoPaulo = dayjs().tz("America/Sao_Paulo");
   const maxDay = dataAtualSaoPaulo.daysInMonth();
   const month = dataAtualSaoPaulo.get("month") + 1; //initial 0
@@ -60,7 +132,6 @@ export default function Home() {
   }
 
   const arrayDate = Array.from({ length: maxDay }, (_, index) => {
-    console.log(_, index);
     const day = index + 1;
     const dayFormatted = day < 10 ? `0${day}` : day;
     return `${dayFormatted}/${monthFormatted}`;
@@ -187,7 +258,7 @@ export default function Home() {
             <Typography fontSize={18}>Dividas e Faturamento</Typography>
             <Typography fontSize={14}>Mês de {dataAtualSaoPaulo.format("MMMM")}</Typography>
           </Stack>
-          <ApexCharts options={options.options} series={options.series} width={"100%"} height={340} />
+          <ApexCharts options={options.options} series={options.series} width={"100%"} height={300} />
         </Box>
       ) : (
         <></>
@@ -199,6 +270,34 @@ export default function Home() {
         width={"100%"}
         height={"1px"}
         sx={{ background: theme.palette.custom?.grey }}
+      />
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+        <TextField
+          value={searchField || ""}
+          onChange={searchHandle}
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
+        />
+        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout
+        loading={loading}
+        rows={ordersData?.orders}
+        columns={columns}
+        PageSize={limitPorPage}
+        page={ordersData?.page}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalCount={ordersData?.total}
       />
 
       <TesteSvg></TesteSvg>

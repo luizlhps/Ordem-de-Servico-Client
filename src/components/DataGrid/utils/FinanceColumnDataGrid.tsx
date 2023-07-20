@@ -26,7 +26,7 @@ export const financeColumnDataGrid = (
   };
 
   const columnConfig: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", headerName: "ID", width: 100 },
     {
       field: "title",
       headerName: "Título",
@@ -83,8 +83,11 @@ export const financeColumnDataGrid = (
       headerAlign: "left",
       align: "left",
       valueFormatter(params: any) {
-        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
-        return dataFormatada;
+        if (params.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy");
+          return dataFormatada;
+        }
+        return;
       },
     },
     {

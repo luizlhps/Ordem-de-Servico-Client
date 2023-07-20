@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import TransitionsModal from "../Modal";
 import { IconButton, Icon, Typography, Stack, Box, Divider, useTheme, Button, useMediaQuery } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
-import { Order } from "../../../../types/order";
+import { IOrder } from "../../../../types/order";
 import dayjs, { Dayjs } from "dayjs";
 import { normalizePhoneNumber } from "@/utils/Masks";
 
@@ -23,7 +23,7 @@ const style = {
 interface IProps {
   open: boolean;
   handleClose: () => void;
-  selectedItem: Order | undefined;
+  selectedItem: IOrder | undefined;
 }
 
 export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {

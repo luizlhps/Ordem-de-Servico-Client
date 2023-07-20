@@ -188,7 +188,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         </FooterBox>
       </Drawer>
 
-      <Box marginLeft={smDown ? 0 : theme.spacing(36)} padding={!smDown ? theme.spacing(8, 4) : theme.spacing(4, 2)}>
+      <Box marginLeft={smDown ? 0 : theme.spacing(36)} padding={!smDown ? theme.spacing(5, 4) : theme.spacing(4, 2)}>
         {children}
       </Box>
     </>

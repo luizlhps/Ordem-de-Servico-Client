@@ -15,14 +15,14 @@ import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColu
 import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
-import { Order } from "../../../types/order";
+import { IOrder } from "../../../types/order";
 import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
 
 const Orders = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
-  const [selectItem, setselectItem] = useState<Order | undefined>(undefined);
+  const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
   //Form Sucess and Error
   const {
