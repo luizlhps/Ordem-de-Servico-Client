@@ -1,3 +1,5 @@
+import { LayoutUpdateOrder } from "./LayoutUpdateOrder";
+import { LayoutCreateOs } from "./LayoutCreateOs";
 import React, { useState } from "react";
 import { ICustomerAndOrderData } from "@/contexts";
 import { useTheme, Container } from "@mui/material";
@@ -5,6 +7,7 @@ import { AdressForm, CompletedForm, CreateOs, NameForm } from "../ProgressSteppe
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
 import { ICustomer } from "@/pages/clients";
+import { useFormStep } from "@/hook/useFormStep";
 
 export interface IConfigContext {
   confirmData: any;
@@ -19,6 +22,8 @@ export interface ILayoutCostumerForm {
   costumer: ICustomer | undefined;
   handleClose: () => void;
   setCostumerId: React.Dispatch<ICustomer | undefined>;
+  createOs?: boolean;
+  updateOs?: boolean;
 }
 
 export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
@@ -27,115 +32,37 @@ export const LayoutOrderForm: React.FC<ILayoutCostumerForm> = ({
   typeForm,
   setCostumerId,
   costumer,
+  createOs,
+  updateOs,
 }) => {
   const { confirmData, data, setFormValues, loading } = ConfigContext;
 
-  const theme = useTheme();
-
-  const [formStep, setFormStep] = useState(0);
-
-  const nextFormStep = () => {
-    setFormStep(formStep + 1);
-  };
-  const prevFormStep = () => {
-    setFormStep(formStep - 1);
-  };
-
   return (
     <>
-      {typeForm === "createOs" && (
-        <>
-          {formStep >= 0 && formStep <= 2 && (
-            <>
-              <Container
-                maxWidth="md"
-                sx={{
-                  margin: "auto",
-                  background: theme.palette.background.paper,
-                  borderRadius: "1rem",
-                  ":root": {
-                    paddingBottom: 10,
-                  },
-                }}
-              >
-                {formStep >= 0 && formStep <= 0 && (
-                  <CreateOs
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createOs"
-                    setCostumerId={setCostumerId}
-                  />
-                )}
-                {formStep > 0 && (
-                  <CompletedForm
-                    loading={loading}
-                    data={data}
-                    confirmData={confirmData}
-                    handleClose={handleClose}
-                    costumer={costumer}
-                    typeForm={typeForm}
-                  />
-                )}
-              </Container>
-            </>
-          )}
-        </>
+      {createOs && (
+        <LayoutCreateOs
+          data={data}
+          setFormValues={setFormValues}
+          setCostumerId={setCostumerId}
+          loading={loading}
+          confirmData={confirmData}
+          handleClose={handleClose}
+          costumer={costumer}
+          typeForm={typeForm}
+        />
       )}
 
-      {typeForm === "updateOs" && (
-        <>
-          {formStep >= 0 && formStep <= 2 && (
-            <>
-              <Container
-                maxWidth="md"
-                sx={{
-                  margin: "auto",
-                  background: theme.palette.background.paper,
-                  borderRadius: "1rem",
-                  ":root": {
-                    paddingBottom: 10,
-                  },
-                }}
-              >
-                {formStep >= 0 && formStep <= 0 && (
-                  <CreateOs
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createOs"
-                    setCostumerId={setCostumerId}
-                  />
-                )}
-
-                {formStep >= 1 && formStep <= 1 && (
-                  <DescriptionOS
-                    formStep={formStep}
-                    nextFormStep={nextFormStep}
-                    prevFormStep={prevFormStep}
-                    data={data}
-                    setData={setFormValues}
-                    typeForm="createOs"
-                  />
-                )}
-                {formStep > 1 && (
-                  <CompletedForm
-                    loading={loading}
-                    data={data}
-                    costumer={costumer}
-                    confirmData={confirmData}
-                    handleClose={handleClose}
-                    typeForm={typeForm}
-                  />
-                )}
-              </Container>
-            </>
-          )}
-        </>
+      {updateOs && (
+        <LayoutUpdateOrder
+          data={data}
+          setFormValues={setFormValues}
+          setCostumerId={setCostumerId}
+          loading={loading}
+          costumer={costumer}
+          confirmData={confirmData}
+          handleClose={handleClose}
+          typeForm={typeForm}
+        />
       )}
     </>
   );

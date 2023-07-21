@@ -12,7 +12,7 @@ const style = {
   padding: "33px",
   display: "flex",
   justifyContent: "space-between",
-  flexDirection: "column",
+  flexDirection: "column" as "column",
   alignContent: "center",
   alignItems: "center",
   minHeight: "100%",
@@ -39,7 +39,6 @@ interface IProps {
   FormCreate: ElementType;
   FormUpdate: ElementType;
   FormDelete: ElementType;
-
   fetchApi: () => void;
   modalActions: ImodalActions;
   selectItem: IFinance | IOrder | IStatus | IService | undefined;

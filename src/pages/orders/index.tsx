@@ -16,7 +16,7 @@ import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
 import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
 import { IOrder } from "../../../types/order";
-import { CreateOrderModal } from "@/components/Modal/orderPage/CreateOrderModal";
+import { FormCrudOrder } from "@/components/Modal/orderPage/CreateOrderModal";
 
 const Orders = () => {
   const theme = useTheme();
@@ -114,12 +114,7 @@ const Orders = () => {
             modalDeleteHandleOpen={modalDeleteHandleOpen}
           />
           <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem}></ViewOrderModal>
-          <CreateOrderModal
-            open={modalOpen}
-            handleClose={modalHandleClose}
-            handleOpen={modalHandleOpen}
-            setOpen={modalHandleOpen}
-          />
+          <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
           <UpdateOrderModal
             setOpen={setModalUpdateOpen}
             open={modalUpdateOpen}

@@ -122,6 +122,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
 
+  const [statusId, setStatusId] = useState<string | undefined>();
   const [dateValue, setDateValue] = useState<any>();
 
   const { request } = useApiRequest();
@@ -255,7 +256,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 >
                   {statusData?.status.map((item) => {
                     return (
-                      <MenuItem key={item._id} value={item.name}>
+                      <MenuItem key={item._id} value={item.name} onClick={() => setStatusId(item._id)}>
                         {item.name}
                       </MenuItem>
                     );

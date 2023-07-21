@@ -5,15 +5,8 @@ import { IconButton, Icon, Box } from "@mui/material";
 import { FormRegisterCostumerContext } from "@/contexts";
 import NewOrder from "@/components/OrderLayout/NewOrder";
 import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
-
-const style = {
-  padding: "23px",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-  alignContent: "center",
-  alignItems: "center",
-};
+import { IModals, ImodalActions } from "@/hook/useModal";
+import { IOrder } from "../../../../types/order";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -27,30 +20,33 @@ const buttonStyle = {
   },
 };
 
-interface IProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleOpen: () => void;
-  handleClose: () => void;
-}
+const style = {
+  padding: "33px",
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column" as "column",
+  alignContent: "center",
+  alignItems: "center",
+  minHeight: "100%",
 
-const CreateOrderModalContent: React.FC<{ handleClose: any }> = ({ handleClose }) => {
-  return (
-    <>
-      <IconButton onClick={handleClose} sx={buttonStyle}>
-        <Icon>close</Icon>
-      </IconButton>
-      <NewOrder handleClose={handleClose} />
-    </>
-  );
+  "@media (max-width:364px)": {
+    padding: "23px",
+  },
 };
 
-export const CreateOrderModal: React.FC<IProps> = memo(({ open, handleClose, handleOpen, setOpen }) => {
-  return (
-    <TransitionsModal handleClose={handleClose} open={open} style={style}>
-      <CreateOrderModalContent handleClose={handleClose} />
-    </TransitionsModal>
-  );
+interface IProps {
+  modals: IModals;
+  fetchApi: () => void;
+  modalActions: ImodalActions;
+  selectItem: IOrder | undefined;
+}
+
+export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
+  const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
+  const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
+    modalActions;
+
+  return <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />;
 });
 
-CreateOrderModal.displayName = "CreateOrderModal";
+FormCrudOrder.displayName = "FormCrudOrder";

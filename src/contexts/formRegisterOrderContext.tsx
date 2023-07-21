@@ -99,6 +99,7 @@ export const FormRegisterOrderProvider: React.FC<FormProviderProps> = ({ childre
     if (!costumer) return new Error("O id do cliente não foi selecionado");
     createOrder(data, costumer._id);
   }
+
   return (
     <>
       <FormRegisterOrderContext.Provider value={{ loading, confirmData, data, setFormValues, setCostumer, costumer }}>
