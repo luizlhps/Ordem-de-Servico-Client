@@ -12,8 +12,6 @@ import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
 import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { FormRegisterOrderProvider } from "@/contexts/formRegisterOrderContext";
-import { UpdateOrderModal } from "@/components/Modal/orderPage/UpdateOrderModal";
 import { FormUpdateOrderContext, FormUpdateOrderProvider } from "@/contexts/formUpdateOrderContext";
 import { IOrder } from "../../../types/order";
 import { FormCrudOrder } from "@/components/Modal/orderPage/CreateOrderModal";
@@ -97,62 +95,55 @@ const Orders = () => {
 
   return (
     <>
-      <FormRegisterOrderProvider fetchApi={fetchApi}>
-        <FormUpdateOrderProvider fetchApi={fetchApi} orderID={selectItem?._id} orderData={selectItem}>
-          <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
-          <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
+      <FormUpdateOrderProvider fetchApi={fetchApi} orderID={selectItem?._id} orderData={selectItem}>
+        <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
+        <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
-          <DeleteServiceModal
-            fetchApi={fetchApi}
-            selectedItem={selectItem}
-            setFormSucessoValue={setFormSuccess}
-            setErrorMessageValue={setErrorMessage}
-            setMessageForm={setMessageForm}
-            modalOpendelete={modalOpendelete}
-            modalDeleteHandleClose={modalDeleteHandleClose}
-            setModalOpenDelete={setModalOpenDelete}
-            modalDeleteHandleOpen={modalDeleteHandleOpen}
-          />
-          <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem}></ViewOrderModal>
-          <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
-          <UpdateOrderModal
-            setOpen={setModalUpdateOpen}
-            open={modalUpdateOpen}
-            handleClose={modalHandleUpdateClose}
-            handleOpen={modalUpdateHandleOpen}
-          />
-          <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
+        <DeleteServiceModal
+          fetchApi={fetchApi}
+          selectedItem={selectItem}
+          setFormSucessoValue={setFormSuccess}
+          setErrorMessageValue={setErrorMessage}
+          setMessageForm={setMessageForm}
+          modalOpendelete={modalOpendelete}
+          modalDeleteHandleClose={modalDeleteHandleClose}
+          setModalOpenDelete={setModalOpenDelete}
+          modalDeleteHandleOpen={modalDeleteHandleOpen}
+        />
+        <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem}></ViewOrderModal>
+        <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
 
-          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-            <TextField
-              value={searchField || ""}
-              onChange={searchHandle}
-              hiddenLabel
-              id="filled-hidden-label-small"
-              placeholder="Search"
-              variant="filled"
-              size="small"
-              sx={{
-                marginTop: 3,
-                width: 180,
-              }}
-            />
-            <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-              Novo
-            </Button>
-          </Stack>
-          <DataGridLayout
-            loading={loading}
-            rows={ordersData?.orders}
-            columns={columns}
-            PageSize={limitPorPage}
-            page={ordersData?.Page}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalCount={ordersData?.Total}
+        <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
+
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+          <TextField
+            value={searchField || ""}
+            onChange={searchHandle}
+            hiddenLabel
+            id="filled-hidden-label-small"
+            placeholder="Search"
+            variant="filled"
+            size="small"
+            sx={{
+              marginTop: 3,
+              width: 180,
+            }}
           />
-        </FormUpdateOrderProvider>
-      </FormRegisterOrderProvider>
+          <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+            Novo
+          </Button>
+        </Stack>
+        <DataGridLayout
+          loading={loading}
+          rows={ordersData?.orders}
+          columns={columns}
+          PageSize={limitPorPage}
+          page={ordersData?.Page}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalCount={ordersData?.Total}
+        />
+      </FormUpdateOrderProvider>
     </>
   );
 };

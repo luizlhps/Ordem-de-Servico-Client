@@ -46,7 +46,12 @@ export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalAc
   const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
     modalActions;
 
-  return <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />;
+  return (
+    <>
+      <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />
+      <UpdateOrder handleClose={modalHandleUpdateClose} fetchApi={fetchApi} open={modalUpdateOpen} style={style} />
+    </>
+  );
 });
 
 FormCrudOrder.displayName = "FormCrudOrder";
