@@ -4,11 +4,14 @@ import { financeApi } from "@/services/api/financeApi";
 import { IFinance } from "../../../types/finance";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import { IOrder } from "@/hook/useGetFetchOrders";
+import { IStatus } from "../ServicesPage/Status";
+import { IService } from "@/hook/useGetFetchService";
 
-interface IModal {
+export interface IModal {
   open: boolean;
   handleClose: () => void;
-  selectedItem: IFinance | undefined;
+  selectedItem: IFinance | IOrder | IStatus | IService | undefined;
   fetchApi: () => void;
 }
 

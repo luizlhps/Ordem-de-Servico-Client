@@ -16,11 +16,12 @@ import { IDashboard } from "../../types/dashboard";
 import { DashboardNotification } from "./FeatureFinanceNotification";
 import { DashboardBalanceNotification } from "./DashboardBalanceNotification";
 import { DasboardCreditsNotification } from "./DasboardCreditsNotification";
+import { DashboardOrdersPendingNotification } from "./DashboardOrdersPendingNotification";
 interface featFinanceProps {
   dataDashboard: IDashboard | undefined;
 }
 
-export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
+export const DashboardOrdersAndFinance = ({ dataDashboard }: featFinanceProps) => {
   useEffect(() => {
     const swiperWrapper = document.querySelector(".swiper-wrapper") as HTMLElement;
     const swiperSlide = document.querySelectorAll(".swiper-slide");
@@ -47,8 +48,14 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
     style: "currency",
     currency: "BRL",
   });
+
+  //percetege and counters
+
   const transactionsPending = dataDashboard?.totalCount;
   const transactionsPendingPercetege = dataDashboard?.percetege;
+
+  const ordersPending = dataDashboard?.pending.orders.totalCount;
+  const ordersPendingPercetege = dataDashboard?.pending.orders.percetege;
 
   const theme = useTheme();
   const ContentWidthValue = "300px";
@@ -179,6 +186,20 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
                   iconDashBoardColor={IconDashBoardColor(transactionsPendingPercetege)}
                   iconDashBoard={IconDashBoard(transactionsPendingPercetege)}
                   subTitle={`${transactionsPendingPercetege}%`}
+                />
+              ) : (
+                <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>
+              )}
+            </SwiperSlide>
+
+            <SwiperSlide style={stylesConfig}>
+              {dataDashboard ? (
+                <DashboardOrdersPendingNotification
+                  contentWidthValue={ContentWidthValue}
+                  ordersPending={ordersPending}
+                  iconDashBoardColor={IconDashBoardColor(ordersPendingPercetege)}
+                  iconDashBoard={IconDashBoard(ordersPendingPercetege)}
+                  subTitle={`${ordersPendingPercetege}%`}
                 />
               ) : (
                 <Skeleton width={300} sx={styleSkeletonConfig}></Skeleton>

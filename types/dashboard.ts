@@ -10,10 +10,14 @@ export interface IDashboard {
   transactions: IFinance[];
   transactionsPreviusMonth: IFinance[];
 }
-
+export interface Orders {
+  totalCount: number;
+  percetege: number;
+}
 export interface Pending {
   credit: Credit;
   debit: Debit;
+  orders: Orders;
 }
 
 export interface Debit {

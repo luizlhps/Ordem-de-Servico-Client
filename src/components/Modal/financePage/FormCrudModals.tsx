@@ -4,7 +4,9 @@ import { IconButton, Icon } from "@mui/material";
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { IFinance } from "../../../../types/finance";
 import DeleteModal from "../deleteModal";
-import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
+import { IOrder, Status } from "../../../../types/order";
+import { IStatus } from "@/services/api/statusApi";
+import { IService } from "@/hook/useGetFetchService";
 
 const style = {
   padding: "33px",
@@ -36,9 +38,11 @@ interface IProps {
   modals: IModals;
   FormCreate: ElementType;
   FormUpdate: ElementType;
+  FormDelete: ElementType;
+
   fetchApi: () => void;
   modalActions: ImodalActions;
-  selectItem: IFinance | undefined;
+  selectItem: IFinance | IOrder | IStatus | IService | undefined;
 }
 
 export const CloseModal: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
@@ -52,7 +56,7 @@ export const CloseModal: React.FC<{ handleClose: () => void }> = ({ handleClose 
 };
 
 export const FormCrudModals: React.FC<IProps> = memo(
-  ({ modals, fetchApi, FormCreate, modalActions, FormUpdate, selectItem }) => {
+  ({ modals, fetchApi, FormCreate, modalActions, FormUpdate, selectItem, FormDelete }: IProps) => {
     const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
     const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
       modalActions;
@@ -67,8 +71,7 @@ export const FormCrudModals: React.FC<IProps> = memo(
           open={modalUpdateOpen}
           style={style}
         />
-
-        <DeleteTransaction
+        <FormDelete
           fetchApi={fetchApi}
           handleClose={modalDeleteHandleClose}
           open={modalOpendelete}

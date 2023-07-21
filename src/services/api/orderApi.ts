@@ -1,4 +1,4 @@
-import { RootOrder, Service } from "../../../types/order";
+import { IOrder, RootOrder, Service } from "../../../types/order";
 import { Api } from "./axios-config";
 
 export interface IOrderData {
@@ -38,7 +38,7 @@ class OrderApi {
     return Api.get<RootOrder>(`order/pending?filter=${filter}&page=${page}&limit=${limit}`);
   }
 
-  async createOrder(data: IOrderData, Costumerid: string) {
+  async createOrder(data: IOrder, Costumerid: string) {
     const res = await Api.post("order", {
       equipment: data.equipment,
       brand: data.brand,

@@ -11,6 +11,7 @@ import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
 import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
 import { DashboardFinance } from "@/components/DashboardFinance";
+import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
 
 const Index = () => {
   const theme = useTheme();
@@ -21,16 +22,7 @@ const Index = () => {
   //modal
   const { modals, modalActions, modalSets } = useModal();
   const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
-  const {
-    modalHandleOpen,
-    modalHandleClose,
-    modalUpdateHandleOpen,
-    modalHandleUpdateClose,
-    modalDeleteHandleOpen,
-    modalDeleteHandleClose,
-    modalViewClose,
-    modalViewHandleOpen,
-  } = modalActions;
+  const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewHandleOpen } = modalActions;
 
   //Api
   const { currentPage, fetchApi, loading, financeData, setCurrentPage, dataDashboard } = useGetFetchFinance();
@@ -61,6 +53,7 @@ const Index = () => {
         FormCreate={NewTransation}
         FormUpdate={UpdateTransaction}
         selectItem={selectItem}
+        FormDelete={DeleteTransaction}
       />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
       <Box marginTop={4}>

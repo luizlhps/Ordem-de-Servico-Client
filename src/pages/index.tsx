@@ -16,6 +16,8 @@ import { IOrder, RootOrder } from "../../types/order";
 import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
 import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
+import { DashboardOrdersAndFinance } from "@/components/DashboardOrdersAndFinance";
+import { FormCrudModals } from "@/components/Modal/financePage/FormCrudModals";
 
 //style custom
 
@@ -242,7 +244,8 @@ export default function Home() {
     <>
       <HeaderLayout subTitle="Bem vindo a area de dashboard" title="Dashboard" />
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} marginBottom={3}></Stack>
-      <DashboardFinance dataDashboard={dataDashboard} />
+      {/* <FormCrudModals FormDelete={} FormCreate={} FormUpdate={} fetchApi={} modalActions={modalActions} modals={modals} selectItem={selectItem}/> */}
+      <DashboardOrdersAndFinance dataDashboard={dataDashboard} />
       {dataDashboard ? (
         <Box
           marginTop={2}
