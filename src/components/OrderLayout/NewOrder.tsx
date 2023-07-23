@@ -8,6 +8,7 @@ import { LayoutCreateOs } from "./LayoutCreateOs";
 import { orderApi } from "@/services/api/orderApi";
 import { ICustomer } from "@/pages/clients";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
+import { IStatus } from "../ServicesPage/Status";
 
 interface IPropsNewCostumer {
   handleClose: () => void;
@@ -23,40 +24,27 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
   const [costumer, setCostumer] = useState<ICustomer | undefined>(undefined);
+  const [statusId, setStatusId] = useState<IStatus | undefined>();
 
-  function confirmData() {
-    async function createOrder(data: any, costumer: string) {
-      try {
-        const statusUpdateId = async () => {
-          try {
-            const requestStatusApi = await statusApi.getAllStatus("", 0, 0);
-
-            if (!(requestStatusApi instanceof Error)) {
-              const { status } = requestStatusApi;
-              const statusID = status.find((status: IDetailsStatus) => status.name === data?.status);
-
-              const updateStatus = { ...data, status: statusID?._id };
-              return updateStatus;
-            } else {
-              throw new Error("Ocorreu um erro ao encontrar o statusId");
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        };
-
-        const res = await orderApi.createOrder(await statusUpdateId(), costumer);
-
-        setSuccess(true);
-        fetchApi();
-      } catch (err: any) {
-        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
-          setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
-        setError(true);
-      }
+  async function createOrder(data: any, costumer: string) {
+    try {
+      const statusUpdateId = async () => {
+        const updateStatus = { ...data, status: statusId };
+        return updateStatus;
+      };
+      await orderApi.createOrder(await statusUpdateId(), costumer);
+      setSuccess(true);
+      fetchApi();
+    } catch (err: any) {
+      setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+      setError(true);
+    } finally {
+      setData(undefined);
       setLoading(false);
     }
+  }
 
+  function confirmData() {
     if (!costumer) return new Error("O id do cliente não foi selecionado");
     createOrder(data, costumer._id);
   }
@@ -67,6 +55,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
       ...values,
     }));
   };
+  console.log(statusId);
 
   return (
     <>
@@ -74,17 +63,23 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
-        <CloseModal handleClose={handleClose} />
-        <LayoutCreateOs
-          data={data}
-          setFormValues={setFormValues}
-          setCostumerId={setCostumer}
-          loading={loading}
-          confirmData={confirmData}
-          handleClose={handleClose}
-          costumer={costumer}
-          typeForm={"createOs"}
-        />
+        {open && (
+          <>
+            <CloseModal handleClose={handleClose} />
+            <LayoutCreateOs
+              statusId={statusId}
+              setStatusId={setStatusId}
+              data={data}
+              setFormValues={setFormValues}
+              setCostumerId={setCostumer}
+              loading={loading}
+              confirmData={confirmData}
+              handleClose={handleClose}
+              costumer={costumer}
+              typeForm={"createOs"}
+            />
+          </>
+        )}
       </TransitionsModal>
     </>
   );

@@ -1,8 +1,24 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
 import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
+import { IStatus } from "@/services/api/statusApi";
+import { ICustomerAndOrder } from "./UpdateOrder";
+import { ICustomer } from "@/pages/clients";
+
+interface LayoutProps {
+  data: ICustomerAndOrder | undefined;
+  setFormValues: (values: any) => void;
+  setCostumerId: Dispatch<SetStateAction<ICustomer | undefined>>;
+  loading: boolean;
+  costumer: ICustomer | undefined;
+  confirmData: () => void | undefined;
+  handleClose: any;
+  typeForm: any;
+  setStatusId: any;
+}
+
 export function LayoutUpdateOrder({
   data,
   setFormValues,
@@ -12,9 +28,11 @@ export function LayoutUpdateOrder({
   confirmData,
   handleClose,
   typeForm,
-}: any) {
+  setStatusId,
+}: LayoutProps) {
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
+
   return (
     <Container
       maxWidth="md"
@@ -36,6 +54,7 @@ export function LayoutUpdateOrder({
           setData={setFormValues}
           typeForm="createOs"
           setCostumerId={setCostumerId}
+          setStatusId={setStatusId}
         />
       )}
 

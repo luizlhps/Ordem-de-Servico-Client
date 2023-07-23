@@ -1,7 +1,8 @@
 import { Container, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { useFormStep } from "@/hook/useFormStep";
+import { IStatus } from "@/services/api/statusApi";
 export function LayoutCreateOs({
   data,
   setFormValues,
@@ -11,10 +12,11 @@ export function LayoutCreateOs({
   handleClose,
   costumer,
   typeForm,
+  statusId,
+  setStatusId,
 }: any) {
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
-
   return (
     <Container
       maxWidth="md"
@@ -36,6 +38,7 @@ export function LayoutCreateOs({
           setData={setFormValues}
           typeForm="createOs"
           setCostumerId={setCostumerId}
+          setStatusId={setStatusId}
         />
       )}
       {formStep > 0 && (

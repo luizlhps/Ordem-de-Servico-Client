@@ -49,7 +49,13 @@ export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalAc
   return (
     <>
       <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />
-      <UpdateOrder handleClose={modalHandleUpdateClose} fetchApi={fetchApi} open={modalUpdateOpen} style={style} />
+      <UpdateOrder
+        handleClose={modalHandleUpdateClose}
+        fetchApi={fetchApi}
+        open={modalUpdateOpen}
+        style={style}
+        selectItem={selectItem}
+      />
     </>
   );
 });

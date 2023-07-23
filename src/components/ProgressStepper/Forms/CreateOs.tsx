@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
-import { TStatusData, statusApi } from "@/services/api/statusApi";
+import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/pt-br";
 import utc from "dayjs/plugin/utc";
@@ -95,6 +95,7 @@ interface NameFormProps {
   setData: any;
   typeForm: TypeForm;
   setCostumerId?: React.Dispatch<ICustomer | undefined>;
+  setStatusId: React.Dispatch<IStatus | undefined>;
 }
 
 type Inputs = {
@@ -115,6 +116,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   setData,
   typeForm,
   setCostumerId,
+  setStatusId,
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
@@ -122,7 +124,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
 
-  const [statusId, setStatusId] = useState<string | undefined>();
   const [dateValue, setDateValue] = useState<any>();
 
   const { request } = useApiRequest();
@@ -164,6 +165,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const onSubmit = (data: Inputs) => {
     console.log("sub", data);
     setData(data);
+    nextFormStep();
   };
 
   const handlePrev = () => {
@@ -173,7 +175,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
   const handleNext = () => {
     handleSubmit(onSubmit)();
-    nextFormStep();
   };
 
   useEffect(() => {
@@ -184,11 +185,11 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("defect", data.defect);
       setValue("status", data.status);
       setValue("observation", data.observation);
-
-      const newDateValue = data?.dateEntry;
+      setValue("dateEntry", dayjs(data?.dateEntry).format());
+      /*       const newDateValue = data?.dateEntry;
 
       setDateValue(dayjs(newDateValue));
-      setValue("dateEntry", dayjs(newDateValue).format());
+      */
     }
   }, [data]);
 
@@ -256,7 +257,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 >
                   {statusData?.status.map((item) => {
                     return (
-                      <MenuItem key={item._id} value={item.name} onClick={() => setStatusId(item._id)}>
+                      <MenuItem key={item._id} value={item.name} onClick={() => setStatusId(item)}>
                         {item.name}
                       </MenuItem>
                     );
@@ -328,29 +329,26 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 />
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                {data || typeForm === "createOs" ? (
+                {data?.dateEntry || typeForm === "createOs" ? (
                   <>
                     <Typography marginTop={3} marginBottom={1}>
                       Data de entrada*
                     </Typography>
                     <Controller
                       name="dateEntry"
-                      defaultValue={dateValue ? dayjs(dateValue).format() : null}
+                      defaultValue={data ? dayjs(data.dateEntry).format() : undefined}
                       control={control}
                       rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
                       render={({ field }) => (
                         <>
                           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                             <DateTimePicker
+                              {...field}
                               sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                              value={dateValue}
+                              value={dayjs(field.value)}
                               onChange={(newValue) => {
-                                if (newValue !== null) {
-                                  setDateValue(newValue);
-                                  field.onChange(dayjs(dateValue).format());
-                                } else {
-                                  field.onChange("");
-                                }
+                                field.onChange(dayjs(newValue).format());
+                                console.log(newValue);
                               }}
                             />
                           </LocalizationProvider>
@@ -435,7 +433,9 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <>
                   {" "}
                   <Button
-                    onClick={handlePrev}
+                    onClick={() => {
+                      handlePrev();
+                    }}
                     size="large"
                     sx={{
                       marginTop: 6,

@@ -28,7 +28,7 @@ export default function FormSelect({ children, control, name, defaultValue, labe
       <FormControl size="small" sx={{ width: "100%" }}>
         {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
         <Controller
-          defaultValue={defaultValue ? defaultValue : ""}
+          defaultValue={defaultValue}
           control={control}
           rules={rules}
           name={name}
@@ -38,8 +38,8 @@ export default function FormSelect({ children, control, name, defaultValue, labe
             formState,
           }) => (
             <Select
-              value={value ? value : ""}
-              defaultValue={value ? value : ""}
+              value={value}
+              defaultValue={value}
               labelId="select-label"
               id="select"
               label={label}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
-import { ViewOrderModal } from "@/components/Modal/orderPage/ViewOrderModal";
+import { ViewOrderModal } from "@/components/OrderLayout/ViewOrderModal";
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
 import styled from "styled-components";
 import dynamic from "next/dynamic";

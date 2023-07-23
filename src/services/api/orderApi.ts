@@ -23,16 +23,7 @@ export interface IOrderData {
 
 class OrderApi {
   async getAllOrder(filter = "", page = 1, limit = 10) {
-    try {
-      const res = await Api.get(`order/?filter=${filter}&page=${page}&limit=${limit}`);
-
-      if (res) return res;
-
-      return new Error("Erro ao listar os registros.");
-    } catch (error) {
-      console.error(error);
-      return new Error((error as { message: string }).message || "Erro ao listar os registros.");
-    }
+    return Api.get<RootOrder>(`order/?filter=${filter}&page=${page}&limit=${limit}`);
   }
   getPendingOrder(filter = "", page = 1, limit = 10) {
     return Api.get<RootOrder>(`order/pending?filter=${filter}&page=${page}&limit=${limit}`);

@@ -56,16 +56,12 @@ export const AdressForm: React.FC<NameFormProps> = ({
   const columnMedia = useMediaQuery("(max-width:1110px)");
 
   const {
-    register,
     handleSubmit,
     watch,
     control,
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
-
-  const numberForm = watch("number");
-  const cepForm = watch("cep");
 
   useEffect(() => {
     if (data && data.address) {
@@ -110,6 +106,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
 
   const onSubmit = (data: Inputs) => {
     setData({ address: [data] });
+    nextFormStep();
   };
   return (
     <>
@@ -322,16 +319,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     background: theme.palette.primary.light,
                   }}
                 />
-
-                <Box
-                  sx={{
-                    width: 22,
-                    margin: "auto 10px",
-                    height: 3,
-                    alignContent: "center",
-                    background: theme.palette.primary.light,
-                  }}
-                />
                 <OsProcessSVG color={theme.palette.primary.light} />
               </>
             )}
@@ -355,7 +342,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
               <Button
                 onClick={() => {
                   handleSubmit(onSubmit)();
-                  nextFormStep();
                 }}
                 size="large"
                 sx={{

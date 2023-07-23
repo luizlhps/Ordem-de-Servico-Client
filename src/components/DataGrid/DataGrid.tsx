@@ -60,6 +60,7 @@ const DataGrids: React.FC<PropsDataGrid> = ({
   loading,
 }) => {
   const theme = useTheme();
+  console.log(loading);
 
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>

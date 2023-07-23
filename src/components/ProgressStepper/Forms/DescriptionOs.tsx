@@ -120,16 +120,12 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const [discount, setDiscount] = useState<SetStateAction<Number | undefined>>(0);
   const [newStatus, setNewStatus] = useState<SetStateAction<string | undefined>>();
 
-  const [dateValue, setDateValue] = useState<any>(dayjs(undefined));
-
   useEffect(() => {
     if (data && data.technicalOpinion) {
-      setValue("discount", data.discount);
+      /*   setValue("discount", data.discount); */
       setValue("technicalOpinion", data.technicalOpinion);
-      const newDateValue = data?.dateExit;
 
-      setDateValue(dayjs(newDateValue));
-      setValue("dateExit", dayjs(newDateValue).format());
+      /* setValue("dateExit", dayjs(newDateValue).format()); */
     }
   }, [data, prevFormStep]);
 
@@ -149,7 +145,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   useEffect(() => {
     FetchGetServices();
-    defaultValueServices();
+    /*     defaultValueServices(); */
     setDiscount(data.discount);
   }, []);
 
@@ -158,6 +154,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
       const services = data.services?.map((item: any) => item);
       return services;
     }
+    return "";
   };
 
   const { modalActions, modals, modalSets } = useModal();
@@ -168,10 +165,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const {
     register,
     handleSubmit,
-    watch,
     control,
-    setError,
-    getValues,
     setValue,
     formState: { errors },
   } = useForm<any>({
@@ -226,8 +220,19 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   const totalPrice = calculateTotalPrice(servicesPrice, discount);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: Inputs) => {
+    console.log("sub", data);
     setData(data);
+    nextFormStep();
+  };
+
+  const handlePrev = () => {
+    prevFormStep();
+    /*  handleSubmit(onSubmit)(); */
+  };
+
+  const handleNext = () => {
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -279,13 +284,13 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                         },
                       }}
                       name={`services[${index}]`}
-                      defaultValue={""}
                       label="Selecione o serviço"
                       width="100%"
                       control={control}
+                      defaultValue={""}
                     >
                       {servicesData?.service.map((item: IService) => (
-                        <MenuItem key={item._id} value={item._id} onClick={() => console.log(item._id)}>
+                        <MenuItem key={item._id} value={item._id}>
                           {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
                         </MenuItem>
                       ))}
@@ -363,6 +368,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                   <Controller
                     control={control}
                     name="discount"
+                    defaultValue={data?.discount}
                     render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
                       <TextField
                         type="number"
@@ -377,13 +383,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                     )}
                   />
 
-                  {dateValue ? (
+                  {data ? (
                     <>
                       <Typography marginTop={3} marginBottom={1}>
                         Data de Saída
                       </Typography>
                       <Controller
                         name="exitDate"
+                        defaultValue={data ? dayjs(data.exitDate).format() : undefined}
                         control={control}
                         rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
                         render={({ field }) => (
@@ -392,14 +399,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                               <DateTimePicker
                                 {...field}
                                 sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                                value={dateValue}
+                                value={dayjs(field.value)}
                                 onChange={(newValue) => {
-                                  if (newValue !== null) {
-                                    field.onChange(dayjs(newValue).format());
-                                    setDateValue(newValue);
-                                  } else {
-                                    field.onChange("");
-                                  }
+                                  field.onChange(dayjs(newValue).format());
+                                  console.log(newValue);
                                 }}
                               />
                             </LocalizationProvider>
@@ -423,8 +426,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Stack flexDirection={"row"} justifyContent={"center"} gap={3}>
                 <Button
                   onClick={() => {
-                    handleSubmit(onSubmit)();
-                    prevFormStep();
+                    handlePrev();
                   }}
                   size="large"
                   sx={{
@@ -437,8 +439,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 </Button>
                 <Button
                   onClick={() => {
-                    handleSubmit(onSubmit)();
-                    nextFormStep();
+                    handleNext();
                   }}
                   size="large"
                   sx={{

@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect } from "react";
-import TransitionsModal from "../Modal";
+import TransitionsModal from "../Modal/Modal";
 import { IconButton, Icon, Typography, Stack, Box, Divider, useTheme, Button, useMediaQuery } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
-import { IOrder } from "../../../../types/order";
+import { IOrder } from "../../../types/order";
 import dayjs, { Dayjs } from "dayjs";
 import { normalizePhoneNumber } from "@/utils/Masks";
 

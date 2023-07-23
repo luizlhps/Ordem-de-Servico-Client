@@ -38,9 +38,7 @@ const NewTransation = ({ handleClose, fetchApi, style, open }: INewTransationPro
         setError(true);
       })
       .finally(() => {
-        setLoading((item: any) => {
-          return false;
-        });
+        setLoading(false);
         handleClose();
       });
   };
