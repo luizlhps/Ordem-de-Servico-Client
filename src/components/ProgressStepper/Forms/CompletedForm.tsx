@@ -8,7 +8,7 @@ import { HeaderLayout } from "@/components/HeaderLayout";
 import { FormRegisterCostumerContext } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
-import { ICustomer } from "@/pages/clients";
+import { ICostumer } from "../../../../types/costumer";
 //style custom
 const InputCustom = styled.input`
   height: 35px;
@@ -51,17 +51,17 @@ interface Iprops {
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
-  costumer: ICustomer | undefined;
+  costumer: ICostumer | undefined;
 }
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {
   const theme = useTheme();
 
   const Redirect = () => {
-    handleClose();
     if (confirmData) {
       confirmData();
     }
+    if (!loading) handleClose();
   };
 
   return (

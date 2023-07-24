@@ -5,11 +5,11 @@ import { ToastError } from "../Toast/ToastError";
 import TransitionsModal from "../Modal/Modal";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { LayoutUpdateOrder } from "./LayoutUpdateOrder";
-import { ICustomer } from "@/pages/clients";
 import { IOrder } from "../../../types/order";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IStatus } from "../ServicesPage/Status";
+import { ICostumer } from "../../../types/costumer";
 
 interface IPropsUpdateCostumer {
   handleClose: () => void;
@@ -55,15 +55,12 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsU
 
   const [data, setData] = useState<ICustomerAndOrder | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [costumer, setCostumer] = useState<ICustomer | undefined>();
+  const [costumer, setCostumer] = useState<ICostumer | undefined>();
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
   ////////
 
-  console.log(selectItem);
-
   const selectItemId = selectItem?._id;
-
   const selectItemServices: string[] = [];
 
   selectItem?.services?.map((item: any) => {
@@ -105,23 +102,22 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsU
   };
 
   function confirmData() {
-    if (selectItem) updateOrder(data, selectItem?._id);
+    if (costumer) updateOrder(data, costumer._id);
 
     async function updateOrder(data: any, costumer: string) {
       try {
-        const statusUpdateId = async () => {
-          const updateStatus = { ...data, status: statusId };
-          return updateStatus;
+        const statusAndCostumerUpdateId = async () => {
+          const updateStatusAndCostumer = { ...data, status: statusId, costumer: costumer };
+          return updateStatusAndCostumer;
         };
 
         if (selectItemId) {
-          const res = await orderApi.updateOrder(await statusUpdateId(), selectItemId);
+          await orderApi.updateOrder(await statusAndCostumerUpdateId(), selectItemId);
         }
         setSuccess(true);
         fetchApi();
       } catch (err: any) {
-        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
-          setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+        setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       }
       setLoading(false);

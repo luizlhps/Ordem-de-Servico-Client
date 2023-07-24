@@ -7,6 +7,7 @@ import NewOrder from "@/components/OrderLayout/NewOrder";
 import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { IOrder } from "../../../../types/order";
+import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -55,6 +56,12 @@ export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalAc
         open={modalUpdateOpen}
         style={style}
         selectItem={selectItem}
+      />
+      <DeleteOrder
+        fetchApi={fetchApi}
+        handleClose={modalDeleteHandleClose}
+        open={modalOpendelete}
+        selectedItem={selectItem}
       />
     </>
   );

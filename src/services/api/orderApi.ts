@@ -22,7 +22,7 @@ export interface IOrderData {
 }
 
 class OrderApi {
-  async getAllOrder(filter = "", page = 1, limit = 10) {
+  getAllOrder(filter = "", page = 1, limit = 10) {
     return Api.get<RootOrder>(`order/?filter=${filter}&page=${page}&limit=${limit}`);
   }
   getPendingOrder(filter = "", page = 1, limit = 10) {
@@ -54,13 +54,8 @@ class OrderApi {
     }
   }
 
-  async deleteOrder(id: string) {
-    try {
-      const res = await Api.delete(`order/${id}`);
-    } catch (error) {
-      console.log("ocorreu um Erro ao deletar a O.S");
-      throw new Error((error as { message: string }).message || "Erro ao deletar a O.S.");
-    }
+  deleteOrder(id: string) {
+    return Api.delete(`order/${id}`);
   }
 
   async updateOrder(data: IOrderData, orderId: string) {
@@ -76,7 +71,7 @@ class OrderApi {
         dateEntry: data.dateEntry,
         services: data.services,
         status: data.status,
-        customer: data.name,
+        customer: data.costumer,
       });
       return res;
     } catch (error) {

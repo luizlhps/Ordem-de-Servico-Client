@@ -85,7 +85,6 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
     setValueData(data);
   };
 

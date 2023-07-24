@@ -1,3 +1,5 @@
+import { ICostumer } from "./costumer";
+
 export interface RootOrder {
   total: number;
   page: number;
@@ -16,7 +18,7 @@ export interface IOrder {
   dateEntry: string;
   services: Service[];
   status: Status;
-  customer: Customer;
+  customer: ICostumer;
   amount: number;
   discount: number;
   totalAmount: number;
@@ -47,33 +49,6 @@ export interface Status {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
-}
-
-export interface Customer {
-  _id: string;
-  id: number;
-  name: string;
-  email: string;
-  contact: string;
-  phone: string;
-  cpfOrCnpj: string;
-  telephone: string;
-  address: Address[];
-  orders: string[];
-  deleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Address {
-  cep: string;
-  state: string;
-  neighborhood: string;
-  street: string;
-  city: string;
-  number: string;
-  complement: string;
-  _id: string;
 }
 
 export interface ServicePrice {

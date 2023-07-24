@@ -37,7 +37,7 @@ export function LayoutCreateOs({
           data={data}
           setData={setFormValues}
           typeForm="createOs"
-          setCostumerId={setCostumerId}
+          setCostumer={setCostumerId}
           setStatusId={setStatusId}
         />
       )}

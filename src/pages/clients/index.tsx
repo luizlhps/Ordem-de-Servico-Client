@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { ColumnsDataGrid } from "@/components/DataGrid/utils/costumerPage/costumerColumnConfig";
-import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
+import { constumersApi } from "@/services/api/costumersApi";
 import DeleteModal from "@/components/Modal/deleteModal";
 
 import { useDebouse } from "@/hook";
@@ -18,32 +18,7 @@ import useModal from "@/hook/useModal";
 import { FormRegisterCostumerProvider } from "@/contexts";
 import { UpdateCostumerModal } from "@/components/Modal/costumerPage/UpdateCostumerModal";
 import { FormUpdateCostumerProvider } from "@/contexts/formUpdateCostumerContext";
-
-export interface ICustomer {
-  _id: string;
-  id: number;
-  name: string;
-  email: string;
-  contact: string;
-  phone: string;
-  cpfOrCnpj: string;
-  telephone: string;
-  address: IAddress[];
-  orders: any[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IAddress {
-  cep: string;
-  state: string;
-  neighborhood: string;
-  street: string;
-  city: string;
-  number: string;
-  complement: string;
-  _id: string;
-}
+import { RootCostumer } from "../../../types/costumer";
 
 export default function Client() {
   const { debouse } = useDebouse();
@@ -52,7 +27,7 @@ export default function Client() {
 
   const [searchField, setSearchField] = useState("");
   const [selectedItem, setSelectedItem] = useState("" || Object);
-  const [costumerData, setCostumersData] = useState<ICostumerData>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
+  const [costumerData, setCostumersData] = useState<RootCostumer>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
 
   const [loading, setLoading] = useState(false);

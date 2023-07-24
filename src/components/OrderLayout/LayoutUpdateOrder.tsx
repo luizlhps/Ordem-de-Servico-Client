@@ -5,14 +5,14 @@ import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
 import { IStatus } from "@/services/api/statusApi";
 import { ICustomerAndOrder } from "./UpdateOrder";
-import { ICustomer } from "@/pages/clients";
+import { ICostumer } from "../../../types/costumer";
 
 interface LayoutProps {
   data: ICustomerAndOrder | undefined;
   setFormValues: (values: any) => void;
-  setCostumerId: Dispatch<SetStateAction<ICustomer | undefined>>;
+  setCostumerId: Dispatch<SetStateAction<ICostumer | undefined>>;
   loading: boolean;
-  costumer: ICustomer | undefined;
+  costumer: ICostumer | undefined;
   confirmData: () => void | undefined;
   handleClose: any;
   typeForm: any;
@@ -53,7 +53,7 @@ export function LayoutUpdateOrder({
           data={data}
           setData={setFormValues}
           typeForm="createOs"
-          setCostumerId={setCostumerId}
+          setCostumer={setCostumerId}
           setStatusId={setStatusId}
         />
       )}

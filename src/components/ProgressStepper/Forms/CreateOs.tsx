@@ -32,9 +32,10 @@ import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
-import { ICostumerData, constumersApi } from "@/services/api/costumersApi";
-import { ICustomer } from "@/pages/clients";
+import { constumersApi } from "@/services/api/costumersApi";
 import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
+import { RootOrder } from "../../../../types/order";
+import { ICostumer, RootCostumer } from "../../../../types/costumer";
 
 //style custom
 const InputCustom = styled.input`
@@ -94,7 +95,7 @@ interface NameFormProps {
   data: any;
   setData: any;
   typeForm: TypeForm;
-  setCostumerId?: React.Dispatch<ICustomer | undefined>;
+  setCostumer: React.Dispatch<ICostumer>;
   setStatusId: React.Dispatch<IStatus | undefined>;
 }
 
@@ -115,16 +116,14 @@ export const CreateOs: React.FC<NameFormProps> = ({
   data,
   setData,
   typeForm,
-  setCostumerId,
+  setCostumer,
   setStatusId,
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
 
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
-  const [costumerData, setConstumerData] = useState<ICostumerData | undefined>(undefined);
-
-  const [dateValue, setDateValue] = useState<any>();
+  const [costumerData, setConstumerData] = useState<RootCostumer | undefined>(undefined);
 
   const { request } = useApiRequest();
 
@@ -155,8 +154,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   const {
     register,
     handleSubmit,
-    reset,
-    watch,
+
     control,
     setValue,
     formState: { errors },
@@ -225,7 +223,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                               key={item._id}
                               value={item.name}
                               onClick={() => {
-                                setCostumerId ? setCostumerId(item as any) : undefined;
+                                setCostumer(item);
                               }}
                             >
                               {item.name}
