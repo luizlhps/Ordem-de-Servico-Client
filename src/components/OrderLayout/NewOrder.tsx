@@ -41,6 +41,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
     } finally {
       setData(undefined);
       setLoading(false);
+      handleClose();
     }
   }
 

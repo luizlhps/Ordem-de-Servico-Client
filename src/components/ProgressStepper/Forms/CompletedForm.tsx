@@ -46,22 +46,19 @@ const ContainerCustom = styled.div`
 `;
 
 interface Iprops {
-  confirmData: (() => void) | undefined;
+  confirmData: () => void;
   data: any;
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
-  costumer: ICostumer | undefined;
+  costumer: ICostumer;
 }
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {
   const theme = useTheme();
 
   const Redirect = () => {
-    if (confirmData) {
-      confirmData();
-    }
-    if (!loading) handleClose();
+    confirmData();
   };
 
   return (

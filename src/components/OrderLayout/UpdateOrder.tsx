@@ -58,8 +58,6 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsU
   const [costumer, setCostumer] = useState<ICostumer | undefined>();
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
-  ////////
-
   const selectItemId = selectItem?._id;
   const selectItemServices: string[] = [];
 
@@ -113,6 +111,8 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsU
 
         if (selectItemId) {
           await orderApi.updateOrder(await statusAndCostumerUpdateId(), selectItemId);
+        } else {
+          throw new Error("ohoho");
         }
         setSuccess(true);
         fetchApi();
@@ -120,6 +120,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsU
         setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       }
+      handleClose();
       setLoading(false);
     }
   }

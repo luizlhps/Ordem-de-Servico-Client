@@ -22,7 +22,7 @@ export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi }: IProp
   const deleteTransaction = (id: string) => {
     setLoading(true);
     orderApi
-      .deleteOrder("2323")
+      .deleteOrder(id)
       .then(() => setSuccess(true))
       .catch((err: unknown) => {
         if (err instanceof AxiosError) {

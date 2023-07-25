@@ -55,7 +55,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   Valor Total
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  R$ {selectedItem?.totalAmount.toFixed(2)}
+                  R$ {selectedItem?.totalAmount?.toFixed(2)}
                 </Typography>
               </Box>
             </Stack>
@@ -68,9 +68,9 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
             sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
           />
           <Stack width={"100%"} marginBottom={2}>
-            <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer.name}</Typography>
+            <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer?.name}</Typography>
             <Typography fontSize={14} fontWeight="300" marginBottom={2}>
-              {normalizePhoneNumber(selectedItem?.customer.phone)}
+              {normalizePhoneNumber(selectedItem?.customer?.phone)}
             </Typography>
           </Stack>
 
@@ -109,12 +109,12 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
             </AccordionList>
 
             <AccordionList
-              description={`${selectedItem?.services.length} serviços`}
+              description={`${selectedItem?.services?.length} serviços`}
               icon="services"
               subTitle="Veja os serviços realizados"
               title="Serviços"
             >
-              {selectedItem?.services.map((service, index) => {
+              {selectedItem?.services?.map((service, index) => {
                 return (
                   <React.Fragment key={index}>
                     <Stack direction={"row"} spacing={6}>
@@ -123,17 +123,17 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                         <Typography fontSize={14}>Valor</Typography>
                       </Stack>
                       <Stack spacing={2}>
-                        <Typography fontSize={14}>{service.title}</Typography>
-                        <Typography fontSize={14}>R$ {service.amount.toFixed(2)}</Typography>
+                        <Typography fontSize={14}>{service?.title}</Typography>
+                        <Typography fontSize={14}>R$ {service?.amount?.toFixed(2)}</Typography>
                       </Stack>
                     </Stack>
                     <Box marginTop={5} marginBottom={4}>
                       <Typography marginBottom={2} fontSize={14}>
                         Descrição
                       </Typography>
-                      <Typography fontSize={14}>{service.description}</Typography>
+                      <Typography fontSize={14}>{service?.description}</Typography>
                     </Box>
-                    {index !== selectedItem?.services.length - 1 && (
+                    {index !== selectedItem?.services?.length - 1 && (
                       <Box
                         marginTop={2}
                         marginBottom={2}
@@ -177,7 +177,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
               </Box>
               <Box flexDirection={"column"} display={"flex"}>
                 <Typography fontSize={14} fontWeight={300}>
-                  R$ {selectedItem?.discount.toFixed(2)}
+                  R$ {selectedItem?.discount?.toFixed(2)}
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
                   17/04/2023

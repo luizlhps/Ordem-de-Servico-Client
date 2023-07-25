@@ -21,33 +21,10 @@ const Orders = () => {
 
   const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
-  //Form Sucess and Error
-  const {
-    setFormSuccess,
-    formSuccess,
-    errorMessage,
-    setErrorMessage,
-    messageForm,
-    setMessageForm,
-    formError,
-    setFormError,
-  } = useContext(FormSucessOrErrorContext);
-
   //modal
-  const { modals, modalActions, modalSets } = useModal();
-  const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
-  const {
-    modalHandleOpen,
-    modalHandleClose,
-    modalUpdateHandleOpen,
-    modalHandleUpdateClose,
-    modalDeleteHandleOpen,
-    modalDeleteHandleClose,
-    modalViewClose,
-    modalViewHandleOpen,
-  } = modalActions;
-
-  const { setModalOpen, setModalUpdateOpen, setModalOpenDelete } = modalSets;
+  const { modals, modalActions } = useModal();
+  const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewClose, modalViewHandleOpen } =
+    modalActions;
 
   //Api
   const { currentPage, fetchApi, loading, ordersData, setCurrentPage } = useGetFetchOrders();
@@ -59,10 +36,6 @@ const Orders = () => {
     currentPage: currentPage,
     fetchApi: fetchApi,
   });
-
-  useEffect(() => {
-    setFormSuccess(false);
-  }, [formSuccess]);
 
   //Config Grid
   const columns = columnsDataGrid(
@@ -94,25 +67,8 @@ const Orders = () => {
 
   return (
     <>
-      <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
-      <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
-
-      <DeleteServiceModal
-        fetchApi={fetchApi}
-        selectedItem={selectItem}
-        setFormSucessoValue={setFormSuccess}
-        setErrorMessageValue={setErrorMessage}
-        setMessageForm={setMessageForm}
-        modalOpendelete={modalOpendelete}
-        modalDeleteHandleClose={modalDeleteHandleClose}
-        setModalOpenDelete={setModalOpenDelete}
-        modalDeleteHandleOpen={modalDeleteHandleOpen}
-      />
-      <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem}></ViewOrderModal>
       <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
-
       <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
-
       <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
         <TextField
           value={searchField || ""}

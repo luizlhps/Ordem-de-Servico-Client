@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
-import { ViewOrderModal } from "@/components/OrderLayout/ViewOrderModal";
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
@@ -13,11 +12,10 @@ import { DashboardFinance } from "@/components/DashboardFinance";
 import { orderApi } from "@/services/api/orderApi";
 import { useSearchField } from "@/hook/useSearchField";
 import { IOrder, RootOrder } from "../../types/order";
-import { financeColumnDataGrid } from "@/components/DataGrid/utils/FinanceColumnDataGrid";
 import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { DashboardOrdersAndFinance } from "@/components/DashboardOrdersAndFinance";
-import { FormCrudModals } from "@/components/Modal/financePage/FormCrudModals";
+import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
 
 //style custom
 
@@ -189,32 +187,7 @@ export default function Home() {
       tooltip: {
         theme: "dark",
       },
-      /* 
-      title: {
-        text: "Dividas e Faturamento",
-        align: "left" as "left",
-        offsetX: 6,
-        offsetY: 10,
-        floating: false,
-        style: {
-          fontFamily: theme.typography.fontFamily,
-          fontSize: "20px",
-          fontWeight: 500,
-          width: "100%",
-        },
-      },
 
-      subtitle: {
-        text: `Mês de ${dataAtualSaoPaulo.format("MMMM")}`,
-        floating: true,
-        align: "right" as "right",
-        offsetY: 10,
-        style: {
-          fontFamily: theme.typography.fontFamily,
-          fontWeigth: 400,
-          fontSize: "14px",
-        },
-      }, */
       legend: {
         show: true,
         position: "bottom" as "bottom",
@@ -244,7 +217,12 @@ export default function Home() {
     <>
       <HeaderLayout subTitle="Bem vindo a area de dashboard" title="Dashboard" />
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} marginBottom={3}></Stack>
-      {/* <FormCrudModals FormDelete={} FormCreate={} FormUpdate={} fetchApi={} modalActions={modalActions} modals={modals} selectItem={selectItem}/> */}
+      <FormCrudOrder
+        fetchApi={orderPendingFetchApi}
+        modalActions={modalActions}
+        modals={modals}
+        selectItem={selectItem}
+      />
       <DashboardOrdersAndFinance dataDashboard={dataDashboard} />
       {dataDashboard ? (
         <Box

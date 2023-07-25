@@ -45,12 +45,12 @@ class OrderApi {
   }
 
   async getCostumerOrders(id: string, filter: string, page: number, limit: number) {
+    console.log(id, filter, page, limit);
     try {
       const data = await Api.get(`order/costumer?costumerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
       return data;
     } catch (error) {
-      console.error("Erro ao deletar o Status!!");
-      throw new Error((error as { message: string }).message || "Erro ao listar os status.");
+      console.error(error);
     }
   }
 
