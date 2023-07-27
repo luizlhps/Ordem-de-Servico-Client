@@ -26,6 +26,12 @@ interface IButtomLinks {
 //Styles
 const ListItemButtonCustom = styled(ListItemButton)``;
 
+const styleItem = {
+  display: "flex",
+  alignItems: "center",
+  margin: "8px 0",
+};
+
 export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick, width }) => {
   const router = useRouter();
   const theme = useTheme();
@@ -41,8 +47,8 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
           onClick={handleClick}
           sx={{
             "&:hover": {
-              color: theme.palette.secondary.main,
               background: "none",
+              borderRadius: 2,
             },
           }}
         >
@@ -56,38 +62,38 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
           >
             <ListItemIcon sx={{ minWidth: 29 }}>
               {icon === "dashboard" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <DashboardSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "ordens" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <OrdensSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "services" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <ServicesSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "clients" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <ClientsSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "finance" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <FinanceSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "profile" && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={styleItem}>
                   <ProfileSVG color={theme.palette.primary.main} />
                 </Box>
               )}
               {icon === "logout" && <Image src={logout} alt="logout"></Image>}
             </ListItemIcon>
-            <ListItemText sx={{}} primary={label} />
+            <ListItemText sx={{ marginLeft: 0.5 }} primary={label} />
           </Box>
         </ListItemButtonCustom>
       </div>

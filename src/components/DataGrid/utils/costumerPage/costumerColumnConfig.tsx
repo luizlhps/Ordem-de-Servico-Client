@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { OrdensSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 
 import { format } from "date-fns";
+import { normalizePhoneNumber } from "@/utils/Masks";
 
 export const ColumnsDataGrid = (
   theme: any,
@@ -41,12 +42,18 @@ export const ColumnsDataGrid = (
       align: "left",
     },
     {
-      field: "contact",
-      headerName: "Contato",
+      field: "phone",
+      headerName: "Celular",
       flex: 2,
       minWidth: 200,
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        if (params?.value) {
+          const phoneFormatted = normalizePhoneNumber(params.value);
+          return phoneFormatted;
+        }
+      },
     },
     {
       field: "cpfOrCnpj",
@@ -67,8 +74,10 @@ export const ColumnsDataGrid = (
       headerAlign: "left",
       align: "left",
       valueFormatter(params: any) {
-        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
-        return dataFormatada;
+        if (params?.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+          return dataFormatada;
+        }
       },
     },
     {
@@ -81,8 +90,10 @@ export const ColumnsDataGrid = (
       headerAlign: "left",
       align: "left",
       valueFormatter(params: any) {
-        const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
-        return dataFormatada;
+        if (params?.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+          return dataFormatada;
+        }
       },
     },
 

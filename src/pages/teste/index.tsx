@@ -26,7 +26,7 @@ const Index = () => {
 
   //Api
   const { currentPage, fetchApi, loading, financeData, setCurrentPage, dataDashboard } = useGetFetchFinance();
-
+  console.log(loading);
   //Search
   const { searchHandle, searchField } = useSearchField({
     limitPorPage: limitPorPage,
@@ -56,6 +56,8 @@ const Index = () => {
         FormDelete={DeleteTransaction}
       />
       <HeaderLayout title="Finanças" subTitle="Bem-Vindo a Área de Finanças" />
+      {loading && <div>loading.....</div>}
+
       <Box marginTop={4}>
         <DashboardFinance dataDashboard={dataDashboard} />
       </Box>

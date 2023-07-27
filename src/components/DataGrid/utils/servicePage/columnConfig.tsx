@@ -67,7 +67,7 @@ export const columnsDataGrid = (
       headerAlign: "left",
       align: "left",
       valueFormatter(params: any) {
-        if (params.value instanceof Date) {
+        if (params?.value) {
           const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
           return dataFormatada;
         }

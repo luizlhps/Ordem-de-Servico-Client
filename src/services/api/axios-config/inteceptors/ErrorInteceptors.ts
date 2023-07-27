@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-export const errorInteceptors = (error: AxiosError) => {
+export const errorInteceptors = async (error: AxiosError) => {
   if (error.response) {
     // Se ocorrer um erro de resposta HTTP, entre aqui
     if (error.response.status === 404) {

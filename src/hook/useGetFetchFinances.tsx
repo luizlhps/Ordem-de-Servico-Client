@@ -9,7 +9,7 @@ import { IDashboard } from "../../types/dashboard";
 export const useGetFetchFinance = () => {
   const [financeData, setFinanceData] = useState<RootFinance>({ total: 0, page: 0, limit: 0, transaction: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
   const { debouse } = useDebouse(300);
@@ -35,12 +35,13 @@ export const useGetFetchFinance = () => {
           if (response instanceof Error) throw new Error("Houve um erro");
 
           setFinanceData(response.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log("error", err || "deu ruim");
           setFinanceData({ total: 0, page: 0, limit: 0, transaction: [] || "" });
-        })
-        .finally(() => setLoading(false));
+        });
+      /*    .finally(() => setLoading(false)); */
     });
   }, []);
 

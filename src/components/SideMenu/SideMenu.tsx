@@ -18,8 +18,7 @@ interface propsStyled {
 
 //Image
 import Image from "next/image";
-import imageProfile from "../../../public/img/profile.svg";
-import zIndex from "@mui/material/styles/zIndex";
+import imageProfile from "../../../public/img/profile.jpg";
 
 //Custom Styled
 
@@ -102,15 +101,20 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           alignItems={"center"}
           sx={{ color: theme.palette.primary.main }}
         >
-          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={4}>
+          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={3}>
             <Image
+              style={{
+                clipPath: "circle(50% at 50% 50%)",
+              }}
+              width={90}
+              height={90}
               priority={true} // definir como true para indicar prioridade
               unoptimized={true}
               src={imageProfile}
               alt="imagem de perfil"
             />
             <Box display="flex" flexDirection="column" alignItems={"center"}>
-              <Typography variant="h1" fontWeight={600} marginTop={2}>
+              <Typography variant="h1" fontWeight={500} marginTop={2}>
                 Roberto
               </Typography>
               <Typography variant="h3" fontWeight={400}>
@@ -121,17 +125,17 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           <Box sx={{ marginTop: 3 }}>
             <List
               component="nav"
-              sx={{ display: "flex", alignItems: "center", flexDirection: "column", span: { fontWeight: 400 } }}
+              sx={{ display: "flex", alignItems: "center", flexDirection: "column", span: { fontWeight: 300 } }}
             >
               <ButtonLinks
-                width={202}
+                width={210}
                 href="/"
                 icon="dashboard"
                 label={"Dashboard"}
                 onclick={handleMenuOpen}
               ></ButtonLinks>
               <ButtonLinks
-                width={202}
+                width={210}
                 href="/orders"
                 icon="ordens"
                 label={"Ordens de Serviço"}
@@ -139,7 +143,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={202}
+                width={210}
                 href="/services"
                 icon="services"
                 label={"Serviços"}
@@ -147,7 +151,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={202}
+                width={210}
                 href="/clients"
                 icon="clients"
                 label={"Clientes"}
@@ -155,7 +159,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               ></ButtonLinks>
 
               <ButtonLinks
-                width={202}
+                width={210}
                 href="/teste"
                 icon="finance"
                 label={"Finanças"}
