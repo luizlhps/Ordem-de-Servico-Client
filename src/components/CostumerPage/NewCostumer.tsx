@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FormRegisterCostumerContext } from "@/contexts";
-import { LayoutCostumerForm } from "./LayoutCostumerForm";
+import { LayoutCostumerForm } from "./a";
+import { IStatus } from "@/services/api/statusApi";
 
 interface IPropsNewCostumer {
   handleClose: () => void;
@@ -8,6 +9,7 @@ interface IPropsNewCostumer {
 
 const NewCostumer = ({ handleClose }: IPropsNewCostumer) => {
   const { confirmData, data, setFormValues, loading } = useContext(FormRegisterCostumerContext);
+  const [statusId, setStatusId] = useState<IStatus | undefined>();
   const ConfigContext = {
     confirmData,
     data,
@@ -17,7 +19,12 @@ const NewCostumer = ({ handleClose }: IPropsNewCostumer) => {
 
   return (
     <>
-      <LayoutCostumerForm typeForm="createCostumer" ConfigContext={ConfigContext} handleClose={handleClose} />
+      <LayoutCostumerForm
+        setStatusId={setStatusId}
+        typeForm="createCostumer"
+        ConfigContext={ConfigContext}
+        handleClose={handleClose}
+      />
     </>
   );
 };

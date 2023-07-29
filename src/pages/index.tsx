@@ -8,13 +8,13 @@ import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 import dayjs from "dayjs";
-import { DashboardFinance } from "@/components/DashboardFinance";
+import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
 import { orderApi } from "@/services/api/orderApi";
 import { useSearchField } from "@/hook/useSearchField";
 import { IOrder, RootOrder } from "../../types/order";
 import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { DashboardOrdersAndFinance } from "@/components/DashboardOrdersAndFinance";
+import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
 import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
 
 //style custom

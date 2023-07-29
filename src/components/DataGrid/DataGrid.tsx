@@ -49,7 +49,7 @@ function CustomLoadingOverlay() {
 }
 
 //Code
-const DataGrids: React.FC<PropsDataGrid> = ({
+export const DataGridLayout: React.FC<PropsDataGrid> = ({
   rows,
   columns,
   PageSize,
@@ -106,7 +106,3 @@ const DataGrids: React.FC<PropsDataGrid> = ({
     </Box>
   );
 };
-
-export const DataGridLayout = memo(DataGrids, (prevProps, nextProps) => {
-  return Object.is(prevProps.rows, nextProps.rows);
-});

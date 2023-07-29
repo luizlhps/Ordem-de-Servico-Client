@@ -95,7 +95,7 @@ interface NameFormProps {
   data: any;
   setData: any;
   typeForm: TypeForm;
-  setCostumer: React.Dispatch<ICostumer>;
+  setCostumer?: React.Dispatch<ICostumer>;
   setStatusId: React.Dispatch<IStatus | undefined>;
 }
 
@@ -184,10 +184,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("status", data.status);
       setValue("observation", data.observation);
       setValue("dateEntry", dayjs(data?.dateEntry).format());
-      /*       const newDateValue = data?.dateEntry;
-
-      setDateValue(dayjs(newDateValue));
-      */
     }
   }, [data]);
 
@@ -206,7 +202,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
           <Box display={"flex"} justifyContent={"space-between"} flexWrap={"inherit"}>
             {typeForm === "createOs" && (
               <>
-                {costumerData ? (
+                {costumerData && setCostumer ? (
                   <>
                     <Box display={"flex"} flexDirection={"column"}>
                       <FormSelect
@@ -327,42 +323,38 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 />
                 {errors.brand?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
 
-                {data?.dateEntry || typeForm === "createOs" ? (
-                  <>
-                    <Typography marginTop={3} marginBottom={1}>
-                      Data de entrada*
-                    </Typography>
-                    <Controller
-                      name="dateEntry"
-                      defaultValue={data ? dayjs(data.dateEntry).format() : undefined}
-                      control={control}
-                      rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
-                      render={({ field }) => (
-                        <>
-                          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                            <DateTimePicker
-                              {...field}
-                              sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                              value={dayjs(field.value)}
-                              onChange={(newValue) => {
-                                field.onChange(dayjs(newValue).format());
-                                console.log(newValue);
-                              }}
-                            />
-                          </LocalizationProvider>
-                        </>
-                      )}
-                    />
-                    {errors.dateEntry?.type === "required" && (
-                      <Typography color={"error"}>Coloque a data de entrada</Typography>
+                <>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Data de entrada*
+                  </Typography>
+                  <Controller
+                    name="dateEntry"
+                    defaultValue={data ? dayjs(data.dateEntry).format() : undefined}
+                    control={control}
+                    rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
+                    render={({ field }) => (
+                      <>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                          <DateTimePicker
+                            {...field}
+                            sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
+                            value={dayjs(field.value)}
+                            onChange={(newValue) => {
+                              field.onChange(dayjs(newValue).format());
+                              console.log(newValue);
+                            }}
+                          />
+                        </LocalizationProvider>
+                      </>
                     )}
-                    {errors.dateEntry?.type === "validate" && (
-                      <Typography color={"error"}>Coloque a data correta</Typography>
-                    )}
-                  </>
-                ) : (
-                  <Skeleton variant="rectangular" width={200} height={36} />
-                )}
+                  />
+                  {errors.dateEntry?.type === "required" && (
+                    <Typography color={"error"}>Coloque a data de entrada</Typography>
+                  )}
+                  {errors.dateEntry?.type === "validate" && (
+                    <Typography color={"error"}>Coloque a data correta</Typography>
+                  )}
+                </>
               </Box>
             </Grid>
           </Grid>

@@ -51,7 +51,7 @@ interface Iprops {
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
-  costumer: ICostumer;
+  costumer: ICostumer | undefined;
 }
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {

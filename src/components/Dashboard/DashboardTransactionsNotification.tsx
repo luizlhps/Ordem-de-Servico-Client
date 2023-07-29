@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { DashboardNotification } from "./FeatureFinanceNotification";
+import { DashboardNotification } from "../FeatureFinanceNotification";
 
 interface DashboardProps {
   contentWidthValue: string;

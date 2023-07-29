@@ -29,7 +29,7 @@ const ListItemButtonCustom = styled(ListItemButton)``;
 const styleItem = {
   display: "flex",
   alignItems: "center",
-  margin: "8px 0",
+  margin: "4px 0",
 };
 
 export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick, width }) => {
@@ -46,6 +46,11 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
         <ListItemButtonCustom
           onClick={handleClick}
           sx={{
+            ".MuiListItemText-root": {
+              span: {
+                color: theme.palette.grey[300],
+              },
+            },
             "&:hover": {
               background: "none",
               borderRadius: 2,
@@ -53,7 +58,6 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
           }}
         >
           <Box
-            color={theme.palette.primary.main}
             sx={{
               display: "flex",
               justifyContent: "center",

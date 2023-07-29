@@ -46,10 +46,6 @@ function CostumerPageID({ costumer }: { costumer: ICostumer }) {
 
   const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
-  //Form Sucess and Error
-  const { setFormSuccess, formSuccess, errorMessage, setErrorMessage, messageForm, setMessageForm } =
-    useContext(FormSucessOrErrorContext);
-
   //modal
   const { modals, modalActions } = useModal();
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewClose, modalViewHandleOpen } =
@@ -66,10 +62,6 @@ function CostumerPageID({ costumer }: { costumer: ICostumer }) {
     fetchApi: fetchApi,
     id: costumer._id,
   });
-
-  useEffect(() => {
-    setFormSuccess(false);
-  }, [formSuccess]);
 
   //Config Grid
   const columns = columnsDataGrid(

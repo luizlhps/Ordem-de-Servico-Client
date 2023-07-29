@@ -36,7 +36,7 @@ const FooterBox = styled.div<propsStyled>`
   flex-direction: column;
   width: 100%;
 
-  margin-top: ${({ matches }) => (matches ? "50px" : "200px")};
+  margin-top: ${({ matches }) => (matches ? "50px" : "50px")};
 `;
 const DrawerHeader = styled.div<propsStyled>`
   position: relative;
@@ -101,7 +101,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           alignItems={"center"}
           sx={{ color: theme.palette.primary.main }}
         >
-          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={3}>
+          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={5}>
             <Image
               style={{
                 clipPath: "circle(50% at 50% 50%)",
@@ -114,18 +114,20 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               alt="imagem de perfil"
             />
             <Box display="flex" flexDirection="column" alignItems={"center"}>
-              <Typography variant="h1" fontWeight={500} marginTop={2}>
+              <Typography variant="h1" fontWeight={600} marginTop={2}>
                 Roberto
               </Typography>
-              <Typography variant="h3" fontWeight={400}>
-                User Teste
-              </Typography>
+              <Divider
+                variant="fullWidth"
+                color={theme.palette.secondary.main}
+                sx={{ height: 3, width: 50, marginTop: 1 }}
+              />
             </Box>
           </BoxHeaderContent>
-          <Box sx={{ marginTop: 3 }}>
+          <Box sx={{ marginTop: 2 }}>
             <List
               component="nav"
-              sx={{ display: "flex", alignItems: "center", flexDirection: "column", span: { fontWeight: 300 } }}
+              sx={{ display: "flex", flexDirection: "column", span: { fontWeight: 400, fontSize: 15 } }}
             >
               <ButtonLinks
                 width={210}
@@ -134,6 +136,25 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
                 label={"Dashboard"}
                 onclick={handleMenuOpen}
               ></ButtonLinks>
+
+              <ButtonLinks
+                width={210}
+                href="/teste"
+                icon="finance"
+                label={"Settings"}
+                onclick={handleMenuOpen}
+              ></ButtonLinks>
+
+              <Typography
+                marginBottom={"1rem"}
+                marginTop={"2rem"}
+                padding={"0 16px"}
+                textTransform={"uppercase"}
+                fontSize={15}
+              >
+                Geral
+              </Typography>
+
               <ButtonLinks
                 width={210}
                 href="/orders"
@@ -168,16 +189,16 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
             </List>
           </Box>
         </Box>
-        <FooterBox matches={matches} color={theme.palette.primary.main}>
-          <Divider variant="middle" color={theme.palette.secondary.main} sx={{ height: 2, width: 200 }} />
+        <FooterBox matches={matches}>
           <List
             component="nav"
             sx={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              marginTop: !matches ? 3 : 0,
-              span: { fontWeight: 300 },
+              marginTop: !matches ? 2 : 0,
+              marginBottom: !matches ? 4 : 0,
+              span: { fontWeight: 400, fontSize: "14px" },
             }}
           >
             <ButtonLinks
@@ -187,12 +208,12 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               label={"Perfil"}
               onclick={handleMenuOpen}
             ></ButtonLinks>
-            <ButtonLinks width={100} href="/teste" icon="logout" label={"Sair"} onclick={handleMenuOpen}></ButtonLinks>
+            <ButtonLinks width={100} href="/teste" icon="profile" label={"Sair"} onclick={handleMenuOpen}></ButtonLinks>
           </List>
         </FooterBox>
       </Drawer>
 
-      <Box marginLeft={smDown ? 0 : theme.spacing(36)} padding={!smDown ? theme.spacing(5, 4) : theme.spacing(4, 2)}>
+      <Box marginLeft={smDown ? 0 : theme.spacing(36)} padding={!smDown ? theme.spacing(7, 4) : theme.spacing(4, 2)}>
         {children}
       </Box>
     </>

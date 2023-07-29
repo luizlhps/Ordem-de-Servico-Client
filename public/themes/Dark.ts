@@ -47,10 +47,38 @@ export const DarkTheme = createTheme(
         color: "white",
       },
     },
+
     components: {
+      MuiCssBaseline: {
+        styleOverrides: (themeParam) => `
+          h1 {
+            color: ${themeParam.palette.success.main};
+          }
+          ::-webkit-scrollbar-track {
+            background: #424242;  
+          }
+ 
+
+          ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #585858; 
+          }
+        `,
+      },
+
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
+            "&::-webkit-scrollbar": {
+              background: "red",
+            },
+
             [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
               borderColor: "#719ECE",
             },

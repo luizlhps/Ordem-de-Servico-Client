@@ -3,9 +3,9 @@ import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
 import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
-import { IStatus } from "@/services/api/statusApi";
 import { ICustomerAndOrder } from "./UpdateOrder";
 import { ICostumer } from "../../../types/costumer";
+import { TypeForm } from "../ProgressStepper/Forms/types";
 
 interface LayoutProps {
   data: ICustomerAndOrder | undefined;
@@ -14,12 +14,12 @@ interface LayoutProps {
   loading: boolean;
   costumer: ICostumer | undefined;
   confirmData: () => void | undefined;
-  handleClose: any;
-  typeForm: any;
+  handleClose: () => void;
+  typeForm: TypeForm;
   setStatusId: any;
 }
 
-export function LayoutUpdateOrder({
+export const LayoutUpdateOrder = ({
   data,
   setFormValues,
   setCostumerId,
@@ -29,7 +29,7 @@ export function LayoutUpdateOrder({
   handleClose,
   typeForm,
   setStatusId,
-}: LayoutProps) {
+}: LayoutProps) => {
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
 
@@ -80,4 +80,4 @@ export function LayoutUpdateOrder({
       )}
     </Container>
   );
-}
+};

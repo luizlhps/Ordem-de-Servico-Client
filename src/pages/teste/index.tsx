@@ -10,7 +10,7 @@ import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 import { IFinance } from "../../../types/finance";
 import NewTransation from "@/components/FinanceLayout/NewTransaction";
 import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
-import { DashboardFinance } from "@/components/DashboardFinance";
+import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
 import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
 
 const Index = () => {

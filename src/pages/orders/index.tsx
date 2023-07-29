@@ -17,37 +17,6 @@ import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
 import { Api } from "@/services/api/axios-config";
 
 const Orders = () => {
-  useEffect(() => {
-    const loginData = {
-      email: "senhasss@senhas",
-      password: "batata22",
-    };
-
-    fetch("http://localhost:8000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    })
-      .then((res) => {
-        // Verificando se a requisição foi bem-sucedida (status 2xx)
-        if (!res.ok) {
-          throw new Error("Falha na requisição");
-        }
-
-        console.log(res);
-        // Acessando o header "Authorization"
-        return res.headers.get("authorization");
-      })
-      .then((authorizationToken) => {
-        console.log("Token de autorização:", authorizationToken);
-      })
-      .catch((error) => {
-        console.error("Erro na requisição:", error);
-      });
-  }, []);
-
   const theme = useTheme();
   const limitPorPage = 10;
 
@@ -78,7 +47,7 @@ const Orders = () => {
     modalViewHandleOpen
   );
 
-  const ordersFormatted = useMemo(() => {
+  const ordersFormattedForDataGrid = useMemo(() => {
     return ordersData?.orders.map((obj: any) => {
       const values: any[] = [];
       if (obj.equipment) values.push(obj.equipment);
