@@ -1,10 +1,8 @@
 import React, { memo } from "react";
-import NewOrder from "@/components/OrderLayout/NewOrder";
-import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { IOrder } from "../../../../types/order";
-import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
-import { ViewOrderModal } from "@/components/OrderLayout/ViewOrderModal";
+import { NewCostumer } from "./NewCostumer";
+import UpdateCostumer from "./UpdateCostumer";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -39,30 +37,30 @@ interface IProps {
   selectItem: IOrder | undefined;
 }
 
-export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
+export const FormCrudCostumer: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
   const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
   const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
     modalActions;
 
   return (
     <>
-      <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem} />
-      <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />
-      <UpdateOrder
+      {/*    <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem} /> */}
+      <NewCostumer handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} styles={style} />
+      <UpdateCostumer
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
-        style={style}
+        styles={style}
         selectItem={selectItem}
       />
-      <DeleteOrder
+      {/*  <DeleteOrder
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
         selectedItem={selectItem}
-      />
+      /> */}
     </>
   );
 });
 
-FormCrudOrder.displayName = "FormCrudOrder";
+FormCrudCostumer.displayName = "FormCrudOrder";

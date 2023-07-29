@@ -5,9 +5,10 @@ import { useFormStep } from "@/hook/useFormStep";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICustomerAndOrder } from "../OrderLayout/UpdateOrder";
 import { ICostumer } from "../../../types/costumer";
+import { ICustomerAndOrderData } from "@/contexts";
 
 interface LayoutProps {
-  data: ICostumer | undefined;
+  data: ICostumer | ICustomerAndOrderData | undefined;
   setFormValues: (values: any) => void;
   loading: boolean;
   confirmData: () => void | undefined;
@@ -71,7 +72,7 @@ export const LayoutCreateCostumer = ({
           />
         )}
 
-        {formStep >= 2 && formStep <= 2 && (
+        {formStep > 2 && (
           <CompletedForm
             costumer={data}
             loading={loading}

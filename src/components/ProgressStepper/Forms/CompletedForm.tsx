@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import styled from "styled-components";
 
 import { HeaderLayout } from "@/components/HeaderLayout";
-import { FormRegisterCostumerContext } from "@/contexts";
+import { FormRegisterCostumerContext, ICustomerAndOrderData } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
 import { ICostumer } from "../../../../types/costumer";
@@ -51,7 +51,7 @@ interface Iprops {
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
-  costumer: ICostumer | undefined;
+  costumer: ICostumer | ICustomerAndOrderData | undefined;
 }
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {

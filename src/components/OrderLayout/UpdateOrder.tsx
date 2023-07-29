@@ -11,7 +11,7 @@ import { orderApi } from "@/services/api/orderApi";
 import { IStatus } from "../ServicesPage/Status";
 import { ICostumer } from "../../../types/costumer";
 
-interface IPropsUpdateCostumer {
+interface IProps {
   handleClose: () => void;
   fetchApi: () => void;
   style: CSSProperties;
@@ -48,7 +48,7 @@ export interface ICustomerAndOrder {
   status: string;
 }
 
-const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IPropsUpdateCostumer) => {
+const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps) => {
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);

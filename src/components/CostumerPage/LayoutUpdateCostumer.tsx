@@ -4,25 +4,18 @@ import { AdressForm, CompletedForm, NameForm } from "../ProgressStepper";
 import { ICostumer } from "../../../types/costumer";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { useFormStep } from "@/hook/useFormStep";
+import { ICustomerAndOrderData } from "@/contexts";
 
 interface LayoutProps {
-  data: ICostumer | undefined;
+  data: ICostumer | ICustomerAndOrderData | undefined;
   setFormValues: (values: any) => void;
   loading: boolean;
   confirmData: () => void | undefined;
   handleClose: () => void;
   typeForm: TypeForm;
-  setStatusId: any;
 }
 
-export const LayoutUpdateCostumer = ({
-  data,
-  setFormValues,
-  setStatusId,
-  loading,
-  confirmData,
-  handleClose,
-}: LayoutProps) => {
+export const LayoutUpdateCostumer = ({ data, setFormValues, loading, confirmData, handleClose }: LayoutProps) => {
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
 
@@ -57,7 +50,7 @@ export const LayoutUpdateCostumer = ({
           typeForm="updateCostumer"
         />
       )}
-      {formStep >= 2 && formStep <= 2 && (
+      {formStep > 1 && (
         <CompletedForm
           costumer={data}
           loading={loading}

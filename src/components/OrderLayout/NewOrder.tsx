@@ -46,8 +46,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
   }
 
   function confirmData() {
-    if (!costumer) return new Error("O id do cliente não foi selecionado");
-    createOrder(data, costumer._id);
+    if (costumer && data) createOrder(data, costumer._id);
   }
 
   const setFormValues = (values: any) => {
@@ -67,7 +66,6 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
           <>
             <CloseModal handleClose={handleClose} />
             <LayoutCreateOs
-              statusId={statusId}
               setStatusId={setStatusId}
               data={data}
               setFormValues={setFormValues}

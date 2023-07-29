@@ -13,12 +13,11 @@ import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { OrdensSVG } from "../../../public/icon/SVGS/IconsSVG";
-import { CreateCostumerModal } from "@/components/Modal/costumerPage/CreateCostumerModal";
 import useModal from "@/hook/useModal";
 import { FormRegisterCostumerProvider } from "@/contexts";
-import { UpdateCostumerModal } from "@/components/Modal/costumerPage/UpdateCostumerModal";
 import { FormUpdateCostumerProvider } from "@/contexts/formUpdateCostumerContext";
 import { RootCostumer } from "../../../types/costumer";
+import { FormCrudCostumer } from "@/components/Modal/costumerPage/FormCrudCostumer";
 
 export default function Client() {
   const { debouse } = useDebouse();
@@ -118,58 +117,37 @@ export default function Client() {
             alertSuccess="Cliente atualizado com sucesso!!"
           />
 
-          <CreateCostumerModal
-            open={modalOpen}
-            handleClose={modalHandleClose}
-            handleOpen={modalHandleOpen}
-            setOpen={modalHandleOpen}
-          >
-            <UpdateCostumerModal
-              open={modalUpdateOpen}
-              handleClose={modalHandleUpdateClose}
-              handleOpen={modalUpdateHandleOpen}
-              setOpen={modalHandleOpen}
-            >
-              <DeleteModal
-                fetchApi={fetchApi}
-                open={modalOpendelete}
-                setOpen={setModalOpen}
-                handleClose={modalDeleteHandleClose}
-                handleOpen={modalDeleteHandleOpen}
-                HandleDeleted={HandleDeleted}
-                selectedItem={selectedItem}
-              />
-              <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-              <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-                <TextField
-                  value={searchField || ""}
-                  onChange={(e) => setSearchField(e.target.value)}
-                  hiddenLabel
-                  id="filled-hidden-label-small"
-                  placeholder="Search"
-                  variant="filled"
-                  size="small"
-                  sx={{
-                    marginTop: 3,
-                    width: 180,
-                  }}
-                />
-                <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
-                  Novo
-                </Button>
-              </Stack>
-              <DataGridLayout
-                loading={loading}
-                page={costumerData?.Page}
-                totalCount={costumerData?.Total}
-                rows={costumerData?.customer}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-                columns={columns}
-                PageSize={limitPorPage}
-              />
-            </UpdateCostumerModal>
-          </CreateCostumerModal>
+          <FormCrudCostumer fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectedItem} />
+
+          <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+            <TextField
+              value={searchField || ""}
+              onChange={(e) => setSearchField(e.target.value)}
+              hiddenLabel
+              id="filled-hidden-label-small"
+              placeholder="Search"
+              variant="filled"
+              size="small"
+              sx={{
+                marginTop: 3,
+                width: 180,
+              }}
+            />
+            <Button size="medium" variant="contained" sx={{ borderRadius: 3 }} onClick={handleClickLink}>
+              Novo
+            </Button>
+          </Stack>
+          <DataGridLayout
+            loading={loading}
+            page={costumerData?.Page}
+            totalCount={costumerData?.Total}
+            rows={costumerData?.customer}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+            columns={columns}
+            PageSize={limitPorPage}
+          />
         </FormUpdateCostumerProvider>
       </FormRegisterCostumerProvider>
     </>
