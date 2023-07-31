@@ -15,7 +15,7 @@ import { IOrder, RootOrder } from "../../types/order";
 import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
-import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
+import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 
 //style custom
 

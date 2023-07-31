@@ -3,6 +3,7 @@ import { IModals, ImodalActions } from "@/hook/useModal";
 import { IOrder } from "../../../../types/order";
 import { NewCostumer } from "./NewCostumer";
 import UpdateCostumer from "./UpdateCostumer";
+import { DeleteCostumer } from "./DeleteCostumer";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -44,7 +45,6 @@ export const FormCrudCostumer: React.FC<IProps> = memo(({ modals, fetchApi, moda
 
   return (
     <>
-      {/*    <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem} /> */}
       <NewCostumer handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} styles={style} />
       <UpdateCostumer
         handleClose={modalHandleUpdateClose}
@@ -53,12 +53,12 @@ export const FormCrudCostumer: React.FC<IProps> = memo(({ modals, fetchApi, moda
         styles={style}
         selectItem={selectItem}
       />
-      {/*  <DeleteOrder
+      <DeleteCostumer
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
         selectedItem={selectItem}
-      /> */}
+      />
     </>
   );
 });

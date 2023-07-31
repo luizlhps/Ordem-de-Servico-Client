@@ -32,10 +32,10 @@ import FormSelect from "@/components/FormSelect";
 import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
-import { constumersApi } from "@/services/api/costumersApi";
 import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
 import { RootOrder } from "../../../../types/order";
 import { ICostumer, RootCostumer } from "../../../../types/costumer";
+import { costumersApi } from "@/services/api/costumersApi";
 
 //style custom
 const InputCustom = styled.input`
@@ -144,7 +144,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
     FetchGetStatus();
 
     const fetchGetCostumers = async () => {
-      const data = await request(constumersApi.getAllCostumers, "", 0, 0);
+      const data = await request(costumersApi.getAllCostumers, "", 0, 0);
       setConstumerData(data);
     };
     fetchGetCostumers();

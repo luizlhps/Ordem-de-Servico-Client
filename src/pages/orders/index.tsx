@@ -13,7 +13,7 @@ import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteSe
 import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { IOrder } from "../../../types/order";
-import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
+import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 import { Api } from "@/services/api/axios-config";
 
 const Orders = () => {

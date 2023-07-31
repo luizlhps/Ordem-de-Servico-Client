@@ -85,6 +85,8 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
         technicalOpinion: selectItem.technicalOpinion,
       };
 
+      if (!costumer || costumer?.name !== selectItem.customer.name) setCostumer(selectItem.customer);
+
       setData((prevValues: any) => ({
         ...prevValues,
         ...form,

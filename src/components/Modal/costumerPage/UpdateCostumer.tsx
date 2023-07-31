@@ -4,8 +4,10 @@ import { LayoutUpdateCostumer } from "../../CostumerPage/LayoutUpdateCostumer";
 import { ICustomerAndOrderData } from "@/contexts";
 import { ICostumer } from "../../../../types/costumer";
 import { IStatus } from "@/services/api/statusApi";
-import { constumersApi } from "@/services/api/costumersApi";
+import { costumersApi } from "@/services/api/costumersApi";
 import TransitionsModal from "../Modal";
+import { ToastSuccess } from "@/components/Toast/ToastSuccess";
+import { ToastError } from "@/components/Toast/ToastError";
 
 interface IProps {
   handleClose: () => void;
@@ -35,8 +37,6 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
-  const [costumer, setCostumer] = useState<ICostumer | undefined>(undefined);
-  const [statusId, setStatusId] = useState<IStatus | undefined>();
 
   console.log(selectItem);
 
@@ -81,7 +81,7 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
     async function costumer(data: any, _id: string | string[]) {
       setLoading(true);
       try {
-        const res = await constumersApi.updateCostumer(data, _id);
+        const res = await costumersApi.updateCostumer(data, _id);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
@@ -104,6 +104,9 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
 
   return (
     <>
+      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
+
       <TransitionsModal handleClose={handleClose} open={open} style={styles}>
         <IconButton onClick={handleClose} sx={buttonStyle}>
           <Icon>close</Icon>

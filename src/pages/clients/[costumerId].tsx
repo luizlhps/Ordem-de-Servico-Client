@@ -1,19 +1,21 @@
-import { DataGridLayout, HeaderLayout } from "@/components";
-import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
-import useModal from "@/hook/useModal";
-import { constumersApi } from "@/services/api/costumersApi";
-import { useTheme } from "@emotion/react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useState } from "react";
+import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { TextField, Stack, Button, Icon, IconButton } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
-import { useGetCostumOrders } from "@/hook/useGetCostumOrders";
-import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
 import { useRouter } from "next/router";
-import { FormCrudOrder } from "@/components/Modal/orderPage/FormCrudOrder";
+import { useTheme } from "@mui/material";
+import { Button, Icon, IconButton, Stack, TextField } from "@mui/material";
+
+import { ICostumer } from "../../../types/costumer";
 import { IOrder } from "../../../types/order";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { ICostumer } from "../../../types/costumer";
+import { costumersApi } from "@/services/api/costumersApi";
+import { useGetCostumOrders } from "@/hook/useGetCostumOrders";
+import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
+
+import { DataGridLayout, HeaderLayout } from "@/components";
+import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
+import useModal from "@/hook/useModal";
+
 interface Params extends ParsedUrlQuery {
   costumerId: string;
 }
@@ -22,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { costumerId } = context.params as Params;
 
   try {
-    const costumer = await constumersApi.getById(costumerId);
+    const costumer = await costumersApi.getById(costumerId);
     const data = costumer.data;
 
     return {

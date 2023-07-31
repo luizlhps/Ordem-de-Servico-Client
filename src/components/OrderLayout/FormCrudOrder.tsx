@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import NewOrder from "@/components/OrderLayout/NewOrder";
 import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 import { IModals, ImodalActions } from "@/hook/useModal";
-import { IOrder } from "../../../../types/order";
+import { IOrder } from "../../../types/order";
 import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
 import { ViewOrderModal } from "@/components/OrderLayout/ViewOrderModal";
 

@@ -15,9 +15,8 @@ class Costumers {
     }
   }
 
-  async deleteCostumer(_id: string) {
-    const deleteId = await Api.delete(`costumers/${_id}`);
-    return deleteId;
+  deleteCostumer(_id: string) {
+    return Api.delete(`costumers/${_id}`);
   }
 
   async getById(_id: string) {
@@ -72,4 +71,4 @@ class Costumers {
   }
 }
 
-export const constumersApi = new Costumers();
+export const costumersApi = new Costumers();

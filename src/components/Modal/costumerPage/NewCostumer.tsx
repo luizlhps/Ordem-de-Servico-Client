@@ -4,10 +4,12 @@ import { IconButton, Icon } from "@mui/material";
 import { FormRegisterCostumerContext, ICustomerAndOrderData } from "@/contexts";
 import { ICostumer } from "../../../../types/costumer";
 import { IDetailsStatus, IStatus, statusApi } from "@/services/api/statusApi";
-import { constumersApi } from "@/services/api/costumersApi";
+import { costumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { LayoutCreateCostumer } from "@/components/CostumerPage/LayoutCreateCostumer";
 import { CSSProperties } from "@mui/styled-engine-sc";
+import { ToastSuccess } from "@/components/Toast/ToastSuccess";
+import { ToastError } from "@/components/Toast/ToastError";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -34,7 +36,6 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
-  const [costumer, setCostumer] = useState<ICostumer | undefined>(undefined);
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
   const setFormValues = (values: any) => {
@@ -53,7 +54,7 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
     async function costumer(data: any) {
       setLoading(true);
       try {
-        const res = await constumersApi.createCostumer(await updateStatusForId(data));
+        const res = await costumersApi.createCostumer(await updateStatusForId(data));
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
@@ -88,6 +89,9 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
 
   return (
     <>
+      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
+
       <TransitionsModal handleClose={handleClose} open={open} style={styles}>
         <IconButton onClick={handleClose} sx={buttonStyle}>
           <Icon>close</Icon>
