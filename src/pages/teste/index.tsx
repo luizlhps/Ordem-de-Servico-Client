@@ -13,6 +13,8 @@ import UpdateTransaction from "@/components/FinanceLayout/UpdateTransaction";
 import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
 import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
 
+import { useRouter } from "next/router";
+
 const Index = () => {
   const theme = useTheme();
   const limitPorPage = 10;
@@ -21,7 +23,6 @@ const Index = () => {
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
-  const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewHandleOpen } = modalActions;
 
   //Api

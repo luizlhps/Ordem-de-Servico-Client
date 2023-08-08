@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
@@ -16,6 +17,8 @@ import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
+import { useAuthorize } from "@/hook/useAuthorize";
+import { AxiosError } from "axios";
 
 //style custom
 
@@ -26,7 +29,13 @@ const TesteSvg = styled.div`
 `;
 
 export default function Home() {
+  const router = useRouter();
   const theme = useTheme();
+  const handleAuthorize = useAuthorize({ permissions: "dashboard" });
+
+  useEffect(() => {
+    if (!handleAuthorize) router.push("/register");
+  }, []);
 
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();
@@ -34,17 +43,31 @@ export default function Home() {
   const [ordersData, setOrdersData] = useState<RootOrder>({ total: 0, page: 0, limit: 0, orders: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState<boolean>();
+  const [messageError, setMessageError] = useState("");
 
   const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
   const orderPendingFetchApi = () => {
+    setLoading(true);
     orderApi
       .getPendingOrder()
       .then((res) => {
         setOrdersData(res.data);
       })
-      .catch();
+      .catch((err: unknown) => {
+        if (err instanceof AxiosError) {
+          if (err.response?.data?.message) {
+            setMessageError(err.response?.data?.message);
+          } else if (err.response?.data) {
+            setMessageError(err.response?.data);
+          } else {
+            setMessageError("Ocorreu um erro!!");
+          }
+        }
+        setError(true);
+      })
+      .finally(() => setLoading(false));
   };
 
   const ordersFormatted = useMemo(() => {
@@ -72,17 +95,7 @@ export default function Home() {
 
   //modal
   const { modals, modalActions, modalSets } = useModal();
-  const { modalOpen, modalUpdateOpen, modalOpendelete, modalViewOpen } = modals;
-  const {
-    modalHandleOpen,
-    modalHandleClose,
-    modalUpdateHandleOpen,
-    modalHandleUpdateClose,
-    modalDeleteHandleOpen,
-    modalDeleteHandleClose,
-    modalViewClose,
-    modalViewHandleOpen,
-  } = modalActions;
+  const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewHandleOpen } = modalActions;
 
   const limitPorPage = 10;
   const { searchField, searchHandle, setSearchField } = useSearchField({

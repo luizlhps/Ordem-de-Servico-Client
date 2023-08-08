@@ -41,7 +41,7 @@ export const DeleteTransaction = ({ open, handleClose, selectedItem, fetchApi }:
 
   return (
     <>
-      <ToastSuccess alertSuccess="Atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess="Deletado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       <DeleteModal
         loading={loading}

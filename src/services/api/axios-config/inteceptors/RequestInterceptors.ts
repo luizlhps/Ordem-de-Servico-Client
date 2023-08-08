@@ -1,12 +1,14 @@
-import axios from "axios";
-import { getSession } from "next-auth/react";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
 import { AxiosRequestConfig } from "axios";
-export const requestInteceptor = async (config: any) => {
-  const session: any = await getSession();
+import Cookies from "js-cookie";
 
-  if (session && session.accessToken !== null) {
-    config.headers!.Authorization = session.accessToken ? `${session.accessToken}` : "";
+export const requestInteceptor = async (config: InternalAxiosRequestConfig<any>) => {
+  const cookie = Cookies.get("auth");
+
+  if (cookie) {
+    const token = JSON.parse(cookie);
+    config.headers!["Authorization"] = token.accessToken ? `${token.accessToken}` : "";
     return config;
   }
   return config;

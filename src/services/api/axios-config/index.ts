@@ -10,7 +10,7 @@ export const Api: AxiosInstance = Axios.create({
 });
 
 Api.interceptors.request.use(
-  async function (config: AxiosRequestConfig) {
+  async function (config) {
     return await requestInteceptor(config);
   },
   (error) => errorInteceptors(error)

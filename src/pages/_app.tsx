@@ -1,3 +1,5 @@
+import react, { useContext } from "react";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -7,7 +9,6 @@ import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import NextNProgress from "nextjs-progressbar";
-import { SessionProvider } from "next-auth/react";
 //day
 import dayjs from "dayjs";
 dayjs.extend(utc);
@@ -29,12 +30,13 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 import "dayjs/locale/pt-br";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import SessionProvider, { SessionContext } from "@/auth/SessionProvider";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
+export default function App({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
   //Layout Get
 
   if (Component.getLayout) {
@@ -42,7 +44,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <>
         <GlobaStyles />
         <AppThemeProvider>
-          <SessionProvider session={session}>
+          <SessionProvider>
             <FormSucessOrErrorProvider>
               <NextNProgress showOnShallow={true} />
               <Component {...pageProps} />
@@ -57,7 +59,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <>
       <GlobaStyles></GlobaStyles>
       <AppThemeProvider>
-        <SessionProvider session={session}>
+        <SessionProvider>
           <LayoutDefault>
             <FormSucessOrErrorProvider>
               <NextNProgress showOnShallow={true} />

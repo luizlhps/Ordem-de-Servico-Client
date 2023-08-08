@@ -66,6 +66,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
   });
 
   useEffect(() => {
+    //put all the data when openning the modal
     if (selectItem) {
       const form = {
         equipment: selectItem.equipment,
@@ -84,7 +85,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
         exitDate: selectItem.exitDate,
         technicalOpinion: selectItem.technicalOpinion,
       };
-
+      //put data of customer case the usestate don't have data and case select is different of the customer the setState
       if (!costumer || costumer?.name !== selectItem.customer.name) setCostumer(selectItem.customer);
 
       setData((prevValues: any) => ({

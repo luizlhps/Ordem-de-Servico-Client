@@ -45,7 +45,7 @@ const NewTransation = ({ handleClose, fetchApi, style, open }: INewTransationPro
 
   return (
     <>
-      <ToastSuccess alertSuccess="Atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <TransitionsModal handleClose={handleClose} open={open} style={style}>

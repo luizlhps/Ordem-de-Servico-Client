@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import styled from "@emotion/styled";
@@ -8,9 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import validator from "validator";
-import { signIn } from "next-auth/react";
-
-import { useSession } from "next-auth/react";
+import { SessionContext } from "@/auth/SessionProvider";
 
 //style custom
 const InputCustom = styled.input`
@@ -36,20 +34,12 @@ const Login = () => {
   const passwordWatch = watch("password");
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { data: session } = useSession();
+  const { signIn } = useContext(SessionContext);
 
   const onSubmit = async (data: any) => {
-    const response = await signIn("credentials", {
+    await signIn({
       email: data.email,
       password: data.password,
-      redirect: true,
-      callbackUrl: "/",
-    }).then((res) => {
-      if (res?.status !== 201) {
-        return res;
-      } else {
-        console.log(res?.error);
-      }
     });
   };
 
@@ -92,7 +82,7 @@ const Login = () => {
                 <Stack marginTop={4}>
                   <Typography fontWeight={600}>Email</Typography>
                   <InputCustom
-                    {...register("email", { required: true, validate: (value) => validator.isEmail(value) })}
+                    {...register("email", { required: true /* validate: (value) => validator.isEmail(value) */ })}
                     placeholder="Digite seu email"
                   ></InputCustom>
                   {errors?.email?.type === "required" && <Typography color="error">Email é obrigatorio.</Typography>}
