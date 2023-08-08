@@ -29,12 +29,10 @@ export const SessionProvider = ({ children }: IProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const RecuperyUser = Cookies.get("auth");
-    const month = 60 * 60 * 24 * 30;
+    const RecuperyUser = Cookies.get("user");
 
     if (tokenAuth) {
       router.push("/orders");
-      Cookies.set("auth", JSON.stringify(tokenAuth), { expires: month, path: "/" });
     }
     if (RecuperyUser) {
       usersApi
@@ -51,9 +49,18 @@ export const SessionProvider = ({ children }: IProps) => {
 
   const signIn = async ({ email, password }: ISignCredentials) => {
     try {
+      const month = 60 * 60 * 24 * 30;
+
       const res = await Api.post<IResponseLogin>("/login", { email, password });
       const { accessToken, permissions, refreshToken, roles } = res.data;
       setTokenAuth({ accessToken, permissions, refreshToken, roles });
+
+      console.log(refreshToken);
+      Cookies.set("auth", JSON.stringify({ accessToken, permissions, refreshToken, roles }), {
+        expires: month,
+        path: "/",
+      });
+
       setIsAuthenticated(true);
     } catch (error) {
       console.log(error);
