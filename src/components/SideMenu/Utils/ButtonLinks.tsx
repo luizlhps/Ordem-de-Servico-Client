@@ -57,48 +57,40 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, icon, label, onclick
             },
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ListItemIcon sx={{ minWidth: 29 }}>
-              {icon === "dashboard" && (
-                <Box sx={styleItem}>
-                  <DashboardSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "ordens" && (
-                <Box sx={styleItem}>
-                  <OrdensSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "services" && (
-                <Box sx={styleItem}>
-                  <ServicesSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "clients" && (
-                <Box sx={styleItem}>
-                  <ClientsSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "finance" && (
-                <Box sx={styleItem}>
-                  <FinanceSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "profile" && (
-                <Box sx={styleItem}>
-                  <ProfileSVG color={theme.palette.primary.main} />
-                </Box>
-              )}
-              {icon === "logout" && <Image src={logout} alt="logout"></Image>}
-            </ListItemIcon>
-            <ListItemText sx={{ marginLeft: 0.5 }} primary={label} />
-          </Box>
+          <ListItemIcon sx={{ minWidth: 29 }}>
+            {icon === "dashboard" && (
+              <Box sx={styleItem}>
+                <DashboardSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "ordens" && (
+              <Box sx={styleItem}>
+                <OrdensSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "services" && (
+              <Box sx={styleItem}>
+                <ServicesSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "clients" && (
+              <Box sx={styleItem}>
+                <ClientsSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "finance" && (
+              <Box sx={styleItem}>
+                <FinanceSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "profile" && (
+              <Box sx={styleItem}>
+                <ProfileSVG color={theme.palette.primary.main} />
+              </Box>
+            )}
+            {icon === "logout" && <Image src={logout} alt="logout"></Image>}
+          </ListItemIcon>
+          <ListItemText sx={{ marginLeft: 0.5 }} primary={label} />
         </ListItemButtonCustom>
       </div>
     </>

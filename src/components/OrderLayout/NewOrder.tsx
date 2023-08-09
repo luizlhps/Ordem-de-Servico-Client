@@ -3,7 +3,6 @@ import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import TransitionsModal from "../Modal/Modal";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
-import { ICustomerAndOrderData } from "@/contexts";
 import { LayoutCreateOs } from "./LayoutCreateOs";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
@@ -22,7 +21,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
+  const [data, setData] = useState<any | undefined>(undefined);
   const [costumer, setCostumer] = useState<ICostumer | undefined>(undefined);
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
@@ -50,7 +49,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
   }
 
   const setFormValues = (values: any) => {
-    setData((prevValues) => ({
+    setData((prevValues: any) => ({
       ...prevValues,
       ...values,
     }));

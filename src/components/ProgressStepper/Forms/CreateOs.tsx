@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { FormRegisterCostumerContext } from "@/contexts";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs, { Dayjs } from "dayjs";
@@ -36,6 +35,7 @@ import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers"
 import { RootOrder } from "../../../../types/order";
 import { ICostumer, RootCostumer } from "../../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
+import Cookies from "js-cookie";
 
 //style custom
 const InputCustom = styled.input`
@@ -124,7 +124,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
   const [costumerData, setConstumerData] = useState<RootCostumer | undefined>(undefined);
-
   const { request } = useApiRequest();
 
   useEffect(() => {

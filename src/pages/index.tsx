@@ -33,10 +33,6 @@ export default function Home() {
   const theme = useTheme();
   const handleAuthorize = useAuthorize({ permissions: "dashboard" });
 
-  useEffect(() => {
-    if (!handleAuthorize) router.push("/register");
-  }, []);
-
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();
 

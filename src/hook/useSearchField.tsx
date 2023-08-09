@@ -1,4 +1,5 @@
 import { useDebouse } from "@/hook";
+import Cookies from "js-cookie";
 import React, { useEffect, useMemo, useState } from "react";
 
 interface IProps {
@@ -15,7 +16,6 @@ interface IUseSearchField {
 
 export const useSearchField = ({ limitPorPage, setCurrentPage, currentPage, fetchApi }: IProps): IUseSearchField => {
   const [searchField, setSearchField] = useState("");
-
   const search = useMemo(() => {
     return searchField;
   }, [searchField]);

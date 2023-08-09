@@ -11,6 +11,7 @@ interface IPropsContext {
   tokenAuth: IResponseLogin | undefined;
   user: RootUser | undefined;
   signIn: ({ email, password }: ISignCredentials) => Promise<void>;
+  signOut: () => void;
 }
 interface ISignCredentials {
   email: string;
@@ -27,6 +28,13 @@ export const SessionProvider = ({ children }: IProps) => {
   const [tokenAuth, setTokenAuth] = useState<IResponseLogin>();
   const [user, setUser] = useState<RootUser>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
+
+  const signOut = () => {
+    console.log("tes");
+    Cookies.remove("auth");
+    router.push("/register"); // Redireciona para a página de registro
+  };
 
   useEffect(() => {
     const RecuperyUser = Cookies.get("user");
@@ -39,13 +47,11 @@ export const SessionProvider = ({ children }: IProps) => {
         .getById()
         .then((res) => setUser(res.data))
         .catch((err) => {
+          Cookies.remove("auth");
           console.log(err);
         });
     }
   }, [tokenAuth]);
-
-  const router = useRouter();
-  console.log(user);
 
   const signIn = async ({ email, password }: ISignCredentials) => {
     try {
@@ -70,7 +76,9 @@ export const SessionProvider = ({ children }: IProps) => {
 
   return (
     <>
-      <SessionContext.Provider value={{ signIn, isAuthenticated, tokenAuth, user }}>{children}</SessionContext.Provider>
+      <SessionContext.Provider value={{ signIn, isAuthenticated, tokenAuth, user, signOut }}>
+        {children}
+      </SessionContext.Provider>
     </>
   );
 };

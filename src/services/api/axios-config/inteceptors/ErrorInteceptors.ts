@@ -1,11 +1,24 @@
-import { Axios, AxiosError } from "axios";
+import axios, { Axios, AxiosError } from "axios";
 import { Api } from "..";
 import Cookies from "js-cookie";
 import { IResponseLogin } from "../../../../../types/auth";
+import { useRouter } from "next/router";
 
 const tokenAuth = Cookies.get("auth");
 let isRefreshing = false;
-let failedRequest: Array<any> = [];
+let failedQueue: Array<any> = [];
+
+const processQueue = (error: any, token: any = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
 
 export const errorInteceptors = async (error: any) => {
   const originalConfig = error.config;
@@ -19,51 +32,71 @@ export const errorInteceptors = async (error: any) => {
       if (error?.response?.data?.code === "token.expired") {
         if (!tokenAuth) return console.error("Não autorizado:", error);
 
-        const refreshObj = JSON.parse(tokenAuth);
+        const refreshObj = JSON.parse(tokenAuth, (key, value) => {
+          try {
+            return JSON.parse(value, (key, value) => {
+              try {
+                return JSON.parse(value);
+              } catch (e) {
+                return "error";
+              }
+            });
+          } catch (e) {
+            return value;
+          }
+        });
         const refreshToken = refreshObj.refreshToken;
 
         console.log(refreshToken);
 
-        if (!isRefreshing) {
-          isRefreshing = true;
-          try {
-            const res = await Api.post<IResponseLogin>("/refreshToken", {
-              refreshToken: refreshToken,
-            });
-            const resJSON = JSON.stringify(res.data);
-            Cookies.set("auth", resJSON, {
-              path: "/",
-            });
-
-            console.log(originalConfig);
-
-            failedRequest.forEach((req) => {
-              req.onSuccess(res.data.accessToken);
-            });
-            failedRequest = [];
-          } catch (error) {
-            failedRequest.forEach((req) => req.onFailure(error));
-            failedRequest = [];
-          } finally {
-            isRefreshing = false;
-          }
-
-          //armazena as requisições enquanto atualiza o token para assim executar novamente
+        //Se outras solicitações chegarem durante o tempo em que a promessa de atualização do token está sendo resolvida, elas entrarão no bloco if (isRefreshing).
+        if (isRefreshing) {
           return new Promise((resolve, reject) => {
-            failedRequest = [
-              {
-                onSuccess(token: string) {
-                  originalConfig.headers["Authorization"] = token;
-                  resolve(Api(originalConfig));
-                },
-                onFailure(error: AxiosError) {
-                  reject(Error);
-                },
-              },
-            ];
-          });
+            failedQueue.push({ resolve, reject });
+          })
+            .then((data: any) => {
+              originalConfig.headers["Authorization"] = data.accessToken;
+              Cookies.set("auth", JSON.stringify(data), {
+                path: "/",
+              });
+              return Api(originalConfig);
+            })
+            .catch((err) => {
+              return Promise.reject(err);
+            });
         } else {
+          originalConfig._retry = true;
+          isRefreshing = true;
+
+          return new Promise((resolve, reject) => {
+            Api.post<IResponseLogin>("/refreshToken", {
+              refreshToken: refreshToken,
+            })
+              .then(({ data }) => {
+                Cookies.set("auth", JSON.stringify(data), {
+                  path: "/",
+                });
+                Api.defaults.headers.common["Authorization"] = data.accessToken;
+                originalConfig.headers["Authorization"] = data.accessToken;
+
+                processQueue(null, data);
+                resolve(axios(originalConfig));
+              })
+              .catch((err) => {
+                processQueue(err, null);
+
+                reject(err);
+              })
+              .then(() => {
+                isRefreshing = false;
+              });
+          });
         }
+      } else {
+        // Delogar e redirecionar
+        console.log("oi");
+        Cookies.remove("auth");
+        window.location.href = "/register"; // Redireciona para a página de registro
       }
       // Trate o erro de não autorizado
       console.error("Não autorizado:", error);

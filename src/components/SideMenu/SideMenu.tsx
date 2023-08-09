@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ButtonLinks } from "./Utils/ButtonLinks";
 
 //Styled Components
@@ -19,6 +19,7 @@ interface propsStyled {
 //Image
 import Image from "next/image";
 import imageProfile from "../../../public/img/profile.jpg";
+import { SessionContext } from "@/auth/SessionProvider";
 
 //Custom Styled
 
@@ -59,6 +60,8 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
 
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
   const matches = useMediaQuery("(max-height:860px)");
+
+  const { signOut } = useContext(SessionContext);
 
   //menu
   const [isOpen, setIsOpen] = useState<boolean>(false);
