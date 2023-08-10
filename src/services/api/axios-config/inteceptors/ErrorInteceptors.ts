@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { IResponseLogin } from "../../../../../types/auth";
 import { useRouter } from "next/router";
 
-const tokenAuth = Cookies.get("auth");
 let isRefreshing = false;
 let failedQueue: Array<any> = [];
 
@@ -30,7 +29,10 @@ export const errorInteceptors = async (error: any) => {
       console.error("Página não encontrada:", error);
     } else if (error.response.status === 401) {
       if (error?.response?.data?.code === "token.expired") {
+        const tokenAuth = Cookies.get("auth");
+        console.log("bbbb");
         if (!tokenAuth) return console.error("Não autorizado:", error);
+        console.log("aaa");
 
         const refreshObj = JSON.parse(tokenAuth, (key, value) => {
           try {
@@ -64,37 +66,35 @@ export const errorInteceptors = async (error: any) => {
             .catch((err) => {
               return Promise.reject(err);
             });
-        } else {
-          originalConfig._retry = true;
-          isRefreshing = true;
-
-          return new Promise((resolve, reject) => {
-            Api.post<IResponseLogin>("/refreshToken", {
-              refreshToken: refreshToken,
-            })
-              .then(({ data }) => {
-                Cookies.set("auth", JSON.stringify(data), {
-                  path: "/",
-                });
-                Api.defaults.headers.common["Authorization"] = data.accessToken;
-                originalConfig.headers["Authorization"] = data.accessToken;
-
-                processQueue(null, data);
-                resolve(axios(originalConfig));
-              })
-              .catch((err) => {
-                processQueue(err, null);
-
-                reject(err);
-              })
-              .then(() => {
-                isRefreshing = false;
-              });
-          });
         }
+        originalConfig._retry = true;
+        isRefreshing = true;
+
+        return new Promise((resolve, reject) => {
+          Api.post<IResponseLogin>("/refreshToken", {
+            refreshToken: refreshToken,
+          })
+            .then(({ data }) => {
+              Cookies.set("auth", JSON.stringify(data), {
+                path: "/",
+              });
+              Api.defaults.headers.common["Authorization"] = data.accessToken;
+              originalConfig.headers["Authorization"] = data.accessToken;
+
+              processQueue(null, data);
+              resolve(axios(originalConfig));
+            })
+            .catch((err) => {
+              processQueue(err, null);
+
+              reject(err);
+            })
+            .then(() => {
+              isRefreshing = false;
+            });
+        });
       } else {
         // Delogar e redirecionar
-        console.log("oi");
         Cookies.remove("auth");
         window.location.href = "/register"; // Redireciona para a página de registro
       }

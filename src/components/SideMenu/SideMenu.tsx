@@ -20,6 +20,15 @@ interface propsStyled {
 import Image from "next/image";
 import imageProfile from "../../../public/img/profile.jpg";
 import { SessionContext } from "@/auth/SessionProvider";
+import {
+  ClientsSVG,
+  DashboardSVG,
+  FinanceSVG,
+  LogoutSVG,
+  OrdensSVG,
+  ProfileSVG,
+  ServicesSVG,
+} from "../../../public/icon/SVGS/IconsSVG";
 
 //Custom Styled
 
@@ -132,21 +141,15 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               component="nav"
               sx={{ display: "flex", flexDirection: "column", span: { fontWeight: 400, fontSize: 15 } }}
             >
-              <ButtonLinks
-                width={210}
-                href="/"
-                icon="dashboard"
-                label={"Dashboard"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/" width={210}>
+                <ButtonLinks.Icon icon={DashboardSVG} />
+                <ButtonLinks.Content label="Dashboard" />
+              </ButtonLinks.Root>
 
-              <ButtonLinks
-                width={210}
-                href="/teste"
-                icon="finance"
-                label={"Settings"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="orders" width={210}>
+                <ButtonLinks.Icon icon={OrdensSVG} />
+                <ButtonLinks.Content label="Settings" />
+              </ButtonLinks.Root>
 
               <Typography
                 marginBottom={"1rem"}
@@ -158,37 +161,25 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
                 Geral
               </Typography>
 
-              <ButtonLinks
-                width={210}
-                href="/orders"
-                icon="ordens"
-                label={"Ordens de Serviço"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="orders" width={210}>
+                <ButtonLinks.Icon icon={OrdensSVG} />
+                <ButtonLinks.Content label="Ordens de Serviço" />
+              </ButtonLinks.Root>
 
-              <ButtonLinks
-                width={210}
-                href="/services"
-                icon="services"
-                label={"Serviços"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="services" width={210}>
+                <ButtonLinks.Icon icon={ServicesSVG} />
+                <ButtonLinks.Content label="Serviços" />
+              </ButtonLinks.Root>
 
-              <ButtonLinks
-                width={210}
-                href="/clients"
-                icon="clients"
-                label={"Clientes"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="customer" width={210}>
+                <ButtonLinks.Icon icon={ClientsSVG} />
+                <ButtonLinks.Content label="Clientes" />
+              </ButtonLinks.Root>
 
-              <ButtonLinks
-                width={210}
-                href="/teste"
-                icon="finance"
-                label={"Finanças"}
-                onclick={handleMenuOpen}
-              ></ButtonLinks>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="finance" width={210}>
+                <ButtonLinks.Icon icon={FinanceSVG} />
+                <ButtonLinks.Content label="Finanças" />
+              </ButtonLinks.Root>
             </List>
           </Box>
         </Box>
@@ -204,14 +195,15 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               span: { fontWeight: 400, fontSize: "14px" },
             }}
           >
-            <ButtonLinks
-              width={100}
-              href="/teste"
-              icon="profile"
-              label={"Perfil"}
-              onclick={handleMenuOpen}
-            ></ButtonLinks>
-            <ButtonLinks width={100} href="/teste" icon="profile" label={"Sair"} onclick={handleMenuOpen}></ButtonLinks>
+            <ButtonLinks.Root onClick={handleMenuOpen} href="finance" width={102}>
+              <ButtonLinks.Icon icon={ProfileSVG} />
+              <ButtonLinks.Content label="Perfil" />
+            </ButtonLinks.Root>
+
+            <ButtonLinks.Root onClick={signOut} width={102}>
+              <ButtonLinks.Icon icon={LogoutSVG} />
+              <ButtonLinks.Content label="Sair" />
+            </ButtonLinks.Root>
           </List>
         </FooterBox>
       </Drawer>

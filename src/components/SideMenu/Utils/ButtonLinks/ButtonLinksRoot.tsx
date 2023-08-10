@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { ListItemButton, useTheme } from "@mui/material";
+import { ListItemButton, ListItemIcon, useTheme } from "@mui/material";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
@@ -7,14 +7,14 @@ import { useRouter } from "next/navigation";
 interface IButtomLinks {
   href?: string;
   children: ReactNode;
-  label: string;
   width: number | "auto";
+  justifyContent?: "center" | "flex-end" | "flex-start";
   onClick?: () => void;
 }
 //Styles
 const ListItemButtonCustom = styled(ListItemButton)``;
 
-export const ButtonLinks: React.FC<IButtomLinks> = ({ href, children, onClick, width }) => {
+export const ButtonLinksRoot: React.FC<IButtomLinks> = ({ href, children, onClick, width, justifyContent }) => {
   const router = useRouter();
   const theme = useTheme();
 
@@ -33,6 +33,7 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, children, onClick, w
         <ListItemButtonCustom
           onClick={handleClick}
           sx={{
+            justifyContent: justifyContent ? justifyContent : "flex-start",
             ".MuiListItemText-root": {
               span: {
                 color: theme.palette.grey[300],
@@ -44,7 +45,7 @@ export const ButtonLinks: React.FC<IButtomLinks> = ({ href, children, onClick, w
             },
           }}
         >
-          {children}
+          <ListItemIcon sx={{ minWidth: 29 }}>{children}</ListItemIcon>
         </ListItemButtonCustom>
       </div>
     </>

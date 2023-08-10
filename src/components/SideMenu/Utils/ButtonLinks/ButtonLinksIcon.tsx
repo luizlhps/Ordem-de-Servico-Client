@@ -4,14 +4,20 @@ import { CSSProperties } from "styled-components";
 
 interface IProps {
   icon: ElementType;
-  style: CSSProperties;
 }
 
-export const ButtonLinksIcon = ({ icon: ICon, style }: IProps) => {
+const styleItem = {
+  display: "flex",
+  alignItems: "center",
+  margin: "4px 0",
+  minWidth: "29px",
+};
+
+export const ButtonLinksIcon = ({ icon: ICon }: IProps) => {
   const theme = useTheme();
 
   return (
-    <Box sx={style}>
+    <Box sx={styleItem}>
       <ICon color={theme.palette.primary.main} />
     </Box>
   );

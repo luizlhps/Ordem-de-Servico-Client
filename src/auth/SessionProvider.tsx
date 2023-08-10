@@ -33,7 +33,7 @@ export const SessionProvider = ({ children }: IProps) => {
   const signOut = () => {
     console.log("tes");
     Cookies.remove("auth");
-    router.push("/register"); // Redireciona para a página de registro
+    router.push("/register");
   };
 
   useEffect(() => {
