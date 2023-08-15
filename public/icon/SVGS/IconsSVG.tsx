@@ -107,18 +107,19 @@ export const FinanceSVG = ({ color }: IColor) => {
   );
 };
 export const ProfileSVG = ({ color }: IColor) => {
+  const theme = useTheme();
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="9" cy="9" r="9" fill={color} />
       <path
         d="M13 13.5V12.5C13 11.9696 12.7893 11.4609 12.4142 11.0858C12.0391 10.7107 11.5304 10.5 11 10.5H7C6.46957 10.5 5.96086 10.7107 5.58579 11.0858C5.21071 11.4609 5 11.9696 5 12.5V13.5"
-        stroke={color}
+        stroke={theme.palette.background.default}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M9 8.5C10.1046 8.5 11 7.60457 11 6.5C11 5.39543 10.1046 4.5 9 4.5C7.89543 4.5 7 5.39543 7 6.5C7 7.60457 7.89543 8.5 9 8.5Z"
-        stroke={color}
+        stroke={theme.palette.background.default}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

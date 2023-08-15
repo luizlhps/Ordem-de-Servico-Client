@@ -7,7 +7,6 @@ import { usersApi } from "@/services/api/users";
 import { RootUser } from "../../types/users";
 
 interface IPropsContext {
-  isAuthenticated: boolean;
   tokenAuth: IResponseLogin | undefined;
   user: RootUser | undefined;
   signIn: ({ email, password }: ISignCredentials) => Promise<void>;
@@ -27,7 +26,6 @@ export const SessionContext = createContext({} as IPropsContext);
 export const SessionProvider = ({ children }: IProps) => {
   const [tokenAuth, setTokenAuth] = useState<IResponseLogin>();
   const [user, setUser] = useState<RootUser>();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   const signOut = () => {
@@ -39,9 +37,6 @@ export const SessionProvider = ({ children }: IProps) => {
   useEffect(() => {
     const RecuperyUser = Cookies.get("user");
 
-    if (tokenAuth) {
-      router.push("/orders");
-    }
     if (RecuperyUser) {
       usersApi
         .getById()
@@ -67,7 +62,7 @@ export const SessionProvider = ({ children }: IProps) => {
         path: "/",
       });
 
-      setIsAuthenticated(true);
+      router.push("/orders");
     } catch (error) {
       console.log(error);
       console.log("Houve um erro ao logar");
@@ -76,9 +71,7 @@ export const SessionProvider = ({ children }: IProps) => {
 
   return (
     <>
-      <SessionContext.Provider value={{ signIn, isAuthenticated, tokenAuth, user, signOut }}>
-        {children}
-      </SessionContext.Provider>
+      <SessionContext.Provider value={{ signIn, tokenAuth, user, signOut }}>{children}</SessionContext.Provider>
     </>
   );
 };
