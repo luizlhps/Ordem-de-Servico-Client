@@ -195,7 +195,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               span: { fontWeight: 400, fontSize: "14px" },
             }}
           >
-            <ButtonLinks.Root onClick={handleMenuOpen} href="finance" width={102}>
+            <ButtonLinks.Root onClick={handleMenuOpen} href="profile" width={102}>
               <ButtonLinks.Icon icon={ProfileSVG} />
               <ButtonLinks.Content label="Perfil" />
             </ButtonLinks.Root>

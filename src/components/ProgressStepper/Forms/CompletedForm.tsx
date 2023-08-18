@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
-import { useRouter } from "next/router";
-import { Container, Divider, Typography, useTheme, Grid, Button } from "@mui/material";
+import React from "react";
+import { Divider, Typography, useTheme, Grid, Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import styled from "styled-components";
 
-import { HeaderLayout } from "@/components/HeaderLayout";
-import { FormRegisterCostumerContext, ICustomerAndOrderData } from "@/contexts";
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
 import { ICostumer } from "../../../../types/costumer";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
 //style custom
 const InputCustom = styled.input`
   height: 35px;

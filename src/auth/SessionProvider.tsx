@@ -29,7 +29,6 @@ export const SessionProvider = ({ children }: IProps) => {
   const router = useRouter();
 
   const signOut = () => {
-    console.log("tes");
     Cookies.remove("auth");
     router.push("/register");
   };
@@ -39,10 +38,11 @@ export const SessionProvider = ({ children }: IProps) => {
 
     if (RecuperyUser) {
       usersApi
-        .getById()
+        .GetMyInfo()
         .then((res) => setUser(res.data))
         .catch((err) => {
           Cookies.remove("auth");
+          Cookies.remove("user");
           console.log(err);
         });
     }
@@ -56,11 +56,24 @@ export const SessionProvider = ({ children }: IProps) => {
       const { accessToken, permissions, refreshToken, roles } = res.data;
       setTokenAuth({ accessToken, permissions, refreshToken, roles });
 
-      console.log(refreshToken);
       Cookies.set("auth", JSON.stringify({ accessToken, permissions, refreshToken, roles }), {
         expires: month,
         path: "/",
       });
+
+      usersApi
+        .GetMyInfo()
+        .then((res) => {
+          const userId = res.data._id;
+          Cookies.set("user", userId, {
+            expires: month,
+            path: "/",
+          });
+        })
+        .catch((err) => {
+          Cookies.remove("auth");
+          console.log(err);
+        });
 
       router.push("/orders");
     } catch (error) {

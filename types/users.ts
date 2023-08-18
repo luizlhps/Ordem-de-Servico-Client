@@ -5,6 +5,7 @@ export interface RootUser {
   group: Group;
   createdAt: string;
   updatedAt: string;
+  avatar: string;
 }
 
 export interface Group {
