@@ -8,6 +8,14 @@ class UsersApi {
   GetMyInfo() {
     return Api.get<RootUser>("/me");
   }
+
+  updateAvatar(formData: FormData) {
+    return Api.patch("/profile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 export const usersApi = new UsersApi();
