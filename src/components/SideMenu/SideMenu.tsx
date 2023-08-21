@@ -4,7 +4,7 @@ import { ButtonLinks } from "./Utils/ButtonLinks";
 //Styled Components
 import styled from "styled-components";
 //material UI
-import { Box, Button, Divider, Drawer, Icon, List, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Divider, Drawer, Icon, List, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 //inteface
 interface SideMenuProps {
@@ -70,7 +70,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
   const matches = useMediaQuery("(max-height:860px)");
 
-  const { signOut } = useContext(SessionContext);
+  const { signOut, user } = useContext(SessionContext);
 
   //menu
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -114,20 +114,24 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           sx={{ color: theme.palette.primary.main }}
         >
           <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={5}>
-            <Image
-              style={{
-                clipPath: "circle(50% at 50% 50%)",
-              }}
-              width={90}
-              height={90}
-              priority={true} // definir como true para indicar prioridade
-              unoptimized={true}
-              src={imageProfile}
-              alt="imagem de perfil"
-            />
+            {user ? (
+              <Image
+                style={{
+                  clipPath: "circle(50% at 50% 50%)",
+                }}
+                width={90}
+                height={90}
+                priority={true} // definir como true para indicar prioridade
+                unoptimized={true}
+                src={user?.avatar}
+                alt="imagem de perfil"
+              />
+            ) : (
+              <Avatar sx={{ width: 90, height: 90 }} />
+            )}
             <Box display="flex" flexDirection="column" alignItems={"center"}>
               <Typography variant="h1" fontWeight={600} marginTop={2}>
-                Roberto
+                {user?.name}
               </Typography>
               <Divider
                 variant="fullWidth"

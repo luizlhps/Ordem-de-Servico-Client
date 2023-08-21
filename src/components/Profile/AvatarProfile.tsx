@@ -7,15 +7,14 @@ import { SessionContext } from "@/auth/SessionProvider";
 import { usersApi } from "@/services/api/users";
 import { CropPhoto } from "../CropPhoto";
 
-interface IProps {
-  control: Control<FieldValues, any>;
-}
+interface IProps {}
 
-export const AvatarProfile = ({ control }: IProps) => {
-  const { user } = useContext(SessionContext);
+export const AvatarProfile = () => {
+  const { user, loading } = useContext(SessionContext);
 
   const containerAvatar = useRef<HTMLInputElement>(null);
   const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(null);
+  const [selectImg, setSelectImg] = useState<string | ArrayBuffer | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleCloseModal = () => {
@@ -30,30 +29,23 @@ export const AvatarProfile = ({ control }: IProps) => {
   };
 
   const fileChangeHandler = (file: File) => {
-    const formData = new FormData();
-    formData.append("avatar", file);
-
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => {
-        setAvatar(reader.result);
-      };
 
-      usersApi
-        .updateAvatar(formData)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      reader.onload = () => {
+        setSelectImg(reader.result);
+
+        if (containerAvatar.current) {
+          containerAvatar.current.value = "";
+        }
+      };
     }
   };
 
   return (
     <>
-      <CropPhoto image={avatar as string} open={modalOpen} close={handleCloseModal} />
+      <CropPhoto setAvatar={setAvatar} image={selectImg as string} open={modalOpen} close={handleCloseModal} />
       <Box
         onClick={fileHandler}
         marginTop={5}
@@ -75,27 +67,19 @@ export const AvatarProfile = ({ control }: IProps) => {
           },
         }}
       >
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <>
-              <input
-                defaultValue={""}
-                accept=".jpge,.png,"
-                onChange={(val) => {
-                  if (val.target && val.target.files && val.target.files[0]) fileChangeHandler(val.target.files[0]);
-                  onChange(val);
-                  handleOpenModal();
-                }}
-                type="file"
-                id="inputao"
-                style={{ display: "none" }}
-                ref={containerAvatar}
-              />
-            </>
-          )}
+        <input
+          defaultValue={""}
+          accept=".jpge,.png,"
+          onChange={(val) => {
+            if (val.target && val.target.files && val.target.files[0]) fileChangeHandler(val.target.files[0]);
+            handleOpenModal();
+          }}
+          type="file"
+          id="inputao"
+          style={{ display: "none" }}
+          ref={containerAvatar}
         />
+
         <CameraAltIcon
           className="icon"
           sx={{
@@ -108,14 +92,19 @@ export const AvatarProfile = ({ control }: IProps) => {
             zIndex: 1,
           }}
         />
-        <Avatar
-          className="avatar"
-          sx={{
-            width: 150,
-            height: 150,
-          }}
-          src={avatar ? (avatar as string) : user?.avatar}
-        />
+        {!loading && (
+          <>
+            <Avatar
+              className="avatar"
+              sx={{
+                width: 150,
+                height: 150,
+              }}
+              rel="stylesheet"
+              src={avatar ? (avatar as string) : user?.avatar}
+            />
+          </>
+        )}
       </Box>
       <Typography variant="h1" marginTop={1}>
         Avatar

@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import TransitionsModal from "../Modal";
 import { IconButton, Icon } from "@mui/material";
-import { FormRegisterCostumerContext, ICustomerAndOrderData } from "@/contexts";
 import { ICostumer } from "../../../../types/costumer";
 import { IDetailsStatus, IStatus, statusApi } from "@/services/api/statusApi";
 import { costumersApi } from "@/services/api/costumersApi";
@@ -10,6 +9,7 @@ import { LayoutCreateCostumer } from "@/components/CostumerPage/LayoutCreateCost
 import { CSSProperties } from "@mui/styled-engine-sc";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
 
 const buttonStyle = {
   position: "absolute" as "absolute",

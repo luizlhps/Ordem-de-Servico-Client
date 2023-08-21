@@ -1,13 +1,11 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { Icon, IconButton } from "@mui/material";
 import { LayoutUpdateCostumer } from "../../CostumerPage/LayoutUpdateCostumer";
-import { ICustomerAndOrderData } from "@/contexts";
-import { ICostumer } from "../../../../types/costumer";
-import { IStatus } from "@/services/api/statusApi";
 import { costumersApi } from "@/services/api/costumersApi";
 import TransitionsModal from "../Modal";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
 
 interface IProps {
   handleClose: () => void;

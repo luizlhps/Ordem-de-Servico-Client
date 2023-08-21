@@ -11,34 +11,13 @@ import SessionProvider, { SessionContext } from "@/auth/SessionProvider";
 
 const Orders = () => {
   const [profile, setProfile] = useState(false);
-  const [data, setData] = useState<RootUser>();
-
   const { user } = useContext(SessionContext);
+  const [data, setData] = useState<RootUser>();
 
   console.log(user);
 
-  const {
-    register,
-    handleSubmit,
-
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
   const handleStateButton = () => {
     setProfile((oldState) => !oldState);
-  };
-
-  const { handleSubmit: handleSubmitContact } = useForm();
-  const { handleSubmit: handleSubmitPassword } = useForm();
-
-  const onSubmitContact = (data: any) => {
-    // Lógica para processar informações de contato (email, nome, telefone)
-  };
-
-  const onSubmitPassword = (data: any) => {
-    // Lógica para processar senha
   };
 
   return (
@@ -57,11 +36,11 @@ const Orders = () => {
 
           {!profile ? (
             <>
-              <FormProfile control={control} errors={errors} />
+              <FormProfile data={user} />
             </>
           ) : (
             <>
-              <FormProfilePassword control={control} errors={errors} />
+              <FormProfilePassword />
             </>
           )}
         </Box>

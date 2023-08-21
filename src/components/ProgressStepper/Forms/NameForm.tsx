@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from "react";
 
-import { FormRegisterCostumerContext } from "@/contexts";
-
 //CSS Import MUI AND STYLED COMPONENTS
 import { Divider, Stack, Typography, useTheme, Box, Button, TextField } from "@mui/material";
 import styled from "styled-components";
@@ -233,7 +231,7 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
                           error={!!errors.phone}
                           type="text"
                           fullWidth
-                          inputProps={{ maxLength: 16 }}
+                          inputProps={{ maxLength: 15 }}
                           size="small"
                           value={normalizePhoneNumber(field.value)}
                           onChange={(e) => {
