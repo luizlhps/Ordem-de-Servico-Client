@@ -34,11 +34,8 @@ export const FormProfile = ({ data }: IProps) => {
   }, [data]);
 
   const {
-    register,
     handleSubmit,
-    watch,
     control,
-    setValue,
     formState: { errors },
   } = useForm<InputsFormProfile>();
 

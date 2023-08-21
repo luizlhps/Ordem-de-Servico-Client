@@ -18,11 +18,9 @@ interface InputsFormProfile {
 export const FormProfilePassword = ({}: IProps) => {
   const theme = useTheme();
   const {
-    register,
     handleSubmit,
     watch,
     control,
-    setValue,
     formState: { errors },
   } = useForm<InputsFormProfile>();
 
