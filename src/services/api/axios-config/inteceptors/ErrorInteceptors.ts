@@ -28,11 +28,18 @@ export const errorInteceptors = async (error: any) => {
       // Trate o erro de página não encontrada
       console.error("Página não encontrada:", error);
     } else if (error.response.status === 401) {
+      console.log(error?.response?.data?.code);
+
+      if (error?.response?.data?.code === "system.notConfig.store") {
+        return (window.location.href = "/install?store");
+      }
+      if (error?.response?.data?.code === "system.notConfig.userAdmin") {
+        return (window.location.href = "/install?user");
+      }
+
       if (error?.response?.data?.code === "token.expired") {
         const tokenAuth = Cookies.get("auth");
-        console.log("bbbb");
         if (!tokenAuth) return console.error("Não autorizado:", error);
-        console.log("aaa");
 
         const refreshObj = JSON.parse(tokenAuth, (key, value) => {
           try {
