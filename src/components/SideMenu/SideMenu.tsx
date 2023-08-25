@@ -114,7 +114,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           sx={{ color: theme.palette.primary.main }}
         >
           <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={5}>
-            {user ? (
+            {user && user.avatar ? (
               <Image
                 style={{
                   clipPath: "circle(50% at 50% 50%)",
@@ -131,7 +131,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
             )}
             <Box display="flex" flexDirection="column" alignItems={"center"}>
               <Typography variant="h1" fontWeight={600} marginTop={2}>
-                {user?.name}
+                {user?.name.split(" ")[0]}
               </Typography>
               <Divider
                 variant="fullWidth"
