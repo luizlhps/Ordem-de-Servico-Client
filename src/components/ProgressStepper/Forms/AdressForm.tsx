@@ -12,6 +12,8 @@ import { numbersOnly } from "@/utils/Masks";
 import { Controller, useForm } from "react-hook-form";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
+import useSearchCep from "@/hook/useSearchCep";
+import { SearchCep } from "@/components/SearchCep";
 
 const ContainerCustom = styled.div`
   padding: 60px;
@@ -50,7 +52,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
 }) => {
   const { debouse } = useDebouse();
   const [errorForm, setErrorForm] = useState(false);
-
+  const [valueCepField, setValueCepField] = useState<string>();
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1110px)");
 
@@ -61,6 +63,19 @@ export const AdressForm: React.FC<NameFormProps> = ({
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const { cepError, cepData } = useSearchCep(valueCepField);
+
+  useEffect(() => {
+    console.log(cepData);
+    if (cepData) {
+      setValue("city", cepData.localidade);
+      setValue("neighborhood", cepData.bairro);
+      setValue("complement", cepData.complemento);
+      setValue("state", cepData.uf);
+      setValue("street", cepData.logradouro);
+    }
+  }, [cepData]);
 
   useEffect(() => {
     if (data && data.address) {
@@ -76,31 +91,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
 
   //Search Cep
   const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    const cep = e.target.value.replace(/\D/g, "");
-
-    setErrorForm(false);
-
-    if (cep.split("").length === 8) {
-      try {
-        debouse(() => {
-          CepSearch.getSeachCep(cep).then((dataCepApi) => {
-            if (dataCepApi.erro) {
-              setErrorForm(true);
-              return;
-            }
-            if (data) {
-              setValue("city", dataCepApi.localidade);
-              setValue("neighborhood", dataCepApi.bairro);
-              setValue("complement", dataCepApi.complemento);
-              setValue("state", dataCepApi.uf);
-              setValue("street", dataCepApi.logradouro);
-            }
-          });
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    setValueCepField(e.target.value);
   };
 
   const onSubmit = (data: Inputs) => {
@@ -124,32 +115,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
           />
 
           <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
-            <Typography fontWeight={500} marginTop={3} marginBottom={1}>
-              CEP*
-            </Typography>
-            <Controller
-              name="cep"
-              defaultValue={""}
-              rules={{ required: true, minLength: 8, validate: (value) => !errorForm }}
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  onBlur={searchCep}
-                  error={!!errors.cep}
-                  inputProps={{ maxLength: 8, pattern: "/d+/" }}
-                  fullWidth
-                  value={numbersOnly(value).replace(/^(\d{5})(\d{3})$/, "$1-$2")}
-                  onChange={(e) => {
-                    onChange(e.target.value);
-                  }}
-                  size="small"
-                  placeholder="Digite o Nome"
-                />
-              )}
-            />
-            {errors.cep?.type === "required" && <Typography color={"error"}>Digite um cep</Typography>}
-            {errorForm === true && <Typography color={"error"}>Digite um cep válido</Typography>}
-
+            <SearchCep cepError={cepError} control={control} errors={errors} setValueCepField={setValueCepField} />
             <Typography marginTop={3} marginBottom={1}>
               Cidade*
             </Typography>

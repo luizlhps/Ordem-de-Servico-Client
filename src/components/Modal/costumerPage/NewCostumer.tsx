@@ -45,6 +45,11 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
     }));
   };
 
+  const closeModalAndEraseData = () => {
+    setData(undefined);
+    handleClose();
+  };
+
   async function updateStatusForId(data: any) {
     const updateStatus = { ...data, status: statusId };
     return updateStatus;
@@ -80,7 +85,7 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       } finally {
         fetchApi();
         setLoading(false);
-        handleClose();
+        closeModalAndEraseData();
       }
     }
 
@@ -92,15 +97,15 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
-      <TransitionsModal handleClose={handleClose} open={open} style={styles}>
-        <IconButton onClick={handleClose} sx={buttonStyle}>
+      <TransitionsModal handleClose={closeModalAndEraseData} open={open} style={styles}>
+        <IconButton onClick={closeModalAndEraseData} sx={buttonStyle}>
           <Icon>close</Icon>
         </IconButton>
 
         <LayoutCreateCostumer
           confirmData={confirmData}
           data={data}
-          handleClose={handleClose}
+          handleClose={closeModalAndEraseData}
           loading={loading}
           setFormValues={setFormValues}
           setStatusId={setStatusId}
