@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //CSS Import MUI AND STYLED COMPONENTS
-import { FormRegisterCostumerContext } from "@/contexts";
 import { Button, Divider, Stack, Typography, useTheme, Box, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";

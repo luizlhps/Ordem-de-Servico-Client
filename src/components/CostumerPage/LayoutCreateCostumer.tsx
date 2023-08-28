@@ -5,7 +5,7 @@ import { useFormStep } from "@/hook/useFormStep";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICustomerAndOrder } from "../OrderLayout/UpdateOrder";
 import { ICostumer } from "../../../types/costumer";
-import { ICustomerAndOrderData } from "@/contexts";
+import { ICustomerAndOrderData } from "../../../types/formOrderCostumer";
 
 interface LayoutProps {
   data: ICostumer | ICustomerAndOrderData | undefined;

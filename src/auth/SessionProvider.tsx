@@ -29,6 +29,7 @@ export const SessionProvider = ({ children }: IProps) => {
   const [tokenAuth, setTokenAuth] = useState<IResponseLogin>();
   const [user, setUser] = useState<RootUser>();
   const [loading, setLoading] = useState(false);
+  const [alreadyConfigStore, setAlreadyConfigStore] = useState(true);
   const router = useRouter();
 
   const signOut = () => {

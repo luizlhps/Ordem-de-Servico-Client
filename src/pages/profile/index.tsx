@@ -4,10 +4,10 @@ import { Controller, useForm } from "react-hook-form";
 import { Avatar, Box, Button, Container, Grid, Input, TextField, Typography, useTheme } from "@mui/material";
 import { AvatarProfile } from "@/components/Profile/AvatarProfile";
 import { SwitchButton } from "@/components/SwitchButton/SwitchButton";
-import { FormProfile, FormProfilePassword } from "@/components/Profile";
 import { RootUser } from "../../../types/users";
 import { usersApi } from "@/services/api/users";
 import SessionProvider, { SessionContext } from "@/auth/SessionProvider";
+import { FormProfilePassword, FormProfileUpdate } from "@/components/Profile";
 
 const Orders = () => {
   const [profile, setProfile] = useState(false);
@@ -36,7 +36,7 @@ const Orders = () => {
 
           {!profile ? (
             <>
-              <FormProfile data={user} />
+              <FormProfileUpdate data={user} />
             </>
           ) : (
             <>

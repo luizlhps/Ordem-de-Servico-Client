@@ -6,14 +6,17 @@ interface IProps {
   secondText: string;
   state: boolean;
   onStateChange: any;
+  disabledHover?: boolean;
 }
 
-export const SwitchButton = ({ firstText, secondText, state, onStateChange }: IProps) => {
+export const SwitchButton = ({ firstText, secondText, state, onStateChange, disabledHover }: IProps) => {
   const theme = useTheme();
 
   const handleStateButton = () => {
     onStateChange(!state);
   };
+
+  console.log(state);
 
   return (
     <>
@@ -28,7 +31,7 @@ export const SwitchButton = ({ firstText, secondText, state, onStateChange }: IP
         gap={1}
       >
         <Button
-          disabled={!state}
+          disabled={disabledHover ? disabledHover : !state}
           onClick={handleStateButton}
           sx={{
             padding: 1,
@@ -41,7 +44,7 @@ export const SwitchButton = ({ firstText, secondText, state, onStateChange }: IP
           {firstText}
         </Button>
         <Button
-          disabled={state}
+          disabled={disabledHover ? disabledHover : state}
           onClick={handleStateButton}
           sx={{
             padding: 1,

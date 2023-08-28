@@ -31,10 +31,14 @@ export const errorInteceptors = async (error: any) => {
       console.log(error?.response?.data?.code);
 
       if (error?.response?.data?.code === "system.notConfig.store") {
-        return (window.location.href = "/install?store");
+        window.location.href = "/install?install=store";
+        Cookies.remove("auth");
+        return;
       }
       if (error?.response?.data?.code === "system.notConfig.userAdmin") {
-        return (window.location.href = "/install?user");
+        window.location.href = "/install?install=admin";
+        Cookies.remove("auth");
+        return;
       }
 
       if (error?.response?.data?.code === "token.expired") {

@@ -7,11 +7,14 @@ import { SessionContext } from "@/auth/SessionProvider";
 import { usersApi } from "@/services/api/users";
 import { CropPhoto } from "../CropPhoto";
 
-interface IProps {}
+interface IProps {
+  uploudAvatar: (formData: FormData, closeModal: () => void) => Promise<void>;
+  formRect?: boolean;
+  avatarLink: string | undefined;
+  loading?: boolean;
+}
 
-export const AvatarProfile = () => {
-  const { user, loading } = useContext(SessionContext);
-
+export const AvatarProfile = ({ uploudAvatar, formRect, avatarLink, loading }: IProps) => {
   const containerAvatar = useRef<HTMLInputElement>(null);
   const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(null);
   const [selectImg, setSelectImg] = useState<string | ArrayBuffer | null>(null);
@@ -45,13 +48,19 @@ export const AvatarProfile = () => {
 
   return (
     <>
-      <CropPhoto setAvatar={setAvatar} image={selectImg as string} open={modalOpen} close={handleCloseModal} />
+      <CropPhoto
+        uploudAvatar={uploudAvatar}
+        setAvatar={setAvatar}
+        image={selectImg as string}
+        open={modalOpen}
+        close={handleCloseModal}
+        rect={formRect}
+      />
       <Box
         onClick={fileHandler}
         marginTop={5}
         position={"relative"}
         sx={{
-          borderRadius: "50%",
           ".icon": {
             display: "none",
           },
@@ -95,13 +104,14 @@ export const AvatarProfile = () => {
         {!loading && (
           <>
             <Avatar
+              variant={formRect ? "rounded" : "circular"}
               className="avatar"
               sx={{
                 width: 150,
                 height: 150,
               }}
               rel="stylesheet"
-              src={avatar ? (avatar as string) : user?.avatar}
+              src={avatar ? (avatar as string) : avatarLink}
             />
           </>
         )}

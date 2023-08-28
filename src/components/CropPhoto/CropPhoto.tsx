@@ -1,12 +1,10 @@
 import {
-  Avatar,
   Box,
   Button,
   CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  Fade,
   Slider,
   Typography,
   useMediaQuery,
@@ -16,17 +14,18 @@ import React, { useContext } from "react";
 import { useState, useCallback } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import CropIcon from "@mui/icons-material/Crop";
-import { usersApi } from "@/services/api/users";
 import getCroppedImg from "./CroppedImage";
 import { SessionContext } from "@/auth/SessionProvider";
 interface Iprops {
+  rect?: boolean;
   image: string;
   open: boolean;
   close: () => void;
   setAvatar: React.Dispatch<React.SetStateAction<string | ArrayBuffer | null>>;
+  uploudAvatar: (formData: FormData, closeModal: () => void) => Promise<void>;
 }
 
-export const CropPhoto = ({ image, open, close, setAvatar }: Iprops) => {
+export const CropPhoto = ({ image, open, close, setAvatar, uploudAvatar, rect }: Iprops) => {
   const { fetchMyInfo } = useContext(SessionContext);
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
@@ -57,28 +56,13 @@ export const CropPhoto = ({ image, open, close, setAvatar }: Iprops) => {
 
           const formData = new FormData();
           formData.append("avatar", blob, `avatar.${ext}`);
-          await uploudAvatar(formData);
+          await uploudAvatar(formData, close);
         }
       }
     } catch (error) {
       console.log(error);
     } finally {
     }
-  };
-
-  const uploudAvatar = async (formData: FormData) => {
-    setLoading(true);
-    usersApi
-      .updateAvatar(formData)
-      .then((res) => {})
-      .catch((err) => {
-        console.log("Ocorreu um erro atualizar o avatar");
-      })
-      .finally(async () => {
-        setLoading(false);
-        close();
-        await fetchMyInfo();
-      });
   };
 
   return (
@@ -108,7 +92,7 @@ export const CropPhoto = ({ image, open, close, setAvatar }: Iprops) => {
           }}
         >
           <Cropper
-            cropShape="round"
+            cropShape={rect ? "rect" : "round"}
             image={image}
             crop={crop}
             zoom={zoom}

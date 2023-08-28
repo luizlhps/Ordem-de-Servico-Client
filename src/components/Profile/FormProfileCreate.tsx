@@ -8,17 +8,15 @@ import { ToastError } from "../Toast/ToastError";
 import { SessionContext } from "@/auth/SessionProvider";
 import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Masks";
 
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { InputsFormCreateUserAdmin } from "@/services/installApplicationApi";
+
 interface IProps {
   data: any;
 }
 
-interface InputsFormProfile {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-export const FormProfile = ({ data }: IProps) => {
+export const FormProfileCreate = ({ data }: IProps) => {
   const theme = useTheme();
   const { fetchMyInfo } = useContext(SessionContext);
 
@@ -28,7 +26,7 @@ export const FormProfile = ({ data }: IProps) => {
   const [messageError, setMessageError] = useState("");
 
   const [display, setDisplay] = useState("");
-
+  const [eyePassword, setEyePassword] = useState(true);
   useEffect(() => {
     setDisplay(normalizePhoneNumber(data?.phone));
   }, [data]);
@@ -36,12 +34,21 @@ export const FormProfile = ({ data }: IProps) => {
   const {
     handleSubmit,
     control,
+    watch,
     formState: { errors },
-  } = useForm<InputsFormProfile>();
+  } = useForm<InputsFormCreateUserAdmin>();
 
-  const onSubmit: SubmitHandler<InputsFormProfile> = (data) => {
-    setLoading(true);
-    usersApi
+  const handleEyePassword = () => {
+    setEyePassword((old) => !old);
+  };
+
+  const passwordWatch = watch("password");
+
+  const onSubmit: SubmitHandler<InputsFormCreateUserAdmin> = (data) => {
+    console.log(data);
+
+    /*  setLoading(true);
+    /*     usersApi
       .updateProfile(data)
       .then((res) => {
         setSuccess(true);
@@ -51,7 +58,7 @@ export const FormProfile = ({ data }: IProps) => {
         setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); */
   };
 
   return (
@@ -59,7 +66,7 @@ export const FormProfile = ({ data }: IProps) => {
       {data ? (
         <>
           <Stack justifyContent={"center"} alignItems={"center"}>
-            <AvatarProfile />
+            <AvatarProfile avatarLink="" uploudAvatar={async () => {}} />
           </Stack>
 
           <ToastSuccess
@@ -82,9 +89,7 @@ export const FormProfile = ({ data }: IProps) => {
                   <TextField sx={{ fontWeight: 300 }} onChange={onChange} value={value} size="small" fullWidth />
                 )}
               />
-              {errors.name?.type === "required" && (
-                <Typography color={"error"}>Digite o sobre o equipamento</Typography>
-              )}
+              {errors.name?.type === "required" && <Typography color={"error"}>Digite o sobre o nome</Typography>}
             </Grid>
             <Grid item>
               <Typography marginTop={3} marginBottom={1}>
@@ -100,7 +105,7 @@ export const FormProfile = ({ data }: IProps) => {
                 )}
               />
 
-              {errors.email?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
+              {errors.email?.type === "required" && <Typography color={"error"}>Digite o email</Typography>}
             </Grid>
             <Grid container spacing={1}>
               <Grid item xs={6}>
@@ -127,7 +132,7 @@ export const FormProfile = ({ data }: IProps) => {
                       />
                     )}
                   />
-                  {errors.phone?.type === "required" && <Typography color={"error"}>Digite a marca</Typography>}
+                  {errors.phone?.type === "required" && <Typography color={"error"}>Digite o celular</Typography>}
                 </Box>
               </Grid>
               <Grid item xs={6}>
@@ -136,10 +141,95 @@ export const FormProfile = ({ data }: IProps) => {
                     Cargo
                   </Typography>
 
-                  <TextField defaultValue={data?.group?.name} disabled size="small" fullWidth />
+                  <TextField defaultValue={"adminMaster"} disabled size="small" fullWidth />
                 </Box>
               </Grid>
             </Grid>
+
+            <Grid item>
+              <Box position={"relative"} width={"100%"}>
+                <Typography marginTop={3} marginBottom={1}>
+                  Digite a senha
+                </Typography>
+                <Controller
+                  defaultValue=""
+                  name={"password"}
+                  control={control}
+                  rules={{ required: true, minLength: 6 }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      onChange={onChange}
+                      value={value}
+                      size="small"
+                      fullWidth
+                      type={!eyePassword ? "text" : "password"}
+                    />
+                  )}
+                />
+                {passwordWatch && (
+                  <>
+                    {eyePassword ? (
+                      <Box
+                        onClick={handleEyePassword}
+                        position={"absolute"}
+                        top={40}
+                        right={"10px"}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <VisibilityIcon />
+                      </Box>
+                    ) : (
+                      <Box
+                        onClick={handleEyePassword}
+                        position={"absolute"}
+                        top={6}
+                        right={"10px"}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <VisibilityOffIcon />
+                      </Box>
+                    )}
+                  </>
+                )}
+              </Box>
+              {errors.password?.type === "required" && <Typography color={"error"}>Digite a senha</Typography>}
+              {errors.password?.type === "minLength" && (
+                <Typography color={"error"}>A senha deve ter no minimo 6 caracteres</Typography>
+              )}
+            </Grid>
+            <Grid item>
+              <Typography marginTop={3} marginBottom={1}>
+                Repita a nova senha
+              </Typography>
+              <Controller
+                defaultValue=""
+                name={"checkPassword"}
+                control={control}
+                rules={{
+                  required: true,
+                  validate: (val) => {
+                    return val === passwordWatch;
+                  },
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    onChange={onChange}
+                    value={value}
+                    size="small"
+                    fullWidth
+                    type={!eyePassword ? "text" : "password"}
+                  />
+                )}
+              />
+
+              {errors?.checkPassword?.type === "required" && (
+                <Typography color="error">Confirmação de senha é obrigatoria.</Typography>
+              )}
+              {errors?.checkPassword?.type === "validate" && (
+                <Typography color="error">As senhas não conferem.</Typography>
+              )}
+            </Grid>
+
             <Button
               onClick={handleSubmit(onSubmit)}
               fullWidth
