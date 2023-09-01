@@ -1,6 +1,6 @@
 import FormSelect from "@/components/FormSelect";
 import { FormProfileCreate, FormProfileUpdate } from "@/components/Profile";
-import { FormStoreCreate } from "@/components/StoreForm/StoreFormCreate";
+import { StoreFormCreate } from "@/components/StoreForm";
 import { SwitchButton } from "@/components/SwitchButton/SwitchButton";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
@@ -60,7 +60,7 @@ const InstallApplication = () => {
           </>
         ) : (
           <>
-            <FormStoreCreate />
+            <StoreFormCreate />
           </>
         )}
       </Box>

@@ -50,8 +50,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
   typeForm,
   data,
 }) => {
-  const { debouse } = useDebouse();
-  const [errorForm, setErrorForm] = useState(false);
   const [valueCepField, setValueCepField] = useState<string>();
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1110px)");
@@ -88,11 +86,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
       setValue("complement", data.address[0].complement);
     }
   }, [data, prevFormStep]);
-
-  //Search Cep
-  const searchCep = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    setValueCepField(e.target.value);
-  };
 
   const onSubmit = (data: Inputs) => {
     setData({ address: [data] });
@@ -133,7 +126,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                     onChange(e.target.value);
                   }}
                   fullWidth
-                  id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                 />
               )}
@@ -156,7 +148,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                   onChange={(e) => {
                     onChange(e.target.value);
                   }}
-                  id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                 />
               )}
@@ -179,7 +170,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
                   onChange={(e) => {
                     onChange(e.target.value);
                   }}
-                  id="outlined-multiline-flexible"
                   placeholder="Digite o Nome"
                 />
               )}

@@ -1,5 +1,4 @@
 import { CSSProperties, useContext, useEffect, useState } from "react";
-import { ICustomerAndOrderData } from "@/contexts";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import TransitionsModal from "../Modal/Modal";

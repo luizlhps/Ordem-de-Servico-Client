@@ -13,7 +13,7 @@ interface SearchCepProps {
 export const SearchCep: React.FC<SearchCepProps> = ({ control, setValueCepField, cepError, errors }) => {
   return (
     <>
-      <Typography fontWeight={500} marginTop={3} marginBottom={1}>
+      <Typography fontWeight={500} marginBottom={1}>
         CEP*
       </Typography>
       <Controller
