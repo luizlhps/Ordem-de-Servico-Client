@@ -33,8 +33,11 @@ export const FormProfileUpdate = ({ data }: IProps) => {
     setDisplay(normalizePhoneNumber(data?.phone));
   }, [data]);
 
-  const uploudAvatar = async (formData: FormData, closeModal: () => void) => {
+  const uploudAvatar = async (formData: FormData, blob: Blob, closeModal: () => void) => {
     setLoadingUploud(true);
+    const ext = blob.type.split("/")[1];
+    formData.append("avatar", blob, `avatar.${ext}`);
+
     usersApi
       .updateAvatar(formData)
       .then((res) => {})

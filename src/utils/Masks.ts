@@ -30,15 +30,21 @@ export const cpfOrCnpj = (value: string | undefined) => {
   const cpfOrCnpjLength = value.replace(/[^\d]/g, "").length;
 
   if (cpfOrCnpjLength <= 11) {
-    return value
-      .replace(/[^\d]/g, "")
-      .replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+    return value.replace(/[^\d]/g, "").replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
   } else if (cpfOrCnpjLength >= 12 && cpfOrCnpjLength <= 14) {
     return value
       .replace(/[^\d]/g, "")
       .slice(0, 14) // Limita a 14 caracteres
       .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
   }
+};
+export const Cnpj = (value: string | undefined) => {
+  if (!value) return "";
+
+  return value
+    .replace(/[^\d]/g, "")
+    .slice(0, 14) // Limita a 14 caracteres
+    .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
 };
 
 export const TransformForbackEndCpf = (value: string | undefined) => {

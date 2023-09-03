@@ -1,8 +1,6 @@
-import { Box, Button, Grid, Stack, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Control, Controller, FieldErrors, UseFormSetValue, useForm } from "react-hook-form";
-import { AvatarProfile } from "../Profile/AvatarProfile";
-import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Masks";
+import { Box, Button, CircularProgress, Stack, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { InputsFormCreateStore } from "@/services/installApplicationApi";
 import useSearchCep from "@/hook/useSearchCep";
 import { SearchCep } from "../SearchCep";
@@ -222,7 +220,7 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
             flex: 1,
           }}
         >
-          <>Completar</>
+          {loading ? <CircularProgress size={25} /> : <>Salvar</>}
         </Button>
       </Stack>
     </>

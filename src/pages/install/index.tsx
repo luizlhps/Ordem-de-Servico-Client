@@ -1,5 +1,5 @@
 import FormSelect from "@/components/FormSelect";
-import { FormProfileCreate, FormProfileUpdate } from "@/components/Profile";
+import { FormAdminCreate } from "@/components/Profile";
 import { StoreFormCreate } from "@/components/StoreForm";
 import { SwitchButton } from "@/components/SwitchButton/SwitchButton";
 import { Box } from "@mui/material";
@@ -17,16 +17,12 @@ const InstallApplication = () => {
     });
   };
 
-  const data = {
-    phone: "1",
-  };
+  const data = {};
 
   useEffect(() => {
     if (router.query && !Array.isArray(router.query.install)) {
       setConfigSystemType(router.query?.install);
     }
-
-    console.log(configSystemType);
   }, [router.query]);
 
   return (
@@ -56,7 +52,7 @@ const InstallApplication = () => {
 
         {configSystemType === "admin" ? (
           <>
-            <FormProfileCreate data={data} />
+            <FormAdminCreate />
           </>
         ) : (
           <>

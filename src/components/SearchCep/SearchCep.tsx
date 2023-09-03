@@ -17,7 +17,7 @@ export const SearchCep: React.FC<SearchCepProps> = ({ control, setValueCepField,
         CEP*
       </Typography>
       <Controller
-        name="cep"
+        name="address.cep"
         defaultValue={""}
         rules={{ required: true, minLength: 8, validate: (value) => !cepError }}
         control={control}

@@ -8,7 +8,7 @@ import { usersApi } from "@/services/api/users";
 import { CropPhoto } from "../CropPhoto";
 
 interface IProps {
-  uploudAvatar: (formData: FormData, closeModal: () => void) => Promise<void>;
+  uploudAvatar: (formData: FormData, blob: Blob, closeModal: () => void) => Promise<void>;
   formRect?: boolean;
   avatarLink: string | undefined;
   loading?: boolean;

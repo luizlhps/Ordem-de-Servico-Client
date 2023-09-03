@@ -35,10 +35,19 @@ export const errorInteceptors = async (error: any) => {
         Cookies.remove("auth");
         return;
       }
+
       if (error?.response?.data?.code === "system.notConfig.userAdmin") {
         window.location.href = "/install?install=admin";
         Cookies.remove("auth");
         return;
+      }
+
+      if (error?.response?.data?.code === "system.AlreadyConfig.Store") {
+        return Promise.reject(error);
+      }
+
+      if (error?.response?.data?.code === "system.AlreadyConfig.Admin") {
+        return Promise.reject(error);
       }
 
       if (error?.response?.data?.code === "token.expired") {

@@ -37,7 +37,8 @@ class InstallApplicationApi {
   }
 
   CreateStore(data: InputsFormCreateStore) {
-    return Api.post("/install/userAdmin", {
+    console.log("aqui", data);
+    return Api.post("/install/store", {
       name: data.name,
       cnpj: data.cnpj,
       phone: data.phone,
@@ -46,10 +47,25 @@ class InstallApplicationApi {
         cep: data.address.cep,
         state: data.address.state,
         neighborhood: data.address.neighborhood,
-        complement: data.address.complement,
+        complement: data.address?.complement,
         street: data.address.street,
         city: data.address.city,
         number: data.address.number,
+      },
+    });
+  }
+
+  uploudAvatarStore(formData: FormData) {
+    return Api.patch("/install/store", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+  uploudAvatarUserAdmin(formData: FormData) {
+    return Api.patch("/install/userAdmin", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
     });
   }

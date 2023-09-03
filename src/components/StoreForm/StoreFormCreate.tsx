@@ -1,73 +1,111 @@
 import { Button, CircularProgress, Stack, useTheme } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 
-import { InputsFormCreateStore } from "@/services/installApplicationApi";
+import { InputsFormCreateStore, installApplicationApi } from "@/services/installApplicationApi";
 import { StoreFormLayoutName } from "./StoreFormLayoutName";
 import { StoreFormLayoutAddress } from "./StoreFormLayoutAddress";
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
+import { useRouter } from "next/router";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface IProps {}
 
 export const StoreFormCreate = ({}: IProps) => {
-  const theme = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams()!;
 
   const [loading, setLoading] = useState(false);
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [data, setData] = useState<InputsFormCreateStore>();
+  const [formDataAvatar, setFormDataAvatar] = useState<FormData>();
 
   const { handleContinueForm, handlePreviousForm, setSlideLength, setWidthSlide, slideIndex, widthSlide, slideLength } =
     useSlider();
 
-  const {
-    handleSubmit,
-    control,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<InputsFormCreateStore>();
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   const setValueForm = (valueToUpdate: InputsFormCreateStore) => {
     setData((oldValue) => {
-      return { ...oldValue, ...valueToUpdate };
+      const newData = { ...oldValue, ...valueToUpdate };
+      const lastSlide = slideLength - 1;
+      handleContinueForm();
+
+      if (lastSlide === slideIndex) {
+        onSubmit(newData);
+      }
+      return newData;
     });
-
-    const lastSlide = slideLength - 1;
-
-    if (lastSlide === slideIndex) {
-      console.log(data);
-      return;
-    }
     console.log(data);
-
-    handleContinueForm();
   };
 
   const onSubmit: SubmitHandler<InputsFormCreateStore> = (data) => {
     console.log(data);
 
-    /*  setLoading(true);
-    /*     usersApi
-      .updateProfile(data)
+    setLoading(true);
+    installApplicationApi
+      .CreateStore(data)
       .then((res) => {
         setSuccess(true);
-        fetchMyInfo();
+
+        if (formDataAvatar) {
+          console.log("oi");
+          installApplicationApi
+            .uploudAvatarStore(formDataAvatar)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+              typeof err.response.data === "string" ? err.response.data : "Ocorreu um erro!!";
+            })
+            .finally(async () => {
+              setLoadingAvatar(false);
+            });
+        }
       })
       .catch((err) => {
-        setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+        console.log(err);
+        setMessageError(
+          typeof err.response.data.message === "string" ? err.response.data.message : "Ocorreu um erro!!"
+        );
         setError(true);
       })
-      .finally(() => setLoading(false)); */
+      .finally(() => {
+        setLoading(false);
+        setTimeout(() => {
+          router.push(pathname + "?" + createQueryString("install", "admin"));
+        }, 1000);
+      });
+  };
+
+  const uploudAvatar = async (formData: FormData, blob: Blob, closeModal: () => void) => {
+    setLoadingAvatar(true);
+
+    const ext = blob.type.split("/")[1];
+    formData.append("storeAvatar", blob, `avatar.${ext}`);
+    setFormDataAvatar(formData);
+    closeModal();
   };
 
   return (
     <>
-      <ToastSuccess alertSuccess="Perfil atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess="A loja foi criada com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       <>
         <Slider
@@ -78,7 +116,7 @@ export const StoreFormCreate = ({}: IProps) => {
           setWidthSlide={setWidthSlide}
         >
           <Slide minWidth={widthSlide}>
-            <StoreFormLayoutName setValueForm={setValueForm} />
+            <StoreFormLayoutName uploudAvatar={uploudAvatar} setValueForm={setValueForm} />
           </Slide>
 
           <Slide minWidth={widthSlide}>

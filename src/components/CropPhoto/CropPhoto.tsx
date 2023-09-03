@@ -22,7 +22,7 @@ interface Iprops {
   open: boolean;
   close: () => void;
   setAvatar: React.Dispatch<React.SetStateAction<string | ArrayBuffer | null>>;
-  uploudAvatar: (formData: FormData, closeModal: () => void) => Promise<void>;
+  uploudAvatar: (formData: FormData, blob: Blob, closeModal: () => void) => Promise<void>;
 }
 
 export const CropPhoto = ({ image, open, close, setAvatar, uploudAvatar, rect }: Iprops) => {
@@ -45,8 +45,6 @@ export const CropPhoto = ({ image, open, close, setAvatar, uploudAvatar, rect }:
         const blob = await getCroppedImg(image, croppedArea);
         console.log(blob);
         if (blob) {
-          const ext = blob.type.split("/")[1];
-
           const reader = new FileReader();
           reader.readAsDataURL(blob);
 
@@ -55,8 +53,7 @@ export const CropPhoto = ({ image, open, close, setAvatar, uploudAvatar, rect }:
           };
 
           const formData = new FormData();
-          formData.append("avatar", blob, `avatar.${ext}`);
-          await uploudAvatar(formData, close);
+          await uploudAvatar(formData, blob, close);
         }
       }
     } catch (error) {

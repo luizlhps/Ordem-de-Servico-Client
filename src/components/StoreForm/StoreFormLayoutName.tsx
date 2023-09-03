@@ -2,34 +2,40 @@ import { Box, Button, Grid, Stack, TextField, Typography, useTheme } from "@mui/
 import React, { useState } from "react";
 import { Control, Controller, FieldErrors, useForm } from "react-hook-form";
 import { AvatarProfile } from "../Profile/AvatarProfile";
-import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Masks";
+import {
+  Cnpj,
+  TransformForbackEndCpf,
+  TransformForbackEndPhoneNumber,
+  normalizePhoneNumber,
+  normalizeTelPhoneNumber,
+} from "@/utils/Masks";
 import { InputsFormCreateStore } from "@/services/installApplicationApi";
 
 interface IProps {
   setValueForm: (valueToUpdate: InputsFormCreateStore) => void;
+  uploudAvatar: (formData: FormData, blob: Blob, closeModal: () => void) => Promise<void>;
 }
 
-export const StoreFormLayoutName = ({ setValueForm }: IProps) => {
+export const StoreFormLayoutName = ({ uploudAvatar, setValueForm }: IProps) => {
   const [display, setDisplay] = useState("");
+  const [CNPJDisplay, setCNPJDisplay] = useState("");
+  const [telephoneDisplay, setTelephoneDisplay] = useState("");
   const theme = useTheme();
+
   const {
     handleSubmit,
     control,
-    watch,
-    setValue,
     formState: { errors },
   } = useForm<InputsFormCreateStore>();
 
   const onSubmit = (data: InputsFormCreateStore) => {
-    console.log(data);
-
     setValueForm(data);
   };
 
   return (
     <>
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
-        <AvatarProfile avatarLink={""} uploudAvatar={async () => {}} formRect />
+        <AvatarProfile avatarLink={""} uploudAvatar={uploudAvatar} formRect />
       </Box>
 
       <Grid width={"100%"}>
@@ -61,9 +67,20 @@ export const StoreFormLayoutName = ({ setValueForm }: IProps) => {
           defaultValue=""
           name={"cnpj"}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: true, minLength: 11 }}
           render={({ field: { onChange, value } }) => (
-            <TextField placeholder="99.999.999/0000-99" onChange={onChange} value={value} size="small" fullWidth />
+            <TextField
+              inputProps={{ maxLength: 18 }}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                onChange(TransformForbackEndCpf(newValue));
+                setCNPJDisplay(Cnpj(newValue));
+              }}
+              value={CNPJDisplay}
+              size="small"
+              placeholder="00.000.000/0001-00"
+              fullWidth
+            />
           )}
         />
 
@@ -100,9 +117,20 @@ export const StoreFormLayoutName = ({ setValueForm }: IProps) => {
           defaultValue=""
           name={"telephone"}
           control={control}
-          rules={{ required: true, minLength: 6 }}
+          rules={{ required: true, minLength: 10 }}
           render={({ field: { onChange, value } }) => (
-            <TextField placeholder="(99) 9999-9999" onChange={onChange} value={value} size="small" fullWidth />
+            <TextField
+              inputProps={{ maxLength: 15 }}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                onChange(TransformForbackEndPhoneNumber(newValue));
+                setTelephoneDisplay(normalizeTelPhoneNumber(newValue));
+              }}
+              value={telephoneDisplay}
+              size="small"
+              placeholder="(99) 9999-9999"
+              fullWidth
+            />
           )}
         />
         <Stack flexDirection={"row"} gap={1}>
