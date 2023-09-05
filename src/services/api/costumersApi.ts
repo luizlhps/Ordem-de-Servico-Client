@@ -20,8 +20,8 @@ class Costumers {
   }
 
   async getById(_id: string) {
-    const deleteId = await Api.get(`costumers/${_id}`);
-    return deleteId;
+    const response = await Api.get(`costumers/6495b3b50c5e5fef71564463`);
+    return response;
   }
 
   async createCostumer(data: any) {

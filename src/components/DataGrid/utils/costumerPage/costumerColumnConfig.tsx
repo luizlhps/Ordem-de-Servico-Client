@@ -27,7 +27,7 @@ export const ColumnsDataGrid = (
     setSelectedItem(data);
   };
   const handleViewOrders = async (data: any) => {
-    router.push(`/clients/${data._id}`);
+    router.push(`/customer/${data._id}`);
     setSelectedItem(data);
   };
 

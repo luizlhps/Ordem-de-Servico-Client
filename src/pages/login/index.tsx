@@ -1,10 +1,14 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import styled from "@emotion/styled";
-import { Box, Container, Stack, Typography, useTheme, InputLabel, Button } from "@mui/material";
+import { Box, Container, Stack, Typography, useTheme, Button, TextField } from "@mui/material";
 
 import Image from "next/image";
 import Link from "next/link";
+
+import validator from "validator";
+import { SessionContext } from "@/auth/SessionProvider";
 
 //style custom
 const InputCustom = styled.input`
@@ -20,33 +24,24 @@ const InputCustom = styled.input`
   font-family: arial;
 `;
 
-const CheckBoxCustom = styled.input`
-  appearance: none;
-  background: white;
-  margin-right: 0.5rem;
-  border: 1px solid;
-
-  width: 1rem;
-  height: 1rem;
-  display: inline-block;
-
-  position: relative;
-
-  :checked {
-    ::before {
-      content: "✓";
-      color: white;
-      position: absolute;
-      top: -12%;
-      left: 10%;
-    }
-  }
-`;
-
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const passwordWatch = watch("password");
+
   const [selectedItems, setSelectedItems] = useState<any>([]);
+  const { signIn } = useContext(SessionContext);
+
+  const onSubmit = async (data: any) => {
+    await signIn({
+      email: data.email,
+      password: data.password,
+    });
+  };
 
   const handleSelect = (value: any) => {
     const isPresent = selectedItems.indexOf(value);
@@ -62,91 +57,77 @@ const Login = () => {
   return (
     <>
       <Box sx={{ height: "100vh", justifyContent: "center", display: "flex" }}>
-        <Container
-          disableGutters={true}
-          sx={{
-            marginTop: "auto",
-            marginBottom: "auto",
-            background: theme.palette.background.paper,
-          }}
-        >
-          <Stack flexDirection={"row"}>
-            <Box flex={1} display={"flex"} flexDirection={"column"} alignItems={"center"} padding={"40px 0 90px 0"}>
-              <Box marginBottom={10} alignSelf={"flex-start"} marginLeft={6}>
-                <Image src={"/img/logo.png"} width={113} height={24} alt="logo" unoptimized={true}></Image>
-              </Box>
-              <Box minWidth={400}>
-                <Typography variant="h2" fontSize={24} fontWeight={600}>
-                  conectar-se
-                </Typography>
-                <Typography variant="h1" fontSize={48} fontWeight={600} marginTop={-1}>
-                  Bem-Vindo
-                </Typography>
-                <Typography marginTop={1}>A melhor ordem de serviço em suas mãos</Typography>
-
-                <Stack marginTop={4}>
-                  <Typography fontWeight={600}>Email</Typography>
-                  <InputCustom placeholder="Digite seu email"></InputCustom>
-
-                  <Typography marginTop={2} fontWeight={600}>
-                    Senha
-                  </Typography>
-                  <InputCustom placeholder="Digite sua senha" type="password"></InputCustom>
-                </Stack>
-                <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}>
-                  <InputLabel
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-
-                      input: {
-                        background: theme.palette.background.paper,
-                        border: "1px solid",
-                        borderColor: theme.palette.primary.light,
-                        "&:checked": {
-                          background: theme.palette.secondary.main,
-                          borderColor: theme.palette.secondary.main,
-                        },
-                      },
-                    }}
-                  >
-                    <CheckBoxCustom type="checkbox" />
-                    Lembre-me
-                  </InputLabel>
-                  <Link href={"/"} style={{ textDecoration: "none" }}>
-                    <Typography color={theme.palette.secondary.main}>Esqueceu sua Senha ?</Typography>
-                  </Link>
-                </Stack>
-                <Button
-                  sx={{
-                    width: "100%",
-                    background: theme.palette.secondary.main,
-                    color: theme.palette.background.paper,
-                    marginTop: 4,
-                  }}
-                >
-                  Login
-                </Button>
-                <Stack flexDirection={"row"} marginTop={5} justifyContent={"center"}>
-                  <Typography marginRight={1} color={theme.palette.primary.light}>
-                    Não tem conta ?
-                  </Typography>
-                  <Link href={"/register"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
-                    <Typography fontWeight={500}> Registrar-se</Typography>
-                  </Link>
-                </Stack>
-              </Box>
+        <Stack flexDirection={"row"} width={"100%"} maxWidth={450}>
+          <Box
+            flex={1}
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            padding={2}
+          >
+            <Box alignSelf={"center"} marginBottom={5}>
+              <Image src={"/img/logo.png"} width={113} height={24} alt="logo" unoptimized={true}></Image>
             </Box>
-            <Box
-              flex={1}
-              sx={{
-                backgroundImage: `url(img/background-login.png)`,
-                backgroundSize: "cover",
-                backgroundPosition: "60% 50%",
-              }}
-            ></Box>
-          </Stack>
-        </Container>
+            <Box width={"100%"}>
+              <Typography variant="h2" fontSize={24} fontWeight={700}>
+                Conectar-se
+              </Typography>
+              <Typography variant="h1" fontSize={48} fontWeight={700} marginTop={-1}>
+                Bem-Vindo
+              </Typography>
+              <Typography marginTop={1}>A melhor ordem de serviço em suas mãos</Typography>
+
+              <Stack marginTop={1}>
+                <Typography marginTop={3} marginBottom={1}>
+                  Email
+                </Typography>
+                <TextField
+                  {...register("email", { required: true /* validate: (value) => validator.isEmail(value) */ })}
+                  placeholder="Digite seu email"
+                ></TextField>
+                {errors?.email?.type === "required" && <Typography color="error">Email é obrigatorio.</Typography>}
+                {errors?.email?.type === "validate" && <Typography color="error">Email não é válido.</Typography>}
+
+                <Typography marginTop={3} marginBottom={1}>
+                  Senha
+                </Typography>
+                <TextField
+                  {...register("password", { minLength: 6, required: true })}
+                  placeholder="Digite sua senha"
+                  type="password"
+                ></TextField>
+                {errors?.password?.type === "required" && <Typography color="error">Senha é obrigatoria.</Typography>}
+
+                {errors?.password?.type === "minLength" && (
+                  <Typography color="error">Senha precisa no minimo 7 caracteres.</Typography>
+                )}
+              </Stack>
+              <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}></Stack>
+              <Button
+                onClick={() => handleSubmit(onSubmit)()}
+                sx={{
+                  fontWeight: 600,
+                  height: "52px",
+                  fontSize: "14px",
+                  width: "100%",
+                  background: theme.palette.secondary.main,
+                  marginTop: 4,
+                }}
+              >
+                Login
+              </Button>
+              <Stack flexDirection={"row"} marginTop={3} justifyContent={"center"}>
+                <Typography marginRight={1} color={theme.palette.primary.light}>
+                  Esqueceu sua senha?
+                </Typography>
+                <Link href={"/login"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
+                  <Typography fontWeight={500}> Recupera-la</Typography>
+                </Link>
+              </Stack>
+            </Box>
+          </Box>
+        </Stack>
       </Box>
     </>
   );

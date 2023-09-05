@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 let isRefreshing = false;
 let failedQueue: Array<any> = [];
 
-const processQueue = (error: any, token: any = null) => {
+const processQueue = (error: any, token: IResponseLogin | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -19,9 +19,15 @@ const processQueue = (error: any, token: any = null) => {
   failedQueue = [];
 };
 
-export const errorInteceptors = async (error: any) => {
-  const originalConfig = error.config;
+const inWindow = (path: string) => {
+  if (typeof window !== "undefined") {
+    window.location.href = path;
+  }
+};
 
+export const errorInteceptors = async (error: any, contextCookie = undefined) => {
+  const originalConfig = error.config;
+  console.log(error);
   if (error.response) {
     // Se ocorrer um erro de resposta HTTP, entre aqui
     if (error.response.status === 404) {
@@ -31,15 +37,15 @@ export const errorInteceptors = async (error: any) => {
       console.log(error?.response?.data?.code);
 
       if (error?.response?.data?.code === "system.notConfig.store") {
-        window.location.href = "/install?install=store";
+        inWindow("/install?install=store");
         Cookies.remove("auth");
-        return;
+        return Promise.reject(error);
       }
 
       if (error?.response?.data?.code === "system.notConfig.userAdmin") {
-        window.location.href = "/install?install=admin";
+        inWindow("/install?install=admin");
         Cookies.remove("auth");
-        return;
+        return Promise.reject(error);
       }
 
       if (error?.response?.data?.code === "system.AlreadyConfig.Store") {
@@ -116,7 +122,7 @@ export const errorInteceptors = async (error: any) => {
       } else {
         // Delogar e redirecionar
         Cookies.remove("auth");
-        window.location.href = "/register"; // Redireciona para a página de registro
+        inWindow("/login"); // Redireciona para a página de registro
       }
       // Trate o erro de não autorizado
       console.error("Não autorizado:", error);

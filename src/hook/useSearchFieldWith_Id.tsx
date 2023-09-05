@@ -43,7 +43,9 @@ export const useSearchFieldWith_id = ({
   //inputSearch
 
   useEffect(() => {
-    fetchApi(id, search, numberPage, limitPorPage);
+    if (id) {
+      fetchApi(id, search, numberPage, limitPorPage);
+    }
   }, [search, currentPage]);
 
   return {

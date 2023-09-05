@@ -29,6 +29,7 @@ import {
   ProfileSVG,
   ServicesSVG,
 } from "../../../public/icon/SVGS/IconsSVG";
+import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 
 //Custom Styled
 
@@ -150,9 +151,13 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
                 <ButtonLinks.Content label="Dashboard" />
               </ButtonLinks.Root>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="orders" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="officials" width={210}>
                 <ButtonLinks.Icon icon={OrdensSVG} />
-                <ButtonLinks.Content label="Settings" />
+                <ButtonLinks.Content label="Funcionários" />
+              </ButtonLinks.Root>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="permissions" width={210}>
+                <ButtonLinks.Icon icon={BlockOutlinedIcon} />
+                <ButtonLinks.Content label="Permissões" />
               </ButtonLinks.Root>
 
               <Typography

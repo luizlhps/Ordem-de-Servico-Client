@@ -1,14 +1,10 @@
-import { ReactElement, useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ReactElement, useState } from "react";
 
 import styled from "@emotion/styled";
-import { Box, Container, Stack, Typography, useTheme, Button } from "@mui/material";
+import { Box, Container, Stack, Typography, useTheme, InputLabel, Button } from "@mui/material";
 
 import Image from "next/image";
 import Link from "next/link";
-
-import validator from "validator";
-import { SessionContext } from "@/auth/SessionProvider";
 
 //style custom
 const InputCustom = styled.input`
@@ -24,24 +20,33 @@ const InputCustom = styled.input`
   font-family: arial;
 `;
 
+const CheckBoxCustom = styled.input`
+  appearance: none;
+  background: white;
+  margin-right: 0.5rem;
+  border: 1px solid;
+
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+
+  position: relative;
+
+  :checked {
+    ::before {
+      content: "✓";
+      color: white;
+      position: absolute;
+      top: -12%;
+      left: 10%;
+    }
+  }
+`;
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-  const passwordWatch = watch("password");
-
   const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { signIn } = useContext(SessionContext);
-
-  const onSubmit = async (data: any) => {
-    await signIn({
-      email: data.email,
-      password: data.password,
-    });
-  };
 
   const handleSelect = (value: any) => {
     const isPresent = selectedItems.indexOf(value);
@@ -72,7 +77,7 @@ const Login = () => {
               </Box>
               <Box minWidth={400}>
                 <Typography variant="h2" fontSize={24} fontWeight={600}>
-                  registrar-se
+                  conectar-se
                 </Typography>
                 <Typography variant="h1" fontSize={48} fontWeight={600} marginTop={-1}>
                   Bem-Vindo
@@ -81,49 +86,38 @@ const Login = () => {
 
                 <Stack marginTop={4}>
                   <Typography fontWeight={600}>Email</Typography>
-                  <InputCustom
-                    {...register("email", { required: true /* validate: (value) => validator.isEmail(value) */ })}
-                    placeholder="Digite seu email"
-                  ></InputCustom>
-                  {errors?.email?.type === "required" && <Typography color="error">Email é obrigatorio.</Typography>}
-                  {errors?.email?.type === "validate" && <Typography color="error">Email não é válido.</Typography>}
+                  <InputCustom placeholder="Digite seu email"></InputCustom>
 
                   <Typography marginTop={2} fontWeight={600}>
                     Senha
                   </Typography>
-                  <InputCustom
-                    {...register("password", { minLength: 6, required: true })}
-                    placeholder="Digite sua senha"
-                    type="password"
-                  ></InputCustom>
-                  {errors?.password?.type === "required" && <Typography color="error">Senha é obrigatoria.</Typography>}
-
-                  {errors?.password?.type === "minLength" && (
-                    <Typography color="error">Senha precisa no minimo 7 caracteres.</Typography>
-                  )}
-
-                  <Typography marginTop={2} fontWeight={600}>
-                    Repita a Senha
-                  </Typography>
-                  {/* <InputCustom
-                    {...register("passwordConfirmation", {
-                      minLength: 6,
-                      required: true,
-                      validate: (value) => value === passwordWatch,
-                    })}
-                    placeholder="Digite sua senha"
-                    type="password"
-                  ></InputCustom>
-                  {errors?.passwordConfirmation?.type === "required" && (
-                    <Typography color="error">Confirmação de senha é obrigatoria.</Typography>
-                  )}
-                  {errors?.passwordConfirmation?.type === "validate" && (
-                    <Typography color="error">Senha não é igual.</Typography>
-                  )} */}
+                  <InputCustom placeholder="Digite sua senha" type="password"></InputCustom>
                 </Stack>
-                <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}></Stack>
+                <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}>
+                  <InputLabel
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+
+                      input: {
+                        background: theme.palette.background.paper,
+                        border: "1px solid",
+                        borderColor: theme.palette.primary.light,
+                        "&:checked": {
+                          background: theme.palette.secondary.main,
+                          borderColor: theme.palette.secondary.main,
+                        },
+                      },
+                    }}
+                  >
+                    <CheckBoxCustom type="checkbox" />
+                    Lembre-me
+                  </InputLabel>
+                  <Link href={"/"} style={{ textDecoration: "none" }}>
+                    <Typography color={theme.palette.secondary.main}>Esqueceu sua Senha ?</Typography>
+                  </Link>
+                </Stack>
                 <Button
-                  onClick={() => handleSubmit(onSubmit)()}
                   sx={{
                     width: "100%",
                     background: theme.palette.secondary.main,
@@ -135,10 +129,10 @@ const Login = () => {
                 </Button>
                 <Stack flexDirection={"row"} marginTop={5} justifyContent={"center"}>
                   <Typography marginRight={1} color={theme.palette.primary.light}>
-                    Já tem conta ?
+                    Não tem conta ?
                   </Typography>
-                  <Link href={"/login"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
-                    <Typography fontWeight={500}> Logar-se</Typography>
+                  <Link href={"/register"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
+                    <Typography fontWeight={500}> Registrar-se</Typography>
                   </Link>
                 </Stack>
               </Box>

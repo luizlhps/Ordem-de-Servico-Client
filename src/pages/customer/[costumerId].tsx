@@ -1,48 +1,63 @@
-import { useState } from "react";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { ICostumer } from "../../../types/costumer";
+import { costumersApi } from "@/services/api/costumersApi";
+import { Api, setupApiClientSide } from "@/services/api/axios-config";
+import { access } from "fs";
+import { useEffect } from "react";
+import axios from "axios";
+
+import { useState } from "react";
+
 import { useRouter } from "next/router";
 import { useTheme } from "@mui/material";
 import { Button, Icon, IconButton, Stack, TextField } from "@mui/material";
 
-import { ICostumer } from "../../../types/costumer";
 import { IOrder } from "../../../types/order";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { costumersApi } from "@/services/api/costumersApi";
 import { useGetCostumOrders } from "@/hook/useGetCostumOrders";
 import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 import useModal from "@/hook/useModal";
+import { AuthSSR } from "@/utils/AuthSSR";
 
 interface Params extends ParsedUrlQuery {
   costumerId: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) => {
   const { costumerId } = context.params as Params;
+  let costumer = undefined;
 
-  try {
-    const costumer = await costumersApi.getById(costumerId);
-    const data = costumer.data;
-
-    return {
-      props: {
-        costumer: data,
-      },
-    };
-  } catch (error) {
-    console.error("Erro ao buscar os dados do cliente:", error);
-    return {
-      notFound: true,
-    };
+  if (context.req.cookies.auth) {
+    const tokenInfo = JSON.parse(context.req.cookies.auth);
+    const token = tokenInfo.accessToken;
+    console.log(token);
+    try {
+      const res = await setupApiClientSide(token).get(`costumers/${costumerId}`);
+      const customer = res.data;
+      return {
+        props: { customer },
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        notFound: true,
+      };
+    }
   }
-};
 
-function CostumerPageID({ costumer }: { costumer: ICostumer }) {
-  const theme = useTheme();
+  return {
+    notFound: true,
+  };
+});
+
+function CostumerPageID({ customer }: { customer: ICostumer }) {
+  console.log(customer);
   const router = useRouter();
+  const theme = useTheme();
 
   const limitPorPage = 10;
 
@@ -54,15 +69,16 @@ function CostumerPageID({ costumer }: { costumer: ICostumer }) {
     modalActions;
 
   //Api
-  const { setCurrentPage, data, currentPage, fetchApi, loading, setData } = useGetCostumOrders({ costumer });
+  const { setCurrentPage, data, currentPage, fetchApi, loading, setData } = useGetCostumOrders({ costumer: customer });
 
   //Search
+
   const { searchHandle, searchField } = useSearchFieldWith_id({
     limitPorPage: limitPorPage,
     setCurrentPage: setCurrentPage,
     currentPage: currentPage,
     fetchApi: fetchApi,
-    id: costumer._id,
+    id: customer._id,
   });
 
   //Config Grid
@@ -74,7 +90,7 @@ function CostumerPageID({ costumer }: { costumer: ICostumer }) {
     modalViewHandleOpen
   );
 
-  if (!costumer) {
+  if (!customer) {
     return <p>Loading...</p>;
   }
 
@@ -82,7 +98,7 @@ function CostumerPageID({ costumer }: { costumer: ICostumer }) {
     router.push("/clients");
   };
 
-  const { name, id, orders } = costumer;
+  const { name, id, orders } = customer;
 
   return (
     <>
