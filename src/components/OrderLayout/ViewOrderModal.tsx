@@ -108,6 +108,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
               </Box>
             </AccordionList>
 
+            {/* Items of service */}
             <AccordionList
               description={`${selectedItem?.services?.length} serviços`}
               icon="services"
@@ -180,7 +181,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   R$ {selectedItem?.discount?.toFixed(2)}
                 </Typography>
                 <Typography fontSize={14} fontWeight={300}>
-                  17/04/2023
+                  R$ {selectedItem?.amount?.toFixed(2)}
                 </Typography>
               </Box>
             </Stack>

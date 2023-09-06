@@ -149,28 +149,18 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     setDiscount(data.discount);
   }, []);
 
-  const defaultValueServices = () => {
-    if (data.services) {
-      const services = data.services?.map((item: any) => item);
-      return services;
-    }
-    return "";
-  };
-
   const { modalActions, modals, modalSets } = useModal();
   const { modalOpen } = modals;
   const { modalHandleOpen, modalHandleClose } = modalActions;
-
   //form
   const {
     register,
     handleSubmit,
     control,
+    watch,
     setValue,
     formState: { errors },
-  } = useForm<any>({
-    defaultValues: { services: defaultValueServices() },
-  });
+  } = useForm<any>({});
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -200,6 +190,20 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     };
   }, [servicesData]);
 
+  const functionArray = () => {
+    let arrayOfServices: string[] = [];
+    data.services.map((item: any) => {
+      arrayOfServices.push(item._id);
+    });
+    console.log(arrayOfServices);
+
+    return arrayOfServices;
+  };
+
+  useEffect(() => {
+    setValue("services", functionArray());
+  }, []);
+
   const calculateTotalPrice = useMemo(() => {
     return (servicesPrice: any, discount: any) => {
       let totalPrice = servicesPrice;
@@ -216,6 +220,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     };
   }, [discount]);
 
+  const ser = watch("services");
+
+  console.log(ser);
+
   const servicesPrice = calculatePrice(watchServices, servicesData);
 
   const totalPrice = calculateTotalPrice(servicesPrice, discount);
@@ -223,16 +231,16 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const onSubmit = (data: Inputs) => {
     console.log("sub", data);
     setData(data);
-    nextFormStep();
   };
 
   const handlePrev = () => {
+    handleSubmit(onSubmit)();
     prevFormStep();
-    /*  handleSubmit(onSubmit)(); */
   };
 
   const handleNext = () => {
     handleSubmit(onSubmit)();
+    nextFormStep();
   };
 
   return (
@@ -269,7 +277,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                 Novo
               </Button>
             </Box>
-            {servicesData ? (
+            {servicesData?.service ? (
               <>
                 {fields.map((row, index) => (
                   <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>

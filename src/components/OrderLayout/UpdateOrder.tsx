@@ -68,24 +68,24 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
     //put all the data when openning the modal
     if (selectItem) {
       const form = {
-        equipment: selectItem.equipment,
-        defect: selectItem.defect,
-        observation: selectItem.observation,
-        dateEntry: selectItem.dateEntry,
-        status: selectItem.status.name,
-        brand: selectItem.brand,
-        model: selectItem.model,
+        equipment: selectItem?.equipment,
+        defect: selectItem?.defect,
+        observation: selectItem?.observation,
+        dateEntry: selectItem?.dateEntry,
+        status: selectItem?.status?.name,
+        brand: selectItem?.brand,
+        model: selectItem?.model,
 
-        phone: selectItem.customer.phone,
-        name: selectItem.customer._id,
-        costumer: selectItem.customer.name,
-        services: selectItemServices,
-        discount: selectItem.discount,
-        exitDate: selectItem.exitDate,
-        technicalOpinion: selectItem.technicalOpinion,
+        phone: selectItem?.customer?.phone,
+        name: selectItem?.customer?._id,
+        costumer: selectItem?.customer?.name,
+        services: selectItem?.services,
+        discount: selectItem?.discount,
+        exitDate: selectItem?.exitDate,
+        technicalOpinion: selectItem?.technicalOpinion,
       };
       //put data of customer case the usestate don't have data and case select is different of the customer the setState
-      if (!costumer || costumer?.name !== selectItem.customer.name) setCostumer(selectItem.customer);
+      if (!costumer || costumer?.name !== selectItem?.customer?.name) setCostumer(selectItem?.customer);
 
       setData((prevValues: any) => ({
         ...prevValues,

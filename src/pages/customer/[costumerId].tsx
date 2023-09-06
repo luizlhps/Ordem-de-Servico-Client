@@ -4,7 +4,7 @@ import { ICostumer } from "../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
 import { Api, setupApiClientSide } from "@/services/api/axios-config";
 import { access } from "fs";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import axios from "axios";
 
 import { useState } from "react";
@@ -29,12 +29,10 @@ interface Params extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) => {
   const { costumerId } = context.params as Params;
-  let costumer = undefined;
 
   if (context.req.cookies.auth) {
     const tokenInfo = JSON.parse(context.req.cookies.auth);
     const token = tokenInfo.accessToken;
-    console.log(token);
     try {
       const res = await setupApiClientSide(token).get(`costumers/${costumerId}`);
       const customer = res.data;
@@ -55,7 +53,6 @@ export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) =>
 });
 
 function CostumerPageID({ customer }: { customer: ICostumer }) {
-  console.log(customer);
   const router = useRouter();
   const theme = useTheme();
 
@@ -69,10 +66,9 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
     modalActions;
 
   //Api
-  const { setCurrentPage, data, currentPage, fetchApi, loading, setData } = useGetCostumOrders({ costumer: customer });
+  const { setCurrentPage, data, currentPage, fetchApi, loading } = useGetCostumOrders({ costumer: customer });
 
   //Search
-
   const { searchHandle, searchField } = useSearchFieldWith_id({
     limitPorPage: limitPorPage,
     setCurrentPage: setCurrentPage,
@@ -90,12 +86,32 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
     modalViewHandleOpen
   );
 
+  //Config EquipmentField
+  const ordersFormattedForDataGrid = useMemo(() => {
+    return data?.orders.map((obj: any) => {
+      const values: any[] = [];
+      if (obj.equipment) values.push(obj.equipment);
+      if (obj.brand && !values.includes(obj.brand)) values.push(obj.brand);
+      if (obj.model && !values.includes(obj.model)) values.push(obj.model);
+
+      let uniqueValues: any[] = [];
+      values.forEach((obj) => {
+        if (!uniqueValues.includes(obj)) {
+          uniqueValues.push(obj);
+        }
+        return uniqueValues;
+      });
+
+      return (obj.equipmentField = uniqueValues.join(" "));
+    });
+  }, [data?.orders]);
+
   if (!customer) {
     return <p>Loading...</p>;
   }
 
   const BackHandle = () => {
-    router.push("/clients");
+    router.push("/customer");
   };
 
   const { name, id, orders } = customer;

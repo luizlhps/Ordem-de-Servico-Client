@@ -17,10 +17,9 @@ const ListItemButtonCustom = styled(ListItemButton)``;
 export const ButtonLinksRoot: React.FC<IButtomLinks> = ({ href, children, onClick, width, justifyContent }) => {
   const router = useRouter();
   const theme = useTheme();
-
   const handleClick = () => {
     if (href) {
-      router.push(href);
+      router.replace(`/${href}`);
     }
 
     if (onClick) {
