@@ -63,8 +63,6 @@ export const Slider = ({
     }
   };
 
-  console.log(slideIndex);
-
   return (
     <>
       <Box width={"100%"} maxWidth={maxWidthSlide} ref={widthValueSlider} />
@@ -83,7 +81,7 @@ export const Slider = ({
 
 export const Slide = ({ children, minWidth }: ISlideProps) => {
   return (
-    <Box minWidth={minWidth} className="slide">
+    <Box minWidth={minWidth} height={"100%"} className="slide">
       {children}
     </Box>
   );

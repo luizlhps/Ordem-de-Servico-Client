@@ -3,12 +3,12 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { IResponseLogin } from "../../types/auth";
 import { Router, useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { usersApi } from "@/services/api/users";
-import { RootUser } from "../../types/users";
+import { usersApi } from "@/services/api/usersApi";
+import { IMyInfoUser, RootUser } from "../../types/users";
 
 interface IPropsContext {
   tokenAuth: IResponseLogin | undefined;
-  user: RootUser | undefined;
+  user: IMyInfoUser | undefined;
   signIn: ({ email, password }: ISignCredentials) => Promise<void>;
   signOut: () => void;
   fetchMyInfo: () => void;
@@ -27,7 +27,7 @@ export const SessionContext = createContext({} as IPropsContext);
 
 export const SessionProvider = ({ children }: IProps) => {
   const [tokenAuth, setTokenAuth] = useState<IResponseLogin>();
-  const [user, setUser] = useState<RootUser>();
+  const [user, setUser] = useState<IMyInfoUser>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

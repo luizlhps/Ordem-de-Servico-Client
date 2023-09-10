@@ -2,6 +2,7 @@ import React from "react";
 import { Divider, Typography, useTheme, Grid, Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import styled from "styled-components";
+import { format } from "date-fns";
 
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
@@ -132,7 +133,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Data</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={data?.dateEntry ? data?.dateEntry : ""}
+                  defaultValue={data?.dateEntry ? format(new Date(data?.dateEntry), "MM/dd/yyyy") : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>

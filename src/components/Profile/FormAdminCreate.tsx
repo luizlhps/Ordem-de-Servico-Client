@@ -1,16 +1,14 @@
 import { Box, Button, CircularProgress, Grid, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AvatarProfile } from "./AvatarProfile";
-import { usersApi } from "@/services/api/users";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import { SessionContext } from "@/auth/SessionProvider";
 import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Masks";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { InputsFormCreateUserAdmin, installApplicationApi } from "@/services/installApplicationApi";
+import { InputsFormCreateUser, installApplicationApi } from "@/services/installApplicationApi";
 import { useRouter } from "next/router";
 
 interface IProps {}
@@ -35,7 +33,7 @@ export const FormAdminCreate = ({}: IProps) => {
     control,
     watch,
     formState: { errors },
-  } = useForm<InputsFormCreateUserAdmin>();
+  } = useForm<InputsFormCreateUser>();
 
   const handleEyePassword = () => {
     setEyePassword((old) => !old);
@@ -52,7 +50,7 @@ export const FormAdminCreate = ({}: IProps) => {
     closeModal();
   };
 
-  const onSubmit: SubmitHandler<InputsFormCreateUserAdmin> = (data) => {
+  const onSubmit: SubmitHandler<InputsFormCreateUser> = (data) => {
     console.log(data);
 
     setLoading(true);

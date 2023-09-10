@@ -1,9 +1,10 @@
 import { Api } from "./api/axios-config";
 
-export interface InputsFormCreateUserAdmin {
+export interface InputsFormCreateUser {
   name: string;
   email: string;
   phone: string;
+  group?: string;
   password: string;
   checkPassword: string;
 }
@@ -27,7 +28,7 @@ export interface InputsFormCreateStore {
 }
 
 class InstallApplicationApi {
-  CreateAdmin(data: InputsFormCreateUserAdmin) {
+  CreateAdmin(data: InputsFormCreateUser) {
     return Api.post("/install/userAdmin", {
       name: data.name,
       email: data.email,

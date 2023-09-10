@@ -24,13 +24,13 @@ const style = {
 
 const buttonStyle = {
   position: "absolute" as "absolute",
-  top: "3%",
-  left: "93%",
+  top: "15px",
+  right: "20px",
   zIndex: 1,
 
   "@media (max-width: 768px)": {
-    top: "1%",
-    left: "92%",
+    top: "15px",
+    right: "20px",
   },
 };
 

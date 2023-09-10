@@ -4,7 +4,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import React, { useContext, useRef, useState } from "react";
 import { Control, Controller, FieldValues } from "react-hook-form";
 import { SessionContext } from "@/auth/SessionProvider";
-import { usersApi } from "@/services/api/users";
+import { usersApi } from "@/services/api/usersApi";
 import { CropPhoto } from "../CropPhoto";
 
 interface IProps {

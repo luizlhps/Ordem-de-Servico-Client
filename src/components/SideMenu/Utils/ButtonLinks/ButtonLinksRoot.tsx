@@ -19,7 +19,7 @@ export const ButtonLinksRoot: React.FC<IButtomLinks> = ({ href, children, onClic
   const theme = useTheme();
   const handleClick = () => {
     if (href) {
-      router.replace(`/${href}`);
+      router.push(href);
     }
 
     if (onClick) {

@@ -1,4 +1,5 @@
-import { RootUser } from "../../../types/users";
+import { IMyInfoUser, IUser, RootUser } from "../../../types/users";
+import { InputsFormCreateUser } from "../installApplicationApi";
 import { Api } from "./axios-config";
 
 interface IInputDataProfile {
@@ -13,10 +14,12 @@ interface InputDataProfilePassword {
 
 class UsersApi {
   getById() {}
-  getAll(filter = "", page = 1, limit = 10) {}
+  getAll(filter = "", page = 1, limit = 10) {
+    return Api.get<RootUser>(`users/?filter=${filter}&page=${page}&limit=${limit}`);
+  }
 
   GetMyInfo() {
-    return Api.get<RootUser>("/me");
+    return Api.get<IMyInfoUser>("/me");
   }
 
   updateProfile(data: IInputDataProfile) {
@@ -37,6 +40,17 @@ class UsersApi {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+    });
+  }
+
+  createOfficials(data: InputsFormCreateUser) {
+    console.log("data", data);
+    return Api.post("/register", {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      group: data.group,
     });
   }
 }

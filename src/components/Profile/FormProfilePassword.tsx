@@ -1,4 +1,4 @@
-import { usersApi } from "@/services/api/users";
+import { usersApi } from "@/services/api/usersApi";
 import { Box, Button, CircularProgress, Grid, Stack, TextField, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { Control, Controller, FieldErrors, FieldValues, SubmitHandler, useForm } from "react-hook-form";

@@ -151,11 +151,11 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
                 <ButtonLinks.Content label="Dashboard" />
               </ButtonLinks.Root>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="officials" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/officials" width={210}>
                 <ButtonLinks.Icon icon={OrdensSVG} />
                 <ButtonLinks.Content label="Funcionários" />
               </ButtonLinks.Root>
-              <ButtonLinks.Root onClick={handleMenuOpen} href="permissions" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/permissions" width={210}>
                 <ButtonLinks.Icon icon={BlockOutlinedIcon} />
                 <ButtonLinks.Content label="Permissões" />
               </ButtonLinks.Root>
@@ -170,22 +170,22 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
                 Geral
               </Typography>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="orders" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/orders" width={210}>
                 <ButtonLinks.Icon icon={OrdensSVG} />
                 <ButtonLinks.Content label="Ordens de Serviço" />
               </ButtonLinks.Root>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="services" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/services" width={210}>
                 <ButtonLinks.Icon icon={ServicesSVG} />
                 <ButtonLinks.Content label="Serviços" />
               </ButtonLinks.Root>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="customer" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/customer" width={210}>
                 <ButtonLinks.Icon icon={ClientsSVG} />
                 <ButtonLinks.Content label="Clientes" />
               </ButtonLinks.Root>
 
-              <ButtonLinks.Root onClick={handleMenuOpen} href="finance" width={210}>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/finance" width={210}>
                 <ButtonLinks.Icon icon={FinanceSVG} />
                 <ButtonLinks.Content label="Finanças" />
               </ButtonLinks.Root>
@@ -204,7 +204,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               span: { fontWeight: 400, fontSize: "14px" },
             }}
           >
-            <ButtonLinks.Root onClick={handleMenuOpen} href="profile" width={102}>
+            <ButtonLinks.Root onClick={handleMenuOpen} href="/profile" width={102}>
               <ButtonLinks.Icon icon={ProfileSVG} />
               <ButtonLinks.Content label="Perfil" />
             </ButtonLinks.Root>

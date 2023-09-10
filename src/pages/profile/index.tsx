@@ -5,7 +5,7 @@ import { Avatar, Box, Button, Container, Grid, Input, TextField, Typography, use
 import { AvatarProfile } from "@/components/Profile/AvatarProfile";
 import { SwitchButton } from "@/components/SwitchButton/SwitchButton";
 import { RootUser } from "../../../types/users";
-import { usersApi } from "@/services/api/users";
+import { usersApi } from "@/services/api/usersApi";
 import SessionProvider, { SessionContext } from "@/auth/SessionProvider";
 import { FormProfilePassword, FormProfileUpdate } from "@/components/Profile";
 

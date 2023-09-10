@@ -195,7 +195,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     data.services.map((item: any) => {
       arrayOfServices.push(item._id);
     });
-    console.log(arrayOfServices);
 
     return arrayOfServices;
   };
@@ -219,10 +218,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
       return totalPrice;
     };
   }, [discount]);
-
-  const ser = watch("services");
-
-  console.log(ser);
 
   const servicesPrice = calculatePrice(watchServices, servicesData);
 

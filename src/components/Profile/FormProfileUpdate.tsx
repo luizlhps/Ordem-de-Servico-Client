@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Grid, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AvatarProfile } from "./AvatarProfile";
-import { usersApi } from "@/services/api/users";
+import { usersApi } from "@/services/api/usersApi";
 import { useContext, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
