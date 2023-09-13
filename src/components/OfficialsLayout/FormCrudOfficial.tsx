@@ -1,9 +1,10 @@
 import { IModals, ImodalActions } from "@/hook/useModal";
-import { DeleteOfficial } from "./DeleteOfficial";
 import { NewOfficial } from "./NewOfficial";
 import { UpdateOfficial } from "./UpdateOfficial";
 import { memo } from "react";
 import { IUser } from "../../../types/users";
+import { DeleteOfficials } from "./DeleteOfficials";
+import { InputsFormUser } from "@/services/installApplicationApi";
 
 const style = {
   display: "flex",
@@ -35,11 +36,11 @@ export const FormCrudOfficial: React.FC<IProps> = memo(({ modals, fetchApi, moda
         style={style}
         selectItem={selectItem}
       />
-      <DeleteOfficial
+      <DeleteOfficials
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
-        selectedItem={selectItem}
+        id={selectItem?._id}
       />
     </>
   );

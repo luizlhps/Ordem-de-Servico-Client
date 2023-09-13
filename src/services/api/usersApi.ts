@@ -1,5 +1,5 @@
 import { IMyInfoUser, IUser, RootUser } from "../../../types/users";
-import { InputsFormCreateUser } from "../installApplicationApi";
+import { InputsFormUser } from "../installApplicationApi";
 import { Api } from "./axios-config";
 
 interface IInputDataProfile {
@@ -29,10 +29,23 @@ class UsersApi {
       phone: data.phone,
     });
   }
+
+  updateOffcialsUser(data: InputsFormUser, id: string) {
+    return Api.put(`/user/${id}`, {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      group: data.group,
+    });
+  }
   updateProfilePassword(data: InputDataProfilePassword) {
     return Api.put("/user", {
       password: data.password,
     });
+  }
+  delete(id: string) {
+    return Api.delete(`user/${id}`);
   }
 
   updateAvatar(formData: FormData) {
@@ -43,7 +56,7 @@ class UsersApi {
     });
   }
 
-  createOfficials(data: InputsFormCreateUser) {
+  createOfficials(data: InputsFormUser) {
     console.log("data", data);
     return Api.post("/register", {
       name: data.name,

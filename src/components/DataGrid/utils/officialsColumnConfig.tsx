@@ -26,8 +26,8 @@ export const officialsColumnConfig = (
   };
 
   const handleView = (data: IUser) => {
+    modalUpdateHandleOpen();
     setSelectedItemUpdate(data);
-    modalViewHandleOpen();
   };
 
   const columnConfig: GridColDef[] = [

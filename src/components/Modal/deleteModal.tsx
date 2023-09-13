@@ -3,18 +3,18 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import * as Styled from "./styles";
-import { Button, Typography, CircularProgress } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface IModal {
   open: boolean;
   handleClose: () => void;
-  HandleDeleted: ((id: string) => Promise<void>) | ((id: string) => void);
-  selectedItem: any;
+  HandleDeleted: ((id: string | undefined) => Promise<void>) | ((id: string | undefined) => void);
+  id: string | undefined;
   loading: boolean;
 }
 
 import styled from "styled-components";
+import { Button, CircularProgress, Typography } from "@mui/material";
 
 export const style = {
   position: "absolute" as "absolute",
@@ -85,7 +85,7 @@ export const InputCustomDescription = styled.textarea`
   }
 `;
 
-export default function DeleteModal({ open, handleClose, HandleDeleted, selectedItem, loading }: IModal) {
+export default function DeleteModal({ open, handleClose, HandleDeleted, id, loading }: IModal) {
   return (
     <div>
       <Modal
@@ -109,7 +109,7 @@ export default function DeleteModal({ open, handleClose, HandleDeleted, selected
             </Typography>
             <Button
               onClick={() => {
-                HandleDeleted(selectedItem._id);
+                HandleDeleted(id);
               }}
               size="large"
               color="error"

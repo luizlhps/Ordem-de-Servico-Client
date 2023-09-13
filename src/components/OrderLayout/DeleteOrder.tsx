@@ -19,7 +19,13 @@ export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi }: IProp
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const deleteTransaction = (id: string) => {
+  const deleteTransaction = (id: string | undefined) => {
+    if (!id) {
+      setMessageError("O ID é necessário!!");
+      setError(true);
+      return;
+    }
+
     setLoading(true);
     orderApi
       .deleteOrder(id)
@@ -52,7 +58,7 @@ export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi }: IProp
         HandleDeleted={deleteTransaction}
         handleClose={handleClose}
         open={open}
-        selectedItem={selectedItem}
+        id={selectedItem?._id}
       />
     </>
   );

@@ -20,7 +20,13 @@ export const DeleteCostumer = ({ open, handleClose, selectedItem, fetchApi }: IP
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const deleteTransaction = (id: string) => {
+  const deleteTransaction = (id: string | undefined) => {
+    if (!id) {
+      setMessageError("O ID é necessário!!");
+      setError(true);
+      return;
+    }
+
     setLoading(true);
     costumersApi
       .deleteCostumer(id)
@@ -53,7 +59,7 @@ export const DeleteCostumer = ({ open, handleClose, selectedItem, fetchApi }: IP
         HandleDeleted={deleteTransaction}
         handleClose={handleClose}
         open={open}
-        selectedItem={selectedItem}
+        id={selectedItem?._id}
       />
     </>
   );

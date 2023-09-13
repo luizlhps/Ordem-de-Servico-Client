@@ -12,7 +12,9 @@ import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
 import { FormProfilePassword } from "../Profile";
 import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
-import { InputsFormCreateUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/installApplicationApi";
+import { ToastSuccess } from "../Toast/ToastSuccess";
+import { ToastError } from "../Toast/ToastError";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -23,7 +25,7 @@ interface IPropsNewOfficials {
 
 export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOfficials) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<InputsFormCreateUser>();
+  const [data, setData] = useState<InputsFormUser>();
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -31,7 +33,7 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
   const { handleContinueForm, handlePreviousForm, setSlideLength, setWidthSlide, slideIndex, widthSlide, slideLength } =
     useSlider(open);
 
-  const setValueForm = (valueToUpdate: InputsFormCreateUser) => {
+  const setValueForm = (valueToUpdate: InputsFormUser) => {
     setData((oldValue) => {
       const newData = { ...oldValue, ...valueToUpdate };
       const lastSlide = slideLength - 1;
@@ -44,7 +46,8 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
     console.log(data);
   };
 
-  const createNewOfficials = (data: InputsFormCreateUser) => {
+  const createNewOfficials = (data: InputsFormUser) => {
+    setLoading(true);
     usersApi
       .createOfficials(data)
       .then(() => {
@@ -64,6 +67,8 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
 
   return (
     <>
+      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
           <DialogModalScroll handleClose={handleClose} open={open} style={style}>

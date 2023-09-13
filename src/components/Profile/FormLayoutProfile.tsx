@@ -6,43 +6,44 @@ import FormSelect from "../FormSelect";
 import { authGroupApi } from "@/services/api/authGroupApi";
 import { RootAuthGroup } from "../../../types/authGroup";
 import { IUser } from "../../../types/users";
-import { InputsFormCreateUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/installApplicationApi";
 
 interface IProps {
-  data?: any;
+  data?: IUser;
   loading: boolean;
   handleContinueForm: () => void;
-  setValueForm: (valueToUpdate: InputsFormCreateUser) => void;
+  setValueForm: (valueToUpdate: InputsFormUser) => void;
 }
 
 export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueForm }: IProps) => {
   const theme = useTheme();
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState(normalizePhoneNumber(data?.phone));
   const [groupApi, setGroupApi] = useState<RootAuthGroup>();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
-  } = useForm<InputsFormCreateUser>();
 
-  const onSubmit: SubmitHandler<InputsFormCreateUser> = (data) => {
+    formState: { errors },
+  } = useForm<InputsFormUser>({});
+
+  const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
     handleContinueForm();
     setValueForm(data);
   };
 
-  useEffect(() => {
-    const fetchAuthGroup = () => {
-      authGroupApi
-        .getAll("", 0, 0)
-        .then((res) => {
-          setGroupApi(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+  const fetchAuthGroup = () => {
+    authGroupApi
+      .getAll("", 0, 0)
+      .then((res) => {
+        setGroupApi(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
+  useEffect(() => {
     fetchAuthGroup();
   }, []);
 
@@ -114,21 +115,31 @@ export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueF
               <Typography marginTop={3} marginBottom={1}>
                 Cargo
               </Typography>
-              <FormSelect name={"group"} defaultValue={""} rules={{ required: true }} control={control} width={"100%"}>
-                {groupApi?.authGroup.map((item) => {
-                  return (
-                    <MenuItem
-                      key={item._id}
-                      value={item._id}
-                      onClick={() => {
-                        console.log();
-                      }}
-                    >
-                      {item.name}
-                    </MenuItem>
-                  );
-                })}
-              </FormSelect>
+              {groupApi && (
+                <>
+                  <FormSelect
+                    name={"group"}
+                    defaultValue={data && groupApi ? data.group._id : ""}
+                    rules={{ required: true }}
+                    control={control}
+                    width={"100%"}
+                  >
+                    {groupApi?.authGroup.map((item) => {
+                      return (
+                        <MenuItem
+                          key={item._id}
+                          value={item._id}
+                          onClick={() => {
+                            console.log();
+                          }}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </FormSelect>
+                </>
+              )}
               {errors.group?.type === "required" && <Typography color={"error"}>Selecione o cargo</Typography>}
             </Box>
           </Grid>

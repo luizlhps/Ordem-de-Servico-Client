@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { InputsFormCreateUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/installApplicationApi";
 import { IUser } from "../../../types/users";
 
 interface IProps {
   handleContinueForm?: () => void;
   loading: boolean;
-  setValueForm: (valueToUpdate: InputsFormCreateUser) => void;
+  setValueForm: (valueToUpdate: InputsFormUser) => void;
   handlePreviousForm?: () => void;
+  notRequired?: boolean;
 }
 
 export const FormLayoutProfilePassword = ({
@@ -18,10 +19,10 @@ export const FormLayoutProfilePassword = ({
   loading,
   handlePreviousForm,
   setValueForm,
+  notRequired,
 }: IProps) => {
   const theme = useTheme();
 
-  const [display, setDisplay] = useState("");
   const [eyePassword, setEyePassword] = useState(true);
 
   const {
@@ -29,14 +30,14 @@ export const FormLayoutProfilePassword = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<InputsFormCreateUser>();
+  } = useForm<InputsFormUser>();
 
   const handleEyePassword = () => {
     setEyePassword((old) => !old);
   };
   const passwordWatch = watch("password");
 
-  const onSubmit: SubmitHandler<InputsFormCreateUser> = (data) => {
+  const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
     if (handleContinueForm) handleContinueForm();
     setValueForm(data);
     console.log(data);
@@ -53,7 +54,7 @@ export const FormLayoutProfilePassword = ({
             defaultValue=""
             name={"password"}
             control={control}
-            rules={{ required: true, minLength: 6 }}
+            rules={{ required: notRequired ? !notRequired : true, minLength: 6 }}
             render={({ field: { onChange, value } }) => (
               <TextField
                 onChange={onChange}
@@ -104,7 +105,7 @@ export const FormLayoutProfilePassword = ({
           name={"checkPassword"}
           control={control}
           rules={{
-            required: true,
+            required: notRequired ? !notRequired : true,
             validate: (val) => {
               return val === passwordWatch;
             },
