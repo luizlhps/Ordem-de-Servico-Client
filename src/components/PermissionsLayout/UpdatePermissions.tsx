@@ -1,62 +1,62 @@
-import { CSSProperties, useState } from "react";
-import DialogModalScroll from "../Modal/DialogModalScroll";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-
-import { Box, DialogTitle, Typography } from "@mui/material";
-import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+import React, { CSSProperties, useState } from "react";
 import { IUser } from "../../../types/users";
 import { usersApi } from "@/services/api/usersApi";
-import { Slide, Slider } from "../Slider";
-import useSlider from "@/hook/useSlider";
-import { FormProfilePassword } from "../Profile";
-import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
-import { InputsFormUser } from "@/services/installApplicationApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import DialogModalScroll from "../Modal/DialogModalScroll";
+import { CloseModal } from "../Modal/financePage/FormCrudModals";
+import { Slide, Slider } from "../Slider";
+import useSlider from "@/hook/useSlider";
+import { Box, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
+import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
+import { InputsFormUser } from "@/services/installApplicationApi";
 
-interface IPropsNewOfficials {
+interface IProps {
   handleClose: () => void;
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
+  selectItem: IUser | undefined;
 }
 
-export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOfficials) => {
+export const UpdatePermissions = ({ handleClose, fetchApi, style, open, selectItem }: IProps) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<InputsFormUser>();
   const [messageError, setMessageError] = useState("");
+  const [data, setData] = useState<InputsFormUser>();
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
   const { handleContinueForm, handlePreviousForm, setSlideLength, setWidthSlide, slideIndex, widthSlide, slideLength } =
     useSlider(open);
-
   const setValueForm = (valueToUpdate: InputsFormUser) => {
     setData((oldValue) => {
       const newData = { ...oldValue, ...valueToUpdate };
       const lastSlide = slideLength - 1;
 
       if (lastSlide === slideIndex) {
-        createNewOfficials(newData);
+        onSubmit(newData);
       }
       return newData;
     });
-    console.log(data);
   };
 
-  const createNewOfficials = (data: InputsFormUser) => {
+  const onSubmit = (data: InputsFormUser) => {
+    if (!selectItem?._id) {
+      setMessageError("O ID é necessário!!");
+      setError(true);
+      return;
+    }
     setLoading(true);
     usersApi
-      .createOfficials(data)
-      .then(() => {
-        fetchApi();
+      .updateOffcialsUser(data, selectItem._id)
+      .then((res) => {
         setSuccess(true);
+        fetchApi();
       })
       .catch((err) => {
-        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
-          setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+        console.log("i");
+        setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       })
       .finally(() => {
@@ -73,7 +73,7 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
         <>
           <DialogModalScroll handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
-
+            <DialogTitle sx={{ padding: 4 }} id="scroll-dialog-title"></DialogTitle>
             <DialogContent dividers={false} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
               <Slider
                 widthSlide={widthSlide}
@@ -84,9 +84,10 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
               >
                 <Slide minWidth={widthSlide}>
                   <Box sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <Typography variant="h1">Novo Funcionario</Typography>
+                    <Typography variant="h1">Atualizar Funcionário</Typography>
                     <Typography>Preencha os dados do seu funcionario</Typography>
                     <FormLayoutProfile
+                      data={selectItem}
                       loading={loading}
                       setValueForm={setValueForm}
                       handleContinueForm={handleContinueForm}
@@ -96,11 +97,10 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
 
                 <Slide minWidth={widthSlide}>
                   <Box height={"100%"} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <DialogTitle>
-                      <Typography variant="h1">Novo Funcionario</Typography>
-                      <Typography>Preencha os dados do seu funcionario</Typography>
-                    </DialogTitle>
+                    <Typography variant="h1">Atualizar Funcionário</Typography>
+                    <Typography>Preencha os dados do seu funcionario</Typography>
                     <FormLayoutProfilePassword
+                      notRequired
                       setValueForm={setValueForm}
                       handlePreviousForm={handlePreviousForm}
                       loading={loading}
@@ -109,6 +109,7 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
                 </Slide>
               </Slider>
             </DialogContent>
+            <DialogActions sx={{ padding: 2 }}></DialogActions>
           </DialogModalScroll>
         </>
       )}

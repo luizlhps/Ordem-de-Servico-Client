@@ -66,7 +66,15 @@ export const Slider = ({
   return (
     <>
       <Box width={"100%"} maxWidth={maxWidthSlide} ref={widthValueSlider} />
-      <Box width={widthSlide} overflow={"hidden"}>
+      <Box
+        width={widthSlide}
+        overflow={"hidden auto"}
+        sx={{
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
         <Box display={"flex"} ref={slider} sx={{ transition: "all 0.4s ease" }}>
           {React.Children.map(children, (child, index) => (
             <Box minWidth={widthSlide} id="content">

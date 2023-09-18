@@ -11,7 +11,7 @@ export interface AuthGroup {
   permissions: Permissions;
 }
 
-export interface Permissions {
+export interface IPermissions {
   create: string[];
   update: string[];
   deleted: string[];

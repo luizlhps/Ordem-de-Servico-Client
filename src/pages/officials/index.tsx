@@ -14,7 +14,7 @@ import { officialsColumnConfig } from "@/components/DataGrid/utils/officialsColu
 import { IUser } from "../../../types/users";
 import { FormCrudOfficial } from "@/components/OfficialsLayout/FormCrudOfficial";
 
-const Orders = () => {
+const Officials = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
@@ -81,4 +81,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Officials;
