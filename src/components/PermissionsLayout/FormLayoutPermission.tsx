@@ -1,147 +1,165 @@
-import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Masks";
-import { Box, Button, CircularProgress, Grid, MenuItem, TextField, Typography, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import FormSelect from "../FormSelect";
-import { authGroupApi } from "@/services/api/authGroupApi";
-import { RootAuthGroup } from "../../../types/authGroup";
-import { IUser } from "../../../types/users";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import React from "react";
+import DialogModalScroll from "../Modal/DialogModalScroll";
+import { CloseModal } from "../Modal/financePage/FormCrudModals";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import { CheckBoxindeterminate } from "../CheckBox";
+import { IAuthGroupFormInput } from "./UpdatePermissions";
 
 interface IProps {
-  data?: IUser;
+  handleClose: () => void;
   loading: boolean;
-  setValueForm: (valueToUpdate: InputsFormUser) => void;
+  watch: UseFormWatch<IAuthGroupFormInput>;
+  onSubmit: SubmitHandler<IAuthGroupFormInput>;
+  handleSubmit: UseFormHandleSubmit<IAuthGroupFormInput>;
+  setValue: UseFormSetValue<IAuthGroupFormInput>;
+  errors: FieldErrors<IAuthGroupFormInput>;
+  control: Control<IAuthGroupFormInput, any>;
 }
 
-export const FormLayoutPermission = ({ data, loading, setValueForm }: IProps) => {
+export const FormLayoutPermission = ({ control, errors, setValue, watch, loading, handleSubmit, onSubmit }: IProps) => {
   const theme = useTheme();
-  const [display, setDisplay] = useState(normalizePhoneNumber(data?.phone));
-  const [groupApi, setGroupApi] = useState<RootAuthGroup>();
-
-  const {
-    handleSubmit,
-    control,
-
-    formState: { errors },
-  } = useForm<InputsFormUser>({});
-
-  const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
-    setValueForm(data);
-  };
-
-  const fetchAuthGroup = () => {
-    authGroupApi
-      .getAll("", 0, 0)
-      .then((res) => {
-        setGroupApi(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    fetchAuthGroup();
-  }, []);
+  const matches = useMediaQuery("(max-width:649px)");
 
   return (
     <>
-      <Grid container maxWidth={600} justifyContent={"center"} flexDirection={"column"}>
-        <Grid item>
-          <Typography marginTop={3} marginBottom={1}>
-            Nome
-          </Typography>
-          <Controller
-            defaultValue={data?.name ? data?.name : ""}
-            name={"name"}
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <TextField sx={{ fontWeight: 300 }} onChange={onChange} value={value} size="small" fullWidth />
-            )}
-          />
-          {errors.name?.type === "required" && <Typography color={"error"}>Digite o sobre o equipamento</Typography>}
-        </Grid>
-        <Grid item>
-          <Typography marginTop={3} marginBottom={1}>
-            Email
-          </Typography>
-          <Controller
-            defaultValue={data?.email ? data?.email : ""}
-            name={"email"}
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <TextField onChange={onChange} value={value} size="small" fullWidth />
-            )}
-          />
-
-          {errors.email?.type === "required" && <Typography color={"error"}>Digite o modelo</Typography>}
-        </Grid>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
+      <DialogTitle variant="h1" fontSize={26} sx={{ padding: 3 }} id="scroll-dialog-title">
+        Criar novo Cargo
+      </DialogTitle>
+      <DialogContent
+        dividers={true}
+        sx={{ alignItems: "center", display: "flex", flexDirection: "column", minHeight: "120px" }}
+      >
+        <Box sx={{ alignItems: "center", display: "flex", flexDirection: "column", width: "90%", paddingBottom: 1 }}>
+          <Stack width={"100%"}>
             <Box>
-              <Typography marginTop={3} marginBottom={1}>
-                Celular
+              <Typography marginTop={0} marginBottom={1}>
+                Nome do cargo
               </Typography>
               <Controller
-                name={"phone"}
+                defaultValue={""}
+                name={"name"}
                 control={control}
-                rules={{ required: true, minLength: 11 }}
-                defaultValue={data?.phone ? data?.phone : ""}
+                rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextField
-                    inputProps={{ maxLength: 15 }}
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      onChange(TransformForbackEndPhoneNumber(newValue));
-                      setDisplay(normalizePhoneNumber(newValue));
-                    }}
-                    value={display}
+                    sx={{ fontWeight: 300 }}
+                    onChange={onChange}
+                    value={value}
                     size="small"
                     fullWidth
+                    placeholder="Digite o nome do cargo"
                   />
                 )}
               />
-              {errors.phone?.type === "required" && <Typography color={"error"}>Digite o celular</Typography>}
-              {errors.phone?.type === "validate" && <Typography color={"error"}>Digite um numero correto</Typography>}
+              {errors.name?.type === "required" && <Typography color={"error"}>Digite o cargo</Typography>}
             </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box>
-              <Typography marginTop={3} marginBottom={1}>
-                Cargo
+          </Stack>
+        </Box>
+      </DialogContent>
+      <DialogContent
+        dividers={true}
+        sx={{ alignItems: "center", display: "flex", flexDirection: "column", borderTop: "none" }}
+      >
+        <Box
+          sx={{
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            width: "90%",
+            textAlign: matches ? "center" : "none",
+          }}
+        >
+          <Stack width={"100%"} flexDirection={"row"} flexWrap={"wrap"} gap={5} justifyContent={"center"}>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Ordem de Serviço
               </Typography>
-              {groupApi && (
-                <>
-                  <FormSelect
-                    name={"group"}
-                    defaultValue={data && groupApi ? data.group._id : ""}
-                    rules={{ required: true }}
-                    control={control}
-                    width={"100%"}
-                  >
-                    {groupApi?.authGroup.map((item) => {
-                      return (
-                        <MenuItem
-                          key={item._id}
-                          value={item._id}
-                          onClick={() => {
-                            console.log();
-                          }}
-                        >
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </FormSelect>
-                </>
-              )}
-              {errors.group?.type === "required" && <Typography color={"error"}>Selecione o cargo</Typography>}
             </Box>
-          </Grid>
-        </Grid>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="order" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Finanças
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="finance" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Clientes
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="customer" />
+            </Stack>
+
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Dashboard
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="dashboard" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Status
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="status" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Serviços
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="services" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Funcionários
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="admin" />
+            </Stack>
+            <Box width={140}>
+              <Typography fontSize={16} fontWeight={700}>
+                Cargos
+              </Typography>
+            </Box>
+            <Stack>
+              <CheckBoxindeterminate control={control} setValue={setValue} watch={watch} name="permissionsGroup" />
+            </Stack>
+          </Stack>
+        </Box>
+      </DialogContent>
+      <DialogActions sx={{ padding: 2 }}>
         <Button
           onClick={handleSubmit(onSubmit)}
           fullWidth
@@ -155,7 +173,7 @@ export const FormLayoutPermission = ({ data, loading, setValueForm }: IProps) =>
         >
           {loading ? <CircularProgress size={25} /> : <>Salvar</>}
         </Button>
-      </Grid>
+      </DialogActions>
     </>
   );
 };

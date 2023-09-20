@@ -28,7 +28,6 @@ interface PropsCustomPagination {
 
 //Config Pagination
 export function CustomPagination({ totalCount, PageSize, currentPage, setCurrentPage, page }: PropsCustomPagination) {
-  const apiRef = useGridApiContext();
   const pageTotalCount = totalCount / PageSize;
 
   return (
@@ -60,7 +59,6 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
   loading,
 }) => {
   const theme = useTheme();
-  console.log(loading);
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid

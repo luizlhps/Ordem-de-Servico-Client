@@ -12,7 +12,7 @@ import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
 import { FormProfilePassword } from "../Profile";
 import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/configApplicationApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 

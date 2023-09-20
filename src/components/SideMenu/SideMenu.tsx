@@ -30,6 +30,8 @@ import {
   ServicesSVG,
 } from "../../../public/icon/SVGS/IconsSVG";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
+import StoreIcon from "@mui/icons-material/Store";
+import { Router, useRouter } from "next/router";
 
 //Custom Styled
 
@@ -38,6 +40,7 @@ const BoxHeaderContent = styled(Box)`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  cursor: pointer;
   width: 100%;
 `;
 const FooterBox = styled.div<propsStyled>`
@@ -67,7 +70,7 @@ const DrawerHeader = styled.div<propsStyled>`
 
 export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   const theme = useTheme();
-
+  const router = useRouter();
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
   const matches = useMediaQuery("(max-height:860px)");
 
@@ -114,7 +117,11 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
           alignItems={"center"}
           sx={{ color: theme.palette.primary.main }}
         >
-          <BoxHeaderContent height={!matches ? theme.spacing(25) : "flex:0.5"} marginTop={5}>
+          <BoxHeaderContent
+            onClick={() => router.push("/profile")}
+            height={!matches ? theme.spacing(25) : "flex:0.5"}
+            marginTop={5}
+          >
             {user && user.avatar ? (
               <Image
                 style={{
@@ -158,6 +165,10 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
               <ButtonLinks.Root onClick={handleMenuOpen} href="/permissions" width={210}>
                 <ButtonLinks.Icon icon={BlockOutlinedIcon} />
                 <ButtonLinks.Content label="Permissões" />
+              </ButtonLinks.Root>
+              <ButtonLinks.Root onClick={handleMenuOpen} href="/store" width={210}>
+                <ButtonLinks.Icon icon={StoreIcon} />
+                <ButtonLinks.Content label="Loja" />
               </ButtonLinks.Root>
 
               <Typography

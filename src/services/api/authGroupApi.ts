@@ -14,6 +14,19 @@ class AuthGroupApi {
       update: permissions.update,
     });
   }
+  update(name: string, permissions: IPermissions, id: string) {
+    return Api.put(`authGroup/${id}`, {
+      name: name,
+      create: permissions.create,
+      deleted: permissions.deleted,
+      view: permissions.view,
+      update: permissions.update,
+    });
+  }
+
+  delete(id: string) {
+    return Api.delete(`authGroup/${id}`);
+  }
 }
 
 export const authGroupApi = new AuthGroupApi();

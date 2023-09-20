@@ -8,7 +8,7 @@ import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Ma
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { InputsFormCreateUser, installApplicationApi } from "@/services/installApplicationApi";
+import { InputsFormCreateUser, installApplicationApi } from "@/services/configApplicationApi";
 import { useRouter } from "next/router";
 
 interface IProps {}

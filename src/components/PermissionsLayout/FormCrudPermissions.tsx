@@ -1,9 +1,10 @@
 import { IModals, ImodalActions } from "@/hook/useModal";
-import { NewPermissions } from "./NewPermissions";
 import { UpdatePermissions } from "./UpdatePermissions";
 import { memo } from "react";
 import { IUser } from "../../../types/users";
 import { DeletePermissions } from "./DeletePermissions";
+import { NewPermissions } from "./NewPermissions";
+import { AuthGroup } from "../../../types/authGroup";
 
 const style = {
   display: "flex",
@@ -17,7 +18,7 @@ interface IProps {
   modals: IModals;
   fetchApi: () => void;
   modalActions: ImodalActions;
-  selectItem: IUser | undefined;
+  selectItem: AuthGroup | undefined;
 }
 
 export const FormCrudPermissions: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {

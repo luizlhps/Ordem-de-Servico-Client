@@ -1,5 +1,5 @@
 import { IMyInfoUser, IUser, RootUser } from "../../../types/users";
-import { InputsFormUser } from "../installApplicationApi";
+import { InputsFormUser } from "../configApplicationApi";
 import { Api } from "./axios-config";
 
 interface IInputDataProfile {

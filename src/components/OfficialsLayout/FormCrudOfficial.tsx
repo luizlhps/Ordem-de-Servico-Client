@@ -4,7 +4,7 @@ import { UpdateOfficial } from "./UpdateOfficial";
 import { memo } from "react";
 import { IUser } from "../../../types/users";
 import { DeleteOfficials } from "./DeleteOfficials";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/configApplicationApi";
 
 const style = {
   display: "flex",

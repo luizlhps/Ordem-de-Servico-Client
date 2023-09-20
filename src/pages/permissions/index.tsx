@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 import { useTheme } from "@mui/material";
 
@@ -6,21 +6,18 @@ import { Button, Stack, TextField } from "@mui/material";
 import { DataGridLayout, HeaderLayout } from "@/components";
 import useModal from "@/hook/useModal";
 import { useSearchField } from "@/hook/useSearchField";
-import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
-import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { IOrder } from "../../../types/order";
-import { useGetFetchOfficials } from "@/hook/useGetFetchOfficials";
 import { officialsColumnConfig } from "@/components/DataGrid/utils/officialsColumnConfig";
 import { IUser } from "../../../types/users";
-import { FormCrudOfficial } from "@/components/OfficialsLayout/FormCrudOfficial";
 import { useGetFetchPermissions } from "@/hook/useGetFetchPermissions";
 import { FormCrudPermissions } from "@/components/PermissionsLayout/FormCrudPermissions";
+import { AuthGroup } from "../../../types/authGroup";
+import { permissionsColumnConfig } from "@/components/DataGrid/utils/permissionsColumnConfig";
 
 const Permissions = () => {
   const theme = useTheme();
   const limitPorPage = 10;
 
-  const [selectItem, setselectItem] = useState<IUser | undefined>(undefined);
+  const [selectItem, setselectItem] = useState<AuthGroup | undefined>(undefined);
 
   //modal
   const { modals, modalActions } = useModal();
@@ -29,8 +26,6 @@ const Permissions = () => {
 
   //Api
   const { currentPage, fetchApi, loading, permissionsData, setCurrentPage } = useGetFetchPermissions();
-
-  console.log(permissionsData);
 
   //Search
   const { searchHandle, searchField } = useSearchField({
@@ -41,7 +36,7 @@ const Permissions = () => {
   });
 
   //Config Grid
-  const columns = officialsColumnConfig(
+  const columns = permissionsColumnConfig(
     theme,
     modalUpdateHandleOpen,
     setselectItem,

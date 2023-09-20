@@ -1,115 +1,188 @@
-import React, { CSSProperties, useState } from "react";
-import { IUser } from "../../../types/users";
-import { usersApi } from "@/services/api/usersApi";
+import { CSSProperties, useEffect, useState } from "react";
+
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AuthGroup, IPermissions } from "../../../types/authGroup";
+import { FormLayoutPermission } from "./FormLayoutPermission";
 import DialogModalScroll from "../Modal/DialogModalScroll";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
-import { Slide, Slider } from "../Slider";
-import useSlider from "@/hook/useSlider";
-import { Box, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
-import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
-import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { authGroupApi } from "@/services/api/authGroupApi";
 
-interface IProps {
+interface IPropsNewOfficials {
   handleClose: () => void;
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
-  selectItem: IUser | undefined;
+  selectItem: AuthGroup | undefined;
 }
 
-export const UpdatePermissions = ({ handleClose, fetchApi, style, open, selectItem }: IProps) => {
+interface TOperation {
+  create: boolean;
+  update: boolean;
+  deleted: boolean;
+  view: boolean;
+}
+
+interface IAuthGroupFormFields {
+  [key: string]: TOperation;
+  order: TOperation;
+  finance: TOperation;
+  dashboard: TOperation;
+  customer: TOperation;
+  status: TOperation;
+  services: TOperation;
+  user: TOperation;
+  admin: TOperation;
+}
+export interface IAuthGroupFormInput {
+  name: string;
+  permissions: IAuthGroupFormFields;
+}
+
+const values: IAuthGroupFormFields = {
+  order: { create: false, deleted: false, update: false, view: false },
+  finance: { create: false, deleted: false, update: false, view: false },
+  dashboard: { create: false, deleted: false, update: false, view: false },
+  status: { create: false, deleted: false, update: false, view: false },
+  services: { create: false, deleted: false, update: false, view: false },
+  user: { create: false, deleted: false, update: false, view: false },
+  admin: { create: false, deleted: false, update: false, view: false },
+  permissionsGroup: { create: false, deleted: false, update: false, view: false },
+  customer: { create: false, deleted: false, update: false, view: false },
+};
+
+export const UpdatePermissions = ({ fetchApi, handleClose, open, style, selectItem }: IPropsNewOfficials) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
-  const [data, setData] = useState<InputsFormUser>();
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const { handleContinueForm, handlePreviousForm, setSlideLength, setWidthSlide, slideIndex, widthSlide, slideLength } =
-    useSlider(open);
-  const setValueForm = (valueToUpdate: InputsFormUser) => {
-    setData((oldValue) => {
-      const newData = { ...oldValue, ...valueToUpdate };
-      const lastSlide = slideLength - 1;
+  const interactFields = () => {
+    let permissionsObj: { [key: string]: TOperation } = {};
 
-      if (lastSlide === slideIndex) {
-        onSubmit(newData);
+    if (!selectItem) return values;
+
+    const permissionList = [
+      "order",
+      "finance",
+      "dashboard",
+      "status",
+      "services",
+      "user",
+      "admin",
+      "permissionsGroup",
+      "customer",
+    ];
+
+    const defaultFields = {
+      create: false,
+      update: false,
+      deleted: false,
+      view: false,
+    } as TOperation;
+
+    //add default fields
+    for (let key of permissionList) {
+      permissionsObj[key] = { ...defaultFields };
+    }
+
+    const input: IPermissions = selectItem.permissions;
+
+    const keys = Object.keys(input);
+
+    keys.forEach((key) => {
+      if (key === "create" || key === "update" || key === "deleted" || key === "view") {
+        const permissionValues = input[key];
+        if (Array.isArray(permissionValues)) {
+          permissionValues.forEach((field) => {
+            permissionsObj[field][key as keyof TOperation] = true;
+          });
+        }
       }
-      return newData;
     });
+    return permissionsObj as IAuthGroupFormFields;
   };
 
-  const onSubmit = (data: InputsFormUser) => {
-    if (!selectItem?._id) {
-      setMessageError("O ID é necessário!!");
-      setError(true);
-      return;
-    }
+  // Helper function to post data to API
+  const postDataForApi = (name: string, permissions: IPermissions, id: string) => {
     setLoading(true);
-    usersApi
-      .updateOffcialsUser(data, selectItem._id)
+    authGroupApi
+      .update(name, permissions, id)
       .then((res) => {
         setSuccess(true);
-        fetchApi();
       })
       .catch((err) => {
-        console.log("i");
         setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
+        console.log(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
       })
       .finally(() => {
+        fetchApi();
         setLoading(false);
+
         handleClose();
       });
+  };
+
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<IAuthGroupFormInput>();
+
+  useEffect(() => {
+    if (selectItem) {
+      setValue("name", selectItem?.name);
+      setValue("permissions", interactFields());
+    }
+  }, [selectItem]);
+
+  const onSubmit: SubmitHandler<IAuthGroupFormInput> = (data) => {
+    const permissions: IPermissions = {
+      create: [],
+      deleted: [],
+      view: [],
+      update: [],
+    };
+    //interact about the keys exemple (order and finance) of the input
+    for (let key in data.permissions) {
+      if (data.permissions.hasOwnProperty(key)) {
+        const operation = data.permissions[key];
+
+        //interact about the keys exemple(create, delete, etc) of object the operation
+        for (let opKey in operation) {
+          if (operation.hasOwnProperty(opKey) && operation[opKey as keyof TOperation] === true) {
+            permissions[opKey as keyof TOperation].push(key);
+          }
+        }
+      }
+    }
+
+    if (selectItem) postDataForApi(data.name, permissions, selectItem._id);
   };
 
   return (
     <>
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
-      {open && (
+
+      {open && selectItem && (
         <>
           <DialogModalScroll handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
-            <DialogTitle sx={{ padding: 4 }} id="scroll-dialog-title"></DialogTitle>
-            <DialogContent dividers={false} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-              <Slider
-                widthSlide={widthSlide}
-                maxWidthSlide={650}
-                setSlideLength={setSlideLength}
-                slideIndex={slideIndex}
-                setWidthSlide={setWidthSlide}
-              >
-                <Slide minWidth={widthSlide}>
-                  <Box sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <Typography variant="h1">Atualizar Funcionário</Typography>
-                    <Typography>Preencha os dados do seu funcionario</Typography>
-                    <FormLayoutProfile
-                      data={selectItem}
-                      loading={loading}
-                      setValueForm={setValueForm}
-                      handleContinueForm={handleContinueForm}
-                    />
-                  </Box>
-                </Slide>
-
-                <Slide minWidth={widthSlide}>
-                  <Box height={"100%"} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <Typography variant="h1">Atualizar Funcionário</Typography>
-                    <Typography>Preencha os dados do seu funcionario</Typography>
-                    <FormLayoutProfilePassword
-                      notRequired
-                      setValueForm={setValueForm}
-                      handlePreviousForm={handlePreviousForm}
-                      loading={loading}
-                    />
-                  </Box>
-                </Slide>
-              </Slider>
-            </DialogContent>
-            <DialogActions sx={{ padding: 2 }}></DialogActions>
+            <FormLayoutPermission
+              control={control}
+              errors={errors}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              loading={loading}
+              onSubmit={onSubmit}
+              setValue={setValue}
+              watch={watch}
+            />
           </DialogModalScroll>
         </>
       )}

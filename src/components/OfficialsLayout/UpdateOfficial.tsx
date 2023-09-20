@@ -10,7 +10,7 @@ import useSlider from "@/hook/useSlider";
 import { Box, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
 import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/configApplicationApi";
 
 interface IProps {
   handleClose: () => void;

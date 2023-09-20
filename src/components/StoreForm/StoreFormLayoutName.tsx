@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Stack, TextField, Typography, useTheme } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Control, Controller, FieldErrors, useForm } from "react-hook-form";
 import { AvatarProfile } from "../Profile/AvatarProfile";
 import {
@@ -9,14 +9,16 @@ import {
   normalizePhoneNumber,
   normalizeTelPhoneNumber,
 } from "@/utils/Masks";
-import { InputsFormCreateStore } from "@/services/installApplicationApi";
+import { InputsFormCreateStore } from "@/services/configApplicationApi";
+import { RootStore } from "../../../types/store";
 
 interface IProps {
+  data?: RootStore;
   setValueForm: (valueToUpdate: InputsFormCreateStore) => void;
   uploudAvatar: (formData: FormData, blob: Blob, closeModal: () => void) => Promise<void>;
 }
 
-export const StoreFormLayoutName = ({ uploudAvatar, setValueForm }: IProps) => {
+export const StoreFormLayoutName = ({ uploudAvatar, setValueForm, data }: IProps) => {
   const [display, setDisplay] = useState("");
   const [CNPJDisplay, setCNPJDisplay] = useState("");
   const [telephoneDisplay, setTelephoneDisplay] = useState("");
@@ -25,8 +27,22 @@ export const StoreFormLayoutName = ({ uploudAvatar, setValueForm }: IProps) => {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<InputsFormCreateStore>();
+
+  useEffect(() => {
+    if (data) {
+      setValue("telephone", data.telephone);
+      setValue("cnpj", data.cnpj);
+      setValue("name", data.name);
+      setValue("phone", data.phone);
+
+      setCNPJDisplay(Cnpj(data.cnpj));
+      setTelephoneDisplay(normalizeTelPhoneNumber(data.telephone));
+      setDisplay(normalizePhoneNumber(data.phone));
+    }
+  }, [data]);
 
   const onSubmit = (data: InputsFormCreateStore) => {
     setValueForm(data);
@@ -35,7 +51,7 @@ export const StoreFormLayoutName = ({ uploudAvatar, setValueForm }: IProps) => {
   return (
     <>
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
-        <AvatarProfile avatarLink={""} uploudAvatar={uploudAvatar} formRect />
+        <AvatarProfile avatarLink={data?.avatar} uploudAvatar={uploudAvatar} formRect />
       </Box>
 
       <Grid width={"100%"}>
@@ -145,7 +161,7 @@ export const StoreFormLayoutName = ({ uploudAvatar, setValueForm }: IProps) => {
               flex: 1,
             }}
           >
-            <>Completar</>
+            <>Proximo</>
           </Button>
         </Stack>
       </Grid>

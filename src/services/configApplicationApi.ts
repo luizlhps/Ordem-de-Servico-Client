@@ -1,3 +1,4 @@
+import { RootStore } from "../../types/store";
 import { Api } from "./api/axios-config";
 
 export interface InputsFormUser {
@@ -27,7 +28,7 @@ export interface InputsFormCreateStore {
   address: IStoreAddress;
 }
 
-class InstallApplicationApi {
+class ConfigApplicationApi {
   CreateAdmin(data: InputsFormUser) {
     return Api.post("/install/userAdmin", {
       name: data.name,
@@ -70,6 +71,14 @@ class InstallApplicationApi {
       },
     });
   }
+
+  updateStore(data: InputsFormCreateStore) {
+    return Api.put("/store", data);
+  }
+
+  getInfoStore() {
+    return Api.get<RootStore>("/store");
+  }
 }
 
-export const installApplicationApi = new InstallApplicationApi();
+export const configApplicationApi = new ConfigApplicationApi();

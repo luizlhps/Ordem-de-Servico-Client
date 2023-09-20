@@ -6,7 +6,7 @@ import FormSelect from "../FormSelect";
 import { authGroupApi } from "@/services/api/authGroupApi";
 import { RootAuthGroup } from "../../../types/authGroup";
 import { IUser } from "../../../types/users";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/configApplicationApi";
 
 interface IProps {
   data?: IUser;

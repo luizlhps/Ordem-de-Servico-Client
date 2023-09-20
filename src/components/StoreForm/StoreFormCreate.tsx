@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 
-import { InputsFormCreateStore, installApplicationApi } from "@/services/installApplicationApi";
 import { StoreFormLayoutName } from "./StoreFormLayoutName";
 import { StoreFormLayoutAddress } from "./StoreFormLayoutAddress";
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
 import { useRouter } from "next/router";
 import { usePathname, useSearchParams } from "next/navigation";
+import { InputsFormCreateStore, configApplicationApi } from "@/services/configApplicationApi";
 
 interface IProps {}
 
@@ -32,7 +32,7 @@ export const StoreFormCreate = ({}: IProps) => {
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(Array.from(searchParams.entries()));
       params.set(name, value);
 
       return params.toString();
@@ -58,14 +58,14 @@ export const StoreFormCreate = ({}: IProps) => {
     console.log(data);
 
     setLoading(true);
-    installApplicationApi
+    configApplicationApi
       .CreateStore(data)
       .then((res) => {
         setSuccess(true);
 
         if (formDataAvatar) {
           console.log("oi");
-          installApplicationApi
+          configApplicationApi
             .uploudAvatarStore(formDataAvatar)
             .then((res) => {
               console.log(res);
@@ -107,27 +107,25 @@ export const StoreFormCreate = ({}: IProps) => {
     <>
       <ToastSuccess alertSuccess="A loja foi criada com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
-      <>
-        <Slider
-          widthSlide={widthSlide}
-          maxWidthSlide={650}
-          setSlideLength={setSlideLength}
-          slideIndex={slideIndex}
-          setWidthSlide={setWidthSlide}
-        >
-          <Slide minWidth={widthSlide}>
-            <StoreFormLayoutName uploudAvatar={uploudAvatar} setValueForm={setValueForm} />
-          </Slide>
+      <Slider
+        widthSlide={widthSlide}
+        maxWidthSlide={650}
+        setSlideLength={setSlideLength}
+        slideIndex={slideIndex}
+        setWidthSlide={setWidthSlide}
+      >
+        <Slide minWidth={widthSlide}>
+          <StoreFormLayoutName uploudAvatar={uploudAvatar} setValueForm={setValueForm} />
+        </Slide>
 
-          <Slide minWidth={widthSlide}>
-            <StoreFormLayoutAddress
-              handlePreviousForm={handlePreviousForm}
-              loading={loading}
-              setValueForm={setValueForm}
-            />
-          </Slide>
-        </Slider>
-      </>
+        <Slide minWidth={widthSlide}>
+          <StoreFormLayoutAddress
+            handlePreviousForm={handlePreviousForm}
+            loading={loading}
+            setValueForm={setValueForm}
+          />
+        </Slide>
+      </Slider>
     </>
   );
 };

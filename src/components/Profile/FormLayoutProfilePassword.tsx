@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { InputsFormUser } from "@/services/installApplicationApi";
+import { InputsFormUser } from "@/services/configApplicationApi";
 import { IUser } from "../../../types/users";
 
 interface IProps {

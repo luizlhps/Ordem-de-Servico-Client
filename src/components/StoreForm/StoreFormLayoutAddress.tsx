@@ -1,17 +1,19 @@
 import { Box, Button, CircularProgress, Stack, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { InputsFormCreateStore } from "@/services/installApplicationApi";
+import { InputsFormCreateStore } from "@/services/configApplicationApi";
 import useSearchCep from "@/hook/useSearchCep";
 import { SearchCep } from "../SearchCep";
+import { RootStore } from "../../../types/store";
 
 interface IProps {
   setValueForm: (valueToUpdate: InputsFormCreateStore) => void;
   handlePreviousForm: () => void;
   loading: boolean;
+  data?: RootStore;
 }
 
-export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loading }: IProps) => {
+export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loading, data }: IProps) => {
   const theme = useTheme();
   const [valueCepField, setValueCepField] = useState<string>();
   const { cepError, cepData } = useSearchCep(valueCepField);
@@ -26,6 +28,14 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
 
   const columnMedia = useMediaQuery("(max-width:1110px)");
 
+  //setDefaultValues
+  useEffect(() => {
+    if (data) {
+      setValue("address", data.address);
+    }
+  }, [data]);
+
+  //setValue for cep
   useEffect(() => {
     console.log(cepData);
     if (cepData) {
@@ -38,8 +48,6 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
   }, [cepData]);
 
   const onSubmit = (data: InputsFormCreateStore) => {
-    console.log(data);
-
     setValueForm(data);
   };
 

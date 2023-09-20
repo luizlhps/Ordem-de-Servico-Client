@@ -8,7 +8,7 @@ export interface RootAuthGroup {
 export interface AuthGroup {
   _id: string;
   name: string;
-  permissions: Permissions;
+  permissions: IPermissions;
 }
 
 export interface IPermissions {

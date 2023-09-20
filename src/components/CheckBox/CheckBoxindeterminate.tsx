@@ -1,11 +1,12 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Control, Controller, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 interface IProps {
   control: Control<any, any>;
   watch: UseFormWatch<any>;
   setValue: UseFormSetValue<any>;
+
   name:
     | "dashboard"
     | "customer"
@@ -34,6 +35,8 @@ export const CheckBoxindeterminate = ({ control, watch, setValue, name }: IProps
     deleted: false,
   });
 
+  const [checkAll, setCheclAll] = useState(false);
+
   const handleCheckFieldCheckbox = (field: string, value: boolean) => {
     setCheckboxValues((oldValue: any) => ({
       ...oldValue,
@@ -41,25 +44,37 @@ export const CheckBoxindeterminate = ({ control, watch, setValue, name }: IProps
     }));
   };
 
-  const isChecked = (field: any) => {
+  const isChecked = () => {
     const permissions = watch(`permissions.${name}`);
+    if (!permissions) return false;
 
     const permissionsArray = Object.values(permissions);
 
-    const checkedCount = permissionsArray.filter((value) => value).length;
-
+    const checkedCount = permissionsArray.filter((value) => {
+      return value;
+    }).length;
+    /*     console.log(checkedCount); */
     return checkedCount === 4;
   };
 
   const isIndeterminate = useCallback(
     (field: any) => {
       const permissions = watch(`permissions.${field}`);
-      const permissionsArray = Object.values(permissions);
-      const checkedCount = permissionsArray.filter((value) => value).length;
-      return checkedCount > 0 && checkedCount < 4;
+      if (!permissions) return false;
+
+      if (permissions) {
+        const permissionsArray = Object.values(permissions);
+        const checkedCount = permissionsArray.filter((value) => value).length;
+        return checkedCount > 0 && checkedCount < 4;
+      }
     },
     [watch]
   );
+  const permissions = watch(`permissions.${name}`);
+
+  useEffect(() => {
+    setCheckboxValues(permissions);
+  }, [permissions]);
 
   const handleCheckboxChange = (field: string, value: boolean) => {
     const updatedPermissions: ICheckboxContent = {
@@ -80,7 +95,7 @@ export const CheckBoxindeterminate = ({ control, watch, setValue, name }: IProps
           control={
             <Checkbox
               indeterminate={isIndeterminate(name)}
-              checked={isChecked(name)}
+              checked={isChecked()}
               onChange={(e) => {
                 handleCheckboxChange(name, e.target.checked);
               }}

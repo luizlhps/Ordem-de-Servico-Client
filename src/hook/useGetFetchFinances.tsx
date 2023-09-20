@@ -40,8 +40,8 @@ export const useGetFetchFinance = () => {
         .catch((err) => {
           console.log("error", err || "deu ruim");
           setFinanceData({ total: 0, page: 0, limit: 0, transaction: [] || "" });
-        });
-      /*    .finally(() => setLoading(false)); */
+        })
+        .finally(() => setLoading(false));
     });
   }, []);
 
