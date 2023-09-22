@@ -53,7 +53,7 @@ interface IAuthGroupFormInput {
 }
 
 // Constants
-const initialState = {
+const initialStateofForm = {
   name: "",
   permissions: {
     order: { create: false, deleted: false, update: false, view: false },
@@ -80,8 +80,8 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
 
   // Initialize Form Values
   useEffect(() => {
-    setValue("name", initialState.name);
-    setValue("permissions", initialState.permissions);
+    setValue("name", initialStateofForm.name);
+    setValue("permissions", initialStateofForm.permissions);
   }, [handleClose]);
 
   // Helper function to post data to API
@@ -116,14 +116,14 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
       update: [],
     };
     //interact about the keys exemple (order and finance) of the input
-    for (let key in data.permissions) {
-      if (data.permissions.hasOwnProperty(key)) {
-        const operation = data.permissions[key];
+    for (let keyofPermissions in data.permissions) {
+      if (data.permissions.hasOwnProperty(keyofPermissions)) {
+        const operation = data.permissions[keyofPermissions];
 
         //interact about the keys exemple(create, delete, etc) of object the operation
         for (let opKey in operation) {
           if (operation.hasOwnProperty(opKey) && operation[opKey as keyof TOperation] === true) {
-            permissions[opKey as keyof TOperation].push(key);
+            permissions[opKey as keyof TOperation].push(keyofPermissions);
           }
         }
       }
