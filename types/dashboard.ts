@@ -10,11 +10,18 @@ export interface IDashboard {
   transactions: IFinance[];
   transactionsPreviusMonth: IFinance[];
 }
+
 export interface Orders {
   totalCount: number;
   percetege: number;
 }
+
+export interface ITransactionDashboard {
+  totalCount: number;
+  percetege: number;
+}
 export interface Pending {
+  transaction: ITransactionDashboard;
   credit: Credit;
   debit: Debit;
   orders: Orders;
@@ -44,5 +51,6 @@ export interface Balance {
   percetege: number;
   totalAmountCredit: number;
   totalAmountDebit: number;
+  totalAmountMonth: number;
   totalAmount: number;
 }

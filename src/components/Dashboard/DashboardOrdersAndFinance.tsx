@@ -1,6 +1,6 @@
 import { DashboardTransactionsNotification } from "./DashboardTransactionsNotification";
 import { DasboardDebitsNotification } from "./DasboardDebitsNotification";
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import dayjs from "dayjs";
 
@@ -10,10 +10,7 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Skeleton, useTheme } from "@mui/material";
-import { IBalance, IFinance, RootFinance } from "../../../types/finance";
-import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../../types/dashboard";
-import { DashboardNotification } from "../FeatureFinanceNotification";
 import { DashboardBalanceNotification } from "./DashboardBalanceNotification";
 import { DasboardCreditsNotification } from "./DasboardCreditsNotification";
 import { DashboardOrdersPendingNotification } from "./DashboardOrdersPendingNotification";
@@ -39,19 +36,19 @@ export const DashboardOrdersAndFinance = ({ dataDashboard }: featFinanceProps) =
     currency: "BRL",
   });
 
-  const debitAmount = dataDashboard?.balance.totalAmountDebit.toLocaleString("pt-BR", {
+  const debitAmount = dataDashboard?.balance.totalAmountMonth.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
-  const creditAmount = dataDashboard?.balance?.totalAmountCredit.toLocaleString("pt-BR", {
+  const creditAmount = dataDashboard?.balance?.totalAmountMonth.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
   //percetege and counters
 
-  const transactionsPending = dataDashboard?.totalCount;
+  const transactionsPending = dataDashboard?.pending?.transaction?.totalCount;
   const transactionsPendingPercetege = dataDashboard?.percetege;
 
   const ordersPending = dataDashboard?.pending.orders.totalCount;

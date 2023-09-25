@@ -67,7 +67,7 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
 
   return (
     <>
-      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess="Atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>

@@ -36,7 +36,7 @@ export const DeletePermissions = ({ open, handleClose, id, fetchApi }: IProps) =
         setSuccess(true);
       })
       .catch((err) => {
-        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
+        console.log(err.response.config.message),
           setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       })
@@ -48,7 +48,7 @@ export const DeletePermissions = ({ open, handleClose, id, fetchApi }: IProps) =
 
   return (
     <>
-      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess="Deletado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       <DeleteModal loading={loading} HandleDeleted={deleteTransaction} handleClose={handleClose} open={open} id={id} />
     </>

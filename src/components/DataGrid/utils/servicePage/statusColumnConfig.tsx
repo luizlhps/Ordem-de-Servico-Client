@@ -3,8 +3,8 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { IconButton } from "@mui/material";
-import { servicesApi } from "@/services/api/servicesApi";
-import { useEffect } from "react";
+
+import { format } from "date-fns";
 
 export const statusColumnsDataGrid = (
   theme: any,
@@ -43,6 +43,13 @@ export const statusColumnsDataGrid = (
       description: "Endereço",
       headerAlign: "left",
       align: "left",
+
+      valueFormatter(params: any) {
+        if (params?.value) {
+          const dataFormatada = format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
+          return dataFormatada;
+        }
+      },
     },
 
     {
