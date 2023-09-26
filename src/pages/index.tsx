@@ -17,7 +17,6 @@ import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
-import { useAuthorize } from "@/hook/useAuthorize";
 import { AxiosError } from "axios";
 
 //style custom
@@ -31,7 +30,6 @@ const TesteSvg = styled.div`
 export default function Home() {
   const router = useRouter();
   const theme = useTheme();
-  const handleAuthorize = useAuthorize({ permissions: "dashboard" });
 
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();

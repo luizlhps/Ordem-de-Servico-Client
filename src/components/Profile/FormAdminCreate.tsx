@@ -8,8 +8,8 @@ import { TransformForbackEndPhoneNumber, normalizePhoneNumber } from "@/utils/Ma
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { InputsFormCreateUser, installApplicationApi } from "@/services/configApplicationApi";
 import { useRouter } from "next/router";
+import { InputsFormUser, configApplicationApi } from "@/services/configApplicationApi";
 
 interface IProps {}
 
@@ -33,7 +33,7 @@ export const FormAdminCreate = ({}: IProps) => {
     control,
     watch,
     formState: { errors },
-  } = useForm<InputsFormCreateUser>();
+  } = useForm<InputsFormUser>();
 
   const handleEyePassword = () => {
     setEyePassword((old) => !old);
@@ -50,18 +50,18 @@ export const FormAdminCreate = ({}: IProps) => {
     closeModal();
   };
 
-  const onSubmit: SubmitHandler<InputsFormCreateUser> = (data) => {
+  const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
     console.log(data);
 
     setLoading(true);
-    installApplicationApi
+    configApplicationApi
       .CreateAdmin(data)
       .then((res) => {
         setSuccess(true);
 
         if (formDataAvatar) {
           console.log("oi");
-          installApplicationApi
+          configApplicationApi
             .uploudAvatarUserAdmin(formDataAvatar)
             .then((res) => {
               console.log(res);

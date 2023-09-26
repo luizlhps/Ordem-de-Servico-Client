@@ -4,7 +4,7 @@ import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { IOrder } from "../../../types/order";
 import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
-import { ViewOrderModal } from "@/components/OrderLayout/ViewOrderModal";
+import { ViewOrderModal } from "./ViewOrderModal";
 
 const buttonStyle = {
   position: "absolute" as "absolute",

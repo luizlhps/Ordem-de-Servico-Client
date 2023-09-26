@@ -1,8 +1,5 @@
-import { useContext, useState } from "react";
-import Backdrop from "@mui/material/Backdrop";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as Styled from "../../styles";
@@ -10,7 +7,6 @@ import { CircularProgress, Icon, IconButton, Stack, useTheme } from "@mui/materi
 import { useForm } from "react-hook-form";
 import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
-import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import TransitionsModal from "../../Modal";
 
 interface IModal {

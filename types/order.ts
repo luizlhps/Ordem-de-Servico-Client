@@ -58,4 +58,6 @@ export interface ServicePrice {
   price: number;
   order: string;
   __v: number;
+  title: string;
+  description: string;
 }

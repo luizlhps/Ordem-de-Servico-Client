@@ -101,7 +101,7 @@ const Status = () => {
   };
 
   //Delete Api
-  const HandleDeleted = async (id: string) => {
+  const HandleDeleted = async (id: string | undefined) => {
     setLoadingDel(true);
     servicesApi
       .deleteServices(id)
@@ -152,10 +152,10 @@ const Status = () => {
         alertSuccess="Dados atualizados com sucesso!!"
       />
       <DeleteModal
+        HandleDeleted={HandleDeleted}
         open={modalOpendelete}
         handleClose={modalDeleteHandleClose}
-        HandleDeleted={HandleDeleted}
-        selectedItem={selectedItemUpdate}
+        id={selectedItemUpdate?.id}
         loading={loadingDel}
       />
       <CreateStatusModal

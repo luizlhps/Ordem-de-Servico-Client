@@ -39,7 +39,6 @@ class ConfigApplicationApi {
   }
 
   CreateStore(data: InputsFormCreateStore) {
-    console.log("aqui", data);
     return Api.post("/install/store", {
       name: data.name,
       cnpj: data.cnpj,
@@ -59,6 +58,14 @@ class ConfigApplicationApi {
 
   uploudAvatarStore(formData: FormData) {
     return Api.patch("/install/store", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
+  updateAvatarStore(formData: FormData) {
+    return Api.patch("/store", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

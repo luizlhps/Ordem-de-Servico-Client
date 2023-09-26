@@ -1,10 +1,10 @@
 import { useState, createContext, useContext, useEffect } from "react";
 
-import { constumersApi } from "@/services/api/costumersApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { useRouter } from "next/router";
 import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
+import { costumersApi } from "@/services/api/costumersApi";
 
 export const formUpdateCostumerContext = createContext({} as Context);
 
@@ -103,7 +103,7 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
     async function costumer(data: any, _id: string | string[]) {
       setLoading(true);
       try {
-        const res = await constumersApi.updateCostumer(data, _id);
+        const res = await costumersApi.updateCostumer(data, _id);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");

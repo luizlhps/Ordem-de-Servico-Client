@@ -63,7 +63,7 @@ const Store = ({}: IProps) => {
       await configApplicationApi.updateStore(data);
 
       if (formDataAvatar) {
-        const avatarRes = await configApplicationApi.uploudAvatarStore(formDataAvatar);
+        const avatarRes = await configApplicationApi.updateAvatarStore(formDataAvatar);
         console.log(avatarRes);
       }
       setSuccess(true);

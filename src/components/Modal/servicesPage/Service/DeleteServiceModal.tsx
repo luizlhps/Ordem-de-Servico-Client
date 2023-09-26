@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import DeleteModal from "../../deleteModal";
-import { orderApi } from "@/services/api/orderApi";
+import { servicesApi } from "@/services/api/servicesApi";
 
 interface IProps {
   fetchApi: () => void;
@@ -25,32 +25,37 @@ const DeleteServiceModal: React.FC<IProps> = ({
   setModalOpenDelete,
   modalDeleteHandleOpen,
 }) => {
-  //Delete Api
-  const HandleDeleted = async (id: string) => {
-    try {
-      const res = await orderApi.deleteOrder(id);
-      fetchApi();
-      modalDeleteHandleClose();
+  const [loading, setLoading] = useState(false);
 
-      setMessageForm("O serviço foi apagado com sucesso!!");
-      setFormSucessoValue(true);
-    } catch (error: any) {
-      setFormSucessoValue(false);
-      console.error(error);
-      setErrorMessageValue(error.response.data.message); //
-    }
+  //Delete Api
+  const HandleDeleted = (id: string | undefined) => {
+    setLoading(true);
+    servicesApi
+      .deleteServices(id)
+      .then(() => {
+        setMessageForm("O serviço foi apagado com sucesso!!");
+        setFormSucessoValue(true);
+      })
+      .catch((error) => {
+        setFormSucessoValue(false);
+        console.error(error);
+        setErrorMessageValue(error.response.data.message); //
+      })
+      .finally(() => {
+        setLoading(false);
+        fetchApi();
+        modalDeleteHandleClose();
+      });
   };
 
   return (
     <>
       <DeleteModal
-        fetchApi={fetchApi}
         open={modalOpendelete}
-        setOpen={setModalOpenDelete}
         handleClose={modalDeleteHandleClose}
-        handleOpen={modalDeleteHandleOpen}
         HandleDeleted={HandleDeleted}
-        selectedItem={selectedItem}
+        id={selectedItem?._id}
+        loading={loading}
       />
     </>
   );
