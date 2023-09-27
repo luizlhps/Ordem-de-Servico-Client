@@ -11,6 +11,9 @@ import {
   Button,
   useMediaQuery,
   Skeleton,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
 import { IOrder } from "../../../types/order";
@@ -18,20 +21,23 @@ import dayjs, { Dayjs } from "dayjs";
 import { normalizePhoneNumber } from "@/utils/Masks";
 import dynamic from "next/dynamic";
 
-const DownloadOrderPDF = dynamic(() => import("@/components/PdfFile/DownloadOrderPDF"), { ssr: false });
+import CloseIcon from "@mui/icons-material/Close";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DialogModalScroll from "../Modal/DialogModalScroll";
+import { CloseModal } from "../Modal/financePage/FormCrudModals";
+
+const DownloadOrderPDF = dynamic(() => import("@/components/PdfFile/DownloadOrderPDF"), {
+  loading: () => <>Loading...</>,
+  ssr: false,
+});
 
 const style = {
-  padding: "33px",
   display: "flex",
   justifyContent: "space-between",
-  flexDirection: "column",
-  alignContent: "center",
-  alignItems: "center",
-  minHeight: "100%",
+  flexDirection: "column" as "column",
 
-  "@media (max-width:364px)": {
-    padding: "23px",
-  },
+  minHeight: "100%",
 };
 
 interface IProps {
@@ -41,31 +47,26 @@ interface IProps {
 }
 
 export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {
-  const smallphoneMedia = useMediaQuery("(max-width:364px)");
+  const smallphoneMedia = useMediaQuery("(max-width:610px)");
 
   const theme = useTheme();
   return (
     <>
-      <TransitionsModal handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll handleClose={handleClose} open={open} style={style}>
         {!selectedItem ? ( // Renderiza o skeleton enquanto estiver carregando
           <Skeleton variant="rectangular" height={40} />
         ) : (
           <>
-            <Box width={"100%"}>
-              <Stack
-                direction={"row"}
-                justifyContent={"space-between"}
-                width={1}
-                alignItems={"center"}
-                flexWrap={"wrap"}
-              >
-                <Stack>
+            <DialogTitle variant="h1" fontSize={26} sx={{ padding: 3 }} id="scroll-dialog-title">
+              <Stack direction={"row"} justifyContent={"space-between"}>
+                <Box>
                   <Typography variant="h2" fontWeight={600}>
-                    OS #23
+                    OS #{selectedItem.id}
                   </Typography>
                   <Typography fontWeight={300}>Veja os detalhes da O.S</Typography>
-                </Stack>
-                <Stack direction={"row"} gap={4} marginTop={2}>
+                </Box>
+
+                <Stack direction={"row"} gap={4}>
                   <Box flexDirection={"column"} display={"flex"}>
                     <Typography fontSize={14} fontWeight={300}>
                       Data de entrada
@@ -84,160 +85,182 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   </Box>
                 </Stack>
               </Stack>
-              <Box
-                marginTop={2}
-                marginBottom={2}
-                width={"100%"}
-                height={"1px"}
-                sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
-              />
-              <Stack width={"100%"} marginBottom={2}>
-                <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer?.name}</Typography>
-                <Typography fontSize={14} fontWeight="300" marginBottom={2}>
-                  {normalizePhoneNumber(selectedItem?.customer?.phone)}
-                </Typography>
-              </Stack>
+            </DialogTitle>
+            <DialogContent dividers={true} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
+              <Box width={"100%"}>
+                <Stack width={"100%"} marginBottom={2}>
+                  <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer?.name}</Typography>
+                  <Typography fontSize={14} fontWeight="300" marginBottom={2}>
+                    {normalizePhoneNumber(selectedItem?.customer?.phone)}
+                  </Typography>
+                </Stack>
 
-              <Stack spacing={3}>
-                <AccordionList dafaultOpen={true} icon="orders" subTitle="Veja sobre o equipamento" title="Equipamento">
-                  <Stack direction={"row"} spacing={6}>
-                    <Stack spacing={2}>
-                      <Typography fontSize={14}>Equipamento</Typography>
-                      <Typography fontSize={14}>Marca</Typography>
-                      <Typography fontSize={14}>Modelo</Typography>
+                <Stack spacing={3}>
+                  <AccordionList
+                    dafaultOpen={true}
+                    icon="orders"
+                    subTitle="Veja sobre o equipamento"
+                    title="Equipamento"
+                  >
+                    <Stack direction={"row"} spacing={6}>
+                      <Stack spacing={2}>
+                        <Typography fontSize={14}>Equipamento</Typography>
+                        <Typography fontSize={14}>Marca</Typography>
+                        <Typography fontSize={14}>Modelo</Typography>
+                      </Stack>
+                      <Stack spacing={2}>
+                        <Typography textTransform={"capitalize"} fontSize={14}>
+                          {selectedItem?.equipment}
+                        </Typography>
+                        <Typography textTransform={"capitalize"} fontSize={14}>
+                          {selectedItem?.brand}
+                        </Typography>
+                        <Typography textTransform={"capitalize"} fontSize={14}>
+                          {selectedItem?.model}
+                        </Typography>
+                      </Stack>
                     </Stack>
-                    <Stack spacing={2}>
-                      <Typography textTransform={"capitalize"} fontSize={14}>
-                        {selectedItem?.equipment}
+                    <Box marginTop={5}>
+                      <Typography marginBottom={2} fontSize={14}>
+                        Defeito
                       </Typography>
-                      <Typography textTransform={"capitalize"} fontSize={14}>
-                        {selectedItem?.brand}
+                      <Typography fontSize={14}>{selectedItem?.defect}</Typography>
+                    </Box>
+                    <Box marginTop={5}>
+                      <Typography marginBottom={2} fontSize={14}>
+                        Observação
                       </Typography>
-                      <Typography textTransform={"capitalize"} fontSize={14}>
-                        {selectedItem?.model}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  <Box marginTop={5}>
-                    <Typography marginBottom={2} fontSize={14}>
-                      Defeito
-                    </Typography>
-                    <Typography fontSize={14}>{selectedItem?.defect}</Typography>
-                  </Box>
-                  <Box marginTop={5}>
-                    <Typography marginBottom={2} fontSize={14}>
-                      Observação
-                    </Typography>
-                    <Typography fontSize={14}>{selectedItem?.observation}</Typography>
-                  </Box>
-                </AccordionList>
+                      <Typography fontSize={14}>{selectedItem?.observation}</Typography>
+                    </Box>
+                  </AccordionList>
 
-                {/* Items of service */}
-                <AccordionList
-                  description={`${selectedItem?.services?.length} serviços`}
-                  icon="services"
-                  subTitle="Veja os serviços realizados"
-                  title="Serviços"
+                  {/* Items of service */}
+                  <AccordionList
+                    description={`${selectedItem?.services?.length} serviços`}
+                    icon="services"
+                    subTitle="Veja os serviços realizados"
+                    title="Serviços"
+                  >
+                    {selectedItem?.services?.map((service, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <Stack direction={"row"} spacing={6}>
+                            <Stack spacing={2}>
+                              <Typography fontSize={14}>Serviço</Typography>
+                              <Typography fontSize={14}>Valor</Typography>
+                            </Stack>
+                            <Stack spacing={2}>
+                              <Typography fontSize={14}>{service?.title}</Typography>
+                              <Typography fontSize={14}>R$ {service?.amount?.toFixed(2)}</Typography>
+                            </Stack>
+                          </Stack>
+                          <Box marginTop={5} marginBottom={4}>
+                            <Typography marginBottom={2} fontSize={14}>
+                              Descrição
+                            </Typography>
+                            <Typography fontSize={14}>{service?.description}</Typography>
+                          </Box>
+                          {index !== selectedItem?.services?.length - 1 && (
+                            <Box
+                              marginTop={2}
+                              marginBottom={2}
+                              width={"100%"}
+                              height={"1px"}
+                              sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
+                            />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </AccordionList>
+
+                  <AccordionList icon="technicalOpinion" subTitle="Veja o laudo" title="Laudo Técnico">
+                    <Box>
+                      <Typography marginBottom={2} fontSize={14}>
+                        Laudo Técnico
+                      </Typography>
+                      <Typography fontSize={14}>{selectedItem?.technicalOpinion}</Typography>
+                    </Box>
+                  </AccordionList>
+                </Stack>
+              </Box>
+              <Stack width={"100%"} alignItems={"center"}>
+                <Stack
+                  gap={1}
+                  width={"100%"}
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"flex-end"}
+                  flexWrap={"wrap"}
                 >
-                  {selectedItem?.services?.map((service, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <Stack direction={"row"} spacing={6}>
-                          <Stack spacing={2}>
-                            <Typography fontSize={14}>Serviço</Typography>
-                            <Typography fontSize={14}>Valor</Typography>
-                          </Stack>
-                          <Stack spacing={2}>
-                            <Typography fontSize={14}>{service?.title}</Typography>
-                            <Typography fontSize={14}>R$ {service?.amount?.toFixed(2)}</Typography>
-                          </Stack>
-                        </Stack>
-                        <Box marginTop={5} marginBottom={4}>
-                          <Typography marginBottom={2} fontSize={14}>
-                            Descrição
-                          </Typography>
-                          <Typography fontSize={14}>{service?.description}</Typography>
-                        </Box>
-                        {index !== selectedItem?.services?.length - 1 && (
-                          <Box
-                            marginTop={2}
-                            marginBottom={2}
-                            width={"100%"}
-                            height={"1px"}
-                            sx={{ color: theme.palette.custom?.grey, background: theme.palette.custom?.grey }}
-                          />
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </AccordionList>
-
-                <AccordionList icon="technicalOpinion" subTitle="Veja o laudo" title="Laudo Técnico">
-                  <Box>
-                    <Typography marginBottom={2} fontSize={14}>
-                      Laudo Técnico
-                    </Typography>
-                    <Typography fontSize={14}>{selectedItem?.technicalOpinion}</Typography>
-                  </Box>
-                </AccordionList>
-              </Stack>
-            </Box>
-            <Stack width={"100%"} alignItems={"center"}>
-              <Stack
-                gap={1}
-                width={"100%"}
-                direction={"row"}
-                justifyContent={"space-between"}
-                alignItems={"flex-end"}
-                flexWrap={"wrap"}
-              >
-                <Stack direction={"row"} gap={4} marginTop={2}>
-                  <Box flexDirection={"column"} display={"flex"}>
+                  <Stack direction={"row"} gap={4} marginTop={2}>
+                    <Box flexDirection={"column"} display={"flex"}>
+                      <Typography fontSize={14} fontWeight={300}>
+                        Desconto
+                      </Typography>
+                      <Typography fontSize={14} fontWeight={300}>
+                        Valor
+                      </Typography>
+                    </Box>
+                    <Box flexDirection={"column"} display={"flex"}>
+                      <Typography fontSize={14} fontWeight={300}>
+                        R$ {selectedItem?.discount?.toFixed(2)}
+                      </Typography>
+                      <Typography fontSize={14} fontWeight={300}>
+                        R$ {selectedItem?.amount?.toFixed(2)}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                  <Stack>
                     <Typography fontSize={14} fontWeight={300}>
-                      Desconto
+                      Data de saída
                     </Typography>
                     <Typography fontSize={14} fontWeight={300}>
-                      Valor
+                      {selectedItem?.exitDate
+                        ? dayjs(selectedItem?.exitDate).format("YYYY/MM/DD HH:mm:ss")
+                        : "DD/MM/YYYY"}
                     </Typography>
-                  </Box>
-                  <Box flexDirection={"column"} display={"flex"}>
-                    <Typography fontSize={14} fontWeight={300}>
-                      R$ {selectedItem?.discount?.toFixed(2)}
-                    </Typography>
-                    <Typography fontSize={14} fontWeight={300}>
-                      R$ {selectedItem?.amount?.toFixed(2)}
-                    </Typography>
-                  </Box>
-                </Stack>
-                <Stack>
-                  <Typography fontSize={14} fontWeight={300}>
-                    Data de saída
-                  </Typography>
-                  <Typography fontSize={14} fontWeight={300}>
-                    {selectedItem?.exitDate
-                      ? dayjs(selectedItem?.exitDate).format("YYYY/MM/DD HH:mm:ss")
-                      : "DD/MM/YYYY"}
-                  </Typography>
+                  </Stack>
                 </Stack>
               </Stack>
+            </DialogContent>
 
-              <Stack flexDirection={"row"} flexWrap={"wrap"} gap={1} marginTop={4}>
-                <Button onClick={handleClose} sx={{ width: 173, height: "100%" }} variant="contained">
+            <DialogActions sx={{ padding: 4, justifyContent: "center", alignContent: "center" }}>
+              <Stack flexDirection={"row"} flexWrap={"wrap"} gap={1} width={"100%"} justifyContent={"center"}>
+                <Button
+                  startIcon={<CloseIcon />}
+                  onClick={handleClose}
+                  sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
+                  variant="contained"
+                >
                   Fechar
                 </Button>
-                <DownloadOrderPDF selectOrder={selectedItem}>
-                  <Button sx={{ width: 173, height: "100%" }} variant="contained">
+
+                <DownloadOrderPDF selectOrder={selectedItem} width={smallphoneMedia ? "100%" : 173} height={"100%"}>
+                  <Button
+                    color="error"
+                    startIcon={<PictureAsPdfIcon />}
+                    sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
+                    variant="contained"
+                  >
                     Imprimir PDF
                   </Button>
                 </DownloadOrderPDF>
-                <Button color="success" onClick={handleClose} sx={{ width: 173, height: "100%" }} variant="contained">
+
+                <Button
+                  startIcon={<AttachMoneyIcon />}
+                  color="success"
+                  onClick={handleClose}
+                  sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%", color: "white" }}
+                  variant="contained"
+                >
                   Faturar
                 </Button>
               </Stack>
-            </Stack>
+            </DialogActions>
           </>
         )}
-      </TransitionsModal>
+      </DialogModalScroll>
     </>
   );
 };

@@ -104,7 +104,7 @@ export const AccordionList = ({ children, icon, title, subTitle, dafaultOpen, de
           overflow: "hidden",
         }}
       >
-        <Box padding={4} overflow={"auto"}>
+        <Box margin={4} overflow={"auto"}>
           {children}
         </Box>
       </Box>

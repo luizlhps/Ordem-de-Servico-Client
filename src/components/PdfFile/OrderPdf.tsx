@@ -95,8 +95,6 @@ export default function OrderPdf({ selectOrder }: { selectOrder: IOrder }) {
       })
       .join(", ");
 
-    console.log(values);
-
     return values;
   };
 
