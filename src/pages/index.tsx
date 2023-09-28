@@ -139,7 +139,7 @@ export default function Home() {
   }
 
   const arrayDate = Array.from({ length: maxDay }, (_, index) => {
-    const day = index + 1;
+    const day = index;
     const dayFormatted = day < 10 ? `0${day}` : day;
     return `${dayFormatted}/${monthFormatted}`;
   });

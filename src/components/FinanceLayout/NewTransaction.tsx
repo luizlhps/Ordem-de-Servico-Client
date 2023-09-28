@@ -1,6 +1,6 @@
 import { useContext, useState, CSSProperties } from "react";
 import { LayoutTransactionForm } from "./LayoutTransationForm";
-import { IFinance } from "../../../types/finance";
+import { IFinance, InputTransactionOrderData } from "../../../types/finance";
 import { financeApi } from "@/services/api/financeApi";
 import TransitionsModal from "../Modal/Modal";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
@@ -12,9 +12,10 @@ interface INewTransationProps {
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
+  dataValue?: IFinance | InputTransactionOrderData;
 }
 
-const NewTransation = ({ handleClose, fetchApi, style, open }: INewTransationProps) => {
+const NewTransation = ({ handleClose, fetchApi, style, open, dataValue }: INewTransationProps) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
@@ -50,7 +51,12 @@ const NewTransation = ({ handleClose, fetchApi, style, open }: INewTransationPro
 
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
         <CloseModal handleClose={handleClose} />
-        <LayoutTransactionForm title="Novo Serviço" setValueData={setFormValue} loading={loading} />
+        <LayoutTransactionForm
+          dataValue={dataValue}
+          title="Novo Serviço"
+          setValueData={setFormValue}
+          loading={loading}
+        />
       </TransitionsModal>
     </>
   );

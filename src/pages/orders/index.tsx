@@ -1,20 +1,15 @@
-import { useState, useEffect, useContext, useMemo, lazy } from "react";
+import { useState, useMemo } from "react";
 
 import { useTheme } from "@mui/material";
 
 import { Button, Stack, TextField } from "@mui/material";
-import { DataGridLayout, HeaderLayout, ViewOrderModal } from "@/components";
-import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
+import { DataGridLayout, HeaderLayout } from "@/components";
 import useModal from "@/hook/useModal";
 import { useSearchField } from "@/hook/useSearchField";
-import { ToastError } from "@/components/Toast/ToastError";
-import { ToastSuccess } from "@/components/Toast/ToastSuccess";
-import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
 import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { IOrder } from "../../../types/order";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
-import { Api } from "@/services/api/axios-config";
 
 const Orders = () => {
   const theme = useTheme();

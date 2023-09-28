@@ -86,6 +86,11 @@ export default function OrderPdf({ selectOrder }: { selectOrder: IOrder }) {
       display: "flex",
       flexDirection: "row",
     },
+    contentInformationEquipment: {
+      display: "flex",
+      flexDirection: "row",
+      width: 120,
+    },
   });
 
   const allServices = () => {
@@ -163,22 +168,22 @@ export default function OrderPdf({ selectOrder }: { selectOrder: IOrder }) {
           <Text style={styles.title}>INFORMAÇÕES DO EQUIPAMENTO</Text>
           <View style={styles.container}>
             <View style={styles.itemsList}>
-              <View style={styles.contentList}>
+              <View style={styles.contentInformationEquipment}>
                 <Text style={styles.subtitle}>Marca:</Text>
                 <Text style={styles.text}> {selectOrder.model} </Text>
               </View>
             </View>
 
             <View style={styles.itemsList}>
-              <View style={styles.contentList}>
+              <View style={styles.contentInformationEquipment}>
                 <Text style={styles.subtitle}>Modelo:</Text>
                 <Text style={styles.text}> {selectOrder.brand} </Text>
               </View>
             </View>
 
             <View style={styles.itemsList}>
-              <View style={styles.contentList}>
-                <Text style={styles.subtitle}>Equipamento:</Text>
+              <View style={styles.contentInformationEquipment}>
+                <Text style={styles.subtitle}>Equipamento: </Text>
                 <Text style={styles.text}> {selectOrder.equipment} </Text>
               </View>
             </View>

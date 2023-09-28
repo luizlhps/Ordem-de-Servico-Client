@@ -20,7 +20,7 @@ import { DateTimeField, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
-import { IFinance } from "../../../types/finance";
+import { IFinance, InputTransactionOrderData } from "../../../types/finance";
 
 export interface IsetValueData {
   confirmData: any;
@@ -47,7 +47,7 @@ const TextArea = styled.textarea`
 export interface ILayoutTransactionForm {
   setValueData: any;
   loading: boolean;
-  dataValue?: IFinance | undefined;
+  dataValue?: IFinance | undefined | InputTransactionOrderData;
   title: string;
 }
 
@@ -87,6 +87,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
     setValueData(data);
   };
 
+  const typeWatch = watch("type");
   const statusWatch = watch("status");
   const payDaysWatch = watch("payDay");
 
@@ -102,6 +103,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
             </Typography>
             <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
               <Controller
+                defaultValue=""
                 name="entryDate"
                 control={control}
                 rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
@@ -148,47 +150,52 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
               )}
             </Grid>
           </Grid>
-          <Grid item>
-            <Typography fontSize={14} fontWeight={300}>
-              Data de Vencimento:
-            </Typography>
-            <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
-              <Controller
-                name="dueDate"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                      <DateTimeField
-                        format="DD/MM/YYYY"
-                        sx={{
-                          ".MuiOutlinedInput-notchedOutline": {
-                            border: "none",
-                          },
-                          ".MuiInputBase-input": {
-                            padding: "0px!important",
-                            fontSize: "14px",
-                            color: theme.palette.primary.dark,
-                          },
-                        }}
-                        {...field}
-                        size="small"
-                        value={dateExit}
-                        onChange={(newValue) => {
-                          if (newValue !== null) {
-                            setDateExit(newValue);
-                            field.onChange(dayjs(newValue).format());
-                          } else {
-                            field.onChange("");
-                          }
-                        }}
-                      />
-                    </LocalizationProvider>
-                  </>
-                )}
-              />
-            </Grid>
-          </Grid>
+
+          {typeWatch === "debit" && (
+            <>
+              <Grid item>
+                <Typography fontSize={14} fontWeight={300}>
+                  Data de Vencimento:
+                </Typography>
+                <Grid item color={theme.palette.primary.dark} fontSize={14} fontWeight={300}>
+                  <Controller
+                    name="dueDate"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                          <DateTimeField
+                            format="DD/MM/YYYY"
+                            sx={{
+                              ".MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                              },
+                              ".MuiInputBase-input": {
+                                padding: "0px!important",
+                                fontSize: "14px",
+                                color: theme.palette.primary.dark,
+                              },
+                            }}
+                            {...field}
+                            size="small"
+                            value={dateExit}
+                            onChange={(newValue) => {
+                              if (newValue !== null) {
+                                setDateExit(newValue);
+                                field.onChange(dayjs(newValue).format());
+                              } else {
+                                field.onChange("");
+                              }
+                            }}
+                          />
+                        </LocalizationProvider>
+                      </>
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </>
+          )}
         </Grid>
         <Typography marginTop={5} fontWeight={500} variant="h1" textAlign={"center"}>
           {title}
@@ -202,7 +209,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
                 <FormSelect
                   name={"status"}
                   rules={{ required: true }}
-                  defaultValue={dataValue?.status}
+                  defaultValue={dataValue?.status ? dataValue?.status : ""}
                   control={control}
                   width={"100%"}
                 >
@@ -219,7 +226,7 @@ export const LayoutTransactionForm: React.FC<ILayoutTransactionForm> = ({
                 <FormSelect
                   name={"type"}
                   rules={{ required: true }}
-                  defaultValue={dataValue?.type}
+                  defaultValue={dataValue?.type ? dataValue?.type : ""}
                   control={control}
                   width={"100%"}
                 >

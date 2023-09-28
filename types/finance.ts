@@ -27,3 +27,20 @@ export interface IBalance {
   amount: number;
   __v: number;
 }
+
+export interface InputTransactionOrderData {
+  _id?: string;
+  id?: number;
+  title: string;
+  description?: string;
+  amount: number;
+  type: string;
+  status: string;
+  order: string;
+  entryDate?: string;
+  deleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  payDay?: string;
+  dueDate?: string;
+}

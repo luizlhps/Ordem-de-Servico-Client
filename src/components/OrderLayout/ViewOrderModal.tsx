@@ -1,12 +1,8 @@
-import React, { ReactNode, useEffect } from "react";
-import TransitionsModal from "../Modal/Modal";
+import React, { useEffect, useState } from "react";
 import {
-  IconButton,
-  Icon,
   Typography,
   Stack,
   Box,
-  Divider,
   useTheme,
   Button,
   useMediaQuery,
@@ -17,7 +13,7 @@ import {
 } from "@mui/material";
 import { AccordionList } from "@/components/AccordionList/AccordionList";
 import { IOrder } from "../../../types/order";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { normalizePhoneNumber } from "@/utils/Masks";
 import dynamic from "next/dynamic";
 
@@ -25,7 +21,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DialogModalScroll from "../Modal/DialogModalScroll";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+import NewTransation from "../FinanceLayout/NewTransaction";
+import { InputTransactionOrderData } from "../../../types/finance";
 
 const DownloadOrderPDF = dynamic(() => import("@/components/PdfFile/DownloadOrderPDF"), {
   loading: () => <>Loading...</>,
@@ -40,6 +37,20 @@ const style = {
   minHeight: "100%",
 };
 
+const styleOfModalNewTransaction = {
+  padding: "33px",
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column" as "column",
+  alignContent: "center",
+  alignItems: "center",
+  minHeight: "100%",
+
+  "@media (max-width:364px)": {
+    padding: "23px",
+  },
+};
+
 interface IProps {
   open: boolean;
   handleClose: () => void;
@@ -49,11 +60,41 @@ interface IProps {
 export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedItem }) => {
   const smallphoneMedia = useMediaQuery("(max-width:610px)");
 
+  const [modalTransaction, setModalTransaction] = useState(false);
+  const [inputTransactionOrderData, setInputTransactionOrderData] = useState<InputTransactionOrderData>();
+
+  const handleCloseNewTransaction = () => {
+    setModalTransaction(false);
+  };
+  const handleOpenNewTransaction = () => {
+    setModalTransaction(true);
+  };
+
+  useEffect(() => {
+    if (selectedItem) {
+      setInputTransactionOrderData({
+        title: `Ordem de serviço #${selectedItem?.id}`,
+        amount: selectedItem.amount,
+        status: "finished",
+        order: selectedItem._id,
+        type: "credit",
+      });
+    }
+  }, [selectedItem]);
+
   const theme = useTheme();
   return (
     <>
+      <NewTransation
+        fetchApi={() => {}}
+        handleClose={handleCloseNewTransaction}
+        open={modalTransaction}
+        style={styleOfModalNewTransaction}
+        dataValue={inputTransactionOrderData}
+      />
+
       <DialogModalScroll handleClose={handleClose} open={open} style={style}>
-        {!selectedItem ? ( // Renderiza o skeleton enquanto estiver carregando
+        {!selectedItem ? ( // Renderiza o  skeleton enquanto estiver carregando
           <Skeleton variant="rectangular" height={40} />
         ) : (
           <>
@@ -250,7 +291,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                 <Button
                   startIcon={<AttachMoneyIcon />}
                   color="success"
-                  onClick={handleClose}
+                  onClick={handleOpenNewTransaction}
                   sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%", color: "white" }}
                   variant="contained"
                 >

@@ -1,6 +1,6 @@
 import { DashboardTransactionsNotification } from "./DashboardTransactionsNotification";
 import { DasboardDebitsNotification } from "./DasboardDebitsNotification";
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import dayjs from "dayjs";
 
@@ -10,10 +10,7 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Skeleton, useTheme } from "@mui/material";
-import { IBalance, IFinance, RootFinance } from "../../../types/finance";
-import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../../types/dashboard";
-import { DashboardNotification } from "../FeatureFinanceNotification";
 import { DashboardBalanceNotification } from "./DashboardBalanceNotification";
 import { DasboardCreditsNotification } from "./DasboardCreditsNotification";
 interface featFinanceProps {
@@ -32,6 +29,11 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
     const lastSlide = swiperSlide[swiperSlide.length - 1] as HTMLElement;
     lastSlide.style.marginRight = "0px";
   }, []);
+
+  useEffect(() => {
+    console.log(dataDashboard?.balance.totalAmountDebit);
+    console.log("oi");
+  }, [dataDashboard]);
 
   const balanceTotalAmount = dataDashboard?.balance?.totalAmount.toLocaleString("pt-BR", {
     style: "currency",

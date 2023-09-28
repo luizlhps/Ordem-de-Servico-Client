@@ -36,12 +36,12 @@ export const DashboardOrdersAndFinance = ({ dataDashboard }: featFinanceProps) =
     currency: "BRL",
   });
 
-  const debitAmount = dataDashboard?.balance.totalAmountMonth.toLocaleString("pt-BR", {
+  const debitAmount = dataDashboard?.balance.totalAmountDebit.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
-  const creditAmount = dataDashboard?.balance?.totalAmountMonth.toLocaleString("pt-BR", {
+  const creditAmount = dataDashboard?.balance?.totalAmountCredit.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
