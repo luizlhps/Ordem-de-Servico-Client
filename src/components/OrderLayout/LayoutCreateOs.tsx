@@ -33,17 +33,7 @@ export function LayoutCreateOs({
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        margin: "auto",
-        background: theme.palette.background.paper,
-        borderRadius: "1rem",
-        ":root": {
-          paddingBottom: 10,
-        },
-      }}
-    >
+    <>
       {formStep >= 0 && formStep <= 0 && (
         <CreateOs
           formStep={formStep}
@@ -66,6 +56,6 @@ export function LayoutCreateOs({
           typeForm={typeForm}
         />
       )}
-    </Container>
+    </>
   );
 }

@@ -1,26 +1,13 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import DialogModalScroll from "../Modal/DialogModalScroll";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  DialogTitle,
-  Stack,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { CSSProperties, useEffect, useState } from "react";
+import { useMediaQuery, useTheme } from "@mui/material";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { authGroupApi } from "@/services/api/authGroupApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
-import { CheckBoxindeterminate } from "../CheckBox";
 import { IPermissions } from "../../../types/authGroup";
 import { FormLayoutPermission } from "./FormLayoutPermission";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -146,7 +133,7 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <DialogModalScroll handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
 
             <FormLayoutPermission
@@ -159,7 +146,7 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
               setValue={setValue}
               watch={watch}
             />
-          </DialogModalScroll>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

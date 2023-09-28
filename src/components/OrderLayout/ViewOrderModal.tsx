@@ -20,9 +20,9 @@ import dynamic from "next/dynamic";
 import CloseIcon from "@mui/icons-material/Close";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import DialogModalScroll from "../Modal/DialogModalScroll";
 import NewTransation from "../FinanceLayout/NewTransaction";
 import { InputTransactionOrderData } from "../../../types/finance";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 const DownloadOrderPDF = dynamic(() => import("@/components/PdfFile/DownloadOrderPDF"), {
   loading: () => <>Loading...</>,
@@ -93,12 +93,12 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
         dataValue={inputTransactionOrderData}
       />
 
-      <DialogModalScroll handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
         {!selectedItem ? ( // Renderiza o  skeleton enquanto estiver carregando
           <Skeleton variant="rectangular" height={40} />
         ) : (
           <>
-            <DialogTitle variant="h1" fontSize={26} sx={{ padding: 3 }} id="scroll-dialog-title">
+            <DialogModalScroll.Title>
               <Stack direction={"row"} justifyContent={"space-between"}>
                 <Box>
                   <Typography variant="h2" fontWeight={600}>
@@ -126,8 +126,8 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   </Box>
                 </Stack>
               </Stack>
-            </DialogTitle>
-            <DialogContent dividers={true} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
+            </DialogModalScroll.Title>
+            <DialogModalScroll.Content dividers={true}>
               <Box width={"100%"}>
                 <Stack width={"100%"} marginBottom={2}>
                   <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer?.name}</Typography>
@@ -264,9 +264,9 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   </Stack>
                 </Stack>
               </Stack>
-            </DialogContent>
+            </DialogModalScroll.Content>
 
-            <DialogActions sx={{ padding: 4, justifyContent: "center", alignContent: "center" }}>
+            <DialogModalScroll.Footer customStyle={{ padding: 4 }}>
               <Stack flexDirection={"row"} flexWrap={"wrap"} gap={1} width={"100%"} justifyContent={"center"}>
                 <Button
                   startIcon={<CloseIcon />}
@@ -298,10 +298,10 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   Faturar
                 </Button>
               </Stack>
-            </DialogActions>
+            </DialogModalScroll.Footer>
           </>
         )}
-      </DialogModalScroll>
+      </DialogModalScroll.Root>
     </>
   );
 };

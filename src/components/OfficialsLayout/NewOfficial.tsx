@@ -1,20 +1,17 @@
 import { CSSProperties, useState } from "react";
-import DialogModalScroll from "../Modal/DialogModalScroll";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 
 import { Box, DialogTitle, Typography } from "@mui/material";
 import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
-import { IUser } from "../../../types/users";
 import { usersApi } from "@/services/api/usersApi";
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
-import { FormProfilePassword } from "../Profile";
 import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
 import { InputsFormUser } from "@/services/configApplicationApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -71,10 +68,9 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <DialogModalScroll handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
-
-            <DialogContent dividers={false} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
+            <DialogModalScroll.Content customStyle={{ padding: 5 }}>
               <Slider
                 widthSlide={widthSlide}
                 maxWidthSlide={650}
@@ -86,6 +82,7 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
                   <Box sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
                     <Typography variant="h1">Novo Funcionario</Typography>
                     <Typography>Preencha os dados do seu funcionario</Typography>
+
                     <FormLayoutProfile
                       loading={loading}
                       setValueForm={setValueForm}
@@ -96,10 +93,10 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
 
                 <Slide minWidth={widthSlide}>
                   <Box height={"100%"} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <DialogTitle>
+                    <DialogModalScroll.Title>
                       <Typography variant="h1">Novo Funcionario</Typography>
                       <Typography>Preencha os dados do seu funcionario</Typography>
-                    </DialogTitle>
+                    </DialogModalScroll.Title>
                     <FormLayoutProfilePassword
                       setValueForm={setValueForm}
                       handlePreviousForm={handlePreviousForm}
@@ -108,8 +105,8 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
                   </Box>
                 </Slide>
               </Slider>
-            </DialogContent>
-          </DialogModalScroll>
+            </DialogModalScroll.Content>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

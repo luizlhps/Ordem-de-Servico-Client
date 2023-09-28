@@ -10,8 +10,6 @@ const style = {
   display: "flex",
   justifyContent: "space-between",
   flexDirection: "column" as "column",
-
-  minHeight: "100%",
 };
 
 interface IProps {

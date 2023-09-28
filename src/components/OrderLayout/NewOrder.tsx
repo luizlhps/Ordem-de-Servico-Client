@@ -8,6 +8,7 @@ import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { IStatus } from "../ServicesPage/Status";
 import { ICostumer } from "../../../types/costumer";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewCostumer {
   handleClose: () => void;
@@ -60,7 +61,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
-      <TransitionsModal handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
         {open && (
           <>
             <CloseModal handleClose={handleClose} />
@@ -77,7 +78,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
             />
           </>
         )}
-      </TransitionsModal>
+      </DialogModalScroll.Root>
     </>
   );
 };

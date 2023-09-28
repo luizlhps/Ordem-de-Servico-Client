@@ -30,6 +30,7 @@ const useSearchCep = (cepValue: string | undefined) => {
               setCepError(true);
               return;
             }
+            setCepError(false);
             setCepData(dataCepApi);
           });
         });

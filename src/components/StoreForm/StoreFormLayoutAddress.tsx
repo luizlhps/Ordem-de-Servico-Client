@@ -40,6 +40,7 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
     console.log(cepData);
     if (cepData) {
       setValue("address.city", cepData.localidade);
+      setValue("address.cep", cepData.cep);
       setValue("address.neighborhood", cepData.bairro);
       setValue("address.complement", cepData.complemento);
       setValue("address.state", cepData.uf);

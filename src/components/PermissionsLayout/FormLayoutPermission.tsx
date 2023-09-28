@@ -1,6 +1,4 @@
 import React from "react";
-import DialogModalScroll from "../Modal/DialogModalScroll";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import {
   Box,
   Button,
@@ -25,6 +23,7 @@ import {
 } from "react-hook-form";
 import { CheckBoxindeterminate } from "../CheckBox";
 import { IAuthGroupFormInput } from "./UpdatePermissions";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IProps {
   handleClose: () => void;
@@ -43,13 +42,8 @@ export const FormLayoutPermission = ({ control, errors, setValue, watch, loading
 
   return (
     <>
-      <DialogTitle variant="h1" fontSize={26} sx={{ padding: 3 }} id="scroll-dialog-title">
-        Criar novo Cargo
-      </DialogTitle>
-      <DialogContent
-        dividers={true}
-        sx={{ alignItems: "center", display: "flex", flexDirection: "column", minHeight: "120px" }}
-      >
+      <DialogModalScroll.Title>Criar novo Cargo</DialogModalScroll.Title>
+      <DialogModalScroll.Content dividers={true}>
         <Box sx={{ alignItems: "center", display: "flex", flexDirection: "column", width: "90%", paddingBottom: 1 }}>
           <Stack width={"100%"}>
             <Box>
@@ -76,7 +70,7 @@ export const FormLayoutPermission = ({ control, errors, setValue, watch, loading
             </Box>
           </Stack>
         </Box>
-      </DialogContent>
+      </DialogModalScroll.Content>
       <DialogContent
         dividers={true}
         sx={{ alignItems: "center", display: "flex", flexDirection: "column", borderTop: "none" }}

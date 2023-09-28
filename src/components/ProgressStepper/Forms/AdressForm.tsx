@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Divider, Stack, Typography, useTheme, Box, TextField } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
-
-//ReactHookForm
-import { useDebouse } from "@/hook";
-import { CepSearch } from "@/services/api/SearchCep";
-import { numbersOnly } from "@/utils/Masks";
-import { Controller, useForm } from "react-hook-form";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+
+//OTHERS
+import { Controller, useForm } from "react-hook-form";
 import { TypeForm } from "./types";
 import useSearchCep from "@/hook/useSearchCep";
 import { SearchCep } from "@/components/SearchCep";
@@ -67,6 +64,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
   useEffect(() => {
     console.log(cepData);
     if (cepData) {
+      setValue("cep", cepData.cep);
       setValue("city", cepData.localidade);
       setValue("neighborhood", cepData.bairro);
       setValue("complement", cepData.complemento);

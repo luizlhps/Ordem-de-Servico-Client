@@ -3,7 +3,6 @@ import { IUser } from "../../../types/users";
 import { usersApi } from "@/services/api/usersApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import DialogModalScroll from "../Modal/DialogModalScroll";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
@@ -11,6 +10,7 @@ import { Box, DialogActions, DialogContent, DialogTitle, Typography } from "@mui
 import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
 import { FormLayoutProfilePassword } from "../Profile/FormLayoutProfilePassword";
 import { InputsFormUser } from "@/services/configApplicationApi";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IProps {
   handleClose: () => void;
@@ -71,10 +71,9 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <DialogModalScroll handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
-            <DialogTitle sx={{ padding: 4 }} id="scroll-dialog-title"></DialogTitle>
-            <DialogContent dividers={false} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
+            <DialogModalScroll.Content dividers={false}>
               <Slider
                 widthSlide={widthSlide}
                 maxWidthSlide={650}
@@ -108,9 +107,9 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
                   </Box>
                 </Slide>
               </Slider>
-            </DialogContent>
+            </DialogModalScroll.Content>
             <DialogActions sx={{ padding: 2 }}></DialogActions>
-          </DialogModalScroll>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

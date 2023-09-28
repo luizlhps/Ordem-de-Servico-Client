@@ -5,9 +5,9 @@ import { ToastError } from "../Toast/ToastError";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthGroup, IPermissions } from "../../../types/authGroup";
 import { FormLayoutPermission } from "./FormLayoutPermission";
-import DialogModalScroll from "../Modal/DialogModalScroll";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { authGroupApi } from "@/services/api/authGroupApi";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -171,7 +171,7 @@ export const UpdatePermissions = ({ fetchApi, handleClose, open, style, selectIt
 
       {open && selectItem && (
         <>
-          <DialogModalScroll handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <CloseModal handleClose={handleClose} />
             <FormLayoutPermission
               control={control}
@@ -183,7 +183,7 @@ export const UpdatePermissions = ({ fetchApi, handleClose, open, style, selectIt
               setValue={setValue}
               watch={watch}
             />
-          </DialogModalScroll>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

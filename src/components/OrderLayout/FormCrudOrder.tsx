@@ -31,6 +31,13 @@ const style = {
     padding: "23px",
   },
 };
+const styleModalScrollDialog = {
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column" as "column",
+
+  minHeight: "100%",
+};
 
 interface IProps {
   modals: IModals;
@@ -47,12 +54,12 @@ export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalAc
   return (
     <>
       <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem} />
-      <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />
+      <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={styleModalScrollDialog} />
       <UpdateOrder
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
-        style={style}
+        style={styleModalScrollDialog}
         selectItem={selectItem}
       />
       <DeleteOrder

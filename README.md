@@ -38,3 +38,10 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 [] mudar o modal para o scroll com header-footer
+[] melhorar a aparecencia do order
+[x] bug cep storage
+[x] cep bugado na costumer
+[] ao editar e colocar mais serviços o servidor crasha
+
+/// order
+[] editar o updateOrder com o novo modalscroll e adicionar os icones
