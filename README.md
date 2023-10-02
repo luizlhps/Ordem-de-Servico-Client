@@ -42,6 +42,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 [x] bug cep storage
 [x] cep bugado na costumer
 [] ao editar e colocar mais serviços o servidor crasha
+[] colocar um filtro melhor
 
 /// order
 [] editar o updateOrder com o novo modalscroll e adicionar os icones

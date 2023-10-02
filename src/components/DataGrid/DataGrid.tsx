@@ -62,7 +62,12 @@ export const DataGridLayout: React.FC<PropsDataGrid> = ({
   return (
     <Box sx={{ width: "100%", marginTop: 3 }}>
       <DataGrid
+        disableColumnFilter
+        disableColumnMenu
+        disableVirtualization
         disableRowSelectionOnClick
+        disableColumnSelector
+        disableDensitySelector
         loading={loading}
         autoHeight={true}
         sx={{

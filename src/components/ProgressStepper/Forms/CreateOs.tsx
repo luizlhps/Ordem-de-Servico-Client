@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Divider,
   Stack,
   Typography,
   useTheme,
@@ -12,15 +10,12 @@ import {
   useMediaQuery,
   MenuItem,
   TextField,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
 import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -31,14 +26,11 @@ dayjs.locale("pt-br");
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FormSelect from "@/components/FormSelect";
-import { useDebouse } from "@/hook";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
-import { DateTimePicker, LocalizationProvider, ptBR } from "@mui/x-date-pickers";
-import { RootOrder } from "../../../../types/order";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { ICostumer, RootCostumer } from "../../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
-import Cookies from "js-cookie";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 
 //style custom
@@ -159,11 +151,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
   return (
     <>
-      <DialogModalScroll.Title>
-        <Typography fontSize={24} variant="h1" fontWeight={500}>
-          Criar O.S
-        </Typography>
-      </DialogModalScroll.Title>
+      <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
       {/*content  */}
       <DialogModalScroll.Content dividers={true}>
@@ -342,12 +330,12 @@ export const CreateOs: React.FC<NameFormProps> = ({
             <Typography marginTop={3} marginBottom={1}>
               Defeito
             </Typography>
-            <InputCustomDefect {...register("defect", { required: true })} />
+            <TextField multiline rows={2} fullWidth {...register("defect", { required: true })} />
             {errors.defect?.type === "required" && <Typography color={"error"}>Digite a descrição</Typography>}
           </Grid>
           <Grid item marginBottom={2}>
             <Typography marginBottom={1}>Observação</Typography>
-            <InputCustomDefect {...register("observation")} />
+            <TextField rows={4} multiline fullWidth {...register("observation")} />
           </Grid>
         </Grid>
       </DialogModalScroll.Content>

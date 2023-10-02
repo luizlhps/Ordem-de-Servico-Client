@@ -8,7 +8,7 @@ interface IPropsDialog {
 }
 
 export const DialogModalScrollContent = ({ children, customStyle, dividers }: IPropsDialog) => {
-  const styleDialog = {
+  const styleDialog: CSSProperties = {
     alignItems: "center",
     display: "flex",
     flexDirection: "column",

@@ -37,56 +37,6 @@ import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateSe
 import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 
-//style custom
-const InputCustom = styled.input`
-  height: 35px;
-  font-size: 16px;
-  color: #1e2737;
-  width: 350px;
-  border-radius: 0.3rem;
-  padding: 4px;
-  border-style: none;
-  border: 1px #878787 solid;
-  margin-top: 4px;
-  font-family: arial;
-  ::-webkit-calendar-picker-indicator {
-    background-color: #fff;
-    border-radius: 1rem;
-    padding: 5px;
-  }
-
-  @media (max-width: 1212px) {
-    width: 100%;
-  }
-`;
-const ContainerCustom = styled.div`
-  padding: 60px;
-  padding-bottom: 40px;
-
-  @media (max-width: 800px) {
-    padding: 8px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    flex-wrap: wrap;
-  }
-`;
-
-const InputCustomDefect = styled.textarea`
-  font-size: 16px;
-  color: red;
-  width: 100%;
-
-  height: 114px;
-  border-radius: 0.3rem;
-  padding: 14px;
-  border-style: none;
-  border: 0.1px #878787 solid;
-  margin-top: 14px;
-  resize: none;
-  font-family: arial;
-`;
-
 //Interface
 interface NameFormProps {
   formStep: number;
@@ -245,11 +195,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
         setFormSucessoValue={false}
         setMessageForm={setNewStatus}
       >
-        <DialogModalScroll.Title>
-          <Typography variant="h1" fontSize={24} fontWeight={500}>
-            Criar O.S
-          </Typography>
-        </DialogModalScroll.Title>
+        <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
         <DialogModalScroll.Content dividers>
           <Box display={"flex"} justifyContent={"flex-end"}>
@@ -320,13 +266,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
               <Typography marginTop={3} marginBottom={1}>
                 Laudo Técnico
               </Typography>
-              <InputCustomDefect {...register("technicalOpinion", { required: false })} />
+              <TextField rows={4} multiline fullWidth {...register("technicalOpinion", { required: false })} />
               {errors.technicalOpinion?.type === "required" && (
                 <Typography color={"error"}>Digite a descrição</Typography>
               )}
             </Grid>
           </Grid>
           <Grid
+            marginBottom={5}
             color={theme.palette.primary.main}
             sx={{
               input: {
@@ -414,17 +361,10 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
         </DialogModalScroll.Content>
 
         <DialogModalScroll.Footer>
-          <Stack flexDirection={"row"} justifyContent={"center"}>
+          <Stack flexDirection={"row"} justifyContent={"center"} margin={2}>
             <OsProcessSVG color={theme.palette.secondary.main} />
           </Stack>
-          <Stack
-            flexDirection={"row"}
-            justifyContent={"center"}
-            gap={1}
-            width={"100%"}
-            margin={"0!important"}
-            marginTop={"10px!important"}
-          >
+          <Stack flexDirection={"row"} justifyContent={"center"} gap={1} width={"100%"} margin={"0!important"}>
             <Button
               fullWidth
               onClick={() => {
