@@ -6,31 +6,6 @@ import { IOrder } from "../../../types/order";
 import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
 import { ViewOrderModal } from "./ViewOrderModal";
 
-const buttonStyle = {
-  position: "absolute" as "absolute",
-  top: "8%",
-  left: "90%",
-  zIndex: 1,
-
-  "@media (max-width: 768px)": {
-    top: "4.5%",
-    left: "80%",
-  },
-};
-
-const style = {
-  padding: "33px",
-  display: "flex",
-  justifyContent: "space-between",
-  flexDirection: "column" as "column",
-  alignContent: "center",
-  alignItems: "center",
-  minHeight: "100%",
-
-  "@media (max-width:364px)": {
-    padding: "23px",
-  },
-};
 const styleModalScrollDialog = {
   display: "flex",
   justifyContent: "space-between",

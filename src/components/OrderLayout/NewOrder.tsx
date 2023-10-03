@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import TransitionsModal from "../Modal/Modal";
@@ -55,6 +55,11 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
       ...values,
     }));
   };
+
+  //Clear Form after close modal
+  useEffect(() => {
+    setData("");
+  }, [handleClose]);
 
   return (
     <>

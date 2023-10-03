@@ -1,5 +1,5 @@
 import { Container, useTheme } from "@mui/material";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { useFormStep } from "@/hook/useFormStep";
 import { IStatus } from "@/services/api/statusApi";
@@ -30,8 +30,8 @@ export function LayoutCreateOs({
   typeForm,
   setStatusId,
 }: LayoutProps) {
-  const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
+
   return (
     <>
       {formStep >= 0 && formStep <= 0 && (

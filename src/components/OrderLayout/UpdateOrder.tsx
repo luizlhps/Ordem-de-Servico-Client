@@ -59,11 +59,6 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
   const selectItemId = selectItem?._id;
-  const selectItemServices: string[] = [];
-
-  selectItem?.services?.map((item: any) => {
-    selectItemServices.push(item._id);
-  });
 
   useEffect(() => {
     //put all the data when openning the modal
@@ -80,7 +75,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
         phone: selectItem?.customer?.phone,
         name: selectItem?.customer?._id,
         costumer: selectItem?.customer?.name,
-        services: selectItem?.services,
+        services: selectItem.services ? selectItem.services : undefined,
         discount: selectItem?.discount,
         exitDate: selectItem?.exitDate,
         technicalOpinion: selectItem?.technicalOpinion,

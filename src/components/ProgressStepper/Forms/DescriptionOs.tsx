@@ -13,6 +13,7 @@ import {
   MenuItem,
   TextField,
   Skeleton,
+  Autocomplete,
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
@@ -108,7 +109,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     watch,
     setValue,
     formState: { errors },
-  } = useForm<any>({});
+  } = useForm<any>({
+    defaultValues: { services: [{}] },
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -140,17 +143,31 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
 
   const functionArray = () => {
     let arrayOfServices: string[] = [];
+
     data.services.map((item: any) => {
-      arrayOfServices.push(item._id);
+      //in first time it is object
+      if (item._id) {
+        arrayOfServices.push(item._id);
+
+        //after submit prev the value is a array of string
+      } else {
+        arrayOfServices = data.services;
+      }
     });
 
     return arrayOfServices;
   };
 
   useEffect(() => {
+    if (!data.services || data.services.length === 0) {
+      console.log(data.services);
+      return;
+    }
+
     setValue("services", functionArray());
   }, []);
 
+  //calc price
   const calculateTotalPrice = useMemo(() => {
     return (servicesPrice: any, discount: any) => {
       let totalPrice = servicesPrice;
@@ -198,53 +215,71 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
         <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
         <DialogModalScroll.Content dividers>
-          <Box display={"flex"} justifyContent={"flex-end"}>
-            <Button
-              onClick={modalActions.modalHandleOpen}
-              size="small"
-              sx={{ background: theme.palette.secondary.main, color: theme.palette.background.default }}
-            >
-              Novo
-            </Button>
+          <Box display={"flex"} justifyContent={"space-between"} width={"100%"} alignItems={"center"}>
+            <Typography>Serviços</Typography>
+
+            <Box display={"flex"} gap={1}>
+              <Box width={34} height={34}>
+                <IconButton size="small" onClick={() => append({})}>
+                  <Icon fontSize="small">add</Icon>
+                </IconButton>
+              </Box>
+
+              <Button
+                onClick={modalActions.modalHandleOpen}
+                size="small"
+                sx={{ background: theme.palette.secondary.main, color: theme.palette.background.default }}
+              >
+                Novo
+              </Button>
+            </Box>
           </Box>
+
           {servicesData?.service ? (
             <>
               {fields.map((row, index) => (
-                <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={3}>
+                <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={2} width={"100%"}>
                   <IconButton size="small" onClick={() => remove(index)}>
                     <Icon fontSize="small">remove</Icon>
                   </IconButton>
-                  <FormSelect
-                    rules={{
-                      required: true,
-                      validade: () => {
-                        return true;
-                      },
-                    }}
-                    name={`services[${index}]`}
-                    label="Selecione o serviço"
-                    width="100%"
+
+                  <Controller
                     control={control}
-                    defaultValue={""}
-                  >
-                    {servicesData?.service.map((item: IService) => (
-                      <MenuItem key={item._id} value={item._id}>
-                        {`${item.title}  |  R$ ${item.amount.toFixed(2)}`}
-                      </MenuItem>
-                    ))}
-                  </FormSelect>
+                    name={`services.${index}`}
+                    render={({ field: { onChange, value } }) => (
+                      <Autocomplete
+                        size="small"
+                        sx={{ width: "100%" }}
+                        disablePortal
+                        defaultValue={null}
+                        key={`services.${row.id}`}
+                        options={servicesData.service}
+                        renderInput={(params) => <TextField {...params} />}
+                        getOptionLabel={(option) => option.title}
+                        value={
+                          value
+                            ? servicesData?.service.find((item) => {
+                                return value === item._id;
+                              }) ?? null
+                            : null
+                        }
+                        renderOption={(props, option) => (
+                          <Box component="li" {...props} key={option.id}>
+                            {option.title}
+                          </Box>
+                        )}
+                        onChange={(event, newValue) => {
+                          onChange(newValue ? newValue._id : null);
+                        }}
+                      />
+                    )}
+                  />
                 </Box>
               ))}
             </>
           ) : (
             <Skeleton variant="rectangular" width={200} height={36} />
           )}
-
-          <Box marginTop={2}>
-            <IconButton size="small" onClick={() => append("")}>
-              <Icon fontSize="small">add</Icon>
-            </IconButton>
-          </Box>
 
           <Grid
             sx={{
@@ -287,9 +322,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
             flexDirection={columnMedia ? "column" : "row"}
           >
             <Grid item xs>
-              <Typography marginTop={3} marginBottom={1}>
-                Valor
-              </Typography>
+              <Typography>Valor</Typography>
               <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
 
               <Typography marginTop={3} marginBottom={1}>
@@ -300,9 +333,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
             </Grid>
             <Grid item>
               <Box>
-                <Typography marginTop={3} marginBottom={1}>
-                  Desconto
-                </Typography>
+                <Typography>Desconto</Typography>
 
                 <Controller
                   control={control}
