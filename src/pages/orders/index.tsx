@@ -145,6 +145,29 @@ const Orders = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
               <Divider />
+              <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                <Typography marginTop={1} padding={"6px 14px"}>
+                  Cliente
+                </Typography>
+                <Box onClick={() => console.log("teste")} sx={{ cursor: "pointer" }}>
+                  <Typography fontSize={12} marginTop={1} padding={"6px 14px"} color={theme.palette.secondary.main}>
+                    Resetar
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={[
+                  { label: "fechado", year: 1994 },
+                  { label: "aberto", year: 1994 },
+                ]}
+                size="small"
+                sx={{ width: "100%", padding: "6px 14px", marginBottom: 1 }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <Divider />
 
               <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
                 <Typography marginTop={1} padding={"6px 14px"}>

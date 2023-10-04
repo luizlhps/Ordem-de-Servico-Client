@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { MarketSVG, OsProcessSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, ReportSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -138,7 +138,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
       <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
       {/*content  */}
-      <DialogModalScroll.Content dividers={true}>
+      <DialogModalScroll.Content dividers={true} customStyle={{ borderBottom: "none" }}>
         <Box display={"flex"} marginTop={4} justifyContent={"space-between"} flexWrap={"wrap"} gap={2} width={"100%"}>
           {typeForm === "createOs" && (
             <>
@@ -300,7 +300,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
 
       {/* footer */}
       <DialogModalScroll.Footer>
-        <Stack flexDirection={"row"} justifyContent={"center"} margin={2}>
+        <Stack flexDirection={"row"} justifyContent={"center"} margin={2} alignItems={"center"}>
           {typeForm === "createCostumer" && (
             <>
               <UserProcessSVG color={theme.palette.secondary.main} />
@@ -323,7 +323,21 @@ export const CreateOs: React.FC<NameFormProps> = ({
               />
             </>
           )}
-          <OsProcessSVG color={theme.palette.secondary.main} />
+          <Box width={50} justifyContent={"center"} display={"flex"}>
+            <UserProcessSVG color={theme.palette.secondary.main} />
+          </Box>
+
+          <Box
+            sx={{
+              width: 22,
+              margin: "auto 10px",
+              height: 3,
+              alignContent: "center",
+              background: theme.palette.secondary.main,
+            }}
+          />
+
+          <ReportSVG color={theme.palette.primary.light} />
         </Stack>
 
         <Stack flexDirection={"row"} justifyContent={"center"} gap={2} width={"100%"} margin={"0!important"}>

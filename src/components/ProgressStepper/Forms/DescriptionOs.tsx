@@ -14,7 +14,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { OsProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { OsProcessSVG, ReportSVG } from "../../../../public/icon/SVGS/IconsSVG";
 
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
@@ -206,7 +206,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
       >
         <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
-        <DialogModalScroll.Content dividers>
+        <DialogModalScroll.Content dividers customStyle={{ borderBottom: "none" }}>
           <Box display={"flex"} justifyContent={"space-between"} width={"100%"} alignItems={"center"}>
             <Typography>Serviços</Typography>
 
@@ -395,8 +395,20 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
         </DialogModalScroll.Content>
 
         <DialogModalScroll.Footer>
-          <Stack flexDirection={"row"} justifyContent={"center"} margin={2}>
-            <OsProcessSVG color={theme.palette.secondary.main} />
+          <Stack flexDirection={"row"} justifyContent={"center"} margin={2} gap={2} alignItems={"center"}>
+            <Box width={50} justifyContent={"center"} display={"flex"}>
+              <OsProcessSVG color={theme.palette.secondary.main} />
+            </Box>
+            <Box
+              sx={{
+                width: 22,
+                height: 3,
+                alignContent: "center",
+                background: theme.palette.secondary.main,
+              }}
+            />
+
+            <ReportSVG color={theme.palette.secondary.light} />
           </Stack>
           <Stack flexDirection={"row"} justifyContent={"center"} gap={1} width={"100%"} margin={"0!important"}>
             <Button
