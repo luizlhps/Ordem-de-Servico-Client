@@ -5,9 +5,10 @@ interface IProps {
   limitPorPage: any;
   setCurrentPage: React.Dispatch<React.SetStateAction<any>>;
   currentPage: number;
-  fetchApi: (id?: string, search?: string, page?: number | undefined, limit?: number | undefined) => Promise<void>;
+  fetchApi: (id: string | undefined, search: string, page: number, limit: number) => Promise<void>;
   id?: string | undefined;
 }
+
 interface IUseSearchField {
   searchHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSearchField: React.Dispatch<React.SetStateAction<string>>;
@@ -22,6 +23,8 @@ export const useSearchFieldWith_id = ({
   id,
 }: IProps): IUseSearchField => {
   const [searchField, setSearchField] = useState("");
+
+  console.log(limitPorPage, setCurrentPage, currentPage, id);
 
   const search = useMemo(() => {
     return searchField;

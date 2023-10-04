@@ -65,6 +65,8 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewClose, modalViewHandleOpen } =
     modalActions;
 
+  console.log(customer);
+
   //Api
   const { setCurrentPage, data, currentPage, fetchApi, loading } = useGetCostumOrders({ costumer: customer });
 
@@ -88,6 +90,8 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
 
   //Config EquipmentField
   const ordersFormattedForDataGrid = useMemo(() => {
+    console.log(data);
+
     return data?.orders.map((obj: any) => {
       const values: any[] = [];
       if (obj.equipment) values.push(obj.equipment);

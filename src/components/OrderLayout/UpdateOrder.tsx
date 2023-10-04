@@ -88,7 +88,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
         ...form,
       }));
     }
-  }, [selectItem]);
+  }, [selectItem, handleClose]);
 
   const setFormValues = (values: any) => {
     setData((prevValues) => ({
@@ -122,8 +122,6 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
       setLoading(false);
     }
   }
-
-  /////
 
   return (
     <>

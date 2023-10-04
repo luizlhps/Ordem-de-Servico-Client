@@ -32,23 +32,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { ICostumer, RootCostumer } from "../../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
-
-//style custom
-
-const InputCustomDefect = styled.textarea`
-  font-size: 16px;
-  color: #1e2737;
-  width: 100%;
-
-  height: 114px;
-  border-radius: 0.3rem;
-  padding: 14px;
-  border-style: none;
-  border: 0.1px #878787 solid;
-  margin-top: 14px;
-  resize: none;
-  font-family: arial;
-`;
+import { DataTimePicker } from "@/components/DataTime/DataTimePicker";
 
 //Interface
 interface NameFormProps {
@@ -279,33 +263,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <Typography marginTop={3} marginBottom={1}>
                   Data de entrada*
                 </Typography>
-                <Controller
-                  name="dateEntry"
-                  defaultValue={data ? dayjs(data.dateEntry).format() : undefined}
-                  control={control}
-                  rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
-                  render={({ field }) => (
-                    <>
-                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                        <DateTimePicker
-                          {...field}
-                          sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                          value={dayjs(field.value)}
-                          onChange={(newValue) => {
-                            field.onChange(dayjs(newValue).format());
-                            console.log(newValue);
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </>
-                  )}
-                />
-                {errors.dateEntry?.type === "required" && (
-                  <Typography color={"error"}>Coloque a data de entrada</Typography>
-                )}
-                {errors.dateEntry?.type === "validate" && (
-                  <Typography color={"error"}>Coloque a data correta</Typography>
-                )}
+                <DataTimePicker control={control} data={data} errors={errors} nameField="dateEntry" />
               </>
             </Box>
           </Grid>

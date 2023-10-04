@@ -1,6 +1,5 @@
 import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import {
-  Divider,
   Stack,
   Typography,
   useTheme,
@@ -10,15 +9,12 @@ import {
   Box,
   Button,
   useMediaQuery,
-  MenuItem,
   TextField,
   Skeleton,
   Autocomplete,
 } from "@mui/material";
-import styled from "styled-components";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { OsProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
-import FormSelect from "@/components/FormSelect";
 
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
@@ -33,10 +29,11 @@ dayjs.locale("pt-br");
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TypeForm } from "./types";
-import { IService, RootService, servicesApi } from "@/services/api/servicesApi";
+import { RootService, servicesApi } from "@/services/api/servicesApi";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
 import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
+import { IOrder } from "../../../../types/order";
 
 //Interface
 interface NameFormProps {
@@ -48,24 +45,7 @@ interface NameFormProps {
   typeForm: TypeForm;
 }
 
-type Inputs = {
-  equipment: string;
-  model: string;
-  brand: string;
-  dateExit: string;
-  status: string;
-  defect: string;
-  observation: string;
-};
-
-export const DescriptionOS: React.FC<NameFormProps> = ({
-  formStep,
-  nextFormStep,
-  prevFormStep,
-  data,
-  setData,
-  typeForm,
-}) => {
+export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormStep, data, setData }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [servicesData, setServicesData] = useState<RootService | undefined>(undefined);
@@ -97,7 +77,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     setDiscount(data.discount);
   }, []);
 
-  const { modalActions, modals, modalSets } = useModal();
+  const { modalActions, modals } = useModal();
   const { modalOpen } = modals;
   const { modalHandleOpen, modalHandleClose } = modalActions;
 
@@ -107,6 +87,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
     handleSubmit,
     control,
     watch,
+    clearErrors,
     setValue,
     formState: { errors },
   } = useForm<any>({
@@ -144,7 +125,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   const functionArray = () => {
     let arrayOfServices: string[] = [];
 
-    data.services.map((item: any) => {
+    data.services.forEach((item: any) => {
       //in first time it is object
       if (item._id) {
         arrayOfServices.push(item._id);
@@ -185,11 +166,19 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   }, [discount]);
 
   const servicesPrice = calculatePrice(watchServices, servicesData);
+
   const totalPrice = calculateTotalPrice(servicesPrice, discount);
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: IOrder) => {
     console.log("sub", data);
-    setData(data);
+
+    const filterServicesRemovingObjs = data.services.filter((value) => {
+      return JSON.stringify(value) !== "{}";
+    });
+
+    const dataFiltered = { ...data, services: filterServicesRemovingObjs };
+
+    setData(dataFiltered);
   };
 
   const handlePrev = () => {
@@ -198,8 +187,11 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
   };
 
   const handleNext = () => {
-    handleSubmit(onSubmit)();
-    nextFormStep();
+    handleSubmit((data) => {
+      onSubmit(data);
+
+      nextFormStep();
+    })();
   };
 
   return (
@@ -246,8 +238,15 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                   <Controller
                     control={control}
                     name={`services.${index}`}
-                    render={({ field: { onChange, value } }) => (
+                    rules={{
+                      validate: (value) => {
+                        const existSameService = new Set(watchServices).size !== watchServices.length;
+                        return !existSameService;
+                      },
+                    }}
+                    render={({ field }) => (
                       <Autocomplete
+                        {...field}
                         size="small"
                         sx={{ width: "100%" }}
                         disablePortal
@@ -257,9 +256,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                         renderInput={(params) => <TextField {...params} />}
                         getOptionLabel={(option) => option.title}
                         value={
-                          value
+                          field.value
                             ? servicesData?.service.find((item) => {
-                                return value === item._id;
+                                return field.value === item._id;
                               }) ?? null
                             : null
                         }
@@ -269,13 +268,17 @@ export const DescriptionOS: React.FC<NameFormProps> = ({
                           </Box>
                         )}
                         onChange={(event, newValue) => {
-                          onChange(newValue ? newValue._id : null);
+                          field.onChange(newValue ? newValue._id : null);
+                          clearErrors("services");
                         }}
                       />
                     )}
                   />
                 </Box>
               ))}
+              {Array.isArray(errors.services) && errors.services[0]?.type === "validate" && (
+                <Typography color={"error"}>Não é permitido color serviços iguais!!</Typography>
+              )}
             </>
           ) : (
             <Skeleton variant="rectangular" width={200} height={36} />

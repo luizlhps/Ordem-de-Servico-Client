@@ -44,7 +44,7 @@ class OrderApi {
     return res;
   }
 
-  async getCostumerOrders(id: string, filter: string, page: number, limit: number) {
+  async getCostumerOrders(id: string, filter = "", page = 1, limit = 10) {
     console.log(id, filter, page, limit);
     try {
       const data = await Api.get(`order/costumer?costumerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);

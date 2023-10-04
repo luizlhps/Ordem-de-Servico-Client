@@ -6,9 +6,10 @@ import { IStatus } from "@/services/api/statusApi";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICostumer } from "../../../types/costumer";
 import { ICustomerAndOrder } from "./UpdateOrder";
+import { IOrder } from "../../../types/order";
 
 interface LayoutProps {
-  data: ICustomerAndOrder | undefined;
+  data: IOrder | undefined;
   setFormValues: (values: any) => void;
   setCostumerId: Dispatch<SetStateAction<ICostumer | undefined>>;
   loading: boolean;
