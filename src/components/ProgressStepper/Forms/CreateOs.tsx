@@ -28,11 +28,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FormSelect from "@/components/FormSelect";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { ICostumer, RootCostumer } from "../../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
-import { DataTimePicker } from "@/components/DataTime/DataTimePicker";
+import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
 
 //Interface
 interface NameFormProps {
@@ -81,7 +80,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
         if (data instanceof Error) {
           return console.error(data.message);
         } else {
-          setStatusData(data);
+          setStatusData(data.data);
         }
       } catch (error) {
         console.error(error);
@@ -263,7 +262,14 @@ export const CreateOs: React.FC<NameFormProps> = ({
                 <Typography marginTop={3} marginBottom={1}>
                   Data de entrada*
                 </Typography>
-                <DataTimePicker control={control} data={data} errors={errors} nameField="dateEntry" />
+                <DateTimePickerControlled
+                  control={control}
+                  data={data}
+                  errors={errors}
+                  nameField="dateEntry"
+                  dateNow
+                  required
+                />
               </>
             </Box>
           </Grid>

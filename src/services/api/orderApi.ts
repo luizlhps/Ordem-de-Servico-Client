@@ -22,14 +22,16 @@ export interface IOrderData {
 }
 
 class OrderApi {
-  getAllOrder(filter = "", page = 1, limit = 10) {
-    return Api.get<RootOrder>(`order/?filter=${filter}&page=${page}&limit=${limit}`);
+  getAllOrder(filter = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
+    console.log(filter);
+
+    return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
   getPendingOrder(filter = "", page = 1, limit = 10) {
     return Api.get<RootOrder>(`order/pending?filter=${filter}&page=${page}&limit=${limit}`);
   }
 
-  async createOrder(data: IOrder, Costumerid: string) {
+  async createOrder(data: IOrder, customerId: string) {
     const res = await Api.post("order", {
       equipment: data.equipment,
       brand: data.brand,
@@ -39,7 +41,7 @@ class OrderApi {
       dateEntry: data.dateEntry,
       services: [],
       status: data.status,
-      customer: Costumerid,
+      customer: customerId,
     });
     return res;
   }

@@ -86,13 +86,8 @@ const Status = () => {
         if (page === 0 && currentPage) {
           setCurrentPage(currentPage + 1);
         }
-        const data = await statusApi.getAllStatus(search, currentPage, limit);
-
-        if (data instanceof Error) {
-          return console.error(data.message);
-        } else {
-          setStatusData(data);
-        }
+        const { data } = await statusApi.getAllStatus(search, currentPage, limit);
+        setStatusData(data);
       } catch (error) {
         setStatusData({ total: 0, page: 0, limit: 0, status: [] });
       }

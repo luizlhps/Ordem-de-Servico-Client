@@ -19,19 +19,8 @@ export type TStatusData = {
 };
 
 class Status {
-  async getAllStatus(filter = "", page = 1, limit = 5): Promise<TStatusData | Error> {
-    try {
-      const { data } = await Api.get(`status/?filter=${filter}&page=${page}&limit=${limit}`);
-
-      if (data) {
-        return data as TStatusData;
-      }
-
-      return new Error("Erro ao listar os status.");
-    } catch (error) {
-      console.error(error);
-      throw new Error((error as { message: string }).message || "Erro ao listar os status.");
-    }
+  async getAllStatus(filter = "", page = 1, limit = 5) {
+    return Api.get<TStatusData>(`status/?filter=${filter}&page=${page}&limit=${limit}`);
   }
 
   async createStatus(data: IStatus) {

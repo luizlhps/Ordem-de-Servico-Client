@@ -38,7 +38,15 @@ export const useGetFetchOrders = () => {
   //Get Api
 
   const fetchApi = useCallback(
-    async (search = "", page?: number, limit?: number) => {
+    async (
+      search?: {
+        status: string;
+        search: string;
+        customer: string;
+      },
+      page?: number,
+      limit?: number
+    ) => {
       debouse(async () => {
         setLoading(true);
         try {

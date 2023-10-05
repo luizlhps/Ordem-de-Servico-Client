@@ -44,6 +44,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 [x] ao editar e colocar mais serviços o servidor crasha
 [] colocar um filtro melhor
 
+//Refatoração
+[] DescriptionOS
+[] CreateOs
+
 /// order
 [x] editar o updateOrder com o novo modalscroll e adicionar os icones
 []integrar os dados da empresa no pdf
+
+//officials
+[] arrumar o novo

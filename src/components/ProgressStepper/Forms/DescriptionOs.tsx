@@ -16,8 +16,6 @@ import {
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { OsProcessSVG, ReportSVG } from "../../../../public/icon/SVGS/IconsSVG";
 
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import utc from "dayjs/plugin/utc";
@@ -34,6 +32,7 @@ import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateSe
 import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { IOrder } from "../../../../types/order";
+import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
 
 //Interface
 interface NameFormProps {
@@ -361,27 +360,7 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
                     <Typography marginTop={3} marginBottom={1}>
                       Data de Saída
                     </Typography>
-                    <Controller
-                      name="exitDate"
-                      defaultValue={data ? dayjs(data.exitDate).format() : undefined}
-                      control={control}
-                      rules={{ required: true, validate: (value) => (value === "Invalid Date" ? false : true) }}
-                      render={({ field }) => (
-                        <>
-                          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                            <DateTimePicker
-                              {...field}
-                              sx={{ marginTop: 0, "& .MuiInputBase-input": { padding: "8.5px" } }}
-                              value={dayjs(field.value)}
-                              onChange={(newValue) => {
-                                field.onChange(dayjs(newValue).format());
-                                console.log(newValue);
-                              }}
-                            />
-                          </LocalizationProvider>
-                        </>
-                      )}
-                    />
+                    <DateTimePickerControlled control={control} data={data} errors={errors} nameField="exitDate" />
                     {errors.exitDate?.type === "required" && (
                       <Typography color={"error"}>Coloque a data de entrada</Typography>
                     )}

@@ -93,10 +93,8 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
 
                 <Slide minWidth={widthSlide}>
                   <Box height={"100%"} sx={{ alignItems: "center", display: "flex", flexDirection: "column" }}>
-                    <DialogModalScroll.Title>
-                      <Typography variant="h1">Novo Funcionario</Typography>
-                      <Typography>Preencha os dados do seu funcionario</Typography>
-                    </DialogModalScroll.Title>
+                    <Typography variant="h1">Novo Funcionario</Typography>
+                    <Typography>Preencha os dados do seu funcionario</Typography>
                     <FormLayoutProfilePassword
                       setValueForm={setValueForm}
                       handlePreviousForm={handlePreviousForm}
