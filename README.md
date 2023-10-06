@@ -50,7 +50,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 /// order
 [x] editar o updateOrder com o novo modalscroll e adicionar os icones
-[]integrar os dados da empresa no pdf
-
+[] arrumar o description com icon a mais na hora de criar um cliente novo
 //officials
 [] arrumar o novo
+
+feat
+ao criar um novo serviço ja colocar no serviço da os
+separar serviço de peça
+devera ser possivel editar o serviço novo pelo order

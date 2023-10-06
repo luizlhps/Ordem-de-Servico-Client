@@ -26,7 +26,7 @@ const useSearchCep = (cepValue: string | undefined) => {
       try {
         debouse(() => {
           CepSearch.getSeachCep(cepValue).then((dataCepApi) => {
-            if (dataCepApi.erro) {
+            if (dataCepApi?.erro) {
               setCepError(true);
               return;
             }

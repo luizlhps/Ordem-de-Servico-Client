@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Page, View, Text, Document, StyleSheet, Image, Font } from "@react-pdf/renderer";
 import { IOrder } from "../../../types/order";
+import { RootStore } from "../../../types/store";
+import { normalizePhoneNumber } from "@/utils/Masks";
 
-export default function OrderPdf({ selectOrder }: { selectOrder: IOrder }) {
+export default function OrderPdf({
+  selectOrder,
+  dataStore,
+}: {
+  selectOrder: IOrder;
+  dataStore: RootStore | undefined;
+}) {
   Font.register({
     family: "Open Sans",
     fonts: [
@@ -115,10 +123,12 @@ export default function OrderPdf({ selectOrder }: { selectOrder: IOrder }) {
               style={styles.image}
             />
             <View>
-              <Text style={styles.business}>Loustech Assistência Técnica</Text>
-              <Text style={styles.text}>Endereço: R. Ipê, n° 756 Eucaliptos, </Text>
-              <Text style={styles.text}>Fazenda Rio Grande - PR, 83820-488 </Text>
-              <Text style={styles.text}>Celular (41) 99239-1479 </Text>
+              <Text style={styles.business}>{dataStore?.name}</Text>
+              <Text style={styles.text}>
+                {`Endereço:${dataStore?.address.street}, n°${dataStore?.address.number}, ${dataStore?.address.neighborhood}`}
+              </Text>
+              <Text style={styles.text}>{`${dataStore?.address.city} - ${dataStore?.address.cep}`}</Text>
+              <Text style={styles.text}>{`Celular ${normalizePhoneNumber(dataStore?.phone)}`} </Text>
             </View>
           </View>
 

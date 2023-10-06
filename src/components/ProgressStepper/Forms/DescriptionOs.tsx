@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { OsProcessSVG, ReportSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
 
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -25,7 +27,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale("pt-br");
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TypeForm } from "./types";
 import { RootService, servicesApi } from "@/services/api/servicesApi";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
@@ -33,6 +34,8 @@ import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { IOrder } from "../../../../types/order";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
+import UpdateServiceModal from "@/components/Modal/servicesPage/Service/UpdateServiceModal";
+import { IService } from "@/hook/useGetFetchService";
 
 //Interface
 interface NameFormProps {
@@ -41,15 +44,18 @@ interface NameFormProps {
   prevFormStep: () => void;
   data: any;
   setData: any;
+
   typeForm: TypeForm;
 }
 
 export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormStep, data, setData }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
-  const [servicesData, setServicesData] = useState<RootService | undefined>(undefined);
+  const [servicesData, setServicesData] = useState<RootService | null>(null);
   const [discount, setDiscount] = useState<SetStateAction<Number | undefined>>(0);
+
   const [newStatus, setNewStatus] = useState<SetStateAction<string | undefined>>();
+  const [currentService, setCurrentService] = useState<IService>();
 
   useEffect(() => {
     if (data && data.technicalOpinion) {
@@ -77,8 +83,8 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
   }, []);
 
   const { modalActions, modals } = useModal();
-  const { modalOpen } = modals;
-  const { modalHandleOpen, modalHandleClose } = modalActions;
+  const { modalOpen, modalUpdateOpen } = modals;
+  const { modalHandleOpen, modalHandleClose, modalHandleUpdateClose, modalUpdateHandleOpen } = modalActions;
 
   //form
   const {
@@ -193,6 +199,14 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
     })();
   };
 
+  const ValueFieldOfService = (serviceCurrent: any) => {
+    const data = servicesData?.service.find((service) => {
+      return service._id === serviceCurrent;
+    });
+
+    setCurrentService(data);
+  };
+
   return (
     <>
       <CreateServiceModal
@@ -203,6 +217,13 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
         setFormSucessoValue={false}
         setMessageForm={setNewStatus}
       >
+        <UpdateServiceModal
+          fetchApi={FetchGetServices}
+          open={modalUpdateOpen}
+          handleClose={modalHandleUpdateClose}
+          handleOpen={modalUpdateHandleOpen}
+          selectedItemUpdate={currentService}
+        />
         <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
         <DialogModalScroll.Content dividers customStyle={{ borderBottom: "none" }}>
@@ -229,10 +250,44 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
           {servicesData?.service ? (
             <>
               {fields.map((row, index) => (
-                <Box key={row.id} display="flex" justifyContent="flex-start" marginTop={2} width={"100%"}>
-                  <IconButton size="small" onClick={() => remove(index)}>
-                    <Icon fontSize="small">remove</Icon>
-                  </IconButton>
+                <Box
+                  key={row.id}
+                  display="flex"
+                  justifyContent="flex-end"
+                  alignItems={"center"}
+                  marginTop={2}
+                  width={"100%"}
+                  position={"relative"}
+                  onFocus={() => {
+                    if (watchServices !== null && watchServices !== undefined) {
+                      Object.keys(watchServices[index]).length !== 0 ? ValueFieldOfService(watchServices[index]) : null;
+                    }
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      transaform: "translate(-50%, -50%)",
+                      right: "30px",
+                      zIndex: 1,
+                    }}
+                  >
+                    {currentService && (
+                      <IconButton onClick={modalUpdateHandleOpen}>
+                        <EditIcon sx={{ width: 15, height: 15 }} />
+                      </IconButton>
+                    )}
+
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        remove(index);
+                        setCurrentService(undefined);
+                      }}
+                    >
+                      <CloseIcon sx={{ width: 15, height: 15 }} />
+                    </IconButton>
+                  </Box>
 
                   <Controller
                     control={control}
@@ -247,10 +302,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
                       <Autocomplete
                         {...field}
                         size="small"
-                        sx={{ width: "100%" }}
-                        disablePortal
+                        sx={{ width: "100%", "& .MuiAutocomplete-clearIndicator": { display: "none" } }}
                         defaultValue={null}
-                        key={`services.${row.id}`}
+                        disablePortal
                         options={servicesData.service}
                         renderInput={(params) => <TextField {...params} />}
                         getOptionLabel={(option) => option.title}
@@ -267,7 +321,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
                           </Box>
                         )}
                         onChange={(event, newValue) => {
+                          if (newValue) setCurrentService(newValue);
                           field.onChange(newValue ? newValue._id : null);
+
                           clearErrors("services");
                         }}
                       />

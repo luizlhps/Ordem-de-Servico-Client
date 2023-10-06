@@ -24,8 +24,6 @@ export const useSearchFieldWith_id = ({
 }: IProps): IUseSearchField => {
   const [searchField, setSearchField] = useState("");
 
-  console.log(limitPorPage, setCurrentPage, currentPage, id);
-
   const search = useMemo(() => {
     return searchField;
   }, [searchField]);

@@ -12,16 +12,16 @@ import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import TransitionsModal from "../../Modal";
+import { IService } from "@/hook/useGetFetchService";
 
 interface IModal {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleOpen: () => void;
   handleClose: () => void;
   fetchApi: () => any;
 
-  selectedItemUpdate: any;
-  children: react.ReactNode;
+  selectedItemUpdate: IService | undefined;
+  children?: react.ReactNode;
 }
 
 export default function UpdateServiceModal({
@@ -46,41 +46,43 @@ export default function UpdateServiceModal({
   } = useForm();
 
   useEffect(() => {
-    if (selectedItemUpdate.title && selectedItemUpdate.title !== undefined) setValue("title", selectedItemUpdate.title);
-    if (selectedItemUpdate.description !== undefined) setValue("description", selectedItemUpdate.description);
-    if (selectedItemUpdate.amount !== undefined) setValue("amount", selectedItemUpdate.amount);
-  }, [selectedItemUpdate.description, selectedItemUpdate.title]);
+    if (selectedItemUpdate?.title && selectedItemUpdate?.title !== undefined)
+      setValue("title", selectedItemUpdate?.title);
+    if (selectedItemUpdate?.description !== undefined) setValue("description", selectedItemUpdate?.description);
+    if (selectedItemUpdate?.amount !== undefined) setValue("amount", selectedItemUpdate?.amount);
+  }, [selectedItemUpdate?.description, selectedItemUpdate?.title]);
 
   useEffect(() => {
     setTimeout(() => {
-      setValue("title", selectedItemUpdate.title);
+      setValue("title", selectedItemUpdate?.title);
     }, 200);
   }, [handleClose]);
 
   const onSubmit = (data: any) => {
-    servicesApi
-      .updateServices(data, selectedItemUpdate._id)
-      .then((res) => {
-        fetchApi();
-        setError(false);
-        setValue("title", data.title);
-        setValue("description", data.description);
-        setValue("amount", data.amount);
-        setFormSuccess(true);
-        handleClose();
-      })
-      .catch((error) => {
-        setError(true);
-        if (error.response) {
-          setFormSuccess(false);
-          console.error(error);
-          setErrorMessage(error.response.data.message);
-        } else {
-          setFormSuccess(false);
-          console.error(error);
-          setErrorMessage(error.response.data.message);
-        }
-      });
+    if (selectedItemUpdate)
+      servicesApi
+        .updateServices(data, selectedItemUpdate?._id)
+        .then((res) => {
+          fetchApi();
+          setError(false);
+          setValue("title", data.title);
+          setValue("description", data.description);
+          setValue("amount", data.amount);
+          setFormSuccess(true);
+          handleClose();
+        })
+        .catch((error) => {
+          setError(true);
+          if (error.response) {
+            setFormSuccess(false);
+            console.error(error);
+            setErrorMessage(error.response.data.message);
+          } else {
+            setFormSuccess(false);
+            console.error(error);
+            setErrorMessage(error.response.data.message);
+          }
+        });
   };
 
   const dateEntry = new Date();

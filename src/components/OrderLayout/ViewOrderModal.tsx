@@ -23,6 +23,8 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import NewTransation from "../FinanceLayout/NewTransaction";
 import { InputTransactionOrderData } from "../../../types/finance";
 import { DialogModalScroll } from "../Modal/DialogModalScroll";
+import { configApplicationApi } from "@/services/configApplicationApi";
+import { RootStore } from "../../../types/store";
 
 const DownloadOrderPDF = dynamic(() => import("@/components/PdfFile/DownloadOrderPDF"), {
   loading: () => <>Loading...</>,
@@ -62,6 +64,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
 
   const [modalTransaction, setModalTransaction] = useState(false);
   const [inputTransactionOrderData, setInputTransactionOrderData] = useState<InputTransactionOrderData>();
+  const [dataStore, setDataStore] = useState<RootStore>();
 
   const handleCloseNewTransaction = () => {
     setModalTransaction(false);
@@ -81,6 +84,15 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
       });
     }
   }, [selectedItem]);
+
+  useEffect(() => {
+    configApplicationApi
+      .getInfoStore()
+      .then((res) => {
+        setDataStore(res.data);
+      })
+      .catch(() => {});
+  }, []);
 
   const theme = useTheme();
   return (
@@ -277,16 +289,27 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   Fechar
                 </Button>
 
-                <DownloadOrderPDF selectOrder={selectedItem} width={smallphoneMedia ? "100%" : 173} height={"100%"}>
-                  <Button
-                    color="error"
-                    startIcon={<PictureAsPdfIcon />}
-                    sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
-                    variant="contained"
+                {dataStore ? (
+                  <DownloadOrderPDF
+                    selectOrder={selectedItem}
+                    dataStore={dataStore}
+                    width={smallphoneMedia ? "100%" : 173}
+                    height={"100%"}
                   >
-                    Imprimir PDF
+                    <Button
+                      color="error"
+                      startIcon={<PictureAsPdfIcon />}
+                      sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
+                      variant="contained"
+                    >
+                      Imprimir PDF
+                    </Button>
+                  </DownloadOrderPDF>
+                ) : (
+                  <Button color="error" startIcon={<PictureAsPdfIcon />} variant="contained">
+                    Carregando ...
                   </Button>
-                </DownloadOrderPDF>
+                )}
 
                 <Button
                   startIcon={<AttachMoneyIcon />}
