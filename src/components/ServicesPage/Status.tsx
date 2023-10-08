@@ -12,6 +12,8 @@ import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import { servicesApi } from "@/services/api/servicesApi";
+import { IFilterSearch, useSearchField } from "@/hook/useSearchField";
+import { useGetFetchStatus } from "@/hook/useGetFetchStatus";
 
 export interface IStatus {
   _id?: string;
@@ -27,22 +29,16 @@ const Status = () => {
   const theme = useTheme();
 
   const { debouse } = useDebouse(300);
-  const [searchField, setSearchField] = useState("");
-  const [statusData, setStatusData] = useState<TStatusData>({ total: 0, page: 0, limit: 0, status: [] });
   const [newItem, setNewItem] = useState(false);
   const [newUpdateItem, setNewUpdateItem] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
   const [selectedItemUpdate, setSelectedItemUpdate] = useState("" || Object);
 
   const [loadingDel, setLoadingDel] = useState(false);
   const [messageError, setMessageError] = useState("");
-  const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
   const { formSuccess, setFormSuccess, errorMessage, setFormError, setErrorMessage, formError } =
     useContext(FormSucessOrErrorContext);
-
-  const [loading, setLoading] = useState(false);
 
   //modal Create
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,33 +63,7 @@ const Status = () => {
     setModalOpendelete(false);
   };
 
-  //inputSearch
-  const search = useMemo(() => {
-    return searchField;
-  }, [searchField]);
-
-  //Get Api
-  const fetchApi = async (search = "", page?: number, limit?: number) => {
-    debouse(async () => {
-      setLoading(true);
-
-      try {
-        let currentPage = page;
-
-        if (newUpdateItem === true) {
-          currentPage = 1;
-        }
-        if (page === 0 && currentPage) {
-          setCurrentPage(currentPage + 1);
-        }
-        const { data } = await statusApi.getAllStatus(search, currentPage, limit);
-        setStatusData(data);
-      } catch (error) {
-        setStatusData({ total: 0, page: 0, limit: 0, status: [] });
-      }
-      setLoading(false);
-    });
-  };
+  const { currentPage, error, fetchApi, loading, setCurrentPage, setStatusData, statusData } = useGetFetchStatus();
 
   //Delete Api
   const HandleDeleted = async (id: string | undefined) => {
@@ -107,10 +77,8 @@ const Status = () => {
       .catch((err) => {
         console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
           setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
-        setError(true);
       })
       .finally(() => {
-        setLoading(false);
         modalDeleteHandleClose();
         setLoadingDel(false);
       });
@@ -126,26 +94,11 @@ const Status = () => {
     modalDeleteHandleOpen
   );
 
-  useEffect(() => {
-    if (search !== "") {
-      fetchApi(search, 1, limitPorPage);
-      return setCurrentPage(0);
-    }
-    fetchApi(search, currentPage + 1, limitPorPage);
-  }, [search, currentPage]);
-
-  useEffect(() => {
-    setFormSuccess(false);
-  }, [formSuccess, setFormSuccess]);
+  const { searchField, searchHandle, setCustomerFilter, setRangeDateFilter, setSearchField, setStatusFilter } =
+    useSearchField({ limitPorPage, setCurrentPage, currentPage, fetchApi });
 
   return (
     <>
-      <ToastError formError={formError} errorMessage={errorMessage} setFormError={setFormError} />
-      <ToastSuccess
-        formSuccess={formSuccess}
-        setFormSuccess={setFormSuccess}
-        alertSuccess="Dados atualizados com sucesso!!"
-      />
       <DeleteModal
         HandleDeleted={HandleDeleted}
         open={modalOpendelete}

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDebouse } from "./useDebouse";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
+import { IFilterSearch } from "./useSearchField";
 
 export const useGetFetchStatus = () => {
   const [statusData, setStatusData] = useState<TStatusData>({ total: 0, page: 0, limit: 0, status: [] });
@@ -12,7 +13,7 @@ export const useGetFetchStatus = () => {
   //Get Api
 
   const fetchApi = useCallback(
-    async (search?: string, page?: number, limit?: number) => {
+    async (search?: IFilterSearch, page?: number, limit?: number) => {
       debouse(async () => {
         setLoading(true);
         try {

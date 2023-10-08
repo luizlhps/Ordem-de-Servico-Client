@@ -2,19 +2,17 @@ import { useDebouse } from "@/hook";
 import Cookies from "js-cookie";
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
+export interface IFilterSearch {
+  status?: string;
+  search?: string;
+  customer?: string;
+}
+
 interface IProps {
   limitPorPage: any;
   setCurrentPage: React.Dispatch<React.SetStateAction<any>>;
   currentPage: number;
-  fetchApi: (
-    search?: {
-      status: string;
-      search: string;
-      customer: string;
-    },
-    page?: number | undefined,
-    limit?: number | undefined
-  ) => Promise<void> | void;
+  fetchApi: (search?: IFilterSearch, page?: number | undefined, limit?: number | undefined) => Promise<void> | void;
 }
 
 export interface IRangeDateFilter {

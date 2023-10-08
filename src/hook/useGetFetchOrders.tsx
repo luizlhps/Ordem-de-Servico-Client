@@ -4,6 +4,7 @@ import { useDebouse } from "./useDebouse";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { RootOrder } from "../../types/order";
+import { IFilterSearch } from "./useSearchField";
 
 export interface IData {
   Total: number;
@@ -38,15 +39,7 @@ export const useGetFetchOrders = () => {
   //Get Api
 
   const fetchApi = useCallback(
-    async (
-      search?: {
-        status: string;
-        search: string;
-        customer: string;
-      },
-      page?: number,
-      limit?: number
-    ) => {
+    async (search?: IFilterSearch, page?: number, limit?: number) => {
       debouse(async () => {
         setLoading(true);
         try {

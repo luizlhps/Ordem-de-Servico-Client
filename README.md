@@ -58,3 +58,6 @@ feat
 ao criar um novo serviço ja colocar no serviço da os
 separar serviço de peça
 devera ser possivel editar o serviço novo pelo order
+
+adicionar data de entrada no pdf e também arrumar os numeros de cpf e celular colocando normalize
+o complemento e nmumero não foram

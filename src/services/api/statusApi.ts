@@ -19,8 +19,16 @@ export type TStatusData = {
 };
 
 class Status {
-  async getAllStatus(filter = "", page = 1, limit = 5) {
-    return Api.get<TStatusData>(`status/?filter=${filter}&page=${page}&limit=${limit}`);
+  async getAllStatus(
+    filter: {
+      status?: string | undefined;
+      search?: string | undefined;
+      customer?: string | undefined;
+    } = { status: "", search: "", customer: "" },
+    page = 1,
+    limit = 5
+  ) {
+    return Api.get<TStatusData>(`status/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
   async createStatus(data: IStatus) {

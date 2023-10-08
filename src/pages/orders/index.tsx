@@ -27,10 +27,10 @@ const Orders = () => {
 
   //Search
   const { searchHandle, searchField, setRangeDateFilter, setStatusFilter, setCustomerFilter } = useSearchField({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
+    limitPorPage,
+    setCurrentPage,
+    currentPage,
+    fetchApi,
   });
 
   //Config Grid

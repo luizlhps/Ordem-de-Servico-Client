@@ -22,7 +22,15 @@ export interface IOrderData {
 }
 
 class OrderApi {
-  getAllOrder(filter = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
+  getAllOrder(
+    filter: {
+      status?: string | undefined;
+      search?: string | undefined;
+      customer?: string | undefined;
+    } = { status: "", search: "", customer: "" },
+    page = 1,
+    limit = 10
+  ) {
     console.log(filter);
 
     return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);

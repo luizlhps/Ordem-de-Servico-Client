@@ -18,7 +18,6 @@ interface propsStyled {
 
 //Image
 import Image from "next/image";
-import imageProfile from "../../../public/img/profile.jpg";
 import { SessionContext } from "@/auth/SessionProvider";
 import {
   ClientsSVG,
@@ -31,7 +30,7 @@ import {
 } from "../../../public/icon/SVGS/IconsSVG";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import StoreIcon from "@mui/icons-material/Store";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 //Custom Styled
 
@@ -73,6 +72,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
   const router = useRouter();
   const smDown = useMediaQuery(theme.breakpoints.down("md"));
   const matches = useMediaQuery("(max-height:860px)");
+  const drawerFullWidth = useMediaQuery("(max-width:500px)");
 
   const { signOut, user } = useContext(SessionContext);
 
@@ -107,7 +107,15 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         onClose={handleMenuOpen}
         open={isOpen}
         variant={smDown ? "temporary" : "permanent"}
-        sx={{ "& .MuiDrawer-paper": { backgroundImage: "none", border: "none" } }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            backgroundImage: "none",
+            border: "none",
+            width: drawerFullWidth ? "100%" : "none",
+            display: "flex",
+            alignItems: "center",
+          },
+        }}
       >
         <Box
           flex={1}

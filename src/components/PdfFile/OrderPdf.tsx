@@ -142,7 +142,10 @@ export default function OrderPdf({
                 </View>
                 <View style={styles.contentList}>
                   <Text style={styles.subtitle}>Endereço:</Text>
-                  <Text style={styles.text}>{selectOrder.customer.address[0].street}</Text>
+                  <Text style={styles.text}>
+                    {selectOrder.customer.address[0].street} n°{selectOrder.customer.address[0].number}{" "}
+                    {selectOrder.customer.address[0].complement}
+                  </Text>
                 </View>
                 <View style={styles.contentList}>
                   <Text style={styles.subtitle}>Cidade:</Text>
@@ -180,14 +183,14 @@ export default function OrderPdf({
             <View style={styles.itemsList}>
               <View style={styles.contentInformationEquipment}>
                 <Text style={styles.subtitle}>Marca:</Text>
-                <Text style={styles.text}> {selectOrder.model} </Text>
+                <Text style={styles.text}> {selectOrder.brand} </Text>
               </View>
             </View>
 
             <View style={styles.itemsList}>
               <View style={styles.contentInformationEquipment}>
                 <Text style={styles.subtitle}>Modelo:</Text>
-                <Text style={styles.text}> {selectOrder.brand} </Text>
+                <Text style={styles.text}> {selectOrder.model} </Text>
               </View>
             </View>
 
