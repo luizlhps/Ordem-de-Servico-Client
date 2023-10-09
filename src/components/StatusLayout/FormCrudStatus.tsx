@@ -4,6 +4,7 @@ import { IUser } from "../../../types/users";
 import { NewStatus } from "./NewStatus";
 import { UpdateStatus } from "./UpdateStatus";
 import { IDetailsStatus } from "@/services/api/statusApi";
+import { DeleteStatus } from "./DeleteStatus";
 
 const style = {
   display: "flex",
@@ -35,12 +36,12 @@ export const FormCrudStatus: React.FC<IProps> = memo(({ modals, fetchApi, modalA
         style={style}
         selectItem={selectItem}
       />
-      {/*       <DeleteOfficials
+      <DeleteStatus
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
         id={selectItem?._id}
-      /> */}
+      />
     </>
   );
 });

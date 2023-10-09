@@ -11,7 +11,7 @@ export interface IProps {
   fetchApi: () => void;
 }
 
-export const DeleteOfficials = ({ open, handleClose, id, fetchApi }: IProps) => {
+export const DeleteStatus = ({ open, handleClose, id, fetchApi }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);

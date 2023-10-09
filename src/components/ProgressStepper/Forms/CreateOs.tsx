@@ -11,9 +11,8 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { MarketSVG, OsProcessSVG, ReportSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, ReportSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -24,7 +23,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale("pt-br");
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FormSelect from "@/components/FormSelect";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
