@@ -1,11 +1,8 @@
-import { Container, useTheme } from "@mui/material";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { useFormStep } from "@/hook/useFormStep";
-import { IStatus } from "@/services/api/statusApi";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICostumer } from "../../../types/costumer";
-import { ICustomerAndOrder } from "./UpdateOrder";
 import { IOrder } from "../../../types/order";
 
 interface LayoutProps {

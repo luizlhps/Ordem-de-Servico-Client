@@ -20,7 +20,6 @@ interface IModal {
   fetchApi: () => any;
   setNewItem: any;
   newItem: any;
-  children: React.ReactNode;
   setFormSuccess: any;
 }
 
@@ -30,7 +29,6 @@ export default function CreateStatusModal({
   setNewItem,
   newItem,
   fetchApi,
-  children,
   setFormSuccess,
 }: IModal) {
   const [error, setError] = useState(false);
@@ -41,7 +39,6 @@ export default function CreateStatusModal({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
   } = useForm();
@@ -53,7 +50,6 @@ export default function CreateStatusModal({
       .then((res) => {
         setError(false);
         setNewItem(true);
-        setValue("name", "");
         setFormSuccess(true);
 
         fetchApi();
@@ -73,7 +69,8 @@ export default function CreateStatusModal({
           console.error(error);
           setFormSuccess(error.response.data.message);
         }
-      });
+      })
+      .finally(() => setValue("name", ""));
     setLoading(false);
   };
 
@@ -133,7 +130,6 @@ export default function CreateStatusModal({
           </Stack>
         </Box>
       </TransitionsModal>
-      {children}
     </div>
   );
 }

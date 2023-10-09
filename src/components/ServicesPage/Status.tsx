@@ -1,19 +1,18 @@
-import { Box, Button, Stack, TextField, Typography, useTheme } from "@mui/material";
-import React, { useEffect, useMemo, useState, useContext } from "react";
-import { DataGridLayout, HeaderLayout } from "@/components";
+import { Button, Stack, TextField, Typography, useTheme } from "@mui/material";
+import { useState, useContext } from "react";
+import { DataGridLayout } from "@/components";
 import { useDebouse } from "@/hook";
 
-import { TStatusData, statusApi } from "@/services/api/statusApi";
 import CreateStatusModal from "../Modal/servicesPage/Status/CreateStatusModal";
 import UpdateStatusModal from "../Modal/servicesPage/Status/UpdateStatusModal";
 import { statusColumnsDataGrid } from "../DataGrid/utils/servicePage/statusColumnConfig";
 import DeleteModal from "../Modal/deleteModal";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
-import { ToastSuccess } from "../Toast/ToastSuccess";
-import { ToastError } from "../Toast/ToastError";
 import { servicesApi } from "@/services/api/servicesApi";
-import { IFilterSearch, useSearchField } from "@/hook/useSearchField";
+import { useSearchField } from "@/hook/useSearchField";
 import { useGetFetchStatus } from "@/hook/useGetFetchStatus";
+import useModal from "@/hook/useModal";
+import { FormCrudStatus } from "../StatusLayout/FormCrudStatus";
 
 export interface IStatus {
   _id?: string;
@@ -41,27 +40,17 @@ const Status = () => {
     useContext(FormSucessOrErrorContext);
 
   //modal Create
-  const [modalOpen, setModalOpen] = useState(false);
-  const modalHandleOpen = () => setModalOpen(true);
-  const modalHandleClose = () => {
-    setModalOpen(false);
-    setNewItem(false);
-  };
-
-  //modal Update
-  const [modalUpdateOpen, setModaUpdatelOpen] = useState(false);
-  const modalUpdateHandleOpen = () => setModaUpdatelOpen(true);
-  const modalHandleUpdateClose = () => {
-    setModaUpdatelOpen(false);
-    setNewUpdateItem(false);
-  };
-
-  //Modal Delete
-  const [modalOpendelete, setModalOpendelete] = useState(false);
-  const modalDeleteHandleOpen = () => setModalOpendelete(true);
-  const modalDeleteHandleClose = () => {
-    setModalOpendelete(false);
-  };
+  const { modalActions, modalSets, modals } = useModal();
+  const { modalOpen, modalOpendelete, modalUpdateOpen } = modals;
+  const { setModalOpen } = modalSets;
+  const {
+    modalDeleteHandleClose,
+    modalDeleteHandleOpen,
+    modalHandleClose,
+    modalHandleOpen,
+    modalHandleUpdateClose,
+    modalUpdateHandleOpen,
+  } = modalActions;
 
   const { currentPage, error, fetchApi, loading, setCurrentPage, setStatusData, statusData } = useGetFetchStatus();
 
@@ -99,7 +88,7 @@ const Status = () => {
 
   return (
     <>
-      <DeleteModal
+      {/*       <DeleteModal
         HandleDeleted={HandleDeleted}
         open={modalOpendelete}
         handleClose={modalDeleteHandleClose}
@@ -115,51 +104,52 @@ const Status = () => {
         handleClose={modalHandleClose}
         handleOpen={modalHandleOpen}
         setFormSuccess={setFormSuccess}
-      >
-        <UpdateStatusModal
-          selectedItemUpdate={selectedItemUpdate}
-          fetchApi={fetchApi}
-          newItem={newUpdateItem}
-          setNewItem={setNewItem}
-          setOpen={setModaUpdatelOpen}
-          open={modalUpdateOpen}
-          handleClose={modalHandleUpdateClose}
-          handleOpen={modalUpdateHandleOpen}
-        >
-          <Typography variant="h1" marginTop={7}>
-            Status
-          </Typography>
+      />
+      <UpdateStatusModal
+        selectedItemUpdate={selectedItemUpdate}
+        fetchApi={fetchApi}
+        newItem={newUpdateItem}
+        setNewItem={setNewItem}
+        setOpen={modalUpdateHandleOpen}
+        open={modalUpdateOpen}
+        handleClose={modalHandleUpdateClose}
+        handleOpen={modalUpdateHandleOpen}
+      > */}
 
-          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-            <TextField
-              value={searchField || ""}
-              onChange={(e) => setSearchField(e.target.value)}
-              hiddenLabel
-              id="filled-hidden-label-small"
-              placeholder="Search"
-              variant="filled"
-              size="small"
-              sx={{
-                marginTop: 3,
-                width: 180,
-              }}
-            />
-            <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-              Novo
-            </Button>
-          </Stack>
-          <DataGridLayout
-            loading={loading}
-            rows={statusData.status}
-            columns={columns}
-            PageSize={limitPorPage}
-            page={statusData.page}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalCount={statusData.total}
-          />
-        </UpdateStatusModal>
-      </CreateStatusModal>
+      <FormCrudStatus fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectedItemUpdate} />
+      <Typography variant="h1" marginTop={7}>
+        Status
+      </Typography>
+
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+        <TextField
+          value={searchField || ""}
+          onChange={(e) => setSearchField(e.target.value)}
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
+        />
+        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout
+        loading={loading}
+        rows={statusData.status}
+        columns={columns}
+        PageSize={limitPorPage}
+        page={statusData.page}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalCount={statusData.total}
+      />
+      {/*       </UpdateStatusModal> */}
     </>
   );
 };
