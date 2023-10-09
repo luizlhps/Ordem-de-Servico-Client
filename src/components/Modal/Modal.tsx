@@ -36,13 +36,13 @@ export default function TransitionsModal({ open, handleClose, children, style }:
         open={open}
         onClose={handleClose}
         scroll={"body"}
-        maxWidth={"md"}
         sx={{
           ".MuiDialog-paper": {
+            maxWidth: "750px",
+
             backgroundImage: "none",
             height: smDown ? "100%" : "none",
             width: smDown ? "100%" : "80%",
-            maxWidth: smDown ? "100%!important" : "md",
             margin: smDown ? 0 : "32px",
             borderRadius: smDown ? 0 : "12px",
           },

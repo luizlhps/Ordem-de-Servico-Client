@@ -3,8 +3,6 @@ import { useState, useContext } from "react";
 import { DataGridLayout } from "@/components";
 import { useDebouse } from "@/hook";
 
-import CreateStatusModal from "../Modal/servicesPage/Status/CreateStatusModal";
-import UpdateStatusModal from "../Modal/servicesPage/Status/UpdateStatusModal";
 import { statusColumnsDataGrid } from "../DataGrid/utils/servicePage/statusColumnConfig";
 import DeleteModal from "../Modal/deleteModal";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";

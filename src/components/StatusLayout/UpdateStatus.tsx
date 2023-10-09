@@ -1,44 +1,44 @@
-import { CSSProperties, useState } from "react";
-
-import { Box, Button, CircularProgress, Icon, IconButton, Stack, TextField, Typography, useTheme } from "@mui/material";
+import React, { CSSProperties, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
+import { Box, Icon, IconButton } from "@mui/material";
 import TransitionsModal from "../Modal/Modal";
-import { statusApi } from "@/services/api/statusApi";
-import { format } from "date-fns";
-import { Controller, useForm } from "react-hook-form";
 import { FormStatus } from "./FormStatus";
+import { IDetailsStatus, IStatus, statusApi } from "@/services/api/statusApi";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
+  selectItem: IDetailsStatus;
 }
 
-export const NewStatus = ({ fetchApi, handleClose, open, style }: IPropsNewOfficials) => {
+export const UpdateStatus = ({ fetchApi, handleClose, open, style, selectItem }: IPropsNewOfficials) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const createNewStatus = (data: any) => {
+  const updateStatusSubmit = (data: any) => {
     setLoading(true);
-    statusApi
-      .createStatus(data)
-      .then(() => {
-        fetchApi();
-        setSuccess(true);
-      })
-      .catch((err) => {
-        console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
-          setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-        handleClose();
-      });
+    if (selectItem) {
+      statusApi
+        .updateStatus(data, selectItem._id)
+        .then(() => {
+          fetchApi();
+          setSuccess(true);
+        })
+        .catch((err) => {
+          console.error(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!"),
+            setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+          setError(true);
+        })
+        .finally(() => {
+          setLoading(false);
+          handleClose();
+        });
+    }
   };
 
   return (
@@ -53,7 +53,7 @@ export const NewStatus = ({ fetchApi, handleClose, open, style }: IPropsNewOffic
                 <Icon>close</Icon>
               </IconButton>
             </Box>
-            <FormStatus submitFunction={createNewStatus} fetchApi={fetchApi} loading={loading} />
+            <FormStatus data={selectItem} submitFunction={updateStatusSubmit} fetchApi={fetchApi} loading={loading} />
           </TransitionsModal>
         </>
       )}

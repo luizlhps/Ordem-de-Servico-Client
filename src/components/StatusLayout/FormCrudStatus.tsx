@@ -2,11 +2,14 @@ import { IModals, ImodalActions } from "@/hook/useModal";
 import { memo } from "react";
 import { IUser } from "../../../types/users";
 import { NewStatus } from "./NewStatus";
+import { UpdateStatus } from "./UpdateStatus";
+import { IDetailsStatus } from "@/services/api/statusApi";
 
 const style = {
   display: "flex",
   alignItems: "center",
   flexDirection: "column" as "column",
+
   padding: "10px",
 };
 
@@ -14,7 +17,7 @@ interface IProps {
   modals: IModals;
   fetchApi: () => void;
   modalActions: ImodalActions;
-  selectItem: IUser | undefined;
+  selectItem: IDetailsStatus;
 }
 
 export const FormCrudStatus: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
@@ -25,14 +28,14 @@ export const FormCrudStatus: React.FC<IProps> = memo(({ modals, fetchApi, modalA
   return (
     <>
       <NewStatus handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={style} />
-      {/* <UpdateOfficial
+      <UpdateStatus
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
         style={style}
         selectItem={selectItem}
       />
-      <DeleteOfficials
+      {/*       <DeleteOfficials
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
