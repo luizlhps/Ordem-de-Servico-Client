@@ -44,8 +44,6 @@ const UpdateTransaction = ({ handleClose, fetchApi, selectItem, style, open }: I
       });
   };
 
-  console.log(selectItem);
-
   return (
     <>
       <ToastSuccess alertSuccess="Atualizado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />

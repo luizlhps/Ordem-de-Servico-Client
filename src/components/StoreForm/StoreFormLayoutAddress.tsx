@@ -37,7 +37,6 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
 
   //setValue for cep
   useEffect(() => {
-    console.log(cepData);
     if (cepData) {
       setValue("address.city", cepData.localidade);
       setValue("address.cep", cepData.cep);

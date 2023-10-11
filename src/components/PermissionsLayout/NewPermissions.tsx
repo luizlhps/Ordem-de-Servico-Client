@@ -94,8 +94,6 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
 
   // Form submission handler
   const onSubmit: SubmitHandler<IAuthGroupFormInput> = (data) => {
-    console.log(data);
-
     const permissions: IPermissions = {
       create: [],
       deleted: [],

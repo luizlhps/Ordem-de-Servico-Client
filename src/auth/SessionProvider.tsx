@@ -42,7 +42,6 @@ export const SessionProvider = ({ children }: IProps) => {
       .GetMyInfo()
       .then((res) => {
         setUser(res.data);
-        console.log(res);
       })
       .catch((err) => {
         Cookies.remove("auth");

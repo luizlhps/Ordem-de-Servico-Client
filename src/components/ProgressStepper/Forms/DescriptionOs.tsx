@@ -140,7 +140,6 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
 
   useEffect(() => {
     if (!data.services || data.services.length === 0) {
-      console.log(data.services);
       return;
     }
 

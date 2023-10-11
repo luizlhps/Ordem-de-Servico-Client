@@ -38,7 +38,6 @@ export const FormProfilePassword = ({}: IProps) => {
   const passwordWatch = watch("password");
 
   const onSubmit: SubmitHandler<InputsFormProfile> = (data: InputsFormProfile) => {
-    console.log(data);
     setLoading(true);
     usersApi
       .updateProfilePassword(data)

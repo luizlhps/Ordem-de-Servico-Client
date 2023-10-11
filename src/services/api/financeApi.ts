@@ -4,8 +4,6 @@ import { Api } from "./axios-config";
 
 class FinanceApi {
   create(data: IFinance, orderId: string | undefined) {
-    console.log(data.title);
-
     return Api.post("finance", {
       title: data.title,
       description: data.description,
@@ -19,9 +17,6 @@ class FinanceApi {
   }
 
   update(data: IFinance, transaction_Id: string, orderId: string) {
-    console.log(data, transaction_Id);
-    console.log(data);
-
     return Api.put(`finance/${transaction_Id}`, {
       title: data.title,
       description: data.description,

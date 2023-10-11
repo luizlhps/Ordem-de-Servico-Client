@@ -40,7 +40,6 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
       }
       return newData;
     });
-    console.log(data);
   };
 
   const createNewOfficials = (data: InputsFormUser) => {

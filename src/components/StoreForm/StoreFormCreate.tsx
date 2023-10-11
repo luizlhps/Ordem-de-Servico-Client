@@ -51,12 +51,9 @@ export const StoreFormCreate = ({}: IProps) => {
       }
       return newData;
     });
-    console.log(data);
   };
 
   const onSubmit: SubmitHandler<InputsFormCreateStore> = (data) => {
-    console.log(data);
-
     setLoading(true);
     configApplicationApi
       .CreateStore(data)
@@ -64,12 +61,9 @@ export const StoreFormCreate = ({}: IProps) => {
         setSuccess(true);
 
         if (formDataAvatar) {
-          console.log("oi");
           configApplicationApi
             .uploudAvatarStore(formDataAvatar)
-            .then((res) => {
-              console.log(res);
-            })
+            .then((res) => {})
             .catch((err) => {
               console.log(err);
               typeof err.response.data === "string" ? err.response.data : "Ocorreu um erro!!";

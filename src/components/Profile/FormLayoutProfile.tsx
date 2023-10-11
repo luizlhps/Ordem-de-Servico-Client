@@ -126,13 +126,7 @@ export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueF
                   >
                     {groupApi?.authGroup.map((item) => {
                       return (
-                        <MenuItem
-                          key={item._id}
-                          value={item._id}
-                          onClick={() => {
-                            console.log();
-                          }}
-                        >
+                        <MenuItem key={item._id} value={item._id}>
                           {item.name}
                         </MenuItem>
                       );

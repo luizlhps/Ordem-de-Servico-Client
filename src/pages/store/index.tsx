@@ -38,8 +38,6 @@ const Store = ({}: IProps) => {
     fetchApi();
   }, []);
 
-  console.log(storeData);
-
   const setValueForm = (valueToUpdate: InputsFormCreateStore) => {
     setData((oldValue) => {
       const newData = { ...oldValue, ...valueToUpdate };
@@ -64,7 +62,6 @@ const Store = ({}: IProps) => {
 
       if (formDataAvatar) {
         const avatarRes = await configApplicationApi.updateAvatarStore(formDataAvatar);
-        console.log(avatarRes);
       }
       setSuccess(true);
       setsubmitLoadingAvatar(false);

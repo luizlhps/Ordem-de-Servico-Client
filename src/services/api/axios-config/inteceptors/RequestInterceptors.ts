@@ -6,8 +6,6 @@ import Cookies from "js-cookie";
 export const requestInteceptor = async (config: InternalAxiosRequestConfig<any>, contextCookie: any) => {
   const cookie = Cookies.get("auth");
   if (contextCookie) {
-    console.log(contextCookie);
-
     config.headers!["Authorization"] = contextCookie;
     return config;
   }

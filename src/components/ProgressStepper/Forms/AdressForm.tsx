@@ -62,7 +62,6 @@ export const AdressForm: React.FC<NameFormProps> = ({
   const { cepError, cepData } = useSearchCep(valueCepField);
 
   useEffect(() => {
-    console.log(cepData);
     if (cepData) {
       setValue("cep", cepData.cep);
       setValue("city", cepData.localidade);

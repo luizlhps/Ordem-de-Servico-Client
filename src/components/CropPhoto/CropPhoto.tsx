@@ -43,7 +43,6 @@ export const CropPhoto = ({ image, open, close, setAvatar, uploudAvatar, rect }:
     try {
       if (croppedArea) {
         const blob = await getCroppedImg(image, croppedArea);
-        console.log(blob);
         if (blob) {
           const reader = new FileReader();
           reader.readAsDataURL(blob);

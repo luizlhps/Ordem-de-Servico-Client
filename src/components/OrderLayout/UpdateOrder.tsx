@@ -101,8 +101,6 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
     if (customer) updateOrder(data, customer._id);
 
     async function updateOrder(data: any, customer: string) {
-      console.log(data);
-
       try {
         const statusAndCustomerUpdateId = async () => {
           const updateStatusAndCustomer = { ...data, status: statusId, customer: customer };

@@ -55,7 +55,6 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
         fetchApi();
       })
       .catch((err) => {
-        console.log("i");
         setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);
       })

@@ -1,11 +1,11 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { Icon, IconButton } from "@mui/material";
-import { LayoutUpdateCustomer } from "../../CustomerPage/LayoutUpdateCustomer";
 import { customersApi } from "@/services/api/customersApi";
 import TransitionsModal from "../Modal";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
+import { LayoutUpdateCustomer } from "@/components/CustomerPage/LayoutUpdateCustomer";
 
 interface IProps {
   handleClose: () => void;
@@ -35,8 +35,6 @@ const UpdateCustomer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<ICustomerAndOrderData | undefined>(undefined);
-
-  console.log(selectItem);
 
   useEffect(() => {
     if (selectItem.address && selectItem.address.length > 0) {

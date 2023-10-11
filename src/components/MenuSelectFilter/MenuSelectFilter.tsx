@@ -94,8 +94,6 @@ export const MenuSelectFilter = ({ setCustomerFilter, setStatusFilter, setRangeD
   }, []);
 
   const onSubmit = (data: InputProps) => {
-    console.log(data);
-
     setStatusFilter(data.status);
     setCustomerFilter(data.customer);
     setRangeDateFilter({

@@ -30,11 +30,6 @@ export const DashboardFinance = ({ dataDashboard }: featFinanceProps) => {
     lastSlide.style.marginRight = "0px";
   }, []);
 
-  useEffect(() => {
-    console.log(dataDashboard?.balance.totalAmountDebit);
-    console.log("oi");
-  }, [dataDashboard]);
-
   const balanceTotalAmount = dataDashboard?.balance?.totalAmount.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",

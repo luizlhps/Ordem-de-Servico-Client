@@ -16,8 +16,6 @@ export const SwitchButton = ({ firstText, secondText, state, onStateChange, disa
     onStateChange(!state);
   };
 
-  console.log(state);
-
   return (
     <>
       <Box

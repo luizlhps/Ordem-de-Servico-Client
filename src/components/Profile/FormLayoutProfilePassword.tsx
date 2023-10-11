@@ -40,7 +40,6 @@ export const FormLayoutProfilePassword = ({
   const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
     if (handleContinueForm) handleContinueForm();
     setValueForm(data);
-    console.log(data);
   };
 
   return (

@@ -53,7 +53,6 @@ export const CheckBoxindeterminate = ({ control, watch, setValue, name }: IProps
     const checkedCount = permissionsArray.filter((value) => {
       return value;
     }).length;
-    /*     console.log(checkedCount); */
     return checkedCount === 4;
   };
 

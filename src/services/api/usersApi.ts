@@ -16,8 +16,6 @@ interface InputDataProfilePassword {
 class UsersApi {
   getById() {}
   getAll(filter: IFilterSearchOfficials = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
-    console.log(filter);
-
     return Api.get<RootUser>(`users/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
@@ -60,7 +58,6 @@ class UsersApi {
   }
 
   createOfficials(data: InputsFormUser) {
-    console.log("data", data);
     return Api.post("/register", {
       name: data.name,
       email: data.email,

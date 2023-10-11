@@ -104,7 +104,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
   } = useForm<Inputs>();
 
   const onSubmit = (data: Inputs) => {
-    console.log("sub", data);
     setData(data);
     nextFormStep();
   };

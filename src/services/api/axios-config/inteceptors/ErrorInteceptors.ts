@@ -75,8 +75,6 @@ export const errorInteceptors = async (error: any, contextCookie = undefined) =>
         });
         const refreshToken = refreshObj.refreshToken;
 
-        console.log(refreshToken);
-
         //Se outras solicitações chegarem durante o tempo em que a promessa de atualização do token está sendo resolvida, elas entrarão no bloco if (isRefreshing).
         if (isRefreshing) {
           return new Promise((resolve, reject) => {

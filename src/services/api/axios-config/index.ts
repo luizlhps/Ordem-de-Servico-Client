@@ -9,7 +9,6 @@ export function setupApiClientSide(contextCookie = undefined) {
     baseURL: "http://localhost:8000/",
   });
 
-  console.log(contextCookie);
   Api.interceptors.request.use(
     async function (config) {
       return await requestInteceptor(config, contextCookie);

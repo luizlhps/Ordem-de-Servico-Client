@@ -51,8 +51,6 @@ export const FormAdminCreate = ({}: IProps) => {
   };
 
   const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
-    console.log(data);
-
     setLoading(true);
     configApplicationApi
       .CreateAdmin(data)
@@ -60,12 +58,9 @@ export const FormAdminCreate = ({}: IProps) => {
         setSuccess(true);
 
         if (formDataAvatar) {
-          console.log("oi");
           configApplicationApi
             .uploudAvatarUserAdmin(formDataAvatar)
-            .then((res) => {
-              console.log(res);
-            })
+            .then((res) => {})
             .catch((err) => {
               console.log(err);
               typeof err.response.data === "string" ? err.response.data : "Ocorreu um erro!!";
