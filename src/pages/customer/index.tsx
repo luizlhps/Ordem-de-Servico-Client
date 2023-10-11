@@ -3,12 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Stack, TextField, useTheme } from "@mui/material";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
-import { ColumnsDataGrid } from "@/components/DataGrid/utils/costumerPage/costumerColumnConfig";
 
 import useModal from "@/hook/useModal";
-import { RootCostumer } from "../../../types/costumer";
-import { FormCrudCostumer } from "@/components/Modal/costumerPage/FormCrudCostumer";
-import { costumersApi } from "@/services/api/costumersApi";
+import { RootCustomer } from "../../../types/customer";
+import { customersApi } from "@/services/api/customersApi";
+import { ColumnsDataGrid } from "@/components/DataGrid/utils/customerPage/customerColumnConfig";
+import { FormCrudCustomer } from "@/components/Modal/customerPage/FormCrudCustomer";
 
 export default function Client() {
   //Theme
@@ -16,7 +16,7 @@ export default function Client() {
 
   const [searchField, setSearchField] = useState("");
   const [selectedItem, setSelectedItem] = useState("" || Object);
-  const [costumerData, setCostumersData] = useState<RootCostumer>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
+  const [customerData, setCustomersData] = useState<RootCustomer>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -38,11 +38,11 @@ export default function Client() {
       setCurrentPage(currentPage + 1);
     }
 
-    const res = await costumersApi.getAllCostumers(filter, page, limit);
+    const res = await customersApi.getAllCustomers(filter, page, limit);
     if (res instanceof Error) {
       return new Error("Ocorreu um Erro na busca");
     }
-    setCostumersData(res.data);
+    setCustomersData(res.data);
   }
 
   //inputSearch
@@ -60,7 +60,7 @@ export default function Client() {
 
   return (
     <>
-      <FormCrudCostumer fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectedItem} />
+      <FormCrudCustomer fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectedItem} />
 
       <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
       <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
@@ -83,9 +83,9 @@ export default function Client() {
       </Stack>
       <DataGridLayout
         loading={loading}
-        page={costumerData?.Page}
-        totalCount={costumerData?.Total}
-        rows={costumerData?.customer}
+        page={customerData?.Page}
+        totalCount={customerData?.Total}
+        rows={customerData?.customer}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
         columns={columns}

@@ -25,9 +25,9 @@ class OrderApi {
     return res;
   }
 
-  async getCostumerOrders(id: string, filter = "", page = 1, limit = 10) {
+  async getCustomerOrders(id: string, filter = "", page = 1, limit = 10) {
     try {
-      const data = await Api.get(`order/costumer?costumerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
+      const data = await Api.get(`order/customer?customerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
       return data;
     } catch (error) {
       console.error(error);
@@ -51,7 +51,7 @@ class OrderApi {
         dateEntry: data.dateEntry,
         services: data.services,
         status: data.status,
-        customer: data.costumer,
+        customer: data.customer,
         exitDate: data.exitDate,
       });
       return res;

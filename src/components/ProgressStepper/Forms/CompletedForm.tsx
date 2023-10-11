@@ -6,8 +6,8 @@ import { format } from "date-fns";
 
 import { PartySVG } from "../../../../public/icon/SVGS/IconsSVG";
 import { TypeForm } from "./types";
-import { ICostumer } from "../../../../types/costumer";
-import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
+import { ICustomer } from "../../../../types/customer";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
 //style custom
 const InputCustom = styled.input`
   height: 35px;
@@ -50,10 +50,10 @@ interface Iprops {
   loading: boolean;
   handleClose: () => void;
   typeForm: TypeForm;
-  costumer: ICostumer | ICustomerAndOrderData | undefined;
+  customer: ICustomer | ICustomerAndOrderData | undefined;
 }
 
-export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, costumer }) => {
+export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, typeForm, customer }) => {
   const theme = useTheme();
 
   const Redirect = () => {
@@ -72,7 +72,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
             marginTop: 2,
           }}
         />
-        {(typeForm === "createCostumer" || typeForm === "createOs" || typeForm === "updateOs") && (
+        {(typeForm === "createCustomer" || typeForm === "createOs" || typeForm === "updateOs") && (
           <>
             <Typography variant="h1" fontWeight={600} marginTop={2}>
               Formulário Completo
@@ -85,7 +85,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Nome</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={costumer?.name ? costumer?.name : ""}
+                  defaultValue={customer?.name ? customer?.name : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -93,7 +93,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Celular</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={costumer?.phone ? costumer?.phone : ""}
+                  defaultValue={customer?.phone ? customer?.phone : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -161,7 +161,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
           </>
         )}
 
-        {typeForm === "updateCostumer" && (
+        {typeForm === "updateCustomer" && (
           <>
             <Typography variant="h1" fontWeight={600} marginTop={2}>
               Formulário Completo
@@ -174,7 +174,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Nome</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={costumer?.name ? costumer?.name : ""}
+                  defaultValue={customer?.name ? customer?.name : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>
@@ -182,7 +182,7 @@ export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, ha
                 <Typography fontWeight={500}>Celular</Typography>
                 <InputCustom
                   readOnly
-                  defaultValue={costumer?.phone ? costumer?.phone : ""}
+                  defaultValue={customer?.phone ? customer?.phone : ""}
                   style={{ color: theme.palette.primary.light, width: "100%" }}
                 />
               </Grid>

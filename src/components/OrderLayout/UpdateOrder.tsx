@@ -8,7 +8,7 @@ import { IOrder } from "../../../types/order";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { orderApi } from "@/services/api/orderApi";
 import { IStatus } from "../ServicesPage/Status";
-import { ICostumer } from "../../../types/costumer";
+import { ICustomer } from "../../../types/customer";
 import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IProps {
@@ -55,7 +55,7 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
 
   const [data, setData] = useState<ICustomerAndOrder | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [costumer, setCostumer] = useState<ICostumer | undefined>();
+  const [customer, setCustomer] = useState<ICustomer | undefined>();
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
   const selectItemId = selectItem?._id;
@@ -74,14 +74,14 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
 
         phone: selectItem?.customer?.phone,
         name: selectItem?.customer?._id,
-        costumer: selectItem?.customer?.name,
+        customer: selectItem?.customer?.name,
         services: selectItem.services ? selectItem.services : undefined,
         discount: selectItem?.discount,
         exitDate: selectItem?.exitDate,
         technicalOpinion: selectItem?.technicalOpinion,
       };
       //put data of customer case the usestate don't have data and case select is different of the customer the setState
-      if (!costumer || costumer?.name !== selectItem?.customer?.name) setCostumer(selectItem?.customer);
+      if (!customer || customer?.name !== selectItem?.customer?.name) setCustomer(selectItem?.customer);
 
       setData((prevValues: any) => ({
         ...prevValues,
@@ -98,19 +98,19 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
   };
 
   function confirmData() {
-    if (costumer) updateOrder(data, costumer._id);
+    if (customer) updateOrder(data, customer._id);
 
-    async function updateOrder(data: any, costumer: string) {
+    async function updateOrder(data: any, customer: string) {
       console.log(data);
 
       try {
-        const statusAndCostumerUpdateId = async () => {
-          const updateStatusAndCostumer = { ...data, status: statusId, costumer: costumer };
-          return updateStatusAndCostumer;
+        const statusAndCustomerUpdateId = async () => {
+          const updateStatusAndCustomer = { ...data, status: statusId, customer: customer };
+          return updateStatusAndCustomer;
         };
 
         if (selectItemId) {
-          await orderApi.updateOrder(await statusAndCostumerUpdateId(), selectItemId);
+          await orderApi.updateOrder(await statusAndCustomerUpdateId(), selectItemId);
         } else {
           throw new Error("ohoho");
         }
@@ -137,11 +137,11 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
             <LayoutUpdateOrder
               data={data}
               setFormValues={setFormValues}
-              setCostumerId={setCostumer}
+              setCustomerId={setCustomer}
               loading={loading}
               confirmData={confirmData}
               handleClose={handleClose}
-              costumer={costumer}
+              customer={customer}
               setStatusId={setStatusId}
               typeForm={"createOs"}
             />

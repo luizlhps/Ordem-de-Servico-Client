@@ -1,11 +1,11 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { Icon, IconButton } from "@mui/material";
-import { LayoutUpdateCostumer } from "../../CostumerPage/LayoutUpdateCostumer";
-import { costumersApi } from "@/services/api/costumersApi";
+import { LayoutUpdateCustomer } from "../../CustomerPage/LayoutUpdateCustomer";
+import { customersApi } from "@/services/api/customersApi";
 import TransitionsModal from "../Modal";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
-import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
 
 interface IProps {
   handleClose: () => void;
@@ -27,8 +27,8 @@ const buttonStyle = {
   },
 };
 
-const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IProps) => {
-  /* const { confirmData, data, setFormValues, loading } = useContext(formUpdateCostumerContext);  */
+const UpdateCustomer = ({ handleClose, fetchApi, styles, open, selectItem }: IProps) => {
+  /* const { confirmData, data, setFormValues, loading } = useContext(formUpdateCustomerContext);  */
 
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
@@ -76,10 +76,10 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
   };
 
   function confirmData() {
-    async function costumer(data: any, _id: string | string[]) {
+    async function customer(data: any, _id: string | string[]) {
       setLoading(true);
       try {
-        const res = await costumersApi.updateCostumer(data, _id);
+        const res = await customersApi.updateCustomer(data, _id);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
@@ -97,7 +97,7 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
       }
     }
 
-    costumer(data, selectItem._id);
+    customer(data, selectItem._id);
   }
 
   return (
@@ -109,8 +109,8 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
         <IconButton onClick={handleClose} sx={buttonStyle}>
           <Icon>close</Icon>
         </IconButton>
-        <LayoutUpdateCostumer
-          typeForm={"updateCostumer"}
+        <LayoutUpdateCustomer
+          typeForm={"updateCustomer"}
           confirmData={confirmData}
           handleClose={handleClose}
           data={data}
@@ -121,4 +121,4 @@ const UpdateCostumer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
     </>
   );
 };
-export default UpdateCostumer;
+export default UpdateCustomer;

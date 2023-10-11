@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { IOrder } from "../../../../types/order";
-import { NewCostumer } from "./NewCostumer";
-import UpdateCostumer from "./UpdateCostumer";
-import { DeleteCostumer } from "./DeleteCostumer";
+import { NewCustomer } from "./NewCustomer";
+import UpdateCustomer from "./UpdateCustomer";
+import { DeleteCustomer } from "./DeleteCustomer";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -38,22 +38,22 @@ interface IProps {
   selectItem: IOrder | undefined;
 }
 
-export const FormCrudCostumer: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
+export const FormCrudCustomer: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
   const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
   const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
     modalActions;
 
   return (
     <>
-      <NewCostumer handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} styles={style} />
-      <UpdateCostumer
+      <NewCustomer handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} styles={style} />
+      <UpdateCustomer
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
         styles={style}
         selectItem={selectItem}
       />
-      <DeleteCostumer
+      <DeleteCustomer
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
@@ -63,4 +63,4 @@ export const FormCrudCostumer: React.FC<IProps> = memo(({ modals, fetchApi, moda
   );
 });
 
-FormCrudCostumer.displayName = "FormCrudOrder";
+FormCrudCustomer.displayName = "FormCrudOrder";

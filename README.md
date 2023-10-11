@@ -40,7 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 [] mudar o modal para o scroll com header-footer
 [x] melhorar a aparecencia do order
 [x] bug cep storage
-[x] cep bugado na costumer
+[x] cep bugado na customer
 [x] ao editar e colocar mais serviços o servidor crasha
 [] colocar um filtro melhor
 

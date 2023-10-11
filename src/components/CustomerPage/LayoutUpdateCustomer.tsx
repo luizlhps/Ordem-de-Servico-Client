@@ -1,13 +1,13 @@
 import { Container, useTheme } from "@mui/material";
 import React from "react";
 import { AdressForm, CompletedForm, NameForm } from "../ProgressStepper";
-import { ICostumer } from "../../../types/costumer";
+import { ICustomer } from "../../../types/customer";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { useFormStep } from "@/hook/useFormStep";
-import { ICustomerAndOrderData } from "../../../types/formOrderCostumer";
+import { ICustomerAndOrderData } from "../../../types/formOrderCustomer";
 
 interface LayoutProps {
-  data: ICostumer | ICustomerAndOrderData | undefined;
+  data: ICustomer | ICustomerAndOrderData | undefined;
   setFormValues: (values: any) => void;
   loading: boolean;
   confirmData: () => void | undefined;
@@ -15,7 +15,7 @@ interface LayoutProps {
   typeForm: TypeForm;
 }
 
-export const LayoutUpdateCostumer = ({ data, setFormValues, loading, confirmData, handleClose }: LayoutProps) => {
+export const LayoutUpdateCustomer = ({ data, setFormValues, loading, confirmData, handleClose }: LayoutProps) => {
   const theme = useTheme();
   const { nextFormStep, prevFormStep, formStep } = useFormStep();
 
@@ -37,7 +37,7 @@ export const LayoutUpdateCostumer = ({ data, setFormValues, loading, confirmData
           nextFormStep={nextFormStep}
           data={data}
           setData={setFormValues}
-          typeForm="updateCostumer"
+          typeForm="updateCustomer"
         />
       )}
       {formStep >= 1 && formStep <= 1 && (
@@ -47,17 +47,17 @@ export const LayoutUpdateCostumer = ({ data, setFormValues, loading, confirmData
           prevFormStep={prevFormStep}
           data={data}
           setData={setFormValues}
-          typeForm="updateCostumer"
+          typeForm="updateCustomer"
         />
       )}
       {formStep > 1 && (
         <CompletedForm
-          costumer={data}
+          customer={data}
           loading={loading}
           data={data}
           confirmData={confirmData}
           handleClose={handleClose}
-          typeForm="updateCostumer"
+          typeForm="updateCustomer"
         />
       )}
     </Container>

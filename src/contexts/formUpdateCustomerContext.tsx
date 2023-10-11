@@ -4,9 +4,9 @@ import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { useRouter } from "next/router";
 import { FormSucessOrErrorContext } from "./formSuccessOrErrorContext";
-import { costumersApi } from "@/services/api/costumersApi";
+import { customersApi } from "@/services/api/customersApi";
 
-export const formUpdateCostumerContext = createContext({} as Context);
+export const formUpdateCustomerContext = createContext({} as Context);
 
 type Context = {
   onDiscountChange?: () => void;
@@ -47,15 +47,15 @@ interface ICustomer {
 interface FormProviderProps {
   children: React.ReactNode;
   fetchApi: () => void;
-  CostumerID: string;
-  CostumerData: any;
+  CustomerID: string;
+  CustomerData: any;
 }
 
-export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
+export const FormUpdateCustomerProvider: React.FC<FormProviderProps> = ({
   children,
   fetchApi,
-  CostumerID,
-  CostumerData,
+  CustomerID,
+  CustomerData,
 }) => {
   const [data, setData] = useState<ICustomer | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,23 +63,23 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
   const { setFormSuccess, setErrorMessage } = useContext(FormSucessOrErrorContext);
 
   useEffect(() => {
-    if (CostumerData.address && CostumerData.address.length > 0) {
+    if (CustomerData.address && CustomerData.address.length > 0) {
       const form = {
-        name: CostumerData.name,
-        email: CostumerData.email,
-        contact: CostumerData.contact,
-        cpfOrCnpj: CostumerData.cpfOrCnpj,
-        phone: CostumerData.phone,
-        tel: CostumerData.tel,
+        name: CustomerData.name,
+        email: CustomerData.email,
+        contact: CustomerData.contact,
+        cpfOrCnpj: CustomerData.cpfOrCnpj,
+        phone: CustomerData.phone,
+        tel: CustomerData.tel,
         address: [
           {
-            cep: CostumerData?.address[0].cep,
-            state: CostumerData.address[0].state,
-            neighborhood: CostumerData.address[0].neighborhood,
-            street: CostumerData.address[0].street,
-            city: CostumerData.address[0].city,
-            number: CostumerData.address[0].number,
-            complement: CostumerData.address[0].complement,
+            cep: CustomerData?.address[0].cep,
+            state: CustomerData.address[0].state,
+            neighborhood: CustomerData.address[0].neighborhood,
+            street: CustomerData.address[0].street,
+            city: CustomerData.address[0].city,
+            number: CustomerData.address[0].number,
+            complement: CustomerData.address[0].complement,
           },
         ],
 
@@ -90,7 +90,7 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
         ...form,
       }));
     }
-  }, [CostumerData]);
+  }, [CustomerData]);
 
   const setFormValues = (values: any) => {
     setData((prevValues) => ({
@@ -100,10 +100,10 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
   };
 
   function confirmData() {
-    async function costumer(data: any, _id: string | string[]) {
+    async function customer(data: any, _id: string | string[]) {
       setLoading(true);
       try {
-        const res = await costumersApi.updateCostumer(data, _id);
+        const res = await customersApi.updateCustomer(data, _id);
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
@@ -120,14 +120,14 @@ export const FormUpdateCostumerProvider: React.FC<FormProviderProps> = ({
       }
     }
 
-    costumer(data, CostumerID);
+    customer(data, CustomerID);
   }
 
   return (
-    <formUpdateCostumerContext.Provider value={{ data, setFormValues, confirmData, loading }}>
+    <formUpdateCustomerContext.Provider value={{ data, setFormValues, confirmData, loading }}>
       {children}
-    </formUpdateCostumerContext.Provider>
+    </formUpdateCustomerContext.Provider>
   );
 };
 
-export const useFormData = () => useContext(formUpdateCostumerContext);
+export const useFormData = () => useContext(formUpdateCustomerContext);

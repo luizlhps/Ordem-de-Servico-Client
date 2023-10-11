@@ -2,10 +2,10 @@ import { Api } from "./axios-config";
 
 //[] - Adicionar trycatch e validação de erro
 
-class Costumers {
-  async getAllCostumers(filter = "", page = 1, limit = 10) {
+class Customers {
+  async getAllCustomers(filter = "", page = 1, limit = 10) {
     try {
-      const res = await Api.get(`costumers/?filter=${filter}&page=${page}&limit=${limit}`);
+      const res = await Api.get(`customers/?filter=${filter}&page=${page}&limit=${limit}`);
 
       if (res) return res;
       return new Error("Erro ao listar os registros.");
@@ -15,17 +15,17 @@ class Costumers {
     }
   }
 
-  deleteCostumer(_id: string) {
-    return Api.delete(`costumers/${_id}`);
+  deleteCustomer(_id: string) {
+    return Api.delete(`customers/${_id}`);
   }
 
   async getById(_id: string) {
-    const response = await Api.get(`costumers/6495b3b50c5e5fef71564463`);
+    const response = await Api.get(`customers/6495b3b50c5e5fef71564463`);
     return response;
   }
 
-  async createCostumer(data: any) {
-    const res = await Api.post("costumers", {
+  async createCustomer(data: any) {
+    const res = await Api.post("customers", {
       name: data?.name,
       email: data?.email,
       contact: data?.contact,
@@ -47,8 +47,8 @@ class Costumers {
     return res;
   }
 
-  async updateCostumer(data: any, _id: string | string[]) {
-    const res = await Api.put(`costumers/${_id}`, {
+  async updateCustomer(data: any, _id: string | string[]) {
+    const res = await Api.put(`customers/${_id}`, {
       name: data?.name,
       email: data?.email,
       contact: data?.contact,
@@ -71,4 +71,4 @@ class Costumers {
   }
 }
 
-export const costumersApi = new Costumers();
+export const customersApi = new Customers();

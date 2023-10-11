@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Axios, AxiosError } from "axios";
-import { costumersApi } from "@/services/api/costumersApi";
+import { customersApi } from "@/services/api/customersApi";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import DeleteModal from "../deleteModal";
@@ -14,7 +14,7 @@ interface IProps {
   fetchApi: () => void;
 }
 
-export const DeleteCostumer = ({ open, handleClose, selectedItem, fetchApi }: IProps) => {
+export const DeleteCustomer = ({ open, handleClose, selectedItem, fetchApi }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
@@ -28,8 +28,8 @@ export const DeleteCostumer = ({ open, handleClose, selectedItem, fetchApi }: IP
     }
 
     setLoading(true);
-    costumersApi
-      .deleteCostumer(id)
+    customersApi
+      .deleteCustomer(id)
       .then(() => setSuccess(true))
       .catch((err: unknown) => {
         if (err instanceof AxiosError) {

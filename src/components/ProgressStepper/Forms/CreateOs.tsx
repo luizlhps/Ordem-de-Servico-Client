@@ -26,8 +26,8 @@ dayjs.locale("pt-br");
 import FormSelect from "@/components/FormSelect";
 import { TypeForm } from "./types";
 import useApiRequest from "@/hook/useApiGet";
-import { ICostumer, RootCostumer } from "../../../../types/costumer";
-import { costumersApi } from "@/services/api/costumersApi";
+import { ICustomer, RootCustomer } from "../../../../types/customer";
+import { customersApi } from "@/services/api/customersApi";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
 
@@ -39,7 +39,7 @@ interface NameFormProps {
   data: any;
   setData: any;
   typeForm: TypeForm;
-  setCostumer?: React.Dispatch<ICostumer>;
+  setCustomer?: React.Dispatch<ICustomer>;
   setStatusId: React.Dispatch<IStatus | undefined>;
 }
 
@@ -51,7 +51,7 @@ type Inputs = {
   status: string;
   defect: string;
   observation: string;
-  costumer: string;
+  customer: string;
 };
 
 export const CreateOs: React.FC<NameFormProps> = ({
@@ -60,14 +60,14 @@ export const CreateOs: React.FC<NameFormProps> = ({
   data,
   setData,
   typeForm,
-  setCostumer,
+  setCustomer,
   setStatusId,
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
 
   const [statusData, setStatusData] = useState<TStatusData | undefined>(undefined);
-  const [costumerData, setConstumerData] = useState<RootCostumer | undefined>(undefined);
+  const [customerData, setConstumerData] = useState<RootCustomer | undefined>(undefined);
   const { request } = useApiRequest();
 
   useEffect(() => {
@@ -86,11 +86,11 @@ export const CreateOs: React.FC<NameFormProps> = ({
     }
     FetchGetStatus();
 
-    const fetchGetCostumers = async () => {
-      const data = await request(costumersApi.getAllCostumers, "", 0, 0);
+    const fetchGetCustomers = async () => {
+      const data = await request(customersApi.getAllCustomers, "", 0, 0);
       setConstumerData(data);
     };
-    fetchGetCostumers();
+    fetchGetCustomers();
   }, []);
 
   //form
@@ -139,23 +139,23 @@ export const CreateOs: React.FC<NameFormProps> = ({
         <Box display={"flex"} marginTop={4} justifyContent={"space-between"} flexWrap={"wrap"} gap={2} width={"100%"}>
           {typeForm === "createOs" && (
             <>
-              {costumerData && setCostumer ? (
+              {customerData && setCustomer ? (
                 <Box display={"flex"} flexDirection={"column"}>
                   <FormSelect
-                    name={"costumer"}
-                    defaultValue={data?.costumer ? data?.costumer : ""}
+                    name={"customer"}
+                    defaultValue={data?.customer ? data?.customer : ""}
                     rules={{ required: typeForm === "createOs" ? true : false }}
                     label={"Selecione o cliente"}
                     control={control}
                     width={200}
                   >
-                    {costumerData?.customer.map((item) => {
+                    {customerData?.customer.map((item) => {
                       return (
                         <MenuItem
                           key={item._id}
                           value={item.name}
                           onClick={() => {
-                            setCostumer(item);
+                            setCustomer(item);
                           }}
                         >
                           {item.name}
@@ -163,7 +163,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
                       );
                     })}
                   </FormSelect>
-                  {errors.costumer?.type === "required" && <Typography color={"error"}>selecione o cliente</Typography>}
+                  {errors.customer?.type === "required" && <Typography color={"error"}>selecione o cliente</Typography>}
                 </Box>
               ) : (
                 <Box display={"flex"}>
@@ -305,7 +305,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
       {/* footer */}
       <DialogModalScroll.Footer>
         <Stack flexDirection={"row"} justifyContent={"center"} margin={2} alignItems={"center"}>
-          {typeForm === "createCostumer" && (
+          {typeForm === "createCustomer" && (
             <>
               <UserProcessSVG color={theme.palette.secondary.main} />
               <Box
@@ -345,7 +345,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
         </Stack>
 
         <Stack flexDirection={"row"} justifyContent={"center"} gap={2} width={"100%"} margin={"0!important"}>
-          {(typeForm === "createCostumer" || typeForm === "updateCostumer") && (
+          {(typeForm === "createCustomer" || typeForm === "updateCustomer") && (
             <>
               <Button
                 fullWidth
@@ -363,7 +363,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
             </>
           )}
 
-          {(typeForm === "createCostumer" || typeForm === "updateCostumer") && (
+          {(typeForm === "createCustomer" || typeForm === "updateCustomer") && (
             <>
               <Button
                 fullWidth

@@ -1,15 +1,15 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import TransitionsModal from "../Modal";
 import { IconButton, Icon } from "@mui/material";
-import { ICostumer } from "../../../../types/costumer";
+import { ICustomer } from "../../../../types/customer";
 import { IDetailsStatus, IStatus, statusApi } from "@/services/api/statusApi";
-import { costumersApi } from "@/services/api/costumersApi";
+import { customersApi } from "@/services/api/customersApi";
 import { orderApi } from "@/services/api/orderApi";
-import { LayoutCreateCostumer } from "@/components/CostumerPage/LayoutCreateCostumer";
+import { LayoutCreateCustomer } from "@/components/CustomerPage/LayoutCreateCustomer";
 import { CSSProperties } from "@mui/styled-engine-sc";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
-import { ICustomerAndOrderData } from "../../../../types/formOrderCostumer";
+import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -30,7 +30,7 @@ interface IProps {
   styles: CSSProperties;
 }
 
-export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, styles }) => {
+export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, styles }) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
@@ -56,10 +56,10 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
   }
 
   function confirmData() {
-    async function costumer(data: any) {
+    async function customer(data: any) {
       setLoading(true);
       try {
-        const res = await costumersApi.createCostumer(await updateStatusForId(data));
+        const res = await customersApi.createCustomer(await updateStatusForId(data));
 
         if (res instanceof Error) {
           throw new Error("Ocorreu um erro");
@@ -74,9 +74,9 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       }
     }
 
-    async function order(data: any, costumerId: string) {
+    async function order(data: any, customerId: string) {
       try {
-        const res = await orderApi.createOrder(data, costumerId);
+        const res = await orderApi.createOrder(data, customerId);
         setSuccess(true);
       } catch (error: any) {
         setSuccess(false);
@@ -89,7 +89,7 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       }
     }
 
-    costumer(data);
+    customer(data);
   }
 
   return (
@@ -102,14 +102,14 @@ export const NewCostumer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
           <Icon>close</Icon>
         </IconButton>
 
-        <LayoutCreateCostumer
+        <LayoutCreateCustomer
           confirmData={confirmData}
           data={data}
           handleClose={closeModalAndEraseData}
           loading={loading}
           setFormValues={setFormValues}
           setStatusId={setStatusId}
-          typeForm="createCostumer"
+          typeForm="createCustomer"
         />
       </TransitionsModal>
     </>

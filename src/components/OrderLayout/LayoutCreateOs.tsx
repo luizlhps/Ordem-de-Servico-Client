@@ -2,15 +2,15 @@ import { Dispatch, SetStateAction } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
 import { useFormStep } from "@/hook/useFormStep";
 import { TypeForm } from "../ProgressStepper/Forms/types";
-import { ICostumer } from "../../../types/costumer";
+import { ICustomer } from "../../../types/customer";
 import { IOrder } from "../../../types/order";
 
 interface LayoutProps {
   data: IOrder | undefined;
   setFormValues: (values: any) => void;
-  setCostumerId: Dispatch<SetStateAction<ICostumer | undefined>>;
+  setCustomerId: Dispatch<SetStateAction<ICustomer | undefined>>;
   loading: boolean;
-  costumer: ICostumer | undefined;
+  customer: ICustomer | undefined;
   confirmData: () => void | undefined;
   handleClose: () => void;
   typeForm: TypeForm;
@@ -20,11 +20,11 @@ interface LayoutProps {
 export function LayoutCreateOs({
   data,
   setFormValues,
-  setCostumerId,
+  setCustomerId,
   loading,
   confirmData,
   handleClose,
-  costumer,
+  customer,
   typeForm,
   setStatusId,
 }: LayoutProps) {
@@ -40,7 +40,7 @@ export function LayoutCreateOs({
           data={data}
           setData={setFormValues}
           typeForm="createOs"
-          setCostumer={setCostumerId}
+          setCustomer={setCustomerId}
           setStatusId={setStatusId}
         />
       )}
@@ -50,7 +50,7 @@ export function LayoutCreateOs({
           data={data}
           confirmData={confirmData}
           handleClose={handleClose}
-          costumer={costumer}
+          customer={customer}
           typeForm={typeForm}
         />
       )}

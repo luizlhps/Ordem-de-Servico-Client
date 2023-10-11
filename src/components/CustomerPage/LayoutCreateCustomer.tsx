@@ -4,11 +4,11 @@ import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICustomerAndOrder } from "../OrderLayout/UpdateOrder";
-import { ICostumer } from "../../../types/costumer";
-import { ICustomerAndOrderData } from "../../../types/formOrderCostumer";
+import { ICustomer } from "../../../types/customer";
+import { ICustomerAndOrderData } from "../../../types/formOrderCustomer";
 
 interface LayoutProps {
-  data: ICostumer | ICustomerAndOrderData | undefined;
+  data: ICustomer | ICustomerAndOrderData | undefined;
   setFormValues: (values: any) => void;
   loading: boolean;
   confirmData: () => void | undefined;
@@ -17,7 +17,7 @@ interface LayoutProps {
   setStatusId: any;
 }
 
-export const LayoutCreateCostumer = ({
+export const LayoutCreateCustomer = ({
   data,
   setFormValues,
   setStatusId,
@@ -47,7 +47,7 @@ export const LayoutCreateCostumer = ({
             nextFormStep={nextFormStep}
             data={data}
             setData={setFormValues}
-            typeForm="createCostumer"
+            typeForm="createCustomer"
           />
         )}
         {formStep >= 1 && formStep <= 1 && (
@@ -57,7 +57,7 @@ export const LayoutCreateCostumer = ({
             prevFormStep={prevFormStep}
             data={data}
             setData={setFormValues}
-            typeForm="createCostumer"
+            typeForm="createCustomer"
           />
         )}
         {formStep >= 2 && formStep <= 2 && (
@@ -68,18 +68,18 @@ export const LayoutCreateCostumer = ({
             prevFormStep={prevFormStep}
             data={data}
             setData={setFormValues}
-            typeForm="createCostumer"
+            typeForm="createCustomer"
           />
         )}
 
         {formStep > 2 && (
           <CompletedForm
-            costumer={data}
+            customer={data}
             loading={loading}
             data={data}
             confirmData={confirmData}
             handleClose={handleClose}
-            typeForm="updateCostumer"
+            typeForm="updateCustomer"
           />
         )}
       </Container>

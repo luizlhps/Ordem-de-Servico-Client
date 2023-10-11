@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { OrdensSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 
 import { format } from "date-fns";
-import { normalizePhoneNumber } from "@/utils/Masks";
+import { cpfOrCnpj, normalizePhoneNumber } from "@/utils/Masks";
 
 export const ColumnsDataGrid = (
   theme: any,
@@ -63,6 +63,12 @@ export const ColumnsDataGrid = (
       description: "Contato",
       headerAlign: "left",
       align: "left",
+      valueFormatter(params: any) {
+        if (params?.value) {
+          const phoneFormatted = cpfOrCnpj(params.value);
+          return phoneFormatted;
+        }
+      },
     },
     {
       field: "createdAt",

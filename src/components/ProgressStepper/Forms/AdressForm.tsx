@@ -261,7 +261,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
             />
             <MarketSVG color={theme.palette.secondary.main} />
 
-            {typeForm === "createCostumer" && (
+            {typeForm === "createCustomer" && (
               <>
                 <Box
                   sx={{

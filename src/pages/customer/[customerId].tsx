@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { ICostumer } from "../../../types/costumer";
-import { costumersApi } from "@/services/api/costumersApi";
+import { ICustomer } from "../../../types/customer";
+import { customersApi } from "@/services/api/customersApi";
 import { Api, setupApiClientSide } from "@/services/api/axios-config";
 import { access } from "fs";
 import { useEffect, useMemo } from "react";
@@ -15,7 +15,7 @@ import { Button, Icon, IconButton, Stack, TextField } from "@mui/material";
 
 import { IOrder } from "../../../types/order";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { useGetCostumOrders } from "@/hook/useGetCostumOrders";
+import { useGetCustomerOrders } from "@/hook/useGetCustomerOrders";
 import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
@@ -24,17 +24,17 @@ import useModal from "@/hook/useModal";
 import { AuthSSR } from "@/utils/AuthSSR";
 
 interface Params extends ParsedUrlQuery {
-  costumerId: string;
+  customerId: string;
 }
 
 export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) => {
-  const { costumerId } = context.params as Params;
+  const { customerId } = context.params as Params;
 
   if (context.req.cookies.auth) {
     const tokenInfo = JSON.parse(context.req.cookies.auth);
     const token = tokenInfo.accessToken;
     try {
-      const res = await setupApiClientSide(token).get(`costumers/${costumerId}`);
+      const res = await setupApiClientSide(token).get(`customers/${customerId}`);
       const customer = res.data;
       return {
         props: { customer },
@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) =>
   };
 });
 
-function CostumerPageID({ customer }: { customer: ICostumer }) {
+function CustomerPageID({ customer }: { customer: ICustomer }) {
   const router = useRouter();
   const theme = useTheme();
 
@@ -66,7 +66,7 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
     modalActions;
 
   //Api
-  const { setCurrentPage, data, currentPage, fetchApi, loading } = useGetCostumOrders({ costumer: customer });
+  const { setCurrentPage, data, currentPage, fetchApi, loading } = useGetCustomerOrders({ customer: customer });
 
   //Search
   const { searchHandle, searchField } = useSearchFieldWith_id({
@@ -155,4 +155,4 @@ function CostumerPageID({ customer }: { customer: ICostumer }) {
     </>
   );
 }
-export default CostumerPageID;
+export default CustomerPageID;

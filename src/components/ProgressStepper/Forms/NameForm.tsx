@@ -298,7 +298,7 @@ export const NameForm: React.FC<NameFormProps> = ({ formStep, nextFormStep, type
               />
               <MarketSVG color={theme.palette.primary.light} />
 
-              {typeForm === "createCostumer" && (
+              {typeForm === "createCustomer" && (
                 <>
                   <Box
                     sx={{

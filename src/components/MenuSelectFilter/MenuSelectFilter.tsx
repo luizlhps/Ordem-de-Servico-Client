@@ -21,8 +21,8 @@ import { useGetFetchService } from "@/hook/useGetFetchService";
 import { ComboBox } from "../ComboBox";
 import { useForm } from "react-hook-form";
 import { useGetFetchStatus } from "@/hook/useGetFetchStatus";
-import { RootCostumer } from "../../../types/costumer";
-import { costumersApi } from "@/services/api/costumersApi";
+import { RootCustomer } from "../../../types/customer";
+import { customersApi } from "@/services/api/customersApi";
 import { DateTimePickerControlled } from "../DataTime/DateTimePicker";
 import { DatePickerControlled } from "../DataTime";
 
@@ -68,29 +68,29 @@ export const MenuSelectFilter = ({ setCustomerFilter, setStatusFilter, setRangeD
   } = useForm<InputProps>({});
   const { fetchApi, loading, statusData } = useGetFetchStatus();
 
-  const [costumerData, setCostumersData] = useState<RootCostumer>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
-  const [loadingCostumer, setloadingCostumer] = useState(false);
+  const [customerData, setCustomersData] = useState<RootCustomer>({ Total: 0, Page: 0, limit: 0, customer: [] || "" });
+  const [loadingCustomer, setloadingCustomer] = useState(false);
 
   const smallphoneMedia = useMediaQuery("(max-width:370px)");
 
   async function fetchApiCustomer(filter?: string, page?: number, limit?: number) {
     try {
-      setloadingCostumer(true);
-      const res = await costumersApi.getAllCostumers(filter, page, limit);
+      setloadingCustomer(true);
+      const res = await customersApi.getAllCustomers(filter, page, limit);
       if (res instanceof Error) {
         return new Error("Ocorreu um Erro na busca");
       }
-      setCostumersData(res.data);
+      setCustomersData(res.data);
     } catch (error) {
       console.log(error);
     } finally {
-      setloadingCostumer(false);
+      setloadingCustomer(false);
     }
   }
 
   useEffect(() => {
-    fetchApi();
-    fetchApiCustomer();
+    fetchApi({ search: "" }, 0, 0);
+    fetchApiCustomer("", 0, 0);
   }, []);
 
   const onSubmit = (data: InputProps) => {
@@ -169,7 +169,7 @@ export const MenuSelectFilter = ({ setCustomerFilter, setStatusFilter, setRangeD
           defaultValue={""}
           control={control}
           customStyle={{ padding: "6px 14px", marginBottom: 1 }}
-          data={costumerData.customer}
+          data={customerData.customer}
           name="customer"
           property="name"
         />

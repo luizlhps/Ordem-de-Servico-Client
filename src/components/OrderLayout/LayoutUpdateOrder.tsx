@@ -4,15 +4,15 @@ import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
 import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
 import { ICustomerAndOrder } from "./UpdateOrder";
-import { ICostumer } from "../../../types/costumer";
+import { ICustomer } from "../../../types/customer";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 
 interface LayoutProps {
   data: ICustomerAndOrder | undefined;
   setFormValues: (values: any) => void;
-  setCostumerId: Dispatch<SetStateAction<ICostumer | undefined>>;
+  setCustomerId: Dispatch<SetStateAction<ICustomer | undefined>>;
   loading: boolean;
-  costumer: ICostumer | undefined;
+  customer: ICustomer | undefined;
   confirmData: () => void | undefined;
   handleClose: () => void;
   typeForm: TypeForm;
@@ -22,9 +22,9 @@ interface LayoutProps {
 export const LayoutUpdateOrder = ({
   data,
   setFormValues,
-  setCostumerId,
+  setCustomerId,
   loading,
-  costumer,
+  customer,
   confirmData,
   handleClose,
   typeForm,
@@ -43,7 +43,7 @@ export const LayoutUpdateOrder = ({
           data={data}
           setData={setFormValues}
           typeForm="createOs"
-          setCostumer={setCostumerId}
+          setCustomer={setCustomerId}
           setStatusId={setStatusId}
         />
       )}
@@ -62,7 +62,7 @@ export const LayoutUpdateOrder = ({
         <CompletedForm
           loading={loading}
           data={data}
-          costumer={costumer}
+          customer={customer}
           confirmData={confirmData}
           handleClose={handleClose}
           typeForm={typeForm}

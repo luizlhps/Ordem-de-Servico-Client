@@ -5,32 +5,32 @@ import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { LayoutCreateOs } from "./LayoutCreateOs";
 import { orderApi } from "@/services/api/orderApi";
 import { IStatus } from "../ServicesPage/Status";
-import { ICostumer } from "../../../types/costumer";
+import { ICustomer } from "../../../types/customer";
 import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
-interface IPropsNewCostumer {
+interface IPropsNewCustomer {
   handleClose: () => void;
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
 }
 
-const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => {
+const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCustomer) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<any | undefined>(undefined);
-  const [costumer, setCostumer] = useState<ICostumer | undefined>(undefined);
+  const [customer, setCustomer] = useState<ICustomer | undefined>(undefined);
   const [statusId, setStatusId] = useState<IStatus | undefined>();
 
-  async function createOrder(data: any, costumer: string) {
+  async function createOrder(data: any, customer: string) {
     try {
       const statusUpdateId = async () => {
         const updateStatus = { ...data, status: statusId };
         return updateStatus;
       };
-      await orderApi.createOrder(await statusUpdateId(), costumer);
+      await orderApi.createOrder(await statusUpdateId(), customer);
       setSuccess(true);
       fetchApi();
     } catch (err: any) {
@@ -44,7 +44,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
   }
 
   function confirmData() {
-    if (costumer && data) createOrder(data, costumer._id);
+    if (customer && data) createOrder(data, customer._id);
   }
 
   const setFormValues = (values: any) => {
@@ -72,11 +72,11 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCostumer) => 
               setStatusId={setStatusId}
               data={data}
               setFormValues={setFormValues}
-              setCostumerId={setCostumer}
+              setCustomerId={setCustomer}
               loading={loading}
               confirmData={confirmData}
               handleClose={handleClose}
-              costumer={costumer}
+              customer={customer}
               typeForm={"createOs"}
             />
           </>

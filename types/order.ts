@@ -1,4 +1,4 @@
-import { ICostumer } from "./costumer";
+import { ICustomer } from "./customer";
 
 export interface RootOrder {
   total: number;
@@ -18,7 +18,7 @@ export interface IOrder {
   dateEntry: string;
   services: Service[];
   status: Status;
-  customer: ICostumer;
+  customer: ICustomer;
   amount: number;
   discount: number;
   totalAmount: number;

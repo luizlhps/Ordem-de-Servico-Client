@@ -1,11 +1,11 @@
-export interface RootCostumer {
+export interface RootCustomer {
   Total: number;
   Page: number;
   limit: number;
-  customer: ICostumer[];
+  customer: ICustomer[];
 }
 
-export interface ICostumer {
+export interface ICustomer {
   _id: string;
   id: number;
   name: string;
