@@ -1,11 +1,9 @@
-import { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import TransitionsModal from "../Modal/Modal";
 import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { LayoutCreateOs } from "./LayoutCreateOs";
 import { orderApi } from "@/services/api/orderApi";
-import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
 import { IStatus } from "../ServicesPage/Status";
 import { ICostumer } from "../../../types/costumer";
 import { DialogModalScroll } from "../Modal/DialogModalScroll";

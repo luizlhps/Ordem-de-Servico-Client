@@ -1,42 +1,13 @@
+import { IFilterSearchOrder } from "@/hook/useGetFetchOrders";
 import { IOrder, RootOrder, Service } from "../../../types/order";
 import { Api } from "./axios-config";
 
-export interface IOrderData {
-  _id: string;
-  id: number;
-  equipment: string;
-  brand: string;
-  model: string;
-  defect: string;
-  observation: string;
-  dateEntry: string;
-  services: Service;
-  status: string;
-  costumer: string;
-  deleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-  technicalOpinion: string;
-  discount: string;
-  name: string;
-}
-
 class OrderApi {
-  getAllOrder(
-    filter: {
-      status?: string | undefined;
-      search?: string | undefined;
-      customer?: string | undefined;
-    } = { status: "", search: "", customer: "" },
-    page = 1,
-    limit = 10
-  ) {
-    console.log(filter);
-
+  getAllOrder(filter: IFilterSearchOrder = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
     return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
-  getPendingOrder(filter = "", page = 1, limit = 10) {
-    return Api.get<RootOrder>(`order/pending?filter=${filter}&page=${page}&limit=${limit}`);
+  getPendingOrder(filter: IFilterSearchOrder = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
+    return Api.get<RootOrder>(`order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
   async createOrder(data: IOrder, customerId: string) {
@@ -67,7 +38,7 @@ class OrderApi {
     return Api.delete(`order/${id}`);
   }
 
-  async updateOrder(data: IOrderData, orderId: string) {
+  async updateOrder(data: IOrder, orderId: string) {
     try {
       const res = await Api.put(`order/${orderId}`, {
         equipment: data.equipment,
@@ -81,6 +52,7 @@ class OrderApi {
         services: data.services,
         status: data.status,
         customer: data.costumer,
+        exitDate: data.exitDate,
       });
       return res;
     } catch (error) {

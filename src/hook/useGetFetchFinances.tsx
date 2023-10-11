@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useApiRequest from "./useApiGet";
 import { useDebouse } from "./useDebouse";
 import { IBalance, IFinance, RootFinance } from "../../types/finance";
@@ -6,13 +6,32 @@ import { financeApi } from "@/services/api/financeApi";
 import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../types/dashboard";
 
+export interface IFilterSearchTransactions {
+  status?: string;
+  search?: string;
+  customer?: string;
+}
+
+export interface IRangeDateFilter {
+  dateFrom: string | null | undefined;
+  dateTo: string | null | undefined;
+}
+
 export const useGetFetchFinance = () => {
+  const limitPerPage = 10;
+
   const [financeData, setFinanceData] = useState<RootFinance>({ total: 0, page: 0, limit: 0, transaction: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
   const { debouse } = useDebouse(300);
+
+  //filters
+  const [searchField, setSearchField] = useState("");
+  const [StatusFilter, setStatusFilter] = useState<string | null | undefined>(null);
+  const [customerFilter, setCustomerFilter] = useState<string | null | undefined>();
+  const [rangeDateFilter, setRangeDateFilter] = useState<IRangeDateFilter | null>(null);
 
   //dashBoard finance
   const [dataDashboard, setDashboard] = useState<IDashboard>();
@@ -25,7 +44,7 @@ export const useGetFetchFinance = () => {
   }, []);
 
   //Get Api
-  const fetchApi = useCallback((search = "", page?: number, limit?: number) => {
+  const fetchApi = useCallback((search?: IFilterSearchTransactions, page?: number, limit?: number) => {
     setLoading(true);
     debouse(() => {
       dashboardFetchApi();
@@ -45,6 +64,19 @@ export const useGetFetchFinance = () => {
     });
   }, []);
 
+  //inputSearch
+  useEffect(() => {
+    let fieldsSearch = {
+      status: StatusFilter ? StatusFilter : "",
+      search: searchField,
+      customer: customerFilter ? customerFilter : "",
+      dateFrom: rangeDateFilter?.dateFrom ? rangeDateFilter?.dateFrom : "",
+      dateTo: rangeDateFilter?.dateTo ? rangeDateFilter?.dateTo : "",
+    };
+
+    fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+  }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
+
   return {
     loading,
     error,
@@ -55,5 +87,12 @@ export const useGetFetchFinance = () => {
     currentPage,
     setCurrentPage,
     dataDashboard,
+
+    setRangeDateFilter,
+    setCustomerFilter,
+    setStatusFilter,
+    setSearchField,
+    searchField,
+    limitPerPage,
   };
 };

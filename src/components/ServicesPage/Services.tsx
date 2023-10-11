@@ -7,12 +7,12 @@ import { DataGridLayout, HeaderLayout } from "@/components";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage/columnConfig";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
-import UpdateServiceModal from "../../Modal/servicesPage/Service/UpdateServiceModal";
-import { ToastSuccess } from "../../Toast/ToastSuccess";
-import { ToastError } from "../../Toast/ToastError";
+import UpdateServiceModal from "../Modal/servicesPage/Service/UpdateServiceModal";
+import { ToastSuccess } from "../Toast/ToastSuccess";
+import { ToastError } from "../Toast/ToastError";
 import useModal from "@/hook/useModal";
 import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
-import { useSearchField } from "../../../hook/useSearchField";
+import { useSearchField } from "../../hook/useSearchField";
 import { useGetFetchService } from "@/hook/useGetFetchService";
 
 const Services = () => {
@@ -48,14 +48,14 @@ const Services = () => {
   const { setModalOpen, setModalUpdateOpen, setModalOpenDelete } = modalSets;
 
   //Api
-  const { currentPage, fetchApi, loading, servicesData, setCurrentPage } = useGetFetchService();
+  const { currentPage, fetchApi, loading, servicesData, setCurrentPage, searchField, setSearchField } =
+    useGetFetchService();
 
   //Search
-  const { searchHandle, searchField } = useSearchField({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
+  const { searchHandle } = useSearchField({
+    setCurrentPage,
+    searchField,
+    setSearchField,
   });
 
   useEffect(() => {

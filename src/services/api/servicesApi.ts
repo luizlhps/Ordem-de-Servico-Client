@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import { Api } from "./axios-config";
+import { IFilterSearchService } from "@/hook/useGetFetchService";
 
 export interface IService {
   _id: string;
@@ -20,9 +21,13 @@ export interface RootService {
   service: IService[];
 }
 class Services {
-  async getAllServices(filter = "", page = 1, limit = 10): Promise<RootService | Error> {
+  async getAllServices(
+    filter: IFilterSearchService = { search: "" },
+    page = 1,
+    limit = 10
+  ): Promise<RootService | Error> {
     try {
-      const res = await Api.get(`services/?filter=${filter}&page=${page}&limit=${limit}`);
+      const res = await Api.get(`services/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
 
       if (res) {
         return res.data;

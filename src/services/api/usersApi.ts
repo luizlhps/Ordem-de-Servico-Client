@@ -1,3 +1,4 @@
+import { IFilterSearchOfficials } from "@/hook/useGetFetchOfficials";
 import { IMyInfoUser, IUser, RootUser } from "../../../types/users";
 import { InputsFormUser } from "../configApplicationApi";
 import { Api } from "./axios-config";
@@ -14,8 +15,10 @@ interface InputDataProfilePassword {
 
 class UsersApi {
   getById() {}
-  getAll(filter = "", page = 1, limit = 10) {
-    return Api.get<RootUser>(`users/?filter=${filter}&page=${page}&limit=${limit}`);
+  getAll(filter: IFilterSearchOfficials = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
+    console.log(filter);
+
+    return Api.get<RootUser>(`users/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
   GetMyInfo() {

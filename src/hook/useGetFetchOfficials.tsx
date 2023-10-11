@@ -1,9 +1,22 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebouse } from "./useDebouse";
 import { usersApi } from "@/services/api/usersApi";
 import { RootUser } from "../../types/users";
 
+export interface IFilterSearchOfficials {
+  status?: string;
+  search?: string;
+  customer?: string;
+}
+
+export interface IRangeDateFilter {
+  dateFrom: string | null | undefined;
+  dateTo: string | null | undefined;
+}
+
 export const useGetFetchOfficials = () => {
+  const limitPerPage = 10;
+
   const [officialsData, setOfficialsData] = useState<RootUser>({ total: 0, page: 0, limit: 0, user: [] });
   const [currentPage, setCurrentPage] = useState(0);
   const { debouse } = useDebouse(300);
@@ -13,7 +26,7 @@ export const useGetFetchOfficials = () => {
   //Get Api
 
   const fetchApi = useCallback(
-    async (search = "", page?: number, limit?: number) => {
+    async (search?: IFilterSearchOfficials, page?: number, limit?: number) => {
       debouse(async () => {
         setLoading(true);
         usersApi
@@ -30,6 +43,25 @@ export const useGetFetchOfficials = () => {
     },
     [debouse, setLoading, setOfficialsData]
   );
+  //filters
+  const [searchField, setSearchField] = useState("");
+  const [StatusFilter, setStatusFilter] = useState<string | null | undefined>(null);
+  const [customerFilter, setCustomerFilter] = useState<string | null | undefined>();
+  const [rangeDateFilter, setRangeDateFilter] = useState<IRangeDateFilter | null>(null);
+
+  //inputSearch
+  useEffect(() => {
+    let fieldsSearch = {
+      status: StatusFilter ? StatusFilter : "",
+      search: searchField,
+      customer: customerFilter ? customerFilter : "",
+      dateFrom: rangeDateFilter?.dateFrom ? rangeDateFilter?.dateFrom : "",
+      dateTo: rangeDateFilter?.dateTo ? rangeDateFilter?.dateTo : "",
+    };
+
+    fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+  }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
+
   return {
     loading,
     error,
@@ -38,5 +70,11 @@ export const useGetFetchOfficials = () => {
     setOfficialsData,
     currentPage,
     setCurrentPage,
+    setRangeDateFilter,
+    setCustomerFilter,
+    setStatusFilter,
+    setSearchField,
+    searchField,
+    limitPerPage,
   };
 };

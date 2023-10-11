@@ -24,7 +24,6 @@ import { useGetFetchStatus } from "@/hook/useGetFetchStatus";
 import { RootCostumer } from "../../../types/costumer";
 import { costumersApi } from "@/services/api/costumersApi";
 import { DateTimePickerControlled } from "../DataTime/DateTimePicker";
-import { IRangeDateFilter } from "@/hook/useSearchField";
 import { DatePickerControlled } from "../DataTime";
 
 interface InputProps {
@@ -32,6 +31,11 @@ interface InputProps {
   customer: string | undefined | null;
   dateFrom: string | undefined | null;
   dateTo: string | undefined | null;
+}
+
+export interface IRangeDateFilter {
+  dateFrom: string | null | undefined;
+  dateTo: string | null | undefined;
 }
 
 interface IProps {

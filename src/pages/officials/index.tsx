@@ -13,7 +13,6 @@ import { FormCrudOfficial } from "@/components/OfficialsLayout/FormCrudOfficial"
 
 const Officials = () => {
   const theme = useTheme();
-  const limitPorPage = 10;
 
   const [selectItem, setselectItem] = useState<IUser | undefined>(undefined);
 
@@ -23,15 +22,20 @@ const Officials = () => {
     modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, officialsData, setCurrentPage } = useGetFetchOfficials();
+  const {
+    currentPage,
+    fetchApi,
+    loading,
+    officialsData,
+    setCurrentPage,
+    searchField,
+    setRangeDateFilter,
+    setSearchField,
+    limitPerPage,
+  } = useGetFetchOfficials();
 
   //Search
-  const { searchHandle, searchField } = useSearchField({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
-  });
+  const { searchHandle } = useSearchField({ searchField, setCurrentPage, setSearchField });
 
   //Config Grid
   const columns = officialsColumnConfig(
@@ -68,7 +72,7 @@ const Officials = () => {
         loading={loading}
         rows={officialsData?.user}
         columns={columns}
-        PageSize={limitPorPage}
+        PageSize={limitPerPage}
         page={officialsData?.page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

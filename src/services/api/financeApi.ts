@@ -1,3 +1,4 @@
+import { IFilterSearchTransactions } from "@/hook/useGetFetchFinances";
 import { IBalance, IFinance, RootFinance } from "../../../types/finance";
 import { Api } from "./axios-config";
 
@@ -37,8 +38,8 @@ class FinanceApi {
     return Api.delete(`finance/${transaction_id}`);
   }
 
-  getAll(filter = "", page = 1, limit = 10) {
-    return Api.get<RootFinance>(`finance/?filter=${filter}&page=${page}&limit=${limit}`);
+  getAll(filter: IFilterSearchTransactions = { search: "" }, page = 1, limit = 10) {
+    return Api.get<RootFinance>(`finance/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
   getBalance() {

@@ -26,14 +26,29 @@ const Index = () => {
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewHandleOpen } = modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, financeData, setCurrentPage, dataDashboard } = useGetFetchFinance();
-  console.log(loading);
+  const {
+    currentPage,
+    fetchApi,
+    loading,
+    financeData,
+    setCurrentPage,
+    dataDashboard,
+    dashboardFetchApi,
+    error,
+    limitPerPage,
+    searchField,
+    setCustomerFilter,
+    setFinanceData,
+    setRangeDateFilter,
+    setSearchField,
+    setStatusFilter,
+  } = useGetFetchFinance();
+
   //Search
-  const { searchHandle, searchField } = useSearchField({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
+  const { searchHandle } = useSearchField({
+    searchField,
+    setCurrentPage,
+    setSearchField,
   });
 
   //Config Grid

@@ -1,9 +1,10 @@
+import { IFilterSearchOfficials } from "@/hook/useGetFetchOfficials";
 import { IPermissions, RootAuthGroup } from "../../../types/authGroup";
 import { Api } from "./axios-config";
 
 class AuthGroupApi {
-  getAll(filter = "", page = 1, limit = 10) {
-    return Api.get<RootAuthGroup>(`authGroup?filter=${filter}&page=${page}&limit=${limit}`);
+  getAll(filter: IFilterSearchOfficials = { customer: "", search: "", status: "" }, page = 1, limit = 10) {
+    return Api.get<RootAuthGroup>(`authGroup?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
   create(name: string, permissions: IPermissions) {
     return Api.post(`authGroup`, {

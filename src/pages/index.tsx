@@ -18,6 +18,7 @@ import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColu
 import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 import { AxiosError } from "axios";
+import { useGetFetchOrdersPending } from "@/hook/useGetFetchOrdersPending";
 
 //style custom
 
@@ -34,35 +35,25 @@ export default function Home() {
   //api
   const { dataDashboard, dashboardFetchApi } = useGetFetchFinance();
 
-  const [ordersData, setOrdersData] = useState<RootOrder>({ total: 0, page: 0, limit: 0, orders: [] || "" });
-  const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<boolean>();
   const [messageError, setMessageError] = useState("");
 
   const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
-  const orderPendingFetchApi = () => {
-    setLoading(true);
-    orderApi
-      .getPendingOrder()
-      .then((res) => {
-        setOrdersData(res.data);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof AxiosError) {
-          if (err.response?.data?.message) {
-            setMessageError(err.response?.data?.message);
-          } else if (err.response?.data) {
-            setMessageError(err.response?.data);
-          } else {
-            setMessageError("Ocorreu um erro!!");
-          }
-        }
-        setError(true);
-      })
-      .finally(() => setLoading(false));
-  };
+  const {
+    currentPage,
+    error,
+    fetchApi: fetchOrderAPi,
+    limitPerPage,
+    loading,
+    ordersData,
+    searchField,
+    setCurrentPage,
+    setCustomerFilter,
+    setOrdersData,
+    setRangeDateFilter,
+    setSearchField,
+    setStatusFilter,
+  } = useGetFetchOrdersPending();
 
   const ordersFormatted = useMemo(() => {
     return ordersData?.orders.map((obj: any) => {
@@ -91,12 +82,10 @@ export default function Home() {
   const { modals, modalActions, modalSets } = useModal();
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen, modalViewHandleOpen } = modalActions;
 
-  const limitPorPage = 10;
-  const { searchField, searchHandle, setSearchField } = useSearchField({
-    limitPorPage,
+  const { searchHandle } = useSearchField({
+    searchField,
+    setSearchField,
     setCurrentPage,
-    currentPage,
-    fetchApi: orderPendingFetchApi,
   });
 
   const columns = columnsDataGrid(
@@ -224,12 +213,7 @@ export default function Home() {
     <>
       <HeaderLayout subTitle="Bem vindo a area de dashboard" title="Dashboard" />
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} marginBottom={3}></Stack>
-      <FormCrudOrder
-        fetchApi={orderPendingFetchApi}
-        modalActions={modalActions}
-        modals={modals}
-        selectItem={selectItem}
-      />
+      <FormCrudOrder fetchApi={fetchOrderAPi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
       <DashboardOrdersAndFinance dataDashboard={dataDashboard} />
       {dataDashboard ? (
         <Box
@@ -281,7 +265,7 @@ export default function Home() {
         loading={loading}
         rows={ordersData?.orders}
         columns={columns}
-        PageSize={limitPorPage}
+        PageSize={limitPerPage}
         page={ordersData?.page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

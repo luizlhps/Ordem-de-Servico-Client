@@ -6,8 +6,6 @@ import { Button, Stack, TextField } from "@mui/material";
 import { DataGridLayout, HeaderLayout } from "@/components";
 import useModal from "@/hook/useModal";
 import { useSearchField } from "@/hook/useSearchField";
-import { officialsColumnConfig } from "@/components/DataGrid/utils/officialsColumnConfig";
-import { IUser } from "../../../types/users";
 import { useGetFetchPermissions } from "@/hook/useGetFetchPermissions";
 import { FormCrudPermissions } from "@/components/PermissionsLayout/FormCrudPermissions";
 import { AuthGroup } from "../../../types/authGroup";
@@ -15,7 +13,6 @@ import { permissionsColumnConfig } from "@/components/DataGrid/utils/permissions
 
 const Permissions = () => {
   const theme = useTheme();
-  const limitPorPage = 10;
 
   const [selectItem, setselectItem] = useState<AuthGroup | undefined>(undefined);
 
@@ -25,14 +22,26 @@ const Permissions = () => {
     modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, permissionsData, setCurrentPage } = useGetFetchPermissions();
+  const {
+    currentPage,
+    fetchApi,
+    loading,
+    permissionsData,
+    setCurrentPage,
+    searchField,
+    setCustomerFilter,
+    setPermissionsData,
+    setRangeDateFilter,
+    setStatusFilter,
+    setSearchField,
+    limitPerPage,
+  } = useGetFetchPermissions();
 
   //Search
-  const { searchHandle, searchField } = useSearchField({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
+  const { searchHandle } = useSearchField({
+    searchField,
+    setCurrentPage,
+    setSearchField,
   });
 
   //Config Grid
@@ -70,7 +79,7 @@ const Permissions = () => {
         loading={loading}
         rows={permissionsData?.authGroup}
         columns={columns}
-        PageSize={limitPorPage}
+        PageSize={limitPerPage}
         page={permissionsData?.page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

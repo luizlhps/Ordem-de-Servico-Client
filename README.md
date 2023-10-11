@@ -51,8 +51,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 /// order
 [x] editar o updateOrder com o novo modalscroll e adicionar os icones
 [] arrumar o description com icon a mais na hora de criar um cliente novo
+[] eixste um bug de loop no order autoSize
 //officials
 [] arrumar o novo
+
+//permissions
+[] ao criar novo cargo aparece novos itens
 
 feat
 ao criar um novo serviço ja colocar no serviço da os

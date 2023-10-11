@@ -1,4 +1,4 @@
-import Services from "@/components/ServicesPage/Services/Services";
+import Services from "@/components/ServicesPage/Services";
 import Status from "@/components/ServicesPage/Status";
 
 const ServicesPage = () => {

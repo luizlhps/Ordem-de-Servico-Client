@@ -1,6 +1,5 @@
 import { IModals, ImodalActions } from "@/hook/useModal";
 import { memo } from "react";
-import { IUser } from "../../../types/users";
 import { NewStatus } from "./NewStatus";
 import { UpdateStatus } from "./UpdateStatus";
 import { IDetailsStatus } from "@/services/api/statusApi";

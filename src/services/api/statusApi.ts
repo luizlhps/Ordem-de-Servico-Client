@@ -1,3 +1,4 @@
+import { IFilterSearchStatus } from "@/hook/useGetFetchStatus";
 import { Api } from "./axios-config";
 
 export interface IStatus {
@@ -19,15 +20,7 @@ export type TStatusData = {
 };
 
 class Status {
-  async getAllStatus(
-    filter: {
-      status?: string | undefined;
-      search?: string | undefined;
-      customer?: string | undefined;
-    } = { status: "", search: "", customer: "" },
-    page = 1,
-    limit = 5
-  ) {
+  async getAllStatus(filter: IFilterSearchStatus = { status: "", search: "", customer: "" }, page = 1, limit = 5) {
     return Api.get<TStatusData>(`status/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 

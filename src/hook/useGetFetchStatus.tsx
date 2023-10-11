@@ -1,19 +1,36 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebouse } from "./useDebouse";
 import { TStatusData, statusApi } from "@/services/api/statusApi";
-import { IFilterSearch } from "./useSearchField";
+
+export interface IFilterSearchStatus {
+  status?: string;
+  search?: string;
+  customer?: string;
+}
+
+export interface IRangeDateFilter {
+  dateFrom: string | null | undefined;
+  dateTo: string | null | undefined;
+}
 
 export const useGetFetchStatus = () => {
+  const limitPerPage = 10;
+
   const [statusData, setStatusData] = useState<TStatusData>({ total: 0, page: 0, limit: 0, status: [] });
   const [currentPage, setCurrentPage] = useState(0);
   const { debouse } = useDebouse(300);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  //Get Api
+  //filters
+  const [searchField, setSearchField] = useState("");
+  const [StatusFilter, setStatusFilter] = useState<string | null | undefined>(null);
+  const [customerFilter, setCustomerFilter] = useState<string | null | undefined>();
+  const [rangeDateFilter, setRangeDateFilter] = useState<IRangeDateFilter | null>(null);
 
+  //Get Api
   const fetchApi = useCallback(
-    async (search?: IFilterSearch, page?: number, limit?: number) => {
+    async (search?: IFilterSearchStatus, page?: number, limit?: number) => {
       debouse(async () => {
         setLoading(true);
         try {
@@ -30,6 +47,20 @@ export const useGetFetchStatus = () => {
     },
     [debouse, setLoading, setStatusData]
   );
+
+  //inputSearch
+  useEffect(() => {
+    let fieldsSearch = {
+      status: StatusFilter ? StatusFilter : "",
+      search: searchField,
+      customer: customerFilter ? customerFilter : "",
+      dateFrom: rangeDateFilter?.dateFrom ? rangeDateFilter?.dateFrom : "",
+      dateTo: rangeDateFilter?.dateTo ? rangeDateFilter?.dateTo : "",
+    };
+
+    fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+  }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
+
   return {
     loading,
     error,
@@ -38,5 +69,11 @@ export const useGetFetchStatus = () => {
     setStatusData,
     currentPage,
     setCurrentPage,
+    setSearchField,
+    setStatusFilter,
+    setCustomerFilter,
+    setRangeDateFilter,
+    searchField,
+    limitPerPage,
   };
 };

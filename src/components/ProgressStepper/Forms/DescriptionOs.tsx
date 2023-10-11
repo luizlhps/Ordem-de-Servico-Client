@@ -2,9 +2,9 @@ import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import {
   Stack,
   Typography,
-  useTheme,
   Grid,
   Icon,
+  useTheme,
   IconButton,
   Box,
   Button,
@@ -57,15 +57,9 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
   const [newStatus, setNewStatus] = useState<SetStateAction<string | undefined>>();
   const [currentService, setCurrentService] = useState<IService>();
 
-  useEffect(() => {
-    if (data && data.technicalOpinion) {
-      setValue("technicalOpinion", data.technicalOpinion);
-    }
-  }, [data, prevFormStep]);
-
   async function FetchGetServices() {
     try {
-      const servicesData = await servicesApi.getAllServices("", 0, 0);
+      const servicesData = await servicesApi.getAllServices({ search: "" }, 0, 0);
 
       if (servicesData instanceof Error) {
         return console.error(servicesData.message);
@@ -359,7 +353,24 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
               <Typography marginTop={3} marginBottom={1}>
                 Laudo Técnico
               </Typography>
-              <TextField rows={4} multiline fullWidth {...register("technicalOpinion", { required: false })} />
+
+              <Controller
+                defaultValue={data.technicalOpinion}
+                name={"technicalOpinion"}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextField
+                    minRows={8}
+                    multiline={true}
+                    fullWidth
+                    sx={{ fontWeight: 300 }}
+                    onChange={(value) => onChange(value)}
+                    value={value}
+                    size="small"
+                  />
+                )}
+              />
+
               {errors.technicalOpinion?.type === "required" && (
                 <Typography color={"error"}>Digite a descrição</Typography>
               )}

@@ -14,7 +14,6 @@ import { MenuSelectFilter } from "@/components/MenuSelectFilter";
 
 const Orders = () => {
   const theme = useTheme();
-  const limitPorPage = 10;
   const [selectItem, setselectItem] = useState<IOrder | undefined>(undefined);
 
   //modal
@@ -23,14 +22,25 @@ const Orders = () => {
     modalActions;
 
   //Api
-  const { currentPage, fetchApi, loading, ordersData, setCurrentPage } = useGetFetchOrders();
-
-  //Search
-  const { searchHandle, searchField, setRangeDateFilter, setStatusFilter, setCustomerFilter } = useSearchField({
-    limitPorPage,
-    setCurrentPage,
+  const {
     currentPage,
     fetchApi,
+    loading,
+    ordersData,
+    setCurrentPage,
+    setCustomerFilter,
+    setRangeDateFilter,
+    setStatusFilter,
+    setSearchField,
+    limitPerPage,
+    searchField,
+  } = useGetFetchOrders();
+
+  //Search
+  const { searchHandle } = useSearchField({
+    setCurrentPage,
+    setSearchField,
+    searchField,
   });
 
   //Config Grid
@@ -94,7 +104,7 @@ const Orders = () => {
         loading={loading}
         rows={ordersData?.orders}
         columns={columns}
-        PageSize={limitPorPage}
+        PageSize={limitPerPage}
         page={ordersData?.page}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

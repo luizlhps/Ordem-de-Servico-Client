@@ -4,15 +4,15 @@ import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { RootOrder } from "../../types/order";
 
-export interface IFilterSearchOrder {
+export interface IFilterSearchOrder extends IRangeDateFilter {
   status?: string;
   search?: string;
   customer?: string;
 }
 
 export interface IRangeDateFilter {
-  dateFrom: string | null | undefined;
-  dateTo: string | null | undefined;
+  dateFrom?: string | null | undefined;
+  dateTo?: string | null | undefined;
 }
 
 export interface IData {
@@ -38,7 +38,7 @@ export interface IOrder {
   updatedAt: string;
 }
 
-export const useGetFetchOrders = () => {
+export const useGetFetchOrdersPending = () => {
   const limitPerPage = 10;
 
   const [ordersData, setOrdersData] = useState<RootOrder>({ total: 0, page: 0, limit: 0, orders: [] });
@@ -60,7 +60,7 @@ export const useGetFetchOrders = () => {
       debouse(async () => {
         setLoading(true);
         try {
-          const res = await orderApi.getAllOrder(search, page, limit);
+          const res = await orderApi.getPendingOrder(search, page, limit);
           setOrdersData(res.data);
         } catch (err) {
           console.log(err);
@@ -74,7 +74,7 @@ export const useGetFetchOrders = () => {
   );
 
   useEffect(() => {
-    let fieldsSearch = {
+    let fieldsSearch: IFilterSearchOrder = {
       status: StatusFilter ? StatusFilter : "",
       search: searchField,
       customer: customerFilter ? customerFilter : "",
