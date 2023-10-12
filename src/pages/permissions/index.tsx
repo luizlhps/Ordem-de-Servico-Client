@@ -10,7 +10,7 @@ import { useGetFetchPermissions } from "@/hook/useGetFetchPermissions";
 import { FormCrudPermissions } from "@/components/PermissionsLayout/FormCrudPermissions";
 import { AuthGroup } from "../../../types/authGroup";
 import { permissionsColumnConfig } from "@/components/DataGrid/utils/permissionsColumnConfig";
-import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter";
 
 const Permissions = () => {
   const theme = useTheme();

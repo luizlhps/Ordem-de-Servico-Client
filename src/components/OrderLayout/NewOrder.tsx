@@ -13,9 +13,10 @@ interface IPropsNewCustomer {
   fetchApi: () => void;
   style: CSSProperties;
   open: boolean;
+  customerData?: ICustomer;
 }
 
-const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCustomer) => {
+const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNewCustomer) => {
   const [loading, setLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
@@ -57,6 +58,11 @@ const NewOrder = ({ handleClose, fetchApi, style, open }: IPropsNewCustomer) => 
   //Clear Form after close modal
   useEffect(() => {
     setData("");
+
+    if (customerData)
+      setData({
+        customer: customerData.name,
+      });
   }, [handleClose]);
 
   return (

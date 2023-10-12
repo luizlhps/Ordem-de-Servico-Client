@@ -9,7 +9,7 @@ import { ColumnsDataGrid } from "@/components/DataGrid/utils/customerPage/custom
 import { FormCrudCustomer } from "@/components/Modal/customerPage/FormCrudCustomer";
 import { useGetFetchCustomers } from "@/hook/useGetFetchCustomers";
 import { useSearchField } from "@/hook/useSearchField";
-import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter";
 
 export default function Customers() {
   //Theme

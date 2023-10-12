@@ -46,6 +46,7 @@ export const useGetFetchStatus = () => {
 
   //inputSearch
   useEffect(() => {
+    const abortController = new AbortController();
     let fieldsSearch = {
       status: StatusFilter ? StatusFilter : "",
       search: searchField,
@@ -55,6 +56,9 @@ export const useGetFetchStatus = () => {
     };
 
     fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+    return () => {
+      abortController.abort();
+    };
   }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
 
   return {

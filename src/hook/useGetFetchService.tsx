@@ -70,6 +70,7 @@ export const useGetFetchService = () => {
 
   //inputSearch
   useEffect(() => {
+    const abortController = new AbortController();
     let fieldsSearch: IFilterSearchService = {
       search: searchField,
       dateFrom: rangeDateFilter?.dateFrom ? rangeDateFilter?.dateFrom : "",
@@ -77,6 +78,9 @@ export const useGetFetchService = () => {
     };
 
     fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+    return () => {
+      abortController.abort();
+    };
   }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
 
   return {

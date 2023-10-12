@@ -10,7 +10,7 @@ import { useGetFetchOfficials } from "@/hook/useGetFetchOfficials";
 import { officialsColumnConfig } from "@/components/DataGrid/utils/officialsColumnConfig";
 import { IUser } from "../../../types/users";
 import { FormCrudOfficial } from "@/components/OfficialsLayout/FormCrudOfficial";
-import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter";
 
 const Officials = () => {
   const theme = useTheme();

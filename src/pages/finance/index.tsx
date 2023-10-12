@@ -14,7 +14,7 @@ import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
 import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
 
 import { useRouter } from "next/router";
-import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter";
 
 const Index = () => {
   const theme = useTheme();

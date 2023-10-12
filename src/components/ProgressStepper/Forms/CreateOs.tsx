@@ -129,6 +129,8 @@ export const CreateOs: React.FC<NameFormProps> = ({
     }
   }, [data]);
 
+  console.log(data);
+
   return (
     <>
       <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>

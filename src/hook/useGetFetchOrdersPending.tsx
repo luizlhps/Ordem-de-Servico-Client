@@ -70,6 +70,7 @@ export const useGetFetchOrdersPending = () => {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
     let fieldsSearch: IFilterSearchOrder = {
       status: StatusFilter ? StatusFilter : "",
       search: searchField,
@@ -79,6 +80,9 @@ export const useGetFetchOrdersPending = () => {
     };
 
     fetchApi(fieldsSearch, currentPage + 1, limitPerPage);
+    return () => {
+      abortController.abort();
+    };
   }, [searchField, currentPage, customerFilter, StatusFilter, rangeDateFilter]);
 
   return {

@@ -22,6 +22,8 @@ import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 import useModal from "@/hook/useModal";
 import { AuthSSR } from "@/utils/AuthSSR";
 import { useGetCostumersOrders } from "@/hook/useGetCustomerOrders";
+import { MenuSelectFilterDefault, MenuSelectFilterOrderPending } from "@/components/MenuSelectFilter";
+import { FormCrudOrderPending } from "@/components/OrderLayout/FormCrudOrderPending";
 
 interface Params extends ParsedUrlQuery {
   customerId: string;
@@ -133,7 +135,13 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
       <IconButton onClick={BackHandle} sx={{ marginTop: 2 }}>
         <Icon>arrow_back</Icon>
       </IconButton>
-      <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
+      <FormCrudOrderPending
+        customer={customer}
+        fetchApi={fetchApi}
+        modalActions={modalActions}
+        modals={modals}
+        selectItem={selectItem}
+      />
 
       <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
         <TextField
@@ -149,9 +157,12 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
             width: 180,
           }}
         />
-        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-          Novo
-        </Button>
+        <Stack flexDirection={"row"} gap={2}>
+          <MenuSelectFilterOrderPending setRangeDateFilter={setRangeDateFilter} setStatusFilter={setStatusFilter} />
+          <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 2 }}>
+            Novo
+          </Button>
+        </Stack>
       </Stack>
       <DataGridLayout
         loading={loading}

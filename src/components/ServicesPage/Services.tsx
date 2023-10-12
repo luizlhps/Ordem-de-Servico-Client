@@ -92,7 +92,6 @@ const Services = () => {
         <UpdateServiceModal
           selectedItemUpdate={selectedItemUpdate}
           fetchApi={fetchApi}
-          setOpen={setModalUpdateOpen}
           open={modalUpdateOpen}
           handleClose={modalHandleUpdateClose}
           handleOpen={modalUpdateHandleOpen}
@@ -122,10 +121,10 @@ const Services = () => {
             rows={servicesData.service}
             columns={columns}
             PageSize={limitPorPage}
-            page={servicesData.Page}
+            page={servicesData.page}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            totalCount={servicesData.Total}
+            totalCount={servicesData.total}
           />
         </UpdateServiceModal>
       </CreateServiceModal>
