@@ -1,18 +1,12 @@
+import { IFilterSearchCustomers } from "@/hook/useGetFetchCustomers";
 import { Api } from "./axios-config";
+import { RootCustomer } from "../../../types/customer";
 
 //[] - Adicionar trycatch e validação de erro
 
 class Customers {
-  async getAllCustomers(filter = "", page = 1, limit = 10) {
-    try {
-      const res = await Api.get(`customers/?filter=${filter}&page=${page}&limit=${limit}`);
-
-      if (res) return res;
-      return new Error("Erro ao listar os registros.");
-    } catch (error) {
-      console.error(error);
-      return new Error((error as { message: string }).message || "Erro ao listar os registros.");
-    }
+  async getAllCustomers(filter: IFilterSearchCustomers = { search: "" }, page = 1, limit = 10) {
+    return Api.get<RootCustomer>(`customers/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }
 
   deleteCustomer(_id: string) {

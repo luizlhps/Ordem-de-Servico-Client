@@ -1,35 +1,24 @@
 import { useDebouse } from "@/hook";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 interface IProps {
-  limitPorPage: any;
-  setCurrentPage: React.Dispatch<React.SetStateAction<any>>;
-  currentPage: number;
-  fetchApi: (id: string | undefined, search: string, page: number, limit: number) => Promise<void>;
-  id?: string | undefined;
-}
-
-interface IUseSearchField {
-  searchHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
   setSearchField: React.Dispatch<React.SetStateAction<string>>;
   searchField: string;
 }
 
-export const useSearchFieldWith_id = ({
-  limitPorPage,
-  setCurrentPage,
-  currentPage,
-  fetchApi,
-  id,
-}: IProps): IUseSearchField => {
-  const [searchField, setSearchField] = useState("");
+interface IUseSearchField {
+  searchHandle: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
+export const useSearchFieldWith_id = ({ setCurrentPage, setSearchField, searchField }: IProps): IUseSearchField => {
   const search = useMemo(() => {
     return searchField;
   }, [searchField]);
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchField(e.target.value);
+
     if (search === "") {
       setCurrentPage(0);
     }
@@ -39,19 +28,7 @@ export const useSearchFieldWith_id = ({
     setCurrentPage(0);
   }, [search]);
 
-  const numberPage = currentPage + 1;
-
-  //inputSearch
-
-  useEffect(() => {
-    if (id) {
-      fetchApi(id, search, numberPage, limitPorPage);
-    }
-  }, [search, currentPage]);
-
   return {
     searchHandle,
-    setSearchField,
-    searchField,
   };
 };

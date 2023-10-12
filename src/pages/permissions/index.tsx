@@ -10,6 +10,7 @@ import { useGetFetchPermissions } from "@/hook/useGetFetchPermissions";
 import { FormCrudPermissions } from "@/components/PermissionsLayout/FormCrudPermissions";
 import { AuthGroup } from "../../../types/authGroup";
 import { permissionsColumnConfig } from "@/components/DataGrid/utils/permissionsColumnConfig";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
 
 const Permissions = () => {
   const theme = useTheme();
@@ -30,7 +31,6 @@ const Permissions = () => {
     setCurrentPage,
     searchField,
     setCustomerFilter,
-    setPermissionsData,
     setRangeDateFilter,
     setStatusFilter,
     setSearchField,
@@ -71,9 +71,12 @@ const Permissions = () => {
             width: 180,
           }}
         />
-        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-          Novo
-        </Button>
+        <Stack flexDirection={"row"} gap={2}>
+          <MenuSelectFilterDefault setRangeDateFilter={setRangeDateFilter} />
+          <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 2 }}>
+            Novo
+          </Button>
+        </Stack>
       </Stack>
       <DataGridLayout
         loading={loading}

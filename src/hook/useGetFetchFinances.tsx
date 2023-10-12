@@ -12,11 +12,6 @@ export interface IFilterSearchTransactions {
   customer?: string;
 }
 
-export interface IRangeDateFilter {
-  dateFrom: string | null | undefined;
-  dateTo: string | null | undefined;
-}
-
 export const useGetFetchFinance = () => {
   const limitPerPage = 10;
 

@@ -14,6 +14,7 @@ import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
 import { DeleteTransaction } from "@/components/FinanceLayout/DeleteTransaction";
 
 import { useRouter } from "next/router";
+import { MenuSelectFilterDefault } from "@/components/MenuSelectFilter/MenuSelectFilterDefault";
 
 const Index = () => {
   const theme = useTheme();
@@ -91,9 +92,12 @@ const Index = () => {
             width: 180,
           }}
         />
-        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-          Novo
-        </Button>
+        <Stack flexDirection={"row"} gap={2}>
+          <MenuSelectFilterDefault setRangeDateFilter={setRangeDateFilter} />
+          <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 2 }}>
+            Novo
+          </Button>
+        </Stack>
       </Stack>
       <DataGridLayout
         loading={loading}

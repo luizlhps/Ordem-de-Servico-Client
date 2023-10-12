@@ -13,11 +13,6 @@ export interface IFilterSearchPermissions {
   customer?: string;
 }
 
-export interface IRangeDateFilter {
-  dateFrom: string | null | undefined;
-  dateTo: string | null | undefined;
-}
-
 export const useGetFetchPermissions = () => {
   const limitPerPage = 10;
 

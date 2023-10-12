@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDebouse } from "./useDebouse";
-import { TStatusData, statusApi } from "@/services/api/statusApi";
+import { customersApi } from "@/services/api/customersApi";
+import { RootCustomer } from "../../types/customer";
 import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
-export interface IFilterSearchStatus {
-  status?: string;
+export interface IFilterSearchCustomers extends IRangeDateFilter {
   search?: string;
-  customer?: string;
 }
 
-export const useGetFetchStatus = () => {
+export const useGetFetchCustomers = () => {
   const limitPerPage = 10;
 
-  const [statusData, setStatusData] = useState<TStatusData>({ total: 0, page: 0, limit: 0, status: [] });
+  const [customerData, setCustomerData] = useState<RootCustomer>({ total: 0, page: 0, limit: 0, customer: [] });
   const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+
   const { debouse } = useDebouse(300);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   //filters
   const [searchField, setSearchField] = useState("");
@@ -25,24 +25,22 @@ export const useGetFetchStatus = () => {
   const [rangeDateFilter, setRangeDateFilter] = useState<IRangeDateFilter | null>(null);
 
   //Get Api
-  const fetchApi = useCallback(
-    async (search?: IFilterSearchStatus, page?: number, limit?: number) => {
-      debouse(async () => {
-        setLoading(true);
-        try {
-          statusApi.getAllStatus(search, page, limit).then((res) => {
-            setStatusData(res.data);
-          });
-        } catch (err) {
-          console.log(err);
-          setError(true);
-        } finally {
+  const fetchApi = useCallback((search?: IFilterSearchCustomers, page?: number, limit?: number) => {
+    setLoading(true);
+    debouse(() => {
+      customersApi
+        .getAllCustomers(search, page, limit)
+        .then((response) => {
+          setCustomerData(response.data);
           setLoading(false);
-        }
-      });
-    },
-    [debouse, setLoading, setStatusData]
-  );
+        })
+        .catch((err) => {
+          console.log("error", err || "deu ruim");
+          setCustomerData({ total: 0, page: 0, limit: 0, customer: [] || "" });
+        })
+        .finally(() => setLoading(false));
+    });
+  }, []);
 
   //inputSearch
   useEffect(() => {
@@ -61,14 +59,15 @@ export const useGetFetchStatus = () => {
     loading,
     error,
     fetchApi,
-    statusData,
-    setStatusData,
+    customerData,
+    setCustomerData,
     currentPage,
     setCurrentPage,
-    setSearchField,
-    setStatusFilter,
-    setCustomerFilter,
+
     setRangeDateFilter,
+    setCustomerFilter,
+    setStatusFilter,
+    setSearchField,
     searchField,
     limitPerPage,
   };

@@ -15,8 +15,8 @@ export interface IService {
 }
 
 export interface RootService {
-  Total: number;
-  Page: number;
+  total: number;
+  page: number;
   limit: number;
   service: IService[];
 }

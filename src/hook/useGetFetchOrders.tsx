@@ -10,14 +10,9 @@ export interface IFilterSearchOrder {
   customer?: string;
 }
 
-export interface IRangeDateFilter {
-  dateFrom: string | null | undefined;
-  dateTo: string | null | undefined;
-}
-
 export interface IData {
-  Total: number;
-  Page: number;
+  total: number;
+  page: number;
   limit: number;
   orders: IOrder[] | [];
 }

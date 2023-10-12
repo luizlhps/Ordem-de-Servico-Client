@@ -87,7 +87,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
     FetchGetStatus();
 
     const fetchGetCustomers = async () => {
-      const data = await request(customersApi.getAllCustomers, "", 0, 0);
+      const data = await request(customersApi.getAllCustomers, { search: "" }, 0, 0);
       setConstumerData(data);
     };
     fetchGetCustomers();

@@ -15,13 +15,13 @@ import { Button, Icon, IconButton, Stack, TextField } from "@mui/material";
 
 import { IOrder } from "../../../types/order";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
-import { useGetCustomerOrders } from "@/hook/useGetCustomerOrders";
 import { useSearchFieldWith_id } from "@/hook/useSearchFieldWith_Id";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
 import useModal from "@/hook/useModal";
 import { AuthSSR } from "@/utils/AuthSSR";
+import { useGetCostumersOrders } from "@/hook/useGetCustomerOrders";
 
 interface Params extends ParsedUrlQuery {
   customerId: string;
@@ -29,24 +29,26 @@ interface Params extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps = AuthSSR(async (context) => {
   const { customerId } = context.params as Params;
+  try {
+    if (context.req.cookies.auth) {
+      const tokenInfo = JSON.parse(context.req.cookies.auth);
 
-  if (context.req.cookies.auth) {
-    const tokenInfo = JSON.parse(context.req.cookies.auth);
-    const token = tokenInfo.accessToken;
-    try {
+      const token = tokenInfo.accessToken;
+
       const res = await setupApiClientSide(token).get(`customers/${customerId}`);
+
       const customer = res.data;
+
       return {
         props: { customer },
       };
-    } catch (error) {
-      console.log(error);
-      return {
-        notFound: true,
-      };
     }
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
   }
-
   return {
     notFound: true,
   };
@@ -66,15 +68,24 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
     modalActions;
 
   //Api
-  const { setCurrentPage, data, currentPage, fetchApi, loading } = useGetCustomerOrders({ customer: customer });
+  const {
+    setCurrentPage,
+    data,
+    currentPage,
+    fetchApi,
+    loading,
+    limitPerPage,
+    searchField,
+    setStatusFilter,
+    setSearchField,
+    setRangeDateFilter,
+  } = useGetCostumersOrders({ customer: customer });
 
   //Search
-  const { searchHandle, searchField } = useSearchFieldWith_id({
-    limitPorPage: limitPorPage,
-    setCurrentPage: setCurrentPage,
-    currentPage: currentPage,
-    fetchApi: fetchApi,
-    id: customer._id,
+  const { searchHandle } = useSearchFieldWith_id({
+    searchField,
+    setCurrentPage,
+    setSearchField,
   });
 
   //Config Grid

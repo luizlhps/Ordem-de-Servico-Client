@@ -1,6 +1,6 @@
 export interface RootCustomer {
-  Total: number;
-  Page: number;
+  total: number;
+  page: number;
   limit: number;
   customer: ICustomer[];
 }

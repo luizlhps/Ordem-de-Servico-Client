@@ -25,9 +25,11 @@ class OrderApi {
     return res;
   }
 
-  async getCustomerOrders(id: string, filter = "", page = 1, limit = 10) {
+  async getCustomerOrders(id: string, filter: IFilterSearchOrder = { search: "" }, page = 1, limit = 10) {
     try {
-      const data = await Api.get(`order/customer?customerId=${id}&filter=${filter}&$page=${page}&limit=${limit}`);
+      const data = await Api.get(
+        `order/customer?customerId=${id}&filter=${JSON.stringify(filter)}&$page=${page}&limit=${limit}`
+      );
       return data;
     } catch (error) {
       console.error(error);

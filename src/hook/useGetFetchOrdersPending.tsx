@@ -3,6 +3,7 @@ import { useDebouse } from "./useDebouse";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { RootOrder } from "../../types/order";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 export interface IFilterSearchOrder extends IRangeDateFilter {
   status?: string;
@@ -10,14 +11,9 @@ export interface IFilterSearchOrder extends IRangeDateFilter {
   customer?: string;
 }
 
-export interface IRangeDateFilter {
-  dateFrom?: string | null | undefined;
-  dateTo?: string | null | undefined;
-}
-
 export interface IData {
-  Total: number;
-  Page: number;
+  total: number;
+  page: number;
   limit: number;
   orders: IOrder[] | [];
 }

@@ -1,6 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-import { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
 export const requestInteceptor = async (config: InternalAxiosRequestConfig<any>, contextCookie: any) => {

@@ -2,16 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useDebouse } from "./useDebouse";
 import { usersApi } from "@/services/api/usersApi";
 import { RootUser } from "../../types/users";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 export interface IFilterSearchOfficials {
   status?: string;
   search?: string;
   customer?: string;
-}
-
-export interface IRangeDateFilter {
-  dateFrom: string | null | undefined;
-  dateTo: string | null | undefined;
 }
 
 export const useGetFetchOfficials = () => {

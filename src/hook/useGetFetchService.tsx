@@ -2,14 +2,10 @@ import React, { useEffect, useState } from "react";
 import { servicesApi } from "@/services/api/servicesApi";
 import { useDebouse } from "./useDebouse";
 import useApiRequest from "./useApiGet";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 interface IPropsSearch {
   limitPage: number;
-}
-
-export interface IRangeDateFilter {
-  dateFrom?: string | null | undefined;
-  dateTo?: string | null | undefined;
 }
 
 export interface IFilterSearchService extends IRangeDateFilter {
@@ -17,8 +13,8 @@ export interface IFilterSearchService extends IRangeDateFilter {
 }
 
 export interface IData {
-  Total: number;
-  Page: number;
+  total: number;
+  page: number;
   limit: number;
   service: IService[] | [] | "";
 }
@@ -37,7 +33,7 @@ export interface IService {
 export const useGetFetchService = () => {
   const limitPerPage = 10;
 
-  const [servicesData, setServicesData] = useState<IData>({ Total: 0, Page: 0, limit: 0, service: [] || "" });
+  const [servicesData, setServicesData] = useState<IData>({ total: 0, page: 0, limit: 0, service: [] || "" });
   const [currentPage, setCurrentPage] = useState(0);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -61,7 +57,7 @@ export const useGetFetchService = () => {
 
         if (error) {
           console.error(error);
-          setServicesData({ Total: 0, Page: 0, limit: 0, service: [] });
+          setServicesData({ total: 0, page: 0, limit: 0, service: [] });
         }
       } catch (error) {
         console.log(error);

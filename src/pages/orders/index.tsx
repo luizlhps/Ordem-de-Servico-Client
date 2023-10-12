@@ -10,7 +10,7 @@ import { useGetFetchOrders } from "@/hook/useGetFetchOrders";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { IOrder } from "../../../types/order";
 import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
-import { MenuSelectFilter } from "@/components/MenuSelectFilter";
+import { MenuSelectFilterOrder } from "@/components/MenuSelectFilter";
 
 const Orders = () => {
   const theme = useTheme();
@@ -90,7 +90,7 @@ const Orders = () => {
           }}
         />
         <Stack flexDirection={"row"} gap={2}>
-          <MenuSelectFilter
+          <MenuSelectFilterOrder
             setRangeDateFilter={setRangeDateFilter}
             setCustomerFilter={setCustomerFilter}
             setStatusFilter={setStatusFilter}
