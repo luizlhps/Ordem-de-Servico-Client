@@ -5,6 +5,7 @@ import { IBalance, IFinance, RootFinance } from "../../types/finance";
 import { financeApi } from "@/services/api/financeApi";
 import { dashboardApi } from "@/services/api/dashboardApi";
 import { IDashboard } from "../../types/dashboard";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 export interface IFilterSearchTransactions {
   status?: string;

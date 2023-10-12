@@ -3,6 +3,7 @@ import { useDebouse } from "./useDebouse";
 import { orderApi } from "@/services/api/orderApi";
 import { IDetailsStatus } from "@/services/api/statusApi";
 import { RootOrder } from "../../types/order";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 export interface IFilterSearchOrder {
   status?: string;

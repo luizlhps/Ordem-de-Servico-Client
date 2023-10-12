@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDebouse } from "./useDebouse";
 import { authGroupApi } from "../services/api/authGroupApi";
 import { RootAuthGroup } from "../../types/authGroup";
+import { IRangeDateFilter } from "@/components/MenuSelectFilter/FiltersMenu/FilterRangeDate";
 
 interface IPropsSearch {
   limitPage: number;
