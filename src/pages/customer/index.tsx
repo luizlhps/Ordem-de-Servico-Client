@@ -44,7 +44,7 @@ export default function Customers() {
       <FormCrudCustomer fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectedItem} />
 
       <HeaderLayout subTitle="Bem vindo a area ordem de serviço" title="Clientes" />
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2} marginTop={4}>
         <TextField
           value={searchField || ""}
           onChange={searchHandle}

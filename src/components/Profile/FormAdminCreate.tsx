@@ -10,6 +10,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useRouter } from "next/router";
 import { InputsFormUser, configApplicationApi } from "@/services/configApplicationApi";
+import { AxiosError } from "axios";
 
 interface IProps {}
 
@@ -45,29 +46,39 @@ export const FormAdminCreate = ({}: IProps) => {
     setLoadingAvatar(true);
 
     const ext = blob.type.split("/")[1];
-    formData.append("storeAvatar", blob, `avatar.${ext}`);
+    formData.append("avatar", blob, `avatar.${ext}`);
     setFormDataAvatar(formData);
     closeModal();
   };
+
+  function handleImageUploadError(error: Error | AxiosError | unknown) {
+    if (error instanceof AxiosError) {
+      if (error.response && error.response.data.message) {
+        setMessageError(error.response.data.message);
+      } else {
+        setMessageError("Ocorreu um erro!!");
+      }
+    } else {
+      console.error("Ocorreu um erro desconhecido:", error);
+      setMessageError("Ocorreu um erro desconhecido");
+    }
+  }
 
   const onSubmit: SubmitHandler<InputsFormUser> = (data) => {
     setLoading(true);
     configApplicationApi
       .CreateAdmin(data)
-      .then((res) => {
-        setSuccess(true);
-
+      .then(async (res) => {
+        //uploud image
         if (formDataAvatar) {
-          configApplicationApi
-            .uploudAvatarUserAdmin(formDataAvatar)
-            .then((res) => {})
-            .catch((err) => {
-              console.log(err);
-              typeof err.response.data === "string" ? err.response.data : "Ocorreu um erro!!";
-            })
-            .finally(async () => {
-              setLoadingAvatar(false);
-            });
+          try {
+            await configApplicationApi.uploudAvatarUserAdmin(formDataAvatar);
+          } catch (error) {
+            handleImageUploadError(error);
+          } finally {
+            setSuccess(true);
+            router.push("./login");
+          }
         }
       })
       .catch((err) => {
@@ -79,9 +90,6 @@ export const FormAdminCreate = ({}: IProps) => {
       })
       .finally(() => {
         setLoading(false);
-        setTimeout(() => {
-          router.push("./login");
-        }, 1000);
       });
   };
 

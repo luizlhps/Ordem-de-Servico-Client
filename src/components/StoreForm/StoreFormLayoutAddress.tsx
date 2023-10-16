@@ -5,6 +5,7 @@ import { InputsFormCreateStore } from "@/services/configApplicationApi";
 import useSearchCep from "@/hook/useSearchCep";
 import { SearchCep } from "../SearchCep";
 import { RootStore } from "../../../types/store";
+import { numbersOnly } from "@/utils/Masks";
 
 interface IProps {
   setValueForm: (valueToUpdate: InputsFormCreateStore) => void;
@@ -21,6 +22,7 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
   const {
     handleSubmit,
     control,
+    clearErrors,
     watch,
     setValue,
     formState: { errors },
@@ -39,7 +41,7 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
   useEffect(() => {
     if (cepData) {
       setValue("address.city", cepData.localidade);
-      setValue("address.cep", cepData.cep);
+      setValue("address.cep", numbersOnly(cepData.cep));
       setValue("address.neighborhood", cepData.bairro);
       setValue("address.complement", cepData.complemento);
       setValue("address.state", cepData.uf);
@@ -62,7 +64,13 @@ export const StoreFormLayoutAddress = ({ setValueForm, handlePreviousForm, loadi
         </Typography>
       </Box>
 
-      <SearchCep cepError={cepError} control={control} errors={errors} setValueCepField={setValueCepField} />
+      <SearchCep
+        cepError={cepError}
+        control={control}
+        errors={errors}
+        setValueCepField={setValueCepField}
+        clearErrors={clearErrors}
+      />
       <Typography marginTop={3} marginBottom={1}>
         Cidade*
       </Typography>

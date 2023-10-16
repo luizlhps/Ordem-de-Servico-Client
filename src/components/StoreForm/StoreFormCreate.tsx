@@ -11,6 +11,7 @@ import useSlider from "@/hook/useSlider";
 import { useRouter } from "next/router";
 import { usePathname, useSearchParams } from "next/navigation";
 import { InputsFormCreateStore, configApplicationApi } from "@/services/configApplicationApi";
+import { AxiosError } from "axios";
 
 interface IProps {}
 
@@ -53,46 +54,45 @@ export const StoreFormCreate = ({}: IProps) => {
     });
   };
 
-  const onSubmit: SubmitHandler<InputsFormCreateStore> = (data) => {
-    setLoading(true);
-    configApplicationApi
-      .CreateStore(data)
-      .then((res) => {
-        setSuccess(true);
+  const onSubmit: SubmitHandler<InputsFormCreateStore> = async (data) => {
+    try {
+      setLoading(true);
 
-        if (formDataAvatar) {
-          configApplicationApi
-            .uploudAvatarStore(formDataAvatar)
-            .then((res) => {})
-            .catch((err) => {
-              console.log(err);
-              typeof err.response.data === "string" ? err.response.data : "Ocorreu um erro!!";
-            })
-            .finally(async () => {
-              setLoadingAvatar(false);
-            });
+      const createStoreResponse = await configApplicationApi.CreateStore(data);
+
+      if (formDataAvatar) {
+        const avatarResponse = await configApplicationApi.uploudAvatarStore(formDataAvatar);
+      }
+
+      setLoadingAvatar(false);
+      setSuccess(true);
+
+      router.push(pathname + "?" + createQueryString("install", "admin"));
+    } catch (err) {
+      console.log(err);
+
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.data.message) {
+          setMessageError(err.response.data.message);
+        } else {
+          setMessageError("Ocorreu um erro!!");
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        setMessageError(
-          typeof err.response.data.message === "string" ? err.response.data.message : "Ocorreu um erro!!"
-        );
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-        setTimeout(() => {
-          router.push(pathname + "?" + createQueryString("install", "admin"));
-        }, 1000);
-      });
+      } else {
+        console.error("Ocorreu um erro desconhecido:", err);
+        setMessageError("Ocorreu um erro desconhecido");
+      }
+
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const uploudAvatar = async (formData: FormData, blob: Blob, closeModal: () => void) => {
     setLoadingAvatar(true);
 
     const ext = blob.type.split("/")[1];
-    formData.append("storeAvatar", blob, `avatar.${ext}`);
+    formData.append("storeAvatar", blob, `store.${ext}`);
     setFormDataAvatar(formData);
     closeModal();
   };

@@ -51,7 +51,7 @@ const Officials = () => {
     <>
       <FormCrudOfficial fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
       <HeaderLayout title="Funcionários" subTitle="Bem-vindo a área de funcionários" />
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2} marginTop={4}>
         <TextField
           value={searchField || ""}
           onChange={searchHandle}
@@ -61,7 +61,6 @@ const Officials = () => {
           variant="filled"
           size="small"
           sx={{
-            marginTop: 3,
             width: 180,
           }}
         />

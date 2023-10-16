@@ -11,6 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { TypeForm } from "./types";
 import useSearchCep from "@/hook/useSearchCep";
 import { SearchCep } from "@/components/SearchCep";
+import { numbersOnly } from "@/utils/Masks";
 
 const ContainerCustom = styled.div`
   padding: 60px;
@@ -55,6 +56,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
     handleSubmit,
     watch,
     control,
+    clearErrors,
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
@@ -63,7 +65,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
 
   useEffect(() => {
     if (cepData) {
-      setValue("cep", cepData.cep);
+      setValue("cep", numbersOnly(cepData.cep));
       setValue("city", cepData.localidade);
       setValue("neighborhood", cepData.bairro);
       setValue("complement", cepData.complemento);
@@ -74,7 +76,7 @@ export const AdressForm: React.FC<NameFormProps> = ({
 
   useEffect(() => {
     if (data && data.address) {
-      setValue("cep", data.address[0].cep);
+      setValue("cep", numbersOnly(data.address[0].cep));
       setValue("city", data.address[0].city);
       setValue("neighborhood", data.address[0].neighborhood);
       setValue("state", data.address[0].state);
@@ -105,7 +107,13 @@ export const AdressForm: React.FC<NameFormProps> = ({
           />
 
           <Stack direction={"column"} justifyContent={"space-between"} marginTop={4}>
-            <SearchCep cepError={cepError} control={control} errors={errors} setValueCepField={setValueCepField} />
+            <SearchCep
+              cepError={cepError}
+              control={control}
+              errors={errors}
+              setValueCepField={setValueCepField}
+              clearErrors={clearErrors}
+            />
             <Typography marginTop={3} marginBottom={1}>
               Cidade*
             </Typography>

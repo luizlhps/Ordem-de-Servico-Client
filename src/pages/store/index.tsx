@@ -49,7 +49,6 @@ const Store = ({}: IProps) => {
       }
       return newData;
     });
-    console.log(data);
   };
 
   const onSubmit: SubmitHandler<InputsFormCreateStore> = async (data) => {
@@ -61,24 +60,23 @@ const Store = ({}: IProps) => {
       await configApplicationApi.updateStore(data);
 
       if (formDataAvatar) {
+        console.log(formDataAvatar);
+
         const avatarRes = await configApplicationApi.updateAvatarStore(formDataAvatar);
       }
+
       setSuccess(true);
-      setsubmitLoadingAvatar(false);
-
-      setsubmitLoading(false);
-
-      setTimeout(() => {
-        router.replace("/");
-      }, 1000);
+      router.replace("/");
     } catch (err) {
       if (err instanceof AxiosError) {
         setMessageError(
           typeof err.response?.data.message === "string" ? err.response.data.message : "Ocorreu um erro!!"
         );
         setError(true);
-        setsubmitLoading(false);
       }
+    } finally {
+      setsubmitLoadingAvatar(false);
+      setsubmitLoading(false);
     }
   };
 

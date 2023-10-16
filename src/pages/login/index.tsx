@@ -34,12 +34,14 @@ const Login = () => {
   const passwordWatch = watch("password");
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { signIn } = useContext(SessionContext);
+  const { signIn, errorLogin } = useContext(SessionContext);
 
   const onSubmit = async (data: any) => {
     await signIn({
       email: data.email,
       password: data.password,
+    }).catch((err) => {
+      console.log("aq", err);
     });
   };
 
@@ -100,7 +102,7 @@ const Login = () => {
                 {errors?.password?.type === "required" && <Typography color="error">Senha é obrigatoria.</Typography>}
 
                 {errors?.password?.type === "minLength" && (
-                  <Typography color="error">Senha precisa no minimo 7 caracteres.</Typography>
+                  <Typography color="error">Senha precisa no minimo 6 caracteres.</Typography>
                 )}
               </Stack>
               <Stack marginTop={1} flexDirection={"row"} justifyContent={"space-between"}></Stack>
@@ -117,14 +119,20 @@ const Login = () => {
               >
                 Login
               </Button>
-              <Stack flexDirection={"row"} marginTop={3} justifyContent={"center"}>
+              {errorLogin && (
+                <Typography textAlign={"center"} color="error">
+                  Senha ou Email inválidos.
+                </Typography>
+              )}
+
+              {/*               <Stack flexDirection={"row"} marginTop={3} justifyContent={"center"}>
                 <Typography marginRight={1} color={theme.palette.primary.light}>
                   Esqueceu sua senha?
                 </Typography>
                 <Link href={"/login"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
                   <Typography fontWeight={500}> Recupera-la</Typography>
                 </Link>
-              </Stack>
+              </Stack> */}
             </Box>
           </Box>
         </Stack>

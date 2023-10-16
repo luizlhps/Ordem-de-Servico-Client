@@ -3,9 +3,15 @@ import { IOrder, RootOrder, Service } from "../../../types/order";
 import { Api } from "./axios-config";
 
 class OrderApi {
-  getAllOrder(filter: IFilterSearchOrder = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
-    return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
+  getAllOrder(
+    filter: IFilterSearchOrder = { status: "", search: "", customer: "" },
+    page = 1,
+    limit = 10,
+    deleted = false
+  ) {
+    return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`);
   }
+
   getPendingOrder(filter: IFilterSearchOrder = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
     return Api.get<RootOrder>(`order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
   }

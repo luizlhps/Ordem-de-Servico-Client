@@ -72,6 +72,8 @@ class ConfigApplicationApi {
     });
   }
   uploudAvatarUserAdmin(formData: FormData) {
+    console.log(formData);
+
     return Api.patch("/install/userAdmin", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

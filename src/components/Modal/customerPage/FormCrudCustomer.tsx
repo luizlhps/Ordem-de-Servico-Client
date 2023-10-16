@@ -5,30 +5,12 @@ import { NewCustomer } from "./NewCustomer";
 import UpdateCustomer from "./UpdateCustomer";
 import { DeleteCustomer } from "./DeleteCustomer";
 
-const buttonStyle = {
-  position: "absolute" as "absolute",
-  top: "8%",
-  left: "90%",
-  zIndex: 1,
-
-  "@media (max-width: 768px)": {
-    top: "4.5%",
-    left: "80%",
-  },
-};
-
-const style = {
-  padding: "33px",
+const styleModalScrollDialog = {
   display: "flex",
   justifyContent: "space-between",
   flexDirection: "column" as "column",
-  alignContent: "center",
-  alignItems: "center",
-  minHeight: "100%",
 
-  "@media (max-width:364px)": {
-    padding: "23px",
-  },
+  minHeight: "100%",
 };
 
 interface IProps {
@@ -45,12 +27,17 @@ export const FormCrudCustomer: React.FC<IProps> = memo(({ modals, fetchApi, moda
 
   return (
     <>
-      <NewCustomer handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} styles={style} />
+      <NewCustomer
+        handleClose={modalHandleClose}
+        fetchApi={fetchApi}
+        open={modalOpen}
+        styles={styleModalScrollDialog}
+      />
       <UpdateCustomer
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
-        styles={style}
+        styles={styleModalScrollDialog}
         selectItem={selectItem}
       />
       <DeleteCustomer

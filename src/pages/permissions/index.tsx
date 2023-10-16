@@ -57,7 +57,7 @@ const Permissions = () => {
     <>
       <FormCrudPermissions fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
       <HeaderLayout title="Cargos e permissões" subTitle="Bem-vindo a área de cargos e permissões" />
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2} marginTop={4}>
         <TextField
           value={searchField || ""}
           onChange={searchHandle}

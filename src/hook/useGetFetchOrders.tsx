@@ -52,11 +52,11 @@ export const useGetFetchOrders = () => {
   //Get Api
 
   const fetchApi = useCallback(
-    async (search?: IFilterSearchOrder, page?: number, limit?: number) => {
+    async (search?: IFilterSearchOrder, page?: number, limit?: number, deleted?: boolean) => {
       debouse(async () => {
         setLoading(true);
         try {
-          const res = await orderApi.getAllOrder(search, page, limit);
+          const res = await orderApi.getAllOrder(search, page, limit, deleted);
           setOrdersData(res.data);
         } catch (err) {
           console.log(err);

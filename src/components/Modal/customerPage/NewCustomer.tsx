@@ -10,6 +10,7 @@ import { CSSProperties } from "@mui/styled-engine-sc";
 import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
+import { DialogModalScroll } from "../DialogModalScroll";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
@@ -97,7 +98,7 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
-      <TransitionsModal handleClose={closeModalAndEraseData} open={open} style={styles}>
+      <DialogModalScroll.Root handleClose={handleClose} open={open} style={styles}>
         <IconButton onClick={closeModalAndEraseData} sx={buttonStyle}>
           <Icon>close</Icon>
         </IconButton>
@@ -111,7 +112,7 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
           setStatusId={setStatusId}
           typeForm="createCustomer"
         />
-      </TransitionsModal>
+      </DialogModalScroll.Root>
     </>
   );
 };

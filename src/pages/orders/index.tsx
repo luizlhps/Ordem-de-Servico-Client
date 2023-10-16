@@ -75,7 +75,7 @@ const Orders = () => {
     <>
       <FormCrudOrder fetchApi={fetchApi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
       <HeaderLayout title="Ordens de serviço" subTitle="Bem-vindo a área de ordens de serviço" />
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2} marginTop={4}>
         <TextField
           value={searchField || ""}
           onChange={searchHandle}

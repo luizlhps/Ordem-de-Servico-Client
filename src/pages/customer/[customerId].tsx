@@ -143,7 +143,7 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
         selectItem={selectItem}
       />
 
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2} marginTop={1}>
         <TextField
           value={searchField || ""}
           onChange={searchHandle}

@@ -13,6 +13,7 @@ interface IPropsContext {
   signOut: () => void;
   fetchMyInfo: () => void;
   loading: boolean;
+  errorLogin: boolean;
 }
 interface ISignCredentials {
   email: string;
@@ -28,6 +29,7 @@ export const SessionContext = createContext({} as IPropsContext);
 export const SessionProvider = ({ children }: IProps) => {
   const [tokenAuth, setTokenAuth] = useState<IResponseLogin>();
   const [user, setUser] = useState<IMyInfoUser>();
+  const [errorLogin, setErrorLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -46,7 +48,6 @@ export const SessionProvider = ({ children }: IProps) => {
       .catch((err) => {
         Cookies.remove("auth");
         Cookies.remove("user");
-        console.log(err);
       })
       .finally(() => setLoading(false));
   };
@@ -61,8 +62,11 @@ export const SessionProvider = ({ children }: IProps) => {
 
   const signIn = async ({ email, password }: ISignCredentials) => {
     try {
+      setErrorLogin(false);
+
       const month = 60 * 60 * 24 * 30;
 
+      //login user
       const res = await Api.post<IResponseLogin>("/login", { email, password });
       const { accessToken, permissions, refreshToken, roles } = res.data;
       setTokenAuth({ accessToken, permissions, refreshToken, roles });
@@ -72,30 +76,25 @@ export const SessionProvider = ({ children }: IProps) => {
         path: "/",
       });
 
-      usersApi
-        .GetMyInfo()
-        .then((res) => {
-          const userId = res.data._id;
-          Cookies.set("user", userId, {
-            expires: month,
-            path: "/",
-          });
-        })
-        .catch((err) => {
-          Cookies.remove("auth");
-          console.log(err);
-        });
+      //get info User
+      const getInfoUser = await usersApi.GetMyInfo();
+      const userId = getInfoUser.data._id;
+      Cookies.set("user", userId, {
+        expires: month,
+        path: "/",
+      });
 
       router.push("/orders");
     } catch (error) {
+      setErrorLogin(true);
+      Cookies.remove("auth");
       console.log(error);
-      console.log("Houve um erro ao logar");
     }
   };
 
   return (
     <>
-      <SessionContext.Provider value={{ signIn, tokenAuth, user, signOut, fetchMyInfo, loading }}>
+      <SessionContext.Provider value={{ signIn, tokenAuth, user, signOut, fetchMyInfo, loading, errorLogin }}>
         {children}
       </SessionContext.Provider>
     </>
