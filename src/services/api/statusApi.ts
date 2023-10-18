@@ -20,8 +20,15 @@ export type TStatusData = {
 };
 
 class Status {
-  async getAllStatus(filter: IFilterSearchStatus = { status: "", search: "", customer: "" }, page = 1, limit = 5) {
-    return Api.get<TStatusData>(`status/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
+  async getAllStatus(
+    filter: IFilterSearchStatus = { status: "", search: "", customer: "" },
+    page = 1,
+    limit = 5,
+    deleted = false
+  ) {
+    return Api.get<TStatusData>(
+      `status/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
+    );
   }
 
   async createStatus(data: IStatus) {

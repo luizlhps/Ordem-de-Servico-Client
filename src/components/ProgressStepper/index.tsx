@@ -1,4 +1,2 @@
-export * from "./Forms/AdressForm";
-export * from "./Forms/CompletedForm";
-export * from "./Forms/CreateOs";
-export * from "./Forms/NameForm";
+export * from "./Forms/OrdersTemplate/CompletedForm";
+export * from "./Forms/OrdersTemplate/CreateOs";

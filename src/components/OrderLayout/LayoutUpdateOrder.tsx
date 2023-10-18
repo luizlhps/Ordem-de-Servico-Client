@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { CompletedForm, CreateOs } from "../ProgressStepper";
-import { DescriptionOS } from "../ProgressStepper/Forms/DescriptionOs";
+import { DescriptionOS } from "../ProgressStepper/Forms/OrdersTemplate/DescriptionOs";
 import { Container, useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
 import { ICustomerAndOrder } from "./UpdateOrder";

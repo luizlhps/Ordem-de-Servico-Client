@@ -12,8 +12,15 @@ class OrderApi {
     return Api.get<RootOrder>(`order/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`);
   }
 
-  getPendingOrder(filter: IFilterSearchOrder = { status: "", search: "", customer: "" }, page = 1, limit = 10) {
-    return Api.get<RootOrder>(`order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
+  getPendingOrder(
+    filter: IFilterSearchOrder = { status: "", search: "", customer: "" },
+    page = 1,
+    limit = 10,
+    deleted = false
+  ) {
+    return Api.get<RootOrder>(
+      `order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
+    );
   }
 
   async createOrder(data: IOrder, customerId: string) {

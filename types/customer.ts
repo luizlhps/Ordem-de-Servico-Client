@@ -14,14 +14,14 @@ export interface ICustomer {
   phone: string;
   cpfOrCnpj: string;
   telephone: string;
-  address: Address[];
+  address: IAddress[];
   orders: string[];
   deleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Address {
+export interface IAddress {
   cep: string;
   state: string;
   neighborhood: string;

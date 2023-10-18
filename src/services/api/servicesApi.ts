@@ -24,10 +24,13 @@ class Services {
   async getAllServices(
     filter: IFilterSearchService = { search: "" },
     page = 1,
-    limit = 10
+    limit = 10,
+    deleted = false
   ): Promise<RootService | Error> {
     try {
-      const res = await Api.get(`services/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}`);
+      const res = await Api.get(
+        `services/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
+      );
 
       if (res) {
         return res.data;

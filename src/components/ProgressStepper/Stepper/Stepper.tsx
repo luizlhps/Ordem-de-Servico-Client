@@ -1,18 +1,23 @@
 import { Box, Stack, useTheme } from "@mui/material";
-import React, { ReactNode, useState } from "react";
-import { MarketSVG, ReportSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import React, { ReactNode } from "react";
 
-type ElementWithColor = {
+interface IProps {
+  children: ReactNode;
+  stepCurrent: number;
+  margin: number;
+}
+
+interface ElementWithColor {
   color: string;
-};
+}
 
-export const Stepper = ({ children, stepCurrent }: { children: ReactNode; stepCurrent: number }) => {
+export const Stepper = ({ children, stepCurrent, margin }: IProps) => {
   const theme = useTheme();
   const lengthChildren = React.Children.count(children);
 
   return (
     <>
-      <Stack flexDirection={"row"} justifyContent={"center"} margin={2} alignItems={"center"}>
+      <Stack flexDirection={"row"} justifyContent={"center"} margin={margin} alignItems={"center"}>
         {React.Children.map(children, (child, index) => {
           return (
             <>
@@ -22,14 +27,14 @@ export const Stepper = ({ children, stepCurrent }: { children: ReactNode; stepCu
                   margin={2}
                   height={2}
                   alignContent={"center"}
-                  bgcolor={index >= stepCurrent + 1 ? theme.palette.primary.main : theme.palette.secondary.main}
+                  bgcolor={index >= stepCurrent + 1 ? theme.palette.primary.light : theme.palette.secondary.light}
                 />
               )}
               {React.isValidElement(child) &&
                 React.cloneElement(
                   child,
                   {
-                    color: index >= stepCurrent + 1 ? theme.palette.primary.main : theme.palette.secondary.main,
+                    color: index >= stepCurrent + 1 ? theme.palette.primary.light : theme.palette.secondary.light,
                   } as ElementWithColor,
                   null
                 )}

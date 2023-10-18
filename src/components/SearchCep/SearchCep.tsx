@@ -19,12 +19,12 @@ export const SearchCep: React.FC<SearchCepProps> = ({ control, setValueCepField,
       </Typography>
       <Controller
         name="address.cep"
-        defaultValue={""}
         rules={{ required: true, minLength: 8, validate: (value) => !cepError }}
         control={control}
         render={({ field: { onChange, value } }) => (
           <TextField
             onBlur={() => {
+              console.log(value);
               setValueCepField(value);
               clearErrors();
             }}

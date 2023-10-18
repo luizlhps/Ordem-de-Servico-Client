@@ -14,7 +14,7 @@ import { DialogModalScroll } from "../DialogModalScroll";
 
 const buttonStyle = {
   position: "absolute" as "absolute",
-  top: "8%",
+  top: "20px",
   left: "90%",
   zIndex: 1,
 

@@ -14,7 +14,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { OsProcessSVG, ReportSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { OsProcessSVG, ReportSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -27,12 +27,11 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale("pt-br");
 
-import { TypeForm } from "./types";
 import { RootService, servicesApi } from "@/services/api/servicesApi";
 import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
 import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
-import { IOrder } from "../../../../types/order";
+import { IOrder } from "../../../../../types/order";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
 import UpdateServiceModal from "@/components/Modal/servicesPage/Service/UpdateServiceModal";
 import { IService } from "@/hook/useGetFetchService";
@@ -44,8 +43,6 @@ interface NameFormProps {
   prevFormStep: () => void;
   data: any;
   setData: any;
-
-  typeForm: TypeForm;
 }
 
 export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormStep, data, setData }) => {

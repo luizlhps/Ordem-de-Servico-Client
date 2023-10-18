@@ -13,6 +13,7 @@ export const DialogModalScrollContent = ({ children, customStyle, dividers }: IP
     display: "flex",
     flexDirection: "column",
     minHeight: "120px",
+    paddingBottom: "0px",
   };
 
   const conbinedStyleWithNewAttributes = customStyle ? { ...styleDialog, ...customStyle } : styleDialog;

@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { MarketSVG, ReportSVG, UserProcessSVG } from "../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, ReportSVG, UserProcessSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -24,9 +24,9 @@ dayjs.extend(timezone);
 dayjs.locale("pt-br");
 
 import FormSelect from "@/components/FormSelect";
-import { TypeForm } from "./types";
+import { TypeForm } from "../types";
 import useApiRequest from "@/hook/useApiGet";
-import { ICustomer, RootCustomer } from "../../../../types/customer";
+import { ICustomer, RootCustomer } from "../../../../../types/customer";
 import { customersApi } from "@/services/api/customersApi";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
@@ -54,7 +54,7 @@ type Inputs = {
   customer: string;
 };
 
-export const CreateOs: React.FC<NameFormProps> = ({
+export const OrderFormCreate: React.FC<NameFormProps> = ({
   nextFormStep,
   prevFormStep,
   data,
@@ -128,8 +128,6 @@ export const CreateOs: React.FC<NameFormProps> = ({
       setValue("dateEntry", dayjs(data?.dateEntry).format());
     }
   }, [data]);
-
-  console.log(data);
 
   return (
     <>
@@ -346,55 +344,19 @@ export const CreateOs: React.FC<NameFormProps> = ({
         </Stack>
 
         <Stack flexDirection={"row"} justifyContent={"center"} gap={2} width={"100%"} margin={"0!important"}>
-          {(typeForm === "createCustomer" || typeForm === "updateCustomer") && (
-            <>
-              <Button
-                fullWidth
-                onClick={() => {
-                  handlePrev();
-                }}
-                size="large"
-                sx={{
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-              >
-                Prev
-              </Button>
-            </>
-          )}
-
-          {(typeForm === "createCustomer" || typeForm === "updateCustomer") && (
-            <>
-              <Button
-                fullWidth
-                size="large"
-                sx={{
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-                onClick={handleNext}
-              >
-                Criar
-              </Button>
-            </>
-          )}
-
-          {typeForm === "createOs" && (
-            <>
-              <Button
-                fullWidth
-                size="large"
-                sx={{
-                  background: theme.palette.secondary.main,
-                  color: theme.palette.background.paper,
-                }}
-                onClick={handleNext}
-              >
-                Next
-              </Button>
-            </>
-          )}
+          <>
+            <Button
+              fullWidth
+              size="large"
+              sx={{
+                background: theme.palette.secondary.main,
+                color: theme.palette.background.paper,
+              }}
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          </>
         </Stack>
       </DialogModalScroll.Footer>
     </>
