@@ -16,7 +16,7 @@ class OrderApi {
     filter: IFilterSearchOrder = { status: "", search: "", customer: "" },
     page = 1,
     limit = 10,
-    deleted = false
+    deleted: "" | boolean = false
   ) {
     return Api.get<RootOrder>(
       `order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`

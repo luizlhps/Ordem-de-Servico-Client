@@ -5,7 +5,12 @@ import { RootCustomer } from "../../../types/customer";
 //[] - Adicionar trycatch e validação de erro
 
 class Customers {
-  async getAllCustomers(filter: IFilterSearchCustomers = { search: "" }, page = 1, limit = 10, deleted = false) {
+  async getAllCustomers(
+    filter: IFilterSearchCustomers = { search: "" },
+    page = 1,
+    limit = 10,
+    deleted: "" | boolean = false
+  ) {
     return Api.get<RootCustomer>(
       `customers/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
     );

@@ -33,7 +33,7 @@ class FinanceApi {
     return Api.delete(`finance/${transaction_id}`);
   }
 
-  getAll(filter: IFilterSearchTransactions = { search: "" }, page = 1, limit = 10, deleted = false) {
+  getAll(filter: IFilterSearchTransactions = { search: "" }, page = 1, limit = 10, deleted: "" | boolean = false) {
     return Api.get<RootFinance>(
       `finance/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
     );

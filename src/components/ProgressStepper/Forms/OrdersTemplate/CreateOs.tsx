@@ -73,7 +73,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
   useEffect(() => {
     async function FetchGetStatus() {
       try {
-        const data = await statusApi.getAllStatus({ customer: "", search: "", status: "" }, 0, 0);
+        const data = await statusApi.getAllStatus({ customer: "", search: "", status: "" }, 0, 0, "");
 
         if (data instanceof Error) {
           return console.error(data.message);
@@ -87,7 +87,7 @@ export const CreateOs: React.FC<NameFormProps> = ({
     FetchGetStatus();
 
     const fetchGetCustomers = async () => {
-      const data = await request(customersApi.getAllCustomers, { search: "" }, 0, 0);
+      const data = await request(customersApi.getAllCustomers, { search: "" }, 0, 0, "");
       setConstumerData(data);
     };
     fetchGetCustomers();

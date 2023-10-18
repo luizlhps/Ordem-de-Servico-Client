@@ -25,7 +25,7 @@ class Services {
     filter: IFilterSearchService = { search: "" },
     page = 1,
     limit = 10,
-    deleted = false
+    deleted: "" | boolean = false
   ): Promise<RootService | Error> {
     try {
       const res = await Api.get(
