@@ -62,12 +62,6 @@ const Login = () => {
   const theme = useTheme();
   return (
     <>
-      <Stepper stepCurrent={currentStep}>
-        <UserProcessSVG color={theme.palette.secondary.main} />
-        <UserProcessSVG color={theme.palette.secondary.main} />
-        <UserProcessSVG color={theme.palette.secondary.main} />
-      </Stepper>
-
       <Button onClick={() => setCurrentStep((value) => (value += 1))} variant="outlined">
         SALVE
       </Button>

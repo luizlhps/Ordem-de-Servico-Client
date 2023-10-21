@@ -13,9 +13,10 @@ interface IProps {
   loading: boolean;
   handleContinueForm: () => void;
   setValueForm: (valueToUpdate: InputsFormUser) => void;
+  allgroups?: boolean;
 }
 
-export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueForm }: IProps) => {
+export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueForm, allgroups }: IProps) => {
   const theme = useTheme();
   const [display, setDisplay] = useState(normalizePhoneNumber(data?.phone));
   const [groupApi, setGroupApi] = useState<RootAuthGroup>();
@@ -34,7 +35,7 @@ export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueF
 
   const fetchAuthGroup = () => {
     authGroupApi
-      .getAll({ search: "" }, 0, 0, "")
+      .getAll({ search: "" }, 0, 0, allgroups ? undefined : false)
       .then((res) => {
         setGroupApi(res.data);
       })

@@ -78,9 +78,10 @@ export const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
 
   //menu
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const handleMenuOpen = useCallback(() => {
     setIsOpen(!isOpen);
-  }, [isOpen]);
+  }, [isOpen, smDown]);
 
   useEffect(() => {
     if (smDown === false) {

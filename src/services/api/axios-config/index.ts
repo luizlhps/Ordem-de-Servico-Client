@@ -4,9 +4,11 @@ import { responseInteceptor } from "./inteceptors/ResponseInterceptors";
 import { errorInteceptors } from "./inteceptors/ErrorInteceptors";
 import { requestInteceptor } from "./inteceptors/RequestInterceptors";
 
+console.log(process.env.NEXT_PUBLIC_BASE_URL);
+
 export function setupApiClientSide(contextCookie = undefined) {
   const Api: AxiosInstance = Axios.create({
-    baseURL: "http://localhost:8000/",
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   });
 
   Api.interceptors.request.use(
