@@ -28,13 +28,14 @@ dayjs.extend(timezone);
 dayjs.locale("pt-br");
 
 import { RootService, servicesApi } from "@/services/api/servicesApi";
-import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
 import useModal from "@/hook/useModal";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { IOrder } from "../../../../../types/order";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
 import UpdateServiceModal from "@/components/Modal/servicesPage/Service/UpdateServiceModal";
 import { IService } from "@/hook/useGetFetchService";
+import { Stepper } from "../../Stepper";
+import { NewServices } from "@/components/ServicesLayout/NewServices";
 
 //Interface
 interface NameFormProps {
@@ -45,7 +46,7 @@ interface NameFormProps {
   setData: any;
 }
 
-export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormStep, data, setData }) => {
+export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormStep, data, setData, formStep }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");
   const [servicesData, setServicesData] = useState<RootService | null>(null);
@@ -197,291 +198,285 @@ export const DescriptionOS: React.FC<NameFormProps> = ({ nextFormStep, prevFormS
     setCurrentService(data);
   };
 
+  const styleModalScrollDialogServices = {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "column" as "column",
+    minHeight: "100%",
+  };
+
   return (
     <>
-      <CreateServiceModal
+      <NewServices
+        style={styleModalScrollDialogServices}
         fetchApi={FetchGetServices}
         open={modalOpen}
         handleClose={modalHandleClose}
-        handleOpen={modalHandleOpen}
-        setFormSucessoValue={false}
-        setMessageForm={setNewStatus}
-      >
-        <UpdateServiceModal
-          fetchApi={FetchGetServices}
-          open={modalUpdateOpen}
-          handleClose={modalHandleUpdateClose}
-          handleOpen={modalUpdateHandleOpen}
-          selectedItemUpdate={currentService}
-        />
-        <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
+      />
+      <UpdateServiceModal
+        fetchApi={FetchGetServices}
+        open={modalUpdateOpen}
+        handleClose={modalHandleUpdateClose}
+        handleOpen={modalUpdateHandleOpen}
+        selectedItemUpdate={currentService}
+      />
+      <DialogModalScroll.Title>Criar O.S</DialogModalScroll.Title>
 
-        <DialogModalScroll.Content dividers customStyle={{ borderBottom: "none" }}>
-          <Box display={"flex"} justifyContent={"space-between"} width={"100%"} alignItems={"center"}>
-            <Typography>Serviços</Typography>
+      <DialogModalScroll.Content dividers customStyle={{ borderBottom: "none" }}>
+        <Box display={"flex"} justifyContent={"space-between"} width={"100%"} alignItems={"center"}>
+          <Typography>Serviços</Typography>
 
-            <Box display={"flex"} gap={1}>
-              <Box width={34} height={34}>
-                <IconButton size="small" onClick={() => append({})}>
-                  <Icon fontSize="small">add</Icon>
-                </IconButton>
-              </Box>
-
-              <Button
-                onClick={modalActions.modalHandleOpen}
-                size="small"
-                sx={{ background: theme.palette.secondary.main, color: theme.palette.background.default }}
-              >
-                Novo
-              </Button>
+          <Box display={"flex"} gap={1}>
+            <Box width={34} height={34}>
+              <IconButton size="small" onClick={() => append({})}>
+                <Icon fontSize="small">add</Icon>
+              </IconButton>
             </Box>
-          </Box>
 
-          {servicesData?.service ? (
-            <>
-              {fields.map((row, index) => (
+            <Button
+              onClick={modalActions.modalHandleOpen}
+              size="small"
+              sx={{ background: theme.palette.secondary.main, color: theme.palette.background.default }}
+            >
+              Novo
+            </Button>
+          </Box>
+        </Box>
+
+        {servicesData?.service ? (
+          <>
+            {fields.map((row, index) => (
+              <Box
+                key={row.id}
+                display="flex"
+                justifyContent="flex-end"
+                alignItems={"center"}
+                marginTop={2}
+                width={"100%"}
+                position={"relative"}
+                onFocus={() => {
+                  if (watchServices !== null && watchServices !== undefined) {
+                    Object.keys(watchServices[index]).length !== 0 ? ValueFieldOfService(watchServices[index]) : null;
+                  }
+                }}
+              >
                 <Box
-                  key={row.id}
-                  display="flex"
-                  justifyContent="flex-end"
-                  alignItems={"center"}
-                  marginTop={2}
-                  width={"100%"}
-                  position={"relative"}
-                  onFocus={() => {
-                    if (watchServices !== null && watchServices !== undefined) {
-                      Object.keys(watchServices[index]).length !== 0 ? ValueFieldOfService(watchServices[index]) : null;
-                    }
+                  sx={{
+                    position: "absolute",
+                    transaform: "translate(-50%, -50%)",
+                    right: "30px",
+                    zIndex: 1,
                   }}
                 >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      transaform: "translate(-50%, -50%)",
-                      right: "30px",
-                      zIndex: 1,
+                  {currentService && (
+                    <IconButton onClick={modalUpdateHandleOpen}>
+                      <EditIcon sx={{ width: 15, height: 15 }} />
+                    </IconButton>
+                  )}
+
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      remove(index);
+                      setCurrentService(undefined);
                     }}
                   >
-                    {currentService && (
-                      <IconButton onClick={modalUpdateHandleOpen}>
-                        <EditIcon sx={{ width: 15, height: 15 }} />
-                      </IconButton>
-                    )}
-
-                    <IconButton
-                      size="small"
-                      onClick={() => {
-                        remove(index);
-                        setCurrentService(undefined);
-                      }}
-                    >
-                      <CloseIcon sx={{ width: 15, height: 15 }} />
-                    </IconButton>
-                  </Box>
-
-                  <Controller
-                    control={control}
-                    name={`services.${index}`}
-                    rules={{
-                      validate: (value) => {
-                        const existSameService = new Set(watchServices).size !== watchServices.length;
-                        return !existSameService;
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Autocomplete
-                        {...field}
-                        size="small"
-                        sx={{ width: "100%", "& .MuiAutocomplete-clearIndicator": { display: "none" } }}
-                        defaultValue={null}
-                        disablePortal
-                        options={servicesData.service}
-                        renderInput={(params) => <TextField {...params} />}
-                        getOptionLabel={(option) => option.title}
-                        value={
-                          field.value
-                            ? servicesData?.service.find((item) => {
-                                return field.value === item._id;
-                              }) ?? null
-                            : null
-                        }
-                        renderOption={(props, option) => (
-                          <Box component="li" {...props} key={option.id}>
-                            {option.title}
-                          </Box>
-                        )}
-                        onChange={(event, newValue) => {
-                          if (newValue) setCurrentService(newValue);
-                          field.onChange(newValue ? newValue._id : null);
-
-                          clearErrors("services");
-                        }}
-                      />
-                    )}
-                  />
+                    <CloseIcon sx={{ width: 15, height: 15 }} />
+                  </IconButton>
                 </Box>
-              ))}
-              {Array.isArray(errors.services) && errors.services[0]?.type === "validate" && (
-                <Typography color={"error"}>Não é permitido color serviços iguais!!</Typography>
-              )}
-            </>
-          ) : (
-            <Skeleton variant="rectangular" width={200} height={36} />
-          )}
 
-          <Grid
-            sx={{
-              input: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-              textarea: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-            }}
-            container
-            spacing={3}
-            marginTop={2}
-            flexDirection={"column"}
-          >
-            <Grid item xs>
-              <Typography marginTop={3} marginBottom={1}>
-                Laudo Técnico
-              </Typography>
+                <Controller
+                  control={control}
+                  name={`services.${index}`}
+                  rules={{
+                    validate: (value) => {
+                      const existSameService = new Set(watchServices).size !== watchServices.length;
+                      return !existSameService;
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      size="small"
+                      sx={{ width: "100%", "& .MuiAutocomplete-clearIndicator": { display: "none" } }}
+                      defaultValue={null}
+                      disablePortal
+                      options={servicesData.service}
+                      renderInput={(params) => <TextField {...params} />}
+                      getOptionLabel={(option) => option.title}
+                      value={
+                        field.value
+                          ? servicesData?.service.find((item) => {
+                              return field.value === item._id;
+                            }) ?? null
+                          : null
+                      }
+                      renderOption={(props, option) => (
+                        <Box component="li" {...props} key={option.id}>
+                          {option.title}
+                        </Box>
+                      )}
+                      onChange={(event, newValue) => {
+                        if (newValue) setCurrentService(newValue);
+                        field.onChange(newValue ? newValue._id : null);
+
+                        clearErrors("services");
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            ))}
+            {Array.isArray(errors.services) && errors.services[0]?.type === "validate" && (
+              <Typography color={"error"}>Não é permitido color serviços iguais!!</Typography>
+            )}
+          </>
+        ) : (
+          <Skeleton variant="rectangular" width={200} height={36} />
+        )}
+
+        <Grid
+          sx={{
+            input: {
+              background: theme.palette.background.paper,
+              color: theme.palette.primary.main,
+            },
+            textarea: {
+              background: theme.palette.background.paper,
+              color: theme.palette.primary.main,
+            },
+          }}
+          container
+          spacing={3}
+          marginTop={2}
+          flexDirection={"column"}
+        >
+          <Grid item xs>
+            <Typography marginTop={3} marginBottom={1}>
+              Laudo Técnico
+            </Typography>
+
+            <Controller
+              defaultValue={data.technicalOpinion}
+              name={"technicalOpinion"}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  minRows={8}
+                  multiline={true}
+                  fullWidth
+                  sx={{ fontWeight: 300 }}
+                  onChange={(value) => onChange(value)}
+                  value={value}
+                  size="small"
+                />
+              )}
+            />
+
+            {errors.technicalOpinion?.type === "required" && (
+              <Typography color={"error"}>Digite a descrição</Typography>
+            )}
+          </Grid>
+        </Grid>
+        <Grid
+          marginBottom={5}
+          color={theme.palette.primary.main}
+          sx={{
+            input: {
+              background: theme.palette.background.paper,
+              color: theme.palette.primary.main,
+            },
+          }}
+          container
+          spacing={3}
+          marginTop={1}
+          flexDirection={columnMedia ? "column" : "row"}
+        >
+          <Grid item xs>
+            <Typography>Valor</Typography>
+            <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
+
+            <Typography marginTop={3} marginBottom={1}>
+              Valor Total
+            </Typography>
+
+            <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
+          </Grid>
+          <Grid item>
+            <Box>
+              <Typography>Desconto</Typography>
 
               <Controller
-                defaultValue={data.technicalOpinion}
-                name={"technicalOpinion"}
                 control={control}
-                render={({ field: { onChange, value } }) => (
+                name="discount"
+                defaultValue={data?.discount}
+                render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
                   <TextField
-                    minRows={8}
-                    multiline={true}
-                    fullWidth
-                    sx={{ fontWeight: 300 }}
-                    onChange={(value) => onChange(value)}
+                    type="number"
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                      setDiscount(Number(e.target.value));
+                    }}
                     value={value}
                     size="small"
+                    fullWidth
                   />
                 )}
               />
 
-              {errors.technicalOpinion?.type === "required" && (
-                <Typography color={"error"}>Digite a descrição</Typography>
-              )}
-            </Grid>
-          </Grid>
-          <Grid
-            marginBottom={5}
-            color={theme.palette.primary.main}
-            sx={{
-              input: {
-                background: theme.palette.background.paper,
-                color: theme.palette.primary.main,
-              },
-            }}
-            container
-            spacing={3}
-            marginTop={1}
-            flexDirection={columnMedia ? "column" : "row"}
-          >
-            <Grid item xs>
-              <Typography>Valor</Typography>
-              <TextField sx={{ fontWeight: 300 }} value={servicesPrice.toFixed(2)} size="small" fullWidth disabled />
-
-              <Typography marginTop={3} marginBottom={1}>
-                Valor Total
-              </Typography>
-
-              <TextField type="number" disabled value={totalPrice.toFixed(2)} size="small" fullWidth />
-            </Grid>
-            <Grid item>
-              <Box>
-                <Typography>Desconto</Typography>
-
-                <Controller
-                  control={control}
-                  name="discount"
-                  defaultValue={data?.discount}
-                  render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
-                    <TextField
-                      type="number"
-                      onChange={(e) => {
-                        onChange(e.target.value);
-                        setDiscount(Number(e.target.value));
-                      }}
-                      value={value}
-                      size="small"
-                      fullWidth
-                    />
+              {data ? (
+                <>
+                  <Typography marginTop={3} marginBottom={1}>
+                    Data de Saída
+                  </Typography>
+                  <DateTimePickerControlled control={control} data={data} errors={errors} nameField="exitDate" />
+                  {errors.exitDate?.type === "required" && (
+                    <Typography color={"error"}>Coloque a data de entrada</Typography>
                   )}
-                />
-
-                {data ? (
-                  <>
-                    <Typography marginTop={3} marginBottom={1}>
-                      Data de Saída
-                    </Typography>
-                    <DateTimePickerControlled control={control} data={data} errors={errors} nameField="exitDate" />
-                    {errors.exitDate?.type === "required" && (
-                      <Typography color={"error"}>Coloque a data de entrada</Typography>
-                    )}
-                  </>
-                ) : (
-                  <Skeleton variant="rectangular" width={200} height={36} />
-                )}
-              </Box>
-            </Grid>
-          </Grid>
-        </DialogModalScroll.Content>
-
-        <DialogModalScroll.Footer>
-          <Stack flexDirection={"row"} justifyContent={"center"} margin={2} gap={2} alignItems={"center"}>
-            <Box width={50} justifyContent={"center"} display={"flex"}>
-              <OsProcessSVG color={theme.palette.secondary.main} />
+                </>
+              ) : (
+                <Skeleton variant="rectangular" width={200} height={36} />
+              )}
             </Box>
-            <Box
-              sx={{
-                width: 22,
-                height: 3,
-                alignContent: "center",
-                background: theme.palette.secondary.main,
-              }}
-            />
+          </Grid>
+        </Grid>
+      </DialogModalScroll.Content>
 
-            <ReportSVG color={theme.palette.secondary.light} />
-          </Stack>
-          <Stack flexDirection={"row"} justifyContent={"center"} gap={1} width={"100%"} margin={"0!important"}>
-            <Button
-              fullWidth
-              onClick={() => {
-                handlePrev();
-              }}
-              size="large"
-              sx={{
-                background: theme.palette.secondary.main,
-                color: theme.palette.background.paper,
-              }}
-            >
-              Prev
-            </Button>
-            <Button
-              fullWidth
-              onClick={() => {
-                handleNext();
-              }}
-              size="large"
-              sx={{
-                background: theme.palette.secondary.main,
-                color: theme.palette.background.paper,
-              }}
-            >
-              next
-            </Button>
-          </Stack>
-        </DialogModalScroll.Footer>
-      </CreateServiceModal>
+      <DialogModalScroll.Footer>
+        <Stepper margin={4} stepCurrent={formStep}>
+          <OsProcessSVG color={theme.palette.secondary.main} />
+          <ReportSVG color={theme.palette.secondary.light} />
+        </Stepper>
+
+        <Stack flexDirection={"row"} justifyContent={"center"} gap={1} width={"100%"} margin={"0!important"}>
+          <Button
+            fullWidth
+            onClick={() => {
+              handlePrev();
+            }}
+            size="large"
+            sx={{
+              background: theme.palette.secondary.main,
+              color: theme.palette.background.paper,
+            }}
+          >
+            Prev
+          </Button>
+          <Button
+            fullWidth
+            onClick={() => {
+              handleNext();
+            }}
+            size="large"
+            sx={{
+              background: theme.palette.secondary.main,
+              color: theme.palette.background.paper,
+            }}
+          >
+            next
+          </Button>
+        </Stack>
+      </DialogModalScroll.Footer>
     </>
   );
 };

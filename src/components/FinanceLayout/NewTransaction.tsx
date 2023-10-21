@@ -3,9 +3,9 @@ import { LayoutTransactionForm } from "./LayoutTransationForm";
 import { IFinance, InputTransactionOrderData } from "../../../types/finance";
 import { financeApi } from "@/services/api/financeApi";
 import TransitionsModal from "../Modal/Modal";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { ToastError } from "../Toast/ToastError";
 import { ToastSuccess } from "../Toast/ToastSuccess";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface INewTransationProps {
   handleClose: () => void;
@@ -50,7 +50,7 @@ const NewTransation = ({ handleClose, fetchApi, style, open, dataValue }: INewTr
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <TransitionsModal handleClose={handleClose} open={open} style={style}>
-        <CloseModal handleClose={handleClose} />
+        <DialogModalScroll.Close handleClose={handleClose} />
         <LayoutTransactionForm
           dataValue={dataValue}
           title="Novo Serviço"

@@ -6,6 +6,7 @@ import { ToastSuccess } from "@/components/Toast/ToastSuccess";
 import { ToastError } from "@/components/Toast/ToastError";
 import { ICustomerAndOrderData } from "../../../../types/formOrderCustomer";
 import { LayoutUpdateCustomer } from "@/components/CustomerPage/LayoutUpdateCustomer";
+import { DialogModalScroll } from "../DialogModalScroll";
 
 interface IProps {
   handleClose: () => void;
@@ -14,18 +15,6 @@ interface IProps {
   open: boolean;
   selectItem: any | undefined;
 }
-
-const buttonStyle = {
-  position: "absolute" as "absolute",
-  top: "8%",
-  left: "90%",
-  zIndex: 1,
-
-  "@media (max-width: 768px)": {
-    top: "4.5%",
-    left: "80%",
-  },
-};
 
 const UpdateCustomer = ({ handleClose, fetchApi, styles, open, selectItem }: IProps) => {
   /* const { confirmData, data, setFormValues, loading } = useContext(formUpdateCustomerContext);  */
@@ -104,9 +93,8 @@ const UpdateCustomer = ({ handleClose, fetchApi, styles, open, selectItem }: IPr
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <TransitionsModal handleClose={handleClose} open={open} style={styles}>
-        <IconButton onClick={handleClose} sx={buttonStyle}>
-          <Icon>close</Icon>
-        </IconButton>
+        <DialogModalScroll.Close handleClose={handleClose} />
+
         <LayoutUpdateCustomer
           typeForm={"updateCustomer"}
           confirmData={confirmData}

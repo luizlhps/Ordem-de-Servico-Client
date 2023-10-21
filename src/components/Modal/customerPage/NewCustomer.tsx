@@ -99,9 +99,7 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <DialogModalScroll.Root handleClose={handleClose} open={open} style={styles}>
-        <IconButton onClick={closeModalAndEraseData} sx={buttonStyle}>
-          <Icon>close</Icon>
-        </IconButton>
+        <DialogModalScroll.Close handleClose={handleClose} />
 
         <LayoutCreateCustomer
           confirmData={confirmData}
@@ -110,7 +108,6 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
           loading={loading}
           setFormValues={setFormValues}
           setStatusId={setStatusId}
-          typeForm="createCustomer"
         />
       </DialogModalScroll.Root>
     </>

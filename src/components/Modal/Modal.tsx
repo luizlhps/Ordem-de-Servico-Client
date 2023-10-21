@@ -28,7 +28,7 @@ export default function TransitionsModal({ open, handleClose, children, style }:
 
   const theme = useTheme();
 
-  const smDown = useMediaQuery(theme.breakpoints.down("md"));
+  const smDown = useMediaQuery("(max-width:600px)");
 
   return (
     <div>

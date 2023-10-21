@@ -20,12 +20,7 @@ export type TStatusData = {
 };
 
 class Status {
-  async getAllStatus(
-    filter: IFilterSearchStatus = { status: "", search: "", customer: "" },
-    page = 1,
-    limit = 5,
-    deleted: "" | boolean = false
-  ) {
+  async getAllStatus(filter: IFilterSearchStatus = { search: "" }, page = 1, limit = 5, deleted: "" | boolean = false) {
     return Api.get<TStatusData>(
       `status/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
     );

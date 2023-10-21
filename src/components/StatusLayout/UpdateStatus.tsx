@@ -5,6 +5,7 @@ import { Box, Icon, IconButton } from "@mui/material";
 import TransitionsModal from "../Modal/Modal";
 import { FormStatus } from "./FormStatus";
 import { IDetailsStatus, IStatus, statusApi } from "@/services/api/statusApi";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -47,14 +48,12 @@ export const UpdateStatus = ({ fetchApi, handleClose, open, style, selectItem }:
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <TransitionsModal handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"flex-end"} width={"100%"}>
-              <IconButton onClick={handleClose}>
-                <Icon>close</Icon>
-              </IconButton>
+              <DialogModalScroll.Close handleClose={handleClose} />
             </Box>
             <FormStatus data={selectItem} submitFunction={updateStatusSubmit} fetchApi={fetchApi} loading={loading} />
-          </TransitionsModal>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

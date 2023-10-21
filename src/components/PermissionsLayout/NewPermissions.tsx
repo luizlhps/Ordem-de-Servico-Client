@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { authGroupApi } from "@/services/api/authGroupApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+
 import { IPermissions } from "../../../types/authGroup";
 import { FormLayoutPermission } from "./FormLayoutPermission";
 import { DialogModalScroll } from "../Modal/DialogModalScroll";
@@ -131,8 +131,8 @@ export const NewPermissions = ({ fetchApi, handleClose, open, style }: IPropsNew
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
-            <CloseModal handleClose={handleClose} />
+          <DialogModalScroll.Root fullheight handleClose={handleClose} open={open} style={style}>
+            <DialogModalScroll.Close handleClose={handleClose} />
 
             <FormLayoutPermission
               control={control}

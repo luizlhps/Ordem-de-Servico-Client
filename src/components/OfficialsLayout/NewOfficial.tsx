@@ -3,7 +3,7 @@ import DialogContent from "@mui/material/DialogContent";
 
 import { Box, DialogTitle, Typography } from "@mui/material";
 import { FormLayoutProfile } from "../Profile/FormLayoutProfile";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+
 import { usersApi } from "@/services/api/usersApi";
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
@@ -68,7 +68,7 @@ export const NewOfficial = ({ fetchApi, handleClose, open, style }: IPropsNewOff
       {open && (
         <>
           <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
-            <CloseModal handleClose={handleClose} />
+            <DialogModalScroll.Close handleClose={handleClose} />
             <DialogModalScroll.Content customStyle={{ padding: 5 }}>
               <Slider
                 widthSlide={widthSlide}

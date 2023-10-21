@@ -34,7 +34,7 @@ export const FormLayoutProfile = ({ data, loading, handleContinueForm, setValueF
 
   const fetchAuthGroup = () => {
     authGroupApi
-      .getAll({ search: "" }, 0, 0)
+      .getAll({ search: "" }, 0, 0, "")
       .then((res) => {
         setGroupApi(res.data);
       })

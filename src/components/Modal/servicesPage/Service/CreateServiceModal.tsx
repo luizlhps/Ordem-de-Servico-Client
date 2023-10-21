@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { servicesApi } from "@/services/api/servicesApi";
 import { format } from "date-fns";
 import TransitionsModal from "../../Modal";
+import { DialogModalScroll } from "../../DialogModalScroll";
 
 interface IModal {
   open: boolean;
@@ -72,9 +73,7 @@ export default function CreateServiceModal({
       <TransitionsModal handleClose={handleClose} open={open} style={Styled.style}>
         <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
           <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
-          <IconButton onClick={handleClose}>
-            <Icon>close</Icon>
-          </IconButton>
+          <DialogModalScroll.Close handleClose={handleClose} />
         </Box>
         <Box marginTop={4} width={"80%"} height={"80%"}>
           <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>

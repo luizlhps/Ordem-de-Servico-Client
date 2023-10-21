@@ -1,7 +1,7 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+
 import { LayoutCreateOs } from "./LayoutCreateOs";
 import { orderApi } from "@/services/api/orderApi";
 import { IStatus } from "../ServicesPage/Status";
@@ -70,10 +70,10 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
-      <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll.Root fullheight handleClose={handleClose} open={open} style={style}>
         {open && (
           <>
-            <CloseModal handleClose={handleClose} />
+            <DialogModalScroll.Close handleClose={handleClose} />
             <LayoutCreateOs
               setStatusId={setStatusId}
               data={data}

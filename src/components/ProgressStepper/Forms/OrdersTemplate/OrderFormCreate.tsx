@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { MarketSVG, ReportSVG, UserProcessSVG } from "../../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, ReportSVG, UserProcessSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -30,6 +30,7 @@ import { ICustomer, RootCustomer } from "../../../../../types/customer";
 import { customersApi } from "@/services/api/customersApi";
 import { DialogModalScroll } from "@/components/Modal/DialogModalScroll";
 import { DateTimePickerControlled } from "@/components/DataTime/DateTimePicker";
+import { Stepper } from "../../Stepper";
 
 //Interface
 interface NameFormProps {
@@ -58,6 +59,7 @@ export const OrderFormCreate: React.FC<NameFormProps> = ({
   nextFormStep,
   prevFormStep,
   data,
+  formStep,
   setData,
   typeForm,
   setCustomer,
@@ -303,45 +305,9 @@ export const OrderFormCreate: React.FC<NameFormProps> = ({
 
       {/* footer */}
       <DialogModalScroll.Footer>
-        <Stack flexDirection={"row"} justifyContent={"center"} margin={2} alignItems={"center"}>
-          {typeForm === "createCustomer" && (
-            <>
-              <UserProcessSVG color={theme.palette.secondary.main} />
-              <Box
-                sx={{
-                  width: 22,
-                  height: 3,
-                  alignContent: "center",
-                  background: theme.palette.secondary.main,
-                }}
-              />
-              <MarketSVG color={theme.palette.secondary.main} />
-              <Box
-                sx={{
-                  width: 22,
-                  height: 3,
-                  alignContent: "center",
-                  background: theme.palette.secondary.main,
-                }}
-              />
-            </>
-          )}
-          <Box width={50} justifyContent={"center"} display={"flex"}>
-            <UserProcessSVG color={theme.palette.secondary.main} />
-          </Box>
-
-          <Box
-            sx={{
-              width: 22,
-              margin: "auto 10px",
-              height: 3,
-              alignContent: "center",
-              background: theme.palette.secondary.main,
-            }}
-          />
-
-          <ReportSVG color={theme.palette.primary.light} />
-        </Stack>
+        <Stepper margin={4} stepCurrent={formStep}>
+          <OsProcessSVG color={theme.palette.secondary.main} />
+        </Stepper>
 
         <Stack flexDirection={"row"} justifyContent={"center"} gap={2} width={"100%"} margin={"0!important"}>
           <>

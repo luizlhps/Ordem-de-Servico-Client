@@ -2,12 +2,8 @@ import { useTheme } from "@mui/material";
 import { useFormStep } from "@/hook/useFormStep";
 import { ICustomer } from "../../../types/customer";
 import { ICustomerAndOrderData } from "../../../types/formOrderCustomer";
-import {
-  AdressFormCreate,
-  CompletedFormCreate,
-  OrderFormCreateCostumer,
-} from "../ProgressStepper/Forms/CostumerTemplate";
-import { NameFormCreate } from "../ProgressStepper/Forms/CostumerTemplate/NameFormCreate";
+import { AdressFormCreate, CompletedFormCreate, OrderFormCreateCostumer } from "../ProgressStepper/Forms/CostumerForm";
+import { NameFormCreate } from "../ProgressStepper/Forms/CostumerForm/NameFormCreate";
 
 interface LayoutProps {
   data: ICustomer | ICustomerAndOrderData | undefined;

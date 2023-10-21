@@ -6,14 +6,12 @@ import { Button, Stack, TextField } from "@mui/material";
 import { DataGridLayout, HeaderLayout } from "@/components";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import { columnsDataGrid } from "@/components/DataGrid/utils/servicePage/columnConfig";
-import CreateServiceModal from "@/components/Modal/servicesPage/Service/CreateServiceModal";
-import UpdateServiceModal from "../Modal/servicesPage/Service/UpdateServiceModal";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import useModal from "@/hook/useModal";
-import DeleteServiceModal from "@/components/Modal/servicesPage/Service/DeleteServiceModal";
 import { useSearchField } from "../../hook/useSearchField";
 import { useGetFetchService } from "@/hook/useGetFetchService";
+import { FormCrudServices } from "../ServicesLayout/FormCrudServices";
 
 const Services = () => {
   const theme = useTheme();
@@ -70,64 +68,43 @@ const Services = () => {
       <ToastError errorMessage={errorMessage} formError={formError} setFormError={setFormError} />
       <ToastSuccess formSuccess={formSuccess} setFormSuccess={setFormSuccess} alertSuccess={messageForm} />
 
-      <DeleteServiceModal
+      <FormCrudServices
         fetchApi={fetchApi}
-        selectedItem={selectedItemUpdate}
-        setFormSucessoValue={setFormSuccess}
-        setErrorMessageValue={setErrorMessage}
-        setMessageForm={setMessageForm}
-        modalOpendelete={modalOpendelete}
-        modalDeleteHandleClose={modalDeleteHandleClose}
-        setModalOpenDelete={setModalOpenDelete}
-        modalDeleteHandleOpen={modalDeleteHandleOpen}
+        modalActions={modalActions}
+        modals={modals}
+        selectItem={selectedItemUpdate}
       />
-      <CreateServiceModal
-        fetchApi={fetchApi}
-        open={modalOpen}
-        handleClose={modalHandleClose}
-        handleOpen={modalHandleOpen}
-        setMessageForm={setMessageForm}
-        setFormSucessoValue={setFormSuccess}
-      >
-        <UpdateServiceModal
-          selectedItemUpdate={selectedItemUpdate}
-          fetchApi={fetchApi}
-          open={modalUpdateOpen}
-          handleClose={modalHandleUpdateClose}
-          handleOpen={modalUpdateHandleOpen}
-        >
-          <HeaderLayout title="Serviços" subTitle="Bem-vindo a área de serviços" />
 
-          <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
-            <TextField
-              value={searchField || ""}
-              onChange={searchHandle}
-              hiddenLabel
-              id="filled-hidden-label-small"
-              placeholder="Search"
-              variant="filled"
-              size="small"
-              sx={{
-                marginTop: 3,
-                width: 180,
-              }}
-            />
-            <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
-              Novo
-            </Button>
-          </Stack>
-          <DataGridLayout
-            loading={loading}
-            rows={servicesData.service}
-            columns={columns}
-            PageSize={limitPorPage}
-            page={servicesData.page}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalCount={servicesData.total}
-          />
-        </UpdateServiceModal>
-      </CreateServiceModal>
+      <HeaderLayout title="Serviços" subTitle="Bem-vindo a área de serviços" />
+
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" spacing={2}>
+        <TextField
+          value={searchField || ""}
+          onChange={searchHandle}
+          hiddenLabel
+          id="filled-hidden-label-small"
+          placeholder="Search"
+          variant="filled"
+          size="small"
+          sx={{
+            marginTop: 3,
+            width: 180,
+          }}
+        />
+        <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 3 }}>
+          Novo
+        </Button>
+      </Stack>
+      <DataGridLayout
+        loading={loading}
+        rows={servicesData.service}
+        columns={columns}
+        PageSize={limitPorPage}
+        page={servicesData.page}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalCount={servicesData.total}
+      />
     </>
   );
 };

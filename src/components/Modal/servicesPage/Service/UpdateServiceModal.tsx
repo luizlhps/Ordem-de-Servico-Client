@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import { FormSucessOrErrorContext } from "@/contexts/formSuccessOrErrorContext";
 import TransitionsModal from "../../Modal";
 import { IService } from "@/hook/useGetFetchService";
+import { DialogModalScroll } from "../../DialogModalScroll";
 
 interface IModal {
   open: boolean;
@@ -94,9 +95,7 @@ export default function UpdateServiceModal({
       <TransitionsModal handleClose={handleClose} open={open} style={Styled.style}>
         <Box flexDirection={"row"} display={"flex"} justifyContent={"space-between"} width={"100%"}>
           <Typography id="transition-modal-title">Entrada {formattedDate}</Typography>
-          <IconButton onClick={handleClose}>
-            <Icon>close</Icon>
-          </IconButton>
+          <DialogModalScroll.Close handleClose={handleClose} />
         </Box>
         <Box marginTop={4} width={"80%"}>
           <Typography id="transition-modal-title" variant="h1" textAlign={"center"}>

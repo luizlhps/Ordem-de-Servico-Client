@@ -8,6 +8,7 @@ import { statusApi } from "@/services/api/statusApi";
 import { format } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 import { FormStatus } from "./FormStatus";
+import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IPropsNewOfficials {
   handleClose: () => void;
@@ -47,14 +48,12 @@ export const NewStatus = ({ fetchApi, handleClose, open, style }: IPropsNewOffic
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       {open && (
         <>
-          <TransitionsModal handleClose={handleClose} open={open} style={style}>
+          <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"flex-end"} width={"100%"}>
-              <IconButton onClick={handleClose}>
-                <Icon>close</Icon>
-              </IconButton>
+              <DialogModalScroll.Close handleClose={handleClose} />
             </Box>
             <FormStatus submitFunction={createNewStatus} fetchApi={fetchApi} loading={loading} />
-          </TransitionsModal>
+          </DialogModalScroll.Root>
         </>
       )}
     </>

@@ -15,7 +15,6 @@ interface LayoutProps {
   customer: ICustomer | undefined;
   confirmData: () => void | undefined;
   handleClose: () => void;
-  typeForm: TypeForm;
   setStatusId: any;
 }
 
@@ -27,7 +26,6 @@ export const LayoutUpdateOrder = ({
   customer,
   confirmData,
   handleClose,
-  typeForm,
   setStatusId,
 }: LayoutProps) => {
   const theme = useTheme();
@@ -55,7 +53,6 @@ export const LayoutUpdateOrder = ({
           prevFormStep={prevFormStep}
           data={data}
           setData={setFormValues}
-          typeForm="createOs"
         />
       )}
       {formStep > 1 && (
@@ -65,7 +62,6 @@ export const LayoutUpdateOrder = ({
           customer={customer}
           confirmData={confirmData}
           handleClose={handleClose}
-          typeForm={typeForm}
         />
       )}
     </>

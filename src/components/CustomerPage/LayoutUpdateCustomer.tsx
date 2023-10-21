@@ -3,8 +3,8 @@ import { ICustomer } from "../../../types/customer";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { useFormStep } from "@/hook/useFormStep";
 import { ICustomerAndOrderData } from "../../../types/formOrderCustomer";
-import { AdressFormUpdate, CompletedFormUpdate } from "../ProgressStepper/Forms/CostumerTemplate";
-import { NameFormUpdate } from "../ProgressStepper/Forms/CostumerTemplate/NameFormUpdate";
+import { AdressFormUpdate, CompletedFormUpdate } from "../ProgressStepper/Forms/CostumerForm";
+import { NameFormUpdate } from "../ProgressStepper/Forms/CostumerForm/NameFormUpdate";
 
 interface LayoutProps {
   data: ICustomer | ICustomerAndOrderData | undefined;

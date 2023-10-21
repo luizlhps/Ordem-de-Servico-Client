@@ -4,6 +4,7 @@ import { useFormStep } from "@/hook/useFormStep";
 import { TypeForm } from "../ProgressStepper/Forms/types";
 import { ICustomer } from "../../../types/customer";
 import { IOrder } from "../../../types/order";
+import { OrderFormCreate } from "../ProgressStepper/Forms/OrdersTemplate/OrderFormCreate";
 
 interface LayoutProps {
   data: IOrder | undefined;
@@ -33,7 +34,7 @@ export function LayoutCreateOs({
   return (
     <>
       {formStep >= 0 && formStep <= 0 && (
-        <CreateOs
+        <OrderFormCreate
           formStep={formStep}
           nextFormStep={nextFormStep}
           prevFormStep={prevFormStep}
@@ -51,7 +52,6 @@ export function LayoutCreateOs({
           confirmData={confirmData}
           handleClose={handleClose}
           customer={customer}
-          typeForm={typeForm}
         />
       )}
     </>

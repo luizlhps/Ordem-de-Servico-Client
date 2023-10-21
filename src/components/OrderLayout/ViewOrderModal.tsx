@@ -105,7 +105,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
         dataValue={inputTransactionOrderData}
       />
 
-      <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll.Root fullheight handleClose={handleClose} open={open} style={style}>
         {!selectedItem ? ( // Renderiza o  skeleton enquanto estiver carregando
           <Skeleton variant="rectangular" height={40} />
         ) : (
@@ -139,7 +139,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                 </Stack>
               </Stack>
             </DialogModalScroll.Title>
-            <DialogModalScroll.Content dividers={true}>
+            <DialogModalScroll.Content customStyle={{ paddingBottom: 5 }} dividers={true}>
               <Box width={"100%"}>
                 <Stack width={"100%"} marginBottom={2}>
                   <Typography textTransform={"capitalize"}>Cliente: {selectedItem?.customer?.name}</Typography>
@@ -283,7 +283,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                 <Button
                   startIcon={<CloseIcon />}
                   onClick={handleClose}
-                  sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
+                  sx={{ width: smallphoneMedia ? "100%" : 173 }}
                   variant="contained"
                 >
                   Fechar
@@ -299,7 +299,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                     <Button
                       color="error"
                       startIcon={<PictureAsPdfIcon />}
-                      sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%" }}
+                      sx={{ width: smallphoneMedia ? "100%" : 173, height: "none" }}
                       variant="contained"
                     >
                       Imprimir PDF
@@ -315,7 +315,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                   startIcon={<AttachMoneyIcon />}
                   color="success"
                   onClick={handleOpenNewTransaction}
-                  sx={{ width: smallphoneMedia ? "100%" : 173, height: "100%", color: "white" }}
+                  sx={{ width: smallphoneMedia ? "100%" : 173, color: "white" }}
                   variant="contained"
                 >
                   Faturar

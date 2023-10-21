@@ -2,7 +2,6 @@ import { CSSProperties, useContext, useEffect, useState } from "react";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
 import TransitionsModal from "../Modal/Modal";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
 import { LayoutUpdateOrder } from "./LayoutUpdateOrder";
 import { IOrder } from "../../../types/order";
 import { IDetailsStatus, statusApi } from "@/services/api/statusApi";
@@ -128,10 +127,10 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
       <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
-      <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
+      <DialogModalScroll.Root fullheight handleClose={handleClose} open={open} style={style}>
         {open && (
           <>
-            <CloseModal handleClose={handleClose} />
+            <DialogModalScroll.Close handleClose={handleClose} />
             <LayoutUpdateOrder
               data={data}
               setFormValues={setFormValues}
@@ -141,7 +140,6 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
               handleClose={handleClose}
               customer={customer}
               setStatusId={setStatusId}
-              typeForm={"createOs"}
             />
           </>
         )}

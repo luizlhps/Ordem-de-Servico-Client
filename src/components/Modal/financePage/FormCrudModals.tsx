@@ -22,18 +22,6 @@ const style = {
   },
 };
 
-const buttonStyle = {
-  position: "absolute" as "absolute",
-  top: "15px",
-  right: "20px",
-  zIndex: 1,
-
-  "@media (max-width: 768px)": {
-    top: "15px",
-    right: "20px",
-  },
-};
-
 interface IProps {
   modals: IModals;
   FormCreate: ElementType;
@@ -43,16 +31,6 @@ interface IProps {
   modalActions: ImodalActions;
   selectItem: IFinance | IOrder | IStatus | IService | undefined;
 }
-
-export const CloseModal: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
-  return (
-    <>
-      <IconButton onClick={handleClose} sx={buttonStyle}>
-        <Icon>close</Icon>
-      </IconButton>
-    </>
-  );
-};
 
 export const FormCrudModals: React.FC<IProps> = memo(
   ({ modals, fetchApi, FormCreate, modalActions, FormUpdate, selectItem, FormDelete }: IProps) => {

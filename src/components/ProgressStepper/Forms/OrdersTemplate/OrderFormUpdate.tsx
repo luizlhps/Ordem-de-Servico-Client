@@ -12,13 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import {
-  MarketSVG,
-  OrdensSVG,
-  OsProcessSVG,
-  ReportSVG,
-  UserProcessSVG,
-} from "../../../../../public/icon/SVGS/IconsSVG";
+import { MarketSVG, OsProcessSVG, ReportSVG, UserProcessSVG } from "../../../../../public/icon/SVGS/IconsSVG";
 import { IStatus, TStatusData, statusApi } from "@/services/api/statusApi";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -65,11 +59,11 @@ export const CreateOs: React.FC<NameFormProps> = ({
   nextFormStep,
   prevFormStep,
   data,
+  formStep,
   setData,
   typeForm,
   setCustomer,
   setStatusId,
-  formStep,
 }) => {
   const theme = useTheme();
   const columnMedia = useMediaQuery("(max-width:1212px)");

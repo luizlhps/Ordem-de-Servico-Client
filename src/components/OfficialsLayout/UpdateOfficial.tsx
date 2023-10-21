@@ -3,7 +3,7 @@ import { IUser } from "../../../types/users";
 import { usersApi } from "@/services/api/usersApi";
 import { ToastSuccess } from "../Toast/ToastSuccess";
 import { ToastError } from "../Toast/ToastError";
-import { CloseModal } from "../Modal/financePage/FormCrudModals";
+
 import { Slide, Slider } from "../Slider";
 import useSlider from "@/hook/useSlider";
 import { Box, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
@@ -71,8 +71,8 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
       {open && (
         <>
           <DialogModalScroll.Root handleClose={handleClose} open={open} style={style}>
-            <CloseModal handleClose={handleClose} />
-            <DialogModalScroll.Content dividers={false}>
+            <DialogModalScroll.Close handleClose={handleClose} />
+            <DialogModalScroll.Content customStyle={{ padding: 5 }}>
               <Slider
                 widthSlide={widthSlide}
                 maxWidthSlide={650}
@@ -107,7 +107,6 @@ export const UpdateOfficial = ({ handleClose, fetchApi, style, open, selectItem 
                 </Slide>
               </Slider>
             </DialogModalScroll.Content>
-            <DialogActions sx={{ padding: 2 }}></DialogActions>
           </DialogModalScroll.Root>
         </>
       )}

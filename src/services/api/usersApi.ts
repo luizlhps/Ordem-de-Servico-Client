@@ -15,12 +15,7 @@ interface InputDataProfilePassword {
 
 class UsersApi {
   getById() {}
-  getAll(
-    filter: IFilterSearchOfficials = { status: "", search: "", customer: "" },
-    page = 1,
-    limit = 10,
-    deleted: "" | boolean = false
-  ) {
+  getAll(filter: IFilterSearchOfficials = { search: "" }, page = 1, limit = 10, deleted: "" | boolean = false) {
     return Api.get<RootUser>(`users/?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`);
   }
 

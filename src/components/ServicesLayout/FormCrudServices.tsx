@@ -1,10 +1,8 @@
-import React, { memo } from "react";
-import NewOrder from "@/components/OrderLayout/NewOrder";
-import UpdateOrder from "@/components/OrderLayout/UpdateOrder";
 import { IModals, ImodalActions } from "@/hook/useModal";
-import { IOrder } from "../../../types/order";
-import { DeleteOrder } from "@/components/OrderLayout/DeleteOrder";
-import { ViewOrderModal } from "./ViewOrderModal";
+import { memo } from "react";
+import { NewServices } from "./NewServices";
+import { UpdateServices } from "./UpdateServices";
+import { IServices } from "../../../types/services";
 
 const styleModalScrollDialog = {
   display: "flex",
@@ -12,38 +10,36 @@ const styleModalScrollDialog = {
   flexDirection: "column" as "column",
   minHeight: "100%",
 };
-
 interface IProps {
   modals: IModals;
   fetchApi: () => void;
   modalActions: ImodalActions;
-  selectItem: IOrder | undefined;
+  selectItem: IServices;
 }
 
-export const FormCrudOrder: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
+export const FormCrudServices: React.FC<IProps> = memo(({ modals, fetchApi, modalActions, selectItem }) => {
   const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
   const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
     modalActions;
 
   return (
     <>
-      <ViewOrderModal handleClose={modalViewClose} open={modalViewOpen} selectedItem={selectItem} />
-      <NewOrder handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={styleModalScrollDialog} />
-      <UpdateOrder
+      <NewServices handleClose={modalHandleClose} fetchApi={fetchApi} open={modalOpen} style={styleModalScrollDialog} />
+      <UpdateServices
         handleClose={modalHandleUpdateClose}
         fetchApi={fetchApi}
         open={modalUpdateOpen}
         style={styleModalScrollDialog}
         selectItem={selectItem}
       />
-      <DeleteOrder
+      {/*       <DeleteServices
         fetchApi={fetchApi}
         handleClose={modalDeleteHandleClose}
         open={modalOpendelete}
-        selectedItem={selectItem}
-      />
+        id={selectItem?._id}
+      /> */}
     </>
   );
 });
 
-FormCrudOrder.displayName = "FormCrudOrder";
+FormCrudServices.displayName = "FormCrudOrder";
