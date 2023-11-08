@@ -17,14 +17,14 @@ const styleModalScrollDialog = {
 
 interface IProps {
   modals: IModals;
-  fetchApi: () => void;
   modalActions: ImodalActions;
   selectItem: IOrder | undefined;
   customer: ICustomer;
+  fetchApiWithCustomerID: (id: string) => Promise<void>
 }
 
-export const FormCrudOrderPending: React.FC<IProps> = memo(
-  ({ modals, fetchApi, modalActions, selectItem, customer }) => {
+export const FormCrudGetCustomerOrders: React.FC<IProps> = memo(
+  ({ modals, fetchApiWithCustomerID, modalActions, selectItem, customer }) => {
     const { modalOpen, modalOpendelete, modalUpdateOpen, modalViewOpen } = modals;
     const { modalDeleteHandleClose, modalHandleClose, modalHandleUpdateClose, modalViewClose, modalViewHandleOpen } =
       modalActions;
@@ -35,19 +35,19 @@ export const FormCrudOrderPending: React.FC<IProps> = memo(
         <NewOrder
           customerData={customer}
           handleClose={modalHandleClose}
-          fetchApi={fetchApi}
+          fetchApiWithCustomerID={fetchApiWithCustomerID}
           open={modalOpen}
           style={styleModalScrollDialog}
         />
         <UpdateOrder
           handleClose={modalHandleUpdateClose}
-          fetchApi={fetchApi}
+          fetchApiWithCustomerID={fetchApiWithCustomerID}
           open={modalUpdateOpen}
           style={styleModalScrollDialog}
           selectItem={selectItem}
         />
         <DeleteOrder
-          fetchApi={fetchApi}
+          fetchApiWithCustomerID={fetchApiWithCustomerID}
           handleClose={modalDeleteHandleClose}
           open={modalOpendelete}
           selectedItem={selectItem}
@@ -57,4 +57,4 @@ export const FormCrudOrderPending: React.FC<IProps> = memo(
   }
 );
 
-FormCrudOrderPending.displayName = "FormCrudOrder";
+FormCrudGetCustomerOrders.displayName = "FormCrudOrder";

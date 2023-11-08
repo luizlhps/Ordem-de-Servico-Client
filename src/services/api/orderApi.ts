@@ -1,10 +1,10 @@
-import { IFilterSearchOrder } from "@/hook/useGetFetchOrders";
-import { IOrder, RootOrder, Service } from "../../../types/order";
-import { Api } from "./axios-config";
+import { IFilterSearchOrder } from '@/hook/useGetFetchOrders';
+import { IOrder, RootOrder, Service } from '../../../types/order';
+import { Api } from './axios-config';
 
 class OrderApi {
   getAllOrder(
-    filter: IFilterSearchOrder = { status: "", search: "", customer: "" },
+    filter: IFilterSearchOrder = { status: '', search: '', customer: '' },
     page = 1,
     limit = 10,
     deleted = false
@@ -13,10 +13,10 @@ class OrderApi {
   }
 
   getPendingOrder(
-    filter: IFilterSearchOrder = { status: "", search: "", customer: "" },
+    filter: IFilterSearchOrder = { status: '', search: '', customer: '' },
     page = 1,
     limit = 10,
-    deleted: "" | boolean = false
+    deleted: '' | boolean = false
   ) {
     return Api.get<RootOrder>(
       `order/pending?filter=${JSON.stringify(filter)}&page=${page}&limit=${limit}&deleted=${deleted}`
@@ -24,7 +24,7 @@ class OrderApi {
   }
 
   async createOrder(data: IOrder, customerId: string) {
-    const res = await Api.post("order", {
+    const res = await Api.post('order', {
       equipment: data.equipment,
       brand: data.brand,
       model: data.model,
@@ -38,10 +38,18 @@ class OrderApi {
     return res;
   }
 
-  async getCustomerOrders(id: string, filter: IFilterSearchOrder = { search: "" }, page = 1, limit = 10) {
+  async getCustomerOrders(
+    id: string,
+    filter: IFilterSearchOrder = { search: '' },
+    page = 1,
+    limit = 10,
+    deleted: '' | boolean = false
+  ) {
     try {
       const data = await Api.get(
-        `order/customer?customerId=${id}&filter=${JSON.stringify(filter)}&$page=${page}&limit=${limit}`
+        `order/customer?customerId=${id}&filter=${JSON.stringify(
+          filter
+        )}&$page=${page}&limit=${limit}&deleted=${deleted}`
       );
       return data;
     } catch (error) {

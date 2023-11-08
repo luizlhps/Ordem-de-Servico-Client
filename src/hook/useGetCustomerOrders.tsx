@@ -24,7 +24,8 @@ export const useGetCostumersOrders = ({ customer }: IProps) => {
 
   const { loading, error, request } = useApiRequest();
 
-  const fetchApi = async (id?: string, search?: IFilterSearchOrderPending, page?: number, limit?: number) => {
+  const fetchApi = async (id: string, search?: IFilterSearchOrderPending, page?: number, limit?: number) => {
+    console.log(id, search, page, limit)
     debouse(async () => {
       if (!id) {
         const customerOrders = await request(orderApi.getCustomerOrders, customer._id, "", 1, limit);

@@ -1,27 +1,28 @@
-import React, { useState } from "react";
-import { ToastSuccess } from "../Toast/ToastSuccess";
-import { ToastError } from "../Toast/ToastError";
-import DeleteModal from "../Modal/deleteModal";
-import { IOrder } from "../../../types/order";
-import { orderApi } from "@/services/api/orderApi";
-import { Axios, AxiosError } from "axios";
+import React, { useState } from 'react';
+import { ToastSuccess } from '../Toast/ToastSuccess';
+import { ToastError } from '../Toast/ToastError';
+import DeleteModal from '../Modal/deleteModal';
+import { IOrder } from '../../../types/order';
+import { orderApi } from '@/services/api/orderApi';
+import { Axios, AxiosError } from 'axios';
 
 interface IProps {
   open: boolean;
   handleClose: () => void;
   selectedItem: IOrder | undefined;
-  fetchApi: () => void;
+  fetchApi?: () => void;
+  fetchApiWithCustomerID?: (id: string) => void;
 }
 
-export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi }: IProps) => {
+export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi, fetchApiWithCustomerID }: IProps) => {
   const [loading, setLoading] = useState(false);
-  const [messageError, setMessageError] = useState("");
+  const [messageError, setMessageError] = useState('');
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
   const deleteTransaction = (id: string | undefined) => {
     if (!id) {
-      setMessageError("O ID é necessário!!");
+      setMessageError('O ID é necessário!!');
       setError(true);
       return;
     }
@@ -37,21 +38,22 @@ export const DeleteOrder = ({ open, handleClose, selectedItem, fetchApi }: IProp
           } else if (err.response?.data) {
             setMessageError(err.response?.data);
           } else {
-            setMessageError("Ocorreu um erro!!");
+            setMessageError('Ocorreu um erro!!');
           }
         }
         setError(true);
       })
       .finally(() => {
         setLoading(false);
-        fetchApi();
+        if (fetchApi) fetchApi(); //case i dont want access my especify customer
+        if (fetchApiWithCustomerID && selectedItem) fetchApiWithCustomerID(selectedItem.customer._id); // case  i dont  access my customer orders
         handleClose();
       });
   };
 
   return (
     <>
-      <ToastSuccess alertSuccess="Deletado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess='Deletado com sucesso!!' formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
       <DeleteModal
         loading={loading}

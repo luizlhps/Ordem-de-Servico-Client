@@ -54,7 +54,7 @@ interface Iprops {
 
 export const CompletedForm: React.FC<Iprops> = ({ confirmData, data, loading, handleClose, customer }) => {
   const theme = useTheme();
-
+  console.log(customer)
   const Redirect = () => {
     confirmData();
   };

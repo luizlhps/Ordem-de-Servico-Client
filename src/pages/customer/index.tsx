@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Stack, TextField, useTheme } from "@mui/material";
 
@@ -20,6 +20,7 @@ export default function Customers() {
   //modal
   const { modals, modalActions, modalSets } = useModal();
   const { modalHandleOpen, modalUpdateHandleOpen, modalDeleteHandleOpen } = modalActions;
+  const memoizedModalHandleOpen = useCallback(modalHandleOpen, []);
 
   const limitPorPage = 10;
   const columns = ColumnsDataGrid(theme, setSelectedItem, modalDeleteHandleOpen, modalUpdateHandleOpen);
@@ -60,7 +61,7 @@ export default function Customers() {
         />
         <Stack flexDirection={"row"} gap={2}>
           <MenuSelectFilterDefault setRangeDateFilter={setRangeDateFilter} />
-          <Button onClick={modalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 2 }}>
+          <Button onClick={memoizedModalHandleOpen} size="medium" variant="contained" sx={{ borderRadius: 2 }}>
             Novo
           </Button>
         </Stack>

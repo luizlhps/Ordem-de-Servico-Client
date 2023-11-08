@@ -68,6 +68,7 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
 
         await order(await updateStatusForId(data), res.data._id);
         fetchApi();
+        setSuccess(true);
       } catch (error: any) {
         setSuccess(false);
         console.error(error);
@@ -78,7 +79,6 @@ export const NewCustomer: React.FC<IProps> = ({ open, handleClose, fetchApi, sty
     async function order(data: any, customerId: string) {
       try {
         const res = await orderApi.createOrder(data, customerId);
-        setSuccess(true);
       } catch (error: any) {
         setSuccess(false);
         setMessageError(error.response.data.message); //

@@ -12,10 +12,11 @@ import { DialogModalScroll } from "../Modal/DialogModalScroll";
 
 interface IProps {
   handleClose: () => void;
-  fetchApi: () => void;
+  fetchApi?: () => void;
   style: CSSProperties;
   open: boolean;
   selectItem: IOrder | undefined;
+  fetchApiWithCustomerID?: (id: string) => void;
 }
 
 export interface ICustomerAndOrder {
@@ -47,7 +48,7 @@ export interface ICustomerAndOrder {
   status: string;
 }
 
-const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps) => {
+const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem, fetchApiWithCustomerID }: IProps) => {
   const [messageError, setMessageError] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -112,7 +113,8 @@ const UpdateOrder = ({ handleClose, fetchApi, style, open, selectItem }: IProps)
           throw new Error("ohoho");
         }
         setSuccess(true);
-        fetchApi();
+        if (fetchApi) fetchApi(); //case i dont want access my especify customer
+        if (fetchApiWithCustomerID && selectItem) fetchApiWithCustomerID(selectItem.customer._id); // case  i dont  access my customer orders
       } catch (err: any) {
         setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
         setError(true);

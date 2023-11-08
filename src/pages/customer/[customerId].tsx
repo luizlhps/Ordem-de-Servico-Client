@@ -23,7 +23,7 @@ import useModal from "@/hook/useModal";
 import { AuthSSR } from "@/utils/AuthSSR";
 import { useGetCostumersOrders } from "@/hook/useGetCustomerOrders";
 import { MenuSelectFilterDefault, MenuSelectFilterOrderPending } from "@/components/MenuSelectFilter";
-import { FormCrudOrderPending } from "@/components/OrderLayout/FormCrudOrderPending";
+import { FormCrudGetCustomerOrders } from "@/components/OrderLayout/FormCrudGetCustomerOrders";
 
 interface Params extends ParsedUrlQuery {
   customerId: string;
@@ -101,6 +101,7 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
 
   //Config EquipmentField
   const ordersFormattedForDataGrid = useMemo(() => {
+
     return data?.orders.map((obj: any) => {
       const values: any[] = [];
       if (obj.equipment) values.push(obj.equipment);
@@ -135,9 +136,9 @@ function CustomerPageID({ customer }: { customer: ICustomer }) {
       <IconButton onClick={BackHandle} sx={{ marginTop: 2 }}>
         <Icon>arrow_back</Icon>
       </IconButton>
-      <FormCrudOrderPending
+      <FormCrudGetCustomerOrders
         customer={customer}
-        fetchApi={fetchApi}
+        fetchApiWithCustomerID={fetchApi}
         modalActions={modalActions}
         modals={modals}
         selectItem={selectItem}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import { useRouter } from "next/router";
 
 import { DataGridLayout, HeaderLayout } from "@/components";
@@ -9,16 +9,17 @@ import { useGetFetchFinance } from "@/hook/useGetFetchFinances";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 import dayjs from "dayjs";
-import { DashboardFinance } from "@/components/Dashboard/DashboardFinance";
-import { orderApi } from "@/services/api/orderApi";
 import { useSearchField } from "@/hook/useSearchField";
-import { IOrder, RootOrder } from "../../types/order";
+import { IOrder } from "../../types/order";
 import useModal from "@/hook/useModal";
 import { columnsDataGrid } from "@/components/DataGrid/utils/orderPage/orderColumnConfig";
 import { DashboardOrdersAndFinance } from "@/components/Dashboard/DashboardOrdersAndFinance";
-import { FormCrudOrder } from "@/components/OrderLayout/FormCrudOrder";
-import { AxiosError } from "axios";
 import { useGetFetchOrdersPending } from "@/hook/useGetFetchOrdersPending";
+
+//loading components
+const FormCrudOrder = lazy(() =>
+  import("@/components/OrderLayout/FormCrudOrder").then(({ FormCrudOrder }) => ({ default: FormCrudOrder }))
+);
 
 //style custom
 
@@ -41,18 +42,13 @@ export default function Home() {
 
   const {
     currentPage,
-    error,
     fetchApi: fetchOrderAPi,
     limitPerPage,
     loading,
     ordersData,
     searchField,
     setCurrentPage,
-    setCustomerFilter,
-    setOrdersData,
-    setRangeDateFilter,
     setSearchField,
-    setStatusFilter,
   } = useGetFetchOrdersPending();
 
   const ordersFormatted = useMemo(() => {
@@ -213,7 +209,9 @@ export default function Home() {
     <>
       <HeaderLayout subTitle="Bem vindo a area de dashboard" title="Dashboard" />
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} marginBottom={3}></Stack>
-      <FormCrudOrder fetchApi={fetchOrderAPi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
+      <Suspense fallback={<>loading</>}>
+        <FormCrudOrder fetchApi={fetchOrderAPi} modalActions={modalActions} modals={modals} selectItem={selectItem} />
+      </Suspense>
       <DashboardOrdersAndFinance dataDashboard={dataDashboard} />
       {dataDashboard ? (
         <Box

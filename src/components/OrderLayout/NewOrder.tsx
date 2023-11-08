@@ -1,24 +1,25 @@
-import { CSSProperties, useEffect, useState } from "react";
-import { ToastSuccess } from "../Toast/ToastSuccess";
-import { ToastError } from "../Toast/ToastError";
+import { CSSProperties, useEffect, useState } from 'react';
+import { ToastSuccess } from '../Toast/ToastSuccess';
+import { ToastError } from '../Toast/ToastError';
 
-import { LayoutCreateOs } from "./LayoutCreateOs";
-import { orderApi } from "@/services/api/orderApi";
-import { IStatus } from "../ServicesPage/Status";
-import { ICustomer } from "../../../types/customer";
-import { DialogModalScroll } from "../Modal/DialogModalScroll";
+import { LayoutCreateOs } from './LayoutCreateOs';
+import { orderApi } from '@/services/api/orderApi';
+import { IStatus } from '../ServicesPage/Status';
+import { ICustomer } from '../../../types/customer';
+import { DialogModalScroll } from '../Modal/DialogModalScroll';
 
 interface IPropsNewCustomer {
   handleClose: () => void;
-  fetchApi: () => void;
+  fetchApi?: () => void;
   style: CSSProperties;
   open: boolean;
   customerData?: ICustomer;
+  fetchApiWithCustomerID?: (id: string) => void;
 }
 
-const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNewCustomer) => {
+const NewOrder = ({ handleClose, fetchApi, style, open, customerData, fetchApiWithCustomerID }: IPropsNewCustomer) => {
   const [loading, setLoading] = useState(false);
-  const [messageError, setMessageError] = useState("");
+  const [messageError, setMessageError] = useState('');
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [data, setData] = useState<any | undefined>(undefined);
@@ -33,9 +34,10 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
       };
       await orderApi.createOrder(await statusUpdateId(), customer);
       setSuccess(true);
-      fetchApi();
+      if (fetchApi) fetchApi(); //case i dont want access my especify customer
+      if (fetchApiWithCustomerID && customerData) fetchApiWithCustomerID(customerData._id); // case  i dont  access my customer orders
     } catch (err: any) {
-      setMessageError(typeof err.request.response === "string" ? err.request.response : "Ocorreu um erro!!");
+      setMessageError(typeof err.request.response === 'string' ? err.request.response : 'Ocorreu um erro!!');
       setError(true);
     } finally {
       setData(undefined);
@@ -45,7 +47,11 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
   }
 
   function confirmData() {
-    if (customer && data) createOrder(data, customer._id);
+    if (customer && data) {
+      createOrder(data, customer._id);
+    } else if (customerData && data) {
+      createOrder(data, customerData._id);
+    }
   }
 
   const setFormValues = (values: any) => {
@@ -57,7 +63,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
 
   //Clear Form after close modal
   useEffect(() => {
-    setData("");
+    setData('');
 
     if (customerData)
       setData({
@@ -67,7 +73,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
 
   return (
     <>
-      <ToastSuccess alertSuccess="Criado com sucesso!!" formSuccess={success} setFormSuccess={setSuccess} />
+      <ToastSuccess alertSuccess='Criado com sucesso!!' formSuccess={success} setFormSuccess={setSuccess} />
       <ToastError errorMessage={messageError} formError={error} setFormError={setError} />
 
       <DialogModalScroll.Root fullheight handleClose={handleClose} open={open} style={style}>
@@ -83,7 +89,7 @@ const NewOrder = ({ handleClose, fetchApi, style, open, customerData }: IPropsNe
               confirmData={confirmData}
               handleClose={handleClose}
               customer={customer}
-              typeForm={"createOs"}
+              typeForm={'createOs'}
             />
           </>
         )}
