@@ -58,7 +58,7 @@ const Login = () => {
   const theme = useTheme();
   return (
     <>
-      <Box sx={{ height: "100vh", justifyContent: "center", display: "flex" }}>
+      <Box sx={{ height: "100%", justifyContent: "center", display: "flex" }}>
         <Stack flexDirection={"row"} width={"100%"} maxWidth={450}>
           <Box
             flex={1}
