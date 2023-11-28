@@ -294,7 +294,7 @@ export const ViewOrderModal: React.FC<IProps> = ({ open, handleClose, selectedIt
                     selectOrder={selectedItem}
                     dataStore={dataStore}
                     width={smallphoneMedia ? "100%" : 173}
-                    height={"100%"}
+                    height={"none"}
                   >
                     <Button
                       color="error"
