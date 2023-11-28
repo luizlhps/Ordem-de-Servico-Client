@@ -14,6 +14,7 @@ interface IPropsContext {
   fetchMyInfo: () => void;
   loading: boolean;
   errorLogin: boolean;
+  loadingLogin: boolean
 }
 interface ISignCredentials {
   email: string;
@@ -31,6 +32,7 @@ export const SessionProvider = ({ children }: IProps) => {
   const [user, setUser] = useState<IMyInfoUser>();
   const [errorLogin, setErrorLogin] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState(false)
   const router = useRouter();
 
   const signOut = () => {
@@ -63,6 +65,7 @@ export const SessionProvider = ({ children }: IProps) => {
   const signIn = async ({ email, password }: ISignCredentials) => {
     try {
       setErrorLogin(false);
+      setLoadingLogin(true)
 
       const month = 60 * 60 * 24 * 30;
 
@@ -89,12 +92,14 @@ export const SessionProvider = ({ children }: IProps) => {
       setErrorLogin(true);
       Cookies.remove("auth");
       console.log(error);
+    } finally {
+      setLoadingLogin(false)
     }
   };
 
   return (
     <>
-      <SessionContext.Provider value={{ signIn, tokenAuth, user, signOut, fetchMyInfo, loading, errorLogin }}>
+      <SessionContext.Provider value={{ signIn, tokenAuth, user, signOut, fetchMyInfo,loadingLogin,loading, errorLogin }}>
         {children}
       </SessionContext.Provider>
     </>

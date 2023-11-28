@@ -1,13 +1,11 @@
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useContext } from "react";
 import { useForm } from "react-hook-form";
 
 import styled from "@emotion/styled";
-import { Box, Container, Stack, Typography, useTheme, Button, TextField } from "@mui/material";
+import { Box, Stack, Typography, useTheme, Button, TextField, CircularProgress } from "@mui/material";
 
 import Image from "next/image";
-import Link from "next/link";
 
-import validator from "validator";
 import { SessionContext } from "@/auth/SessionProvider";
 
 //style custom
@@ -31,10 +29,8 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const passwordWatch = watch("password");
-
-  const [selectedItems, setSelectedItems] = useState<any>([]);
-  const { signIn, errorLogin } = useContext(SessionContext);
+ 
+  const { signIn, errorLogin, loadingLogin } = useContext(SessionContext);
 
   const onSubmit = async (data: any) => {
     await signIn({
@@ -45,15 +41,7 @@ const Login = () => {
     });
   };
 
-  const handleSelect = (value: any) => {
-    const isPresent = selectedItems.indexOf(value);
-    if (isPresent !== -1) {
-      const remaining = selectedItems.filter((item: any) => item !== value);
-      setSelectedItems(remaining);
-    } else {
-      setSelectedItems((prevItems: any) => [...prevItems, value]);
-    }
-  };
+
 
   const theme = useTheme();
   return (
@@ -117,7 +105,7 @@ const Login = () => {
                   marginTop: 4,
                 }}
               >
-                Login
+              {loadingLogin ? <CircularProgress size={25} /> : "Login"}
               </Button>
               {errorLogin && (
                 <Typography textAlign={"center"} color="error">
@@ -125,14 +113,7 @@ const Login = () => {
                 </Typography>
               )}
 
-              {/*               <Stack flexDirection={"row"} marginTop={3} justifyContent={"center"}>
-                <Typography marginRight={1} color={theme.palette.primary.light}>
-                  Esqueceu sua senha?
-                </Typography>
-                <Link href={"/login"} style={{ textDecoration: "none", color: theme.palette.primary.main }}>
-                  <Typography fontWeight={500}> Recupera-la</Typography>
-                </Link>
-              </Stack> */}
+ 
             </Box>
           </Box>
         </Stack>

@@ -57,7 +57,12 @@ export const DarkTheme = createTheme(
           ::-webkit-scrollbar-track {
             background: #424242;  
           }
-
+          
+          html,
+          body,
+          #__next {
+            height: 100%;
+          }
  
 
           ::-webkit-scrollbar {
